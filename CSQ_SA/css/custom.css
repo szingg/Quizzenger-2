@@ -1,0 +1,134 @@
+@CHARSET "ISO-8859-1";
+
+
+
+::selection { background: #4089c8; color: #fff; }
+::-moz-selection { background: #4089c8; color: #fff; }
+
+
+body {
+	padding-top: 70px;
+	background-image: url(../templates/img/bg.png);
+}
+
+.category-badge {
+	float:left;
+	heigth:13px;
+	padding:4px 25px 4px 4px;
+	margin-right: 4px;
+}
+
+
+.centered {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.glyphicon-none:before {
+    content: "\2122";
+    color: transparent !important;
+}
+
+#questionTextAddition {
+  border:2px solid #ccc;
+  display: none;
+  width:400px;
+  margin-top: 10px;
+  padding: 5px;
+  background:#FFF;
+  position:absolute;
+}
+
+#questionTextSpan:hover #questionTextAddition {
+  display: block;
+}
+
+input[type=radio].css-checkbox {
+	position:absolute; z-index:-1000; left:-1000px; overflow: hidden; clip: rect(0 0 0 0); height:1px; width:1px; margin:-1px; padding:0; border:0;
+}
+input[type=radio].css-checkbox + label.css-label {
+	padding-left:23px;
+	height:23px; 
+	display:inline-block;
+	line-height:22px;
+	background-repeat:no-repeat;
+	background-position: 0 0;
+	font-size:22px;
+	vertical-align:middle;
+	cursor:pointer;
+
+}
+
+input[type=radio].css-checkbox:checked + label.css-label {
+	background-position: 0 -22px;
+}
+
+label.css-label {
+	background-image:url(../templates/img/css_checkbox.png);
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.panel-heading a:after {
+    font-family: 'Glyphicons Halflings';
+    content: "\e114";    
+    float: right; 
+    color: grey; 
+}
+.panel-heading a.collapsed:after {
+    content: "\e080";
+}
+
+
+/* RATING STAR PART  */
+#hide {
+    display:none;
+}
+ 
+.rating input {
+    position:absolute;
+    filter:alpha(opacity=0);
+    -moz-opacity:0;
+    -khtml-opacity:0;
+    opacity:0;
+    cursor:pointer;
+    width:17px;
+}
+ 
+.rating span {
+    width:24px;
+    height:16px;
+    line-height:16px;
+    padding:1px 22px 1px 0; /* 1px FireFox fix */
+    background:url(../templates/img/star.png) no-repeat -22px 0;
+}
+ 
+/* Change span immediately following the checked radio */
+
+.rating input:checked + span {
+    background-position:-22px 0;
+}
+ 
+/* Reset all remaining stars back to default background.
+   This supersedes the above due to its ordering. */
+ 
+.rating input:checked + span ~ span {
+    background-position:0 0;
+}
+   
+.rating input:hover + span {
+    background-position:-22px 0;
+}
+ 
+/* Reset all remaining stars back to default background.
+   This supersedes the above due to its ordering. */
+ 
+.rating input:hover + span ~ span {
+    background-position:0 0;
+}             
