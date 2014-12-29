@@ -1,8 +1,6 @@
 Quizzenger
 ==========
 
-Quizzenger wurde im Rahmen einer Studienarbeit an der Hochschule für Technik Rapperswil von Tobias Zahner und Oussama Zgheb entwickelt.
-
 Quizzenger ist eine webbasierte Wissensdatenbank welche dem User ermöglicht für verschiedenste Themenbereich Quizzes durchzuführen. Das System soll sich selbst verwalten, durch ausgeklügelte Statistiken sowie dank der Community selbst.
 
 Quizzenger verfolgt die Idee einer offenen Community an der jeder Teilnehmen darf, deswegen ist es auch nahe liegend das Projekt mit einer Opensource Lizenz öffentlich zugänglich zu machen.
