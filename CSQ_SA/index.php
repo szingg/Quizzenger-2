@@ -35,7 +35,7 @@
 		include ('includes/sqlhelper.php');
 		include ('controller/controller.php');
 		include ('controller/ajaxController.php');
-		include ('model/model.php');
+		//include ('model/model.php');
 		include ('view/view.php');
 		include ('model/sessionmodel.php');
 		include ('model/ratingmodel.php');

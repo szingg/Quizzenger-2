@@ -254,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 INSERT INTO `user` (`id`, `username`, `email`, `password`, `salt`, `inactive`, `superuser`) VALUES (1, 'Gast', 'gast@gast.ch', '41f72c210785dc5d8839286e25a1af21f7a302b24fb0147ea20a7d6324427eba888211ae8006d50729913cecdf67cbb7234c437d38244bf14667ec80b34ed186', '2ba3e92e20ed389bb34094ef871b9ddba2a79c1670ec2ddd0b74fdb97fc4ee3b136287023a6c6e7121003924b0a69b6bbf79247f07b21894f15295441bb4d61b', 1, 0);
-INSERT INTO `user` (`id`, `username`, `email`, `password`, `salt`, `inactive`, `superuser`) VALUES (2, 'Superuser', 'superuser@quizzenger.ch', '751b5c13d0a17effcae78bb17f01f59932727f701ffc9c1109ef428501fbc0c542daebdc1b6e78250507e364e4e0ba746aa2c58f457743c9dc994d74ac2bc429', '52947e10919640a98af1d55cce08f9da6c39fcb5d99cb4cffd5dafba3f9470b1f8a82615d7f9e4605ed54dc8a16b845d86d0cbfbaea5bcd810185b725782a654', NULL, 01;
+INSERT INTO `user` (`id`, `username`, `email`, `password`, `salt`, `inactive`, `superuser`) VALUES (2, 'Superuser', 'superuser@quizzenger.ch', '751b5c13d0a17effcae78bb17f01f59932727f701ffc9c1109ef428501fbc0c542daebdc1b6e78250507e364e4e0ba746aa2c58f457743c9dc994d74ac2bc429', '52947e10919640a98af1d55cce08f9da6c39fcb5d99cb4cffd5dafba3f9470b1f8a82615d7f9e4605ed54dc8a16b845d86d0cbfbaea5bcd810185b725782a654', NULL, 01);
 
 -- --------------------------------------------------------
 
