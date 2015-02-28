@@ -41,7 +41,7 @@
 		<p>
 			Dank neusten Technologien auch auf Smartphones unterwegs benutzbar.<br>
 			<a
-				href="http://validator.w3.org/check?uri=https%3A%2F%2Fsinv-56035.edu.hsr.ch%2Fcsq%2Findex.php"><img
+				href="http://validator.w3.org/check?uri=<?php echo htmlspecialchars(APP_PATH); ?>"><img
 				src="<?=APP_PATH?>/templates/img/html5-badge-h-solo.png" width="63"
 				height="64" alt="HTML5 Powered" title="HTML5 Powered"></a>
 		</p>
