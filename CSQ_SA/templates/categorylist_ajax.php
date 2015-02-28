@@ -23,7 +23,7 @@ foreach ( $this->_ ['categories'] as $category ) {
 		}
 	}
 	if((isset($this->_['mode']) && $this->_['mode'] == 'add_question') || $category['questioncount']>0){ ?>
-		<a href="<?php echo htmlspecialchars($href); ?>" <?= $onclick; ?> class="list-group-item"><?= htmlspecialchars($category['name']); ?>
+		<a href="<?php echo $href; ?>" <?= $onclick; ?> class="list-group-item"><?= htmlspecialchars($category['name']); ?>
 			<span class="badge">
 				<?php if(isset($category['questioncount'])){ echo($category['questioncount']);};?>
 			</span>
