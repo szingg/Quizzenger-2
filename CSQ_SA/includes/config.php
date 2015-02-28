@@ -1,5 +1,11 @@
 <?php
 
+// Load config override if defined.
+if(file_exists(__DIR__ . DIRECTORY_SEPARATOR . 'config.dev.php')) {
+	include(__DIR__ . DIRECTORY_SEPARATOR . 'config.dev.php');
+	return;
+}
+
 // DB connection
 define ( "dbuser", "ENTER ME" );
 define ( "dbpassword", "ENTER ME" );
