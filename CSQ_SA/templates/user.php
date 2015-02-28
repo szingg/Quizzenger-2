@@ -8,11 +8,11 @@
 	$absolvedCount = $this->_ ['absolvedcount'];	
 
 	if (isset($this->_['message'])){
-		echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.$this->_['message'].'</div>';
+		echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($this->_['message']).'</div>';
 	}
 ?>
 <div class="panel panel-default">
-	<div class="panel-heading"><strong><?php echo $user['username'];?></strong>
+	<div class="panel-heading"><strong><?php echo htmlspecialchars($user['username']);?></strong>
 		<?php
 			if(!$this->_ ['alreadyreported']){?>
 			<button type="button" class="btn btn-link btn-xs pull-right" data-toggle="modal" data-target="#newUserReportDialog">Benutzer melden</button>
@@ -26,23 +26,23 @@
 					<table style="width:100%">
 						<?php 
 							foreach($categoryscores as $catScore){
-								echo('<tr><td width="180px">'.$catScore['name']."</td>");
-								echo("<td>".'<span class="badge alert-success">'.$catScore['score']."</span></td></tr>");
+								echo('<tr><td width="180px">'.htmlspecialchars($catScore['name'])."</td>");
+								echo("<td>".'<span class="badge alert-success">'.htmlspecialchars($catScore['score'])."</span></td></tr>");
 							}
 						?> 
 					</table>
-					<br><h4>Gesamtpunktezahl <?= ' <span class="badge alert-success">'.$userScore.'</span>'?></h4><br>
+					<br><h4>Gesamtpunktezahl <?= ' <span class="badge alert-success">'.htmlspecialchars($userScore).'</span>'?></h4><br>
 					
 				</div>
   				<div class="col-md-6">
 					<?php 
 					if($user['superuser']){
-						echo('<h4 style="color:red"><img alt="superuser" src="'.APP_PATH.'/templates/img/superuser.png"> Ist Superuser</h4><br>');
+						echo('<h4 style="color:red"><img alt="superuser" src="'.htmlspecialchars(APP_PATH).'/templates/img/superuser.png"> Ist Superuser</h4><br>');
 					}
 					if($moderatedCategories!=null){
-						echo('<h4><img alt="moderator" src="'.APP_PATH.'/templates/img/moderator.png"> Moderator in folgenden Kategorien</h4>');
+						echo('<h4><img alt="moderator" src="'.htmlspecialchars(APP_PATH).'/templates/img/moderator.png"> Moderator in folgenden Kategorien</h4>');
 						foreach($moderatedCategories as $modCat){
-  							echo($modCat['name']."<br>");
+  							echo(htmlspecialchars($modCat['name'])."<br>");
 						}
 						echo("<hr>");
 					} ?>
@@ -64,8 +64,8 @@
 					<strong>Account Einstellungen</strong>
 				</div>
 				<div class="panel-body">
-					<strong>Email:</strong> <?php echo $user['email'];?><br>
-					<strong>ID:</strong> <?php echo  $user['id'];?><br>	
+					<strong>Email:</strong> <?php echo htmlspecialchars($user['email']);?><br>
+					<strong>ID:</strong> <?php echo htmlspecialchars($user['id']);?><br>	
 					<br>				
 					<form class="change_password_form" action="./index.php?view=processChangepassword"  method="post" id="change_password_form" name="change_password_form">
 		          		<div class="form-group">

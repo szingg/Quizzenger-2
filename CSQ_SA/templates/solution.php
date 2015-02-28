@@ -3,7 +3,7 @@ javascript:window.history.forward(1);
 //--></script>
 
 <?php if (isset($this->_['message'])){
-	echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.$this->_['message'].'</div>';
+	echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($this->_['message']).'</div>';
 }
 
 if(isset($this->_['progress'])){ ?>
@@ -19,7 +19,7 @@ if(isset($this->_['progress'])){ ?>
 <div class="panel panel-default">
 	<!-- Default panel contents -->
 	<div class="panel-heading">
-		Kategorie: <?=  $this->_ ['category']?>
+		Kategorie: <?=  htmlspecialchars($this->_ ['category'])?>
 		<?php
 			if(!$this->_ ['alreadyreported']){?>
 			<button type="button" class="btn btn-link btn-xs pull-right" data-toggle="modal" data-target="#newQuestionReportDialog">
@@ -28,7 +28,7 @@ if(isset($this->_['progress'])){ ?>
 		<?php }  ?>
 	</div>
 	<div class="panel-body">
-		<p><?=  $this->_ ['question']['questiontext'];?></p>
+		<p><?=  htmlspecialchars($this->_ ['question']['questiontext']);?></p>
 	</div> 
 
 	<!-- List group -->
@@ -44,9 +44,9 @@ if(isset($this->_['progress'])){ ?>
 					echo "info";
 				}?>">
 					<strong>
-						<?php  echo($entry['text']);?>
+						<?php  echo(htmlspecialchars($entry['text']));?>
 					</strong><br>
-						<?php  echo($entry['explanation']);?>
+						<?php  echo(htmlspecialchars($entry['explanation']));?>
 					</li>
 			<?php }?>
 	</ul>
@@ -72,13 +72,13 @@ if(isset($this->_['progress'])){ ?>
 <?php if(isset($this->_ ['pointsearned'])){?>
 	<div class="alert alertautoremove alert-success alert-dismissible centered" id="score-alert" role="alert">
 		<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-		<strong><?=$this->_ ['pointsearned']?></strong> Punkte!
+		<strong><?=htmlspecialchars($this->_ ['pointsearned'])?></strong> Punkte!
 	</div>
 <?php } ?>
 		
 <a href="<?php 
 	if(isset($this->_ ['nextQuestion'])) {
-		echo($this->_ ['nextQuestion'].'" class="btn btn-primary">Nächste Frage</a>');
+		echo(htmlspecialchars($this->_ ['nextQuestion']).'" class="btn btn-primary">Nächste Frage</a>');
 	} else {
 		echo("index.php?view=questionlist&amp;category=".$this->_ ['question']['category_id'].'" class="btn btn-primary">Zurück zur Fragenliste</a>');
 	}

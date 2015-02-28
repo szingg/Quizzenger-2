@@ -5,9 +5,9 @@
 	<form
 		<?php 
 			if($this->_['quiz_id']==-1){
-			?>		action="?view=myquizzes&savegeneratedquiz=<?php echo $this->_['session_id']; ?>"<?php
+			?>		action="?view=myquizzes&amp;savegeneratedquiz=<?php echo $this->_['session_id']; ?>"<?php
 			}else{
-			?>		action="?view=myquizzes&copyquiz=<?php echo $this->_['quiz_id']; ?>"<?php
+			?>		action="?view=myquizzes&amp;copyquiz=<?php echo $this->_['quiz_id']; ?>"<?php
 			}
 		?> method="post">
 		<p>
@@ -17,7 +17,7 @@
 					Weiter lernen 
 				</a>
 			<?php }else{ ?>		
-				<a href="?view=quizstart&quizid=<?= $this->_['quiz_id']; ?>" class="btn btn-primary" role="button">
+				<a href="?view=quizstart&amp;quizid=<?= $this->_['quiz_id']; ?>" class="btn btn-primary" role="button">
 					Quiz wiederholen 
 				</a>
 			<?php }?>

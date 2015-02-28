@@ -1,7 +1,7 @@
 <?php if($GLOBALS['loggedin']){ ?>
 	<div class="jumbotron">
-		<h1>Hallo <?php echo $this->_['username']; ?>!</h1>
-		<p class="lead">Sch&ouml;n dass du vorbeischaust.</p>
+		<h1>Hallo <?php echo htmlspecialchars($this->_['username']); ?>!</h1>
+		<p class="lead">Sch&ouml;n, dass du vorbeischaust.</p>
 	</div>	
 	
 	<!--  SUPER USER  -->
@@ -11,7 +11,7 @@
 			<a data-toggle="collapse" data-target="#collapseSuperuser"
 				href="#collapseSuperuser" class="collapsed">
 				<div class="panel-heading" style="background-image: linear-gradient(to bottom, #F5F5F5 0px, #E8E8E8 100%);">
-					<h4 class="panel-title"><img alt="superuser" src="<?= APP_PATH?>/templates/img/superuser.png">Superuser Tools (<?= count( $this->_ ['reportedUsers']); ?>) <span class="caret"></span></h4>
+					<h4 class="panel-title"><img alt="superuser" src="<?= htmlspecialchars(APP_PATH)?>/templates/img/superuser.png">Superuser Tools (<?= count( $this->_ ['reportedUsers']); ?>) <span class="caret"></span></h4>
 				</div>
 			</a>
 			<div id="collapseSuperuser" class="panel-collapse collapse">
@@ -33,7 +33,7 @@
 	<!--  MODERATOR REPORTS  -->
 	<div class="panel panel-default hidden-xs">
 		<div class="panel-heading">
-			<img alt="moderator" src="<?= APP_PATH?>/templates/img/moderator.png"> Folgende Inhalte in deinem Moderationsbereich wurden gemeldet
+			<img alt="moderator" src="<?= htmlspecialchars(APP_PATH)?>/templates/img/moderator.png"> Folgende Inhalte in deinem Moderationsbereich wurden gemeldet
 		</div>
 		<?php include("mod_report_table.php");?>
 	</div>

@@ -3,13 +3,13 @@
 		foreach ( $this->_ ['reports'] as $entry )  { ?>
 		<tr>
 			<td>
-				<?= $entry['username']; ?>
+				<?= htmlspecialchars($entry['username']); ?>
 			</td>
 			<td>
-				<?= $entry['date']; ?>
+				<?= htmlspecialchars($entry['date']); ?>
 			</td>
 			<td>
-				<?= $entry['message']; ?>
+				<?= htmlspecialchars($entry['message']); ?>
 			</td>
 		</tr><?php
 		}

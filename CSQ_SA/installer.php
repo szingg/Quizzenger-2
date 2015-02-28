@@ -40,9 +40,9 @@ if(isset($_POST['install'])){
 	} else {
 		echo("<p style=\"color:red\">");
 			echo "An error occured during installation!<br/>";
-			echo "Error code: $sqlErrorCode<br/>";
-			echo "Error text: $sqlErrorText<br/>";
-			echo "Statement:<br/> $sqlStmt<br/>";
+			echo "Error code: " . htmlspecialchars($sqlErrorCode) . "<br/>";
+			echo "Error text: " . htmlspecialchars($sqlErrorText) . "<br/>";
+			echo "Statement:<br/> " . htmlspecialchars($sqlStmt) . "<br/>";
 		echo("</p>");
 	}
 	echo("<hr>");
@@ -56,10 +56,10 @@ if(isset($_POST['install'])){
 	<b>2.</b> Make sure the permissions are set correctly on your filesystem (R/W). Especially for the user running PHP.<br>
 	If you don't want the logfiles to be (technically) public, set according permissions to the log folder.<br><br>
 	<b>3.</b> Add your connection settings for the database in includes/config.php under 'DB connection'<br>
-			Momentarily they are: db = <?= db?> , dbuser = <?= dbuser?> , db= ******* , dbhost= <?= dbhost?>, dbport = <?= dbport?><br>
+			Momentarily they are: db = <?= htmlspecialchars(db)?> , dbuser = <?= htmlspecialchars(dbuser)?> , db= ******* , dbhost= <?= htmlspecialchars(dbhost)?>, dbport = <?= htmlspecialchars(dbport)?><br>
 			* F5 to refresh if you edited the file<br><br>
 	<b>4.</b> Add the FQDN (https://www.yourdomain.com/optionalfolder) in said config file under 'APP_PATH'<br>
-		Momentarily it is set to: APP_PATH= <?= APP_PATH?><br><br>
+		Momentarily it is set to: APP_PATH= <?= htmlspecialchars(APP_PATH)?><br><br>
 	<b>5.</b> REMOVE this file and install.sql after installation!<br><br>
 	<b>6.</b> Congratulations! The Superuser's login data is : superuser@quizzenger.ch , password: changeme (change the password asap!)
 	<b>7. </b> Create the desired categories in the db<br>

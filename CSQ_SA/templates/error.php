@@ -7,5 +7,5 @@ if (!is_null($error) && defined($error)){
 }
 ?>
 <div class="alert alert-danger" role="error">
-        <strong>Es ist ein Problem aufgetreten:</strong> <?= $errorMessage; ?><br>
+        <strong>Es ist ein Problem aufgetreten:</strong> <?= htmlspecialchars($errorMessage); ?><br>
 </div>  

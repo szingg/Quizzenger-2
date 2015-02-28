@@ -19,7 +19,7 @@
 				foreach ( $this->_ ['reportedUsers'] as $reportedUser ) {
 					?>
 					<tr>
-						<td><a href="index.php?view=user&id=<?=$reportedUser['user_id']?>"><?=$reportedUser['username']?></a></td>
+						<td><a href="index.php?view=user&amp;id=<?=$reportedUser['user_id']?>"><?= htmlspecialchars($reportedUser['username']) ?></a></td>
 						<td>
 							<a href="javascript:void()" onclick="getReports(<?php echo $reportedUser['user_id']; ?>, 'user')" 
 						   		data-toggle="modal" data-target="#reportList"><?=$reportedUser['COUNT(*)']?>
@@ -56,7 +56,7 @@
 			foreach ( $this->_['subCats']  as $subCat) {
 				?>
 				<tr>
-					<td><a href="index.php?view=questionlist&category=<?=$subCat['id']?>"><?=$subCat['name']?></a></td>
+					<td><a href="index.php?view=questionlist&amp;category=<?=$subCat['id']?>"><?=htmlspecialchars($subCat['name'])?></a></td>
 					<td>
 						<a
 							class="remove-row" href="javascript:void()"
@@ -88,7 +88,7 @@
 				<select name="superusertools_form_new_cat_middle_parent">
 				<?php
 					foreach($this->_['upperCats'] as $cat){
-						echo('<option value="'.$cat['id'].'">'.$cat['name'].'</option>');
+						echo('<option value="'.$cat['id'].'">'.htmlspecialchars($cat['name']).'</option>');
 					} 
 				?>
 				</select> 
@@ -102,7 +102,7 @@
 				<select name="superusertools_form_new_cat_lower_parent">
 				<?php
 					foreach($this->_['middleCats'] as $cat){
-						echo('<option value="'.$cat['id'].'">'.$cat['name'].'</option>');
+						echo('<option value="'.$cat['id'].'">'.htmlspecialchars($cat['name']).'</option>');
 					} 
 				?>
 				</select> 

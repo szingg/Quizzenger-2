@@ -17,10 +17,10 @@
 					Frage
 				</td>
 				<td>
-					<a href="?view=user&id=<?=  $moderatedQuestion['by_user_id']; ?>"><?= $moderatedQuestion['username']; ?></a>
+					<a href="?view=user&amp;id=<?=  $moderatedQuestion['by_user_id']; ?>"><?= htmlspecialchars($moderatedQuestion['username']); ?></a>
 				</td>
 				<td>
-					<a href="?view=question&id=<?=  $moderatedQuestion['question_id']; ?>"><?= $moderatedQuestion['questiontext']; ?></a>
+					<a href="?view=question&amp;id=<?=  $moderatedQuestion['question_id']; ?>"><?= htmlspecialchars($moderatedQuestion['questiontext']); ?></a>
 				</td>
 				<td>
 					<a href="javascript:void()" onclick="getReports(<?=  $moderatedQuestion['question_id']; ?>, 'question')" data-toggle="modal" data-target="#reportList"><?=  $moderatedQuestion['COUNT(*)'];?></a>
@@ -45,10 +45,10 @@
 					Kommentar
 				</td>
 				<td>
-					<a href="?view=user&id=<?= $moderatedRating['by_user_id']; ?>"><?= $moderatedRating['username']; ?></a>
+					<a href="?view=user&amp;id=<?= $moderatedRating['by_user_id']; ?>"><?= htmlspecialchars($moderatedRating['username']); ?></a>
 				</td>
 				<td>
-					<?= $moderatedRating['comment']?>
+					<?= htmlspecialchars($moderatedRating['comment'])?>
 				</td>
 				<td>
 					<a href="javascript:void()" onclick="getReports(<?= $moderatedRating['rating_id']; ?>, 'rating')" data-toggle="modal" data-target="#reportList"><?=  $moderatedRating['COUNT(*)'];?></a>

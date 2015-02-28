@@ -3,7 +3,7 @@ javascript:window.history.forward(1);
 //--></script>
 
 <?php if (isset($this->_['message'])){
-	echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.$this->_['message'].'</div>';
+	echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($this->_['message']).'</div>';
 }
 if(isset($this->_['progress'])){ ?>
 <div class="progress">
@@ -19,7 +19,7 @@ if(isset($this->_['progress'])){ ?>
 	<?php
 		$question = $this->_ ['question'];
 	?>
-	<div class="panel-heading">Kategorie: <?=  $this->_ ['category']?>
+	<div class="panel-heading">Kategorie: <?=  htmlspecialchars($this->_ ['category'])?>
 		<?php
 			if(!$this->_ ['alreadyreported']){?>
 			<button type="button" class="btn btn-link btn-xs pull-right" data-toggle="modal" data-target="#newQuestionReportDialog">
@@ -29,7 +29,7 @@ if(isset($this->_['progress'])){ ?>
 	</div>
 	<div class="panel-body">
 		<p>
-			<b><?=  $this->_ ['question']['questiontext'];?></b>
+			<b><?=  htmlspecialchars($this->_ ['question']['questiontext']);?></b>
 			<?php
 			if (isset ( $this->_ ['weight'] )) {
 				echo ("(" . $this->_ ['weight'] . " Punkte)");
@@ -43,7 +43,7 @@ if(isset($this->_['progress'])){ ?>
 	foreach ( $this->_ ['answers'] as $answer ) { ?>
 		<a href="?view=solution&amp;id=<?= ($this->_['questionID']); ?>&amp;answer=<?php echo $answer['id']; echo $this->_['session_id']; ?>">
 			<li class="list-group-item list-group-item-info">
-				<?= ($answer['text']);?>
+				<?= htmlspecialchars($answer['text']);?>
 			</li>
 		</a> <?php
 	} ?>
@@ -56,15 +56,15 @@ if(isset($this->_['progress'])){ ?>
 			<h4 class="panel-title">Infos</h4>
 		</div>
   	  	<div style="padding-left:10px;">
-  	  		<b>Autor:</b> <a target="_blank" href="<?php echo htmlspecialchars(APP_PATH . '/index.php?view=user&id=' . $this->_ ['user_id']); ?>"><?= $this->_ ['author']?></a><br>
+  	  		<b>Autor:</b> <a target="_blank" href="<?php echo htmlspecialchars(APP_PATH . '/index.php?view=user&id=' . $this->_ ['user_id']); ?>"><?= htmlspecialchars($this->_ ['author'])?></a><br>
 			<?php
 			echo ("<b>Tags:</b> ");
 			foreach ( $this->_ ['tags'] as $tag ) {
-				echo ('<span class="badge">' . $tag ['tag'] . "</span> ");
+				echo ('<span class="badge">' . htmlspecialchars($tag['tag']) . "</span> ");
 			}
 			?><br>
 			<b>Erstellt:</b> <?= $this->_ ['question']['created']; ?><br>
-			<b>Zuletzt geändert am:</b> <?= $this->_ ['question']['lastModified']; ?>
+			<b>Geändert:</b> <?= $this->_ ['question']['lastModified']; ?>
 		</div>
 	</div>
   </div>
@@ -78,7 +78,7 @@ if(isset($this->_['progress'])){ ?>
 		</a>
 		<div id="collapseQuestionHistory" class="panel-collapse collapse">
 			<div class="panel-body">
-				<?php include("questionhistory.php")?>
+				<?php include("questionhistory.php"); ?>
 			</div>
 		</div>
 	</div>

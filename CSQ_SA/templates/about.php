@@ -25,7 +25,7 @@
 	</div>
 </div>
 <br><hr>
-<img src="<?=APP_PATH?>/templates/img/header_s.png"  class="img-responsive center-block" alt="Quizzenger Header Logo" style"max-width:364 px;" />
+<img src="<?=htmlspecialchars(APP_PATH)?>/templates/img/header_s.png"  class="img-responsive center-block" alt="Quizzenger Header Logo" style"max-width:364 px;" />
 
 
 

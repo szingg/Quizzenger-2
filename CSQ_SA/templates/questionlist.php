@@ -41,15 +41,15 @@
 						<td>
 							<div id="questionTextSpan">
 								<a href="?view=question&amp;id=<?php echo $question['id']; ?>">
-									<b><?= $out = strlen($question['questiontext']) > QUESTIONTEXT_CUTOFF_LENGTH ? substr($question['questiontext'],0,QUESTIONTEXT_CUTOFF_LENGTH)." . . ." : $question['questiontext']; ?></b>
+									<b><?= $out = strlen($question['questiontext']) > QUESTIONTEXT_CUTOFF_LENGTH ? htmlspecialchars(substr($question['questiontext'],0,QUESTIONTEXT_CUTOFF_LENGTH))." . . ." : htmlspecialchars($question['questiontext']); ?></b>
 								</a>
 								<?php if(strlen($question['questiontext']) > QUESTIONTEXT_CUTOFF_LENGTH){?>
 									<span id="questionTextAddition">
-									<?=$question['questiontext']?>
+									<?=htmlspecialchars($question['questiontext'])?>
 								</span>
 								<?php }?>
 							</div>
-							<?= $this->_['tags'][$i]?>
+							<?= htmlspecialchars($this->_['tags'][$i])?>
 						</td>
 						<td>
 							<?php 
@@ -61,10 +61,10 @@
 							?>
 						</td>
 						<td>
-							<?= createDifficultyString($question['difficulty'],$question['difficultycount'])?>
+							<?= htmlspecialchars(createDifficultyString($question['difficulty'],$question['difficultycount']))?>
 						</td>
 						<td style="text-align: center">
-							<?=$question['difficultycount']?>
+							<?=htmlspecialchars($question['difficultycount'])?>
 						</td>
 						<?php if($GLOBALS['loggedin']){ ?>
 								
@@ -99,7 +99,7 @@
 							<?php foreach ( $this->_ ['quizzes'] as $quiz ) { ?>
 							<li role="presentation">
 								<a onclick="submitAddQuestionToQuiz(<?php echo $quiz['id']; ?>)" role="menuitem" tabindex="-1" href="javascript:void()">
-									<?= $quiz ['name']; ?>
+									<?= htmlspecialchars($quiz['name']); ?>
 								</a>
 							</li><?php } ?>
 							<li role="presentation" class="divider"></li>
@@ -117,7 +117,7 @@
 	<?php if(isset($this->_ ['pointsearned'])){?>
 		<div class="alert alertautoremove alert-success alert-dismissible centered" id="score-alert" role="alert">
 			<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-			<strong><?=$this->_ ['pointsearned']?></strong> Punkte!
+			<strong><?=htmlspecialchars($this->_ ['pointsearned'])?></strong> Punkte!
 		</div>
 	<?php } ?>
 	<div class="modal fade" id="newQuizDialog" tabindex="-1" role="dialog"
@@ -167,6 +167,6 @@ function createStarsString($stars){
 	$stars=round($stars);
 	$maxStars=RATING_MAX_STARS;
 	return str_repeat('<span class="glyphicon glyphicon-star hidden-xs"></span>',$stars).
-	str_repeat('<span class="glyphicon glyphicon-star-empty hidden-xs"></span>',($maxStars-$stars));
+		str_repeat('<span class="glyphicon glyphicon-star-empty hidden-xs"></span>',($maxStars-$stars));
 }
 ?>

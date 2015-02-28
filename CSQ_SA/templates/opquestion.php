@@ -65,7 +65,7 @@
 				<input type="text" class="form-control" data-bv-excluded="true" id="opquestion_form_tags" maxlength="155" name="opquestion_form_tags"  value="<?= $tags;?>" placeholder="Tags getrennt mit ," >
 			</div>
 			<div class="form-group">
-				 <textarea id="opquestion_form_questionText" name="opquestion_form_questionText" rows="<?=QUESTION_INPUTFIELD_MAX_ROWCOUNT?>" placeholder="Frage Text" maxlength="<?=QUESTION_INPUTFIELD_MAX_LENGTH?>"  class="form-control" ><?= $questiontext?></textarea>
+				 <textarea id="opquestion_form_questionText" name="opquestion_form_questionText" rows="<?=QUESTION_INPUTFIELD_MAX_ROWCOUNT?>" placeholder="Frage Text" maxlength="<?=QUESTION_INPUTFIELD_MAX_LENGTH?>"  class="form-control" ><?= htmlspecialchars($questiontext)?></textarea>
 			</div>
 			<h3>Antworten:</h3>
 			<div class="form-group">
@@ -103,11 +103,11 @@
 								        <input class="css-checkbox" type="radio" onclick="radioButtonSelected(<?= $index ?>);" name="opquestion_form_correctness" id="<?= $index ?>" value="<?= $index ?>" <?= ($answersSolution[$index]==100)?"checked":"";?>>
 								      	<label for="<?= $index ?>" class="css-label"></label>
 								      </span>
-							      	<textarea id="opquestion_form_answer<?= $index ?>" maxlength="<?= ANSWER_INPUTFIELD_MAX_LENGTH ?>" placeholder="Antwort # <?= $index ?>" name="opquestion_form_answer<?= $index ?>" rows="<?= ANSWER_INPUTFIELD_ROWCOUNT?>" class="form-control" data-minlength="6"  ><?= $answers[$index]?></textarea>
+							      	<textarea id="opquestion_form_answer<?= $index ?>" maxlength="<?= ANSWER_INPUTFIELD_MAX_LENGTH ?>" placeholder="Antwort # <?= $index ?>" name="opquestion_form_answer<?= $index ?>" rows="<?= ANSWER_INPUTFIELD_ROWCOUNT?>" class="form-control" data-minlength="6"  ><?= htmlspecialchars($answers[$index])?></textarea>
 							      </div>
 							    </div><!-- /input-group -->
 								<div class="form-group">
-									<textarea id="opquestion_form_answerexplanation<?= $index ?>" maxlength="<?= ANSWER_EXPLANATION_INPUTFIELD_MAX_LENGTH ?>" placeholder="Optionale Erklärung" name="opquestion_form_answerexplanation<?= $index ?>" rows="<?= ANSWER_EXPLANATION_INPUTFIELD_ROWCOUNT?>" class="form-control"><?= $answersExplanation[$index]?></textarea>
+									<textarea id="opquestion_form_answerexplanation<?= $index ?>" maxlength="<?= ANSWER_EXPLANATION_INPUTFIELD_MAX_LENGTH ?>" placeholder="Optionale Erklärung" name="opquestion_form_answerexplanation<?= $index ?>" rows="<?= ANSWER_EXPLANATION_INPUTFIELD_ROWCOUNT?>" class="form-control"><?= htmlspecialchars($answersExplanation[$index])?></textarea>
 								</div>
 							 </div><!-- /.col-lg-6 -->
 							<?php 

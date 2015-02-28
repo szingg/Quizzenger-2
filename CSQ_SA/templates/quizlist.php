@@ -21,21 +21,21 @@
 					>
 						<td>
 							<a href="?view=quizdetail&amp;quizid=<?= $quiz['id']; ?>">
-								<?= $quiz['name']; ?>
+								<?= htmlspecialchars($quiz['name']); ?>
 							</a>
 						</td>
 						<td class="hidden-xs">
-							<?= $quiz['questions']; ?>
+							<?= htmlspecialchars($quiz['questions']); ?>
 						</td>
 						<td class="hidden-xs">
-							<?= $quiz['performances']; ?>
+							<?= htmlspecialchars($quiz['performances']); ?>
 						</td>
 						<td class="hidden-xs">
 							<a class="remove-row" href="javascript:void()" data-qid="<?php echo $quiz['id']; ?>" data-type="quiz"> 
 							<span class="glyphicon glyphicon-remove"></span> </a>
 							<button type="button" class="btn btn-link btn-xs"
 								data-toggle="modal"
-								onclick='setEditQuizName(<?=$quiz['id'] ?>,"<?= $quiz['name']?>");'
+								onclick='setEditQuizName(<?=$quiz['id'] ?>,"<?= htmlspecialchars($quiz['name'])?>");'
 								data-target="#editQuizName">
 								<span class="glyphicon glyphicon-edit"></span>
 							</button>

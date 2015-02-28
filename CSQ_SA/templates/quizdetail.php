@@ -30,16 +30,16 @@
 					foreach ( $this->_ ['performances'] as $p ) { ?>
 						<tr>
 							<td>
-								<?=  $p['username']; ?>
+								<?=  htmlspecialchars($p['username']); ?>
 							</td>
 							<td>
-								<?=  $p['score']; ?> / <?=  $p['maxscore']; ?>
+								<?=  htmlspecialchars($p['score']); ?> / <?=  $htmlspecialchars(p['maxscore']); ?>
 							</td>
 							<td>
-								<?=  $p['start']; ?>
+								<?=  htmlspecialchars($p['start']); ?>
 							</td>
 							<td>
-								<?=  $p['duration']; ?>
+								<?=  htmlspecialchars($p['duration']); ?>
 							</td>
 						</tr>
 					<?php } ?>
@@ -84,21 +84,21 @@
 						foreach ( $this->_ ['questions'] as $q ) { ?>
 							<tr>
 								<td>
-									<?=  $q['question']; ?>
+									<?=  htmlspecialchars($q['question']); ?>
 								</td>
 								<td>
-									<?=  $q['answered']; ?>
+									<?=  htmlspecialchars($q['answered']); ?>
 								</td>
 								<td>
-									<?=  $q['correct']; ?>
+									<?=  htmlspecialchars($q['correct']); ?>
 								</td>
 								<td>
-									<?=  $q['wrong']; ?>
+									<?=  htmlspecialchars($q['wrong']); ?>
 								</td>
 								<td>
 									<div class="dropdown">
 										<button class="btn btn-default dropdown-toggle" type="button" id="dropdownWeight<?=  $q['id']; ?>" data-toggle="dropdown">
-												<?=  $q['weight']; ?> <span class="caret"></span>
+												<?=  $q['weight']); ?> <span class="caret"></span>
 										</button>
 										<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 										<?php
@@ -139,10 +139,10 @@
 									<span class="glyphicon glyphicon-link"></span>
 								</span> 
 								<input type="text" class="form-control" onClick="this.setSelectionRange(0, this.value.length)" 
-										value="<?=  APP_PATH."/index.php?view=quizstart&quizid=". $this->_ ['quizinfo']['quizid']; ?>"
+										value="<?=  htmlspecialchars(APP_PATH)."/index.php?view=quizstart&amp;quizid=". $this->_ ['quizinfo']['quizid']; ?>"
 								> 
 							</div><br>
-							<a href="<?=  APP_PATH."/index.php?view=quizstart&quizid=". $this->_ ['quizinfo']['quizid']; ?>">Zum Quiz</a>
+							<a href="<?= htmlspecialchars(APP_PATH)."/index.php?view=quizstart&amp;quizid=". $this->_ ['quizinfo']['quizid']; ?>">Zum Quiz</a>
 						</div>
 					</div>
 				</div>

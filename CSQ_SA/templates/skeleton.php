@@ -19,7 +19,7 @@ function checkActiveTab($openedView){
 		<meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
-	    <meta name="author" content="Oussama Zgheb & Tobias Zahner">
+	    <meta name="author" content="Oussama Zgheb &amp; Tobias Zahner">
 	    <meta name="description" content="Quizzenger ist eine webbasierte Wissensdatenbank mit Lernfragen zu verschiedensten Themen.
 		Werden Sie kostenlos Teil unserer Community und erfassen Sie Ihre eigenen Fragen und erlangen Sie dadurch Auszeichnungen.">
 		<meta name="keywords" content="Quizzenger, Fragen, Lernen, Community, Prüfungen, Quiz, Quizzes">
@@ -44,7 +44,7 @@ function checkActiveTab($openedView){
 	<body>
 		<div role="navigation" class="navbar navbar-default navbar-fixed-top">
 			<div class="hidden-lg hidden-sm hidden-md">
-				<a href="index.php"><img src="<?=APP_PATH?>/templates/img/header_50.png" alt="Quizzenger Logo"  style="position:absolute;" /></a>
+				<a href="index.php"><img src="<?= htmlspecialchars(APP_PATH) ?>/templates/img/header_50.png" alt="Quizzenger Logo"  style="position:absolute;" /></a>
 			</div>
 			<div class="container">
 				<div class="navbar-header">
@@ -63,7 +63,7 @@ function checkActiveTab($openedView){
 								<span class="glyphicon glyphicon-home"></span> Home
 							</span>
 							<span class="hidden-xs">
-								<img src="<?=APP_PATH?>/templates/img/header_50.png" alt="Quizzenger Logo" style="max-width: 100px; margin-top: -15px;margin-bottom: -15px; " /></a>
+								<img src="<?= htmlspecialchars(APP_PATH) ?>/templates/img/header_50.png" alt="Quizzenger Logo" style="max-width: 100px; margin-top: -15px;margin-bottom: -15px; " /></a>
 							</span>
 						</li>
 						<li class="<?=  checkActiveTab("questionpool");?>">
@@ -106,7 +106,7 @@ function checkActiveTab($openedView){
 				$message = filter_input(INPUT_GET, 'info', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
 				if(!is_null($message) && defined($message)){
 					$message = constant($message);	
-					echo('<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.$message.'</div>');
+					echo('<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($message).'</div>');
 				}
 			?>
 			<noscript>
