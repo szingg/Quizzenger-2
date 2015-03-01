@@ -80,4 +80,3 @@ if(isset($_POST['install'])){
 	sudo /etc/init.d/apache2 restart</i>
 	
 <?php } ?>
-
