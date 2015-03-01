@@ -1,0 +1,4 @@
+// Quizzenger JavaScript.
+var quizzenger = {
+	
+};
