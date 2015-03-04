@@ -49,7 +49,7 @@
 								</span>
 								<?php }?>
 							</div>
-							<?= htmlspecialchars($this->_['tags'][$i])?>
+							<?= $this->_['tags'][$i]?>
 						</td>
 						<td>
 							<?php 
