@@ -33,7 +33,7 @@
 								<?=  htmlspecialchars($p['username']); ?>
 							</td>
 							<td>
-								<?=  htmlspecialchars($p['score']); ?> / <?=  $htmlspecialchars(p['maxscore']); ?>
+								<?=  htmlspecialchars($p['score']); ?> / <?=  htmlspecialchars($p['maxscore']); ?>
 							</td>
 							<td>
 								<?=  htmlspecialchars($p['start']); ?>
@@ -98,7 +98,7 @@
 								<td>
 									<div class="dropdown">
 										<button class="btn btn-default dropdown-toggle" type="button" id="dropdownWeight<?=  $q['id']; ?>" data-toggle="dropdown">
-												<?=  $q['weight']); ?> <span class="caret"></span>
+												<?=  $q['weight']; ?> <span class="caret"></span>
 										</button>
 										<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 										<?php
