@@ -1,16 +1,16 @@
 // Quizzenger JavaScript.
-$(document).ready(function() {
+$(document).ready(function(e) {
 	var quizzenger = new Quizzenger();
 
-	quizzenger.initialize();
+	quizzenger.initialize(e);
 });
 
 function Quizzenger(){
 	var self = this;
 
-	this.initialize = function(){
+	this.initialize = function(e){
+		var opquestion = new OpQuestion();
+		opquestion.initialize(e);
 		
-		
-	}
-
+	};
 };

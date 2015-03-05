@@ -67,6 +67,10 @@
 			<div class="form-group">
 				 <textarea id="opquestion_form_questionText" name="opquestion_form_questionText" rows="<?=QUESTION_INPUTFIELD_MAX_ROWCOUNT?>" placeholder="Frage Text" maxlength="<?=QUESTION_INPUTFIELD_MAX_LENGTH?>"  class="form-control" ><?= htmlspecialchars($questiontext)?></textarea>
 			</div>
+			<div class="form-group">
+				<div class="btn-group"><input id="btn-attach-file" type="button" class="btn btn-primary" value="Datei anh&auml;ngen"> </div>
+				<div class="btn-group" id="msg-upload"></div>
+			</div>
 			<h3>Antworten:</h3>
 			<div class="form-group">
 				<div class="input-group">
@@ -127,6 +131,28 @@
 					}
 				}?>	 
 		</form>
+		
+		<div id="modalAttachFile" class="modal fade">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-header bg-primary">
+		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		                <h4 class="modal-title">Datei anh&auml;ngen</h4>
+		            </div>
+		            <div class="modal-body">
+						<form id="form-uploadFile" enctype="multipart/form-data">
+							<div class="form-group btn-group">
+			            		<input id="file-selected" class="btn btn-default pull-left" type="file" name="file" id="file" required accept="<?= ATTACHMENT_ALLOWED_EXTENSIONS ;?>" />
+			            	</div>
+			            	<div class="form-group btn-group">
+								<input id="btn-uploadfile" class="btn btn-primary pull-left" type="button" value="Upload" />
+							</div>
+						</form>
+		            </div> <!-- modal-body -->
+		        </div> <!-- modal-content -->
+		    </div> <!-- modal-dialog -->
+		</div>
+		<div id="messageTemp"></div>
 <?php } 
 // Add different question types here
 ?>
