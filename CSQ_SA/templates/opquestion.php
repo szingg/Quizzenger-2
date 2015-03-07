@@ -150,10 +150,10 @@
 			            	<div class="panel-collapse collapse in">
 								<div class="panel-body">
 									<div class="btn-group">
-										<input id="input-link" class=" pull-left" type="text" placeholder="Bitte geben Sei ihren Link ein"/>
+										<input id="input-link" class=" pull-left" type="text" size=60" placeholder="Bitte geben Sei ihren Link ein"/>
 									</div>
 									<div class="btn-group">
-										<input id="btn-checkLink" class="btn btn-primary pull-left" type="button" value="Pr&uuml;fen" />
+										<input id="btn-checkLink" class="btn btn-primary pull left" type="button" value="Pr&uuml;fen" />
 									</div>
 								</div>
 			            	</div>
