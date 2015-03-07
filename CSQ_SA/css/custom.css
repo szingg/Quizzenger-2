@@ -132,3 +132,7 @@ label.css-label {
 .rating input:hover + span ~ span {
     background-position:0 0;
 }             
+
+.no-margin {
+  margin: 0;
+}

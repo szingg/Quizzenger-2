@@ -1,39 +1,19 @@
 function OpQuestion(){
 	var self = this;
 
-	this.initialize = function(e){
-		uploadAttachment(e);
+	this.initialize = function(){
+		uploadAttachment();
 		$("#btn-attach-file").click(function(){
 			$("#modalAttachFile").modal('show');
 		});
 
 	};
 
-	var ajax = function(url, type){
-		var xmlhttp;
-		if (window.XMLHttpRequest) {
-			xmlhttp = new XMLHttpRequest();
-		}
-		xmlhttp.open(type, url, true);		
-		xmlhttp.send();
-	}
-
-	var ajaxPOST = function(url){
-		ajax(url, "POST");
-	}
-	var ajaxGET = function(url){
-		ajax(url, "GET");
-	}
-
-	var uploadAttachment = function(e){
+	//sends the attachment to the server and displays the response
+	var uploadAttachment = function(){
 
 		$("#btn-uploadfile").click(function(e) {
 			e.preventDefault();
-			//var fileSelected = $("#file-seleced");
-			//var file = $("#file-selected")[0].attr("files");
-			//if(file.length < 1) return;
-
-			//var form = $("#form-uploadFile").first();
 			var form = $("#form-uploadFile")[0];
 			$.ajax({
 				url: "quizzenger/fileupload/fileupload.php", // Url to which the request is send
@@ -46,7 +26,7 @@ function OpQuestion(){
 				success: function(data)   // A function to be called if request succeeds
 				{
 				},
-				complete: function(data, d1, d2, d3){
+				complete: function(data){
 					$("#modalAttachFile").modal('hide');
 					$("#msg-upload").removeClass("text-success");
 					$("#msg-upload").removeClass("text-danger");
@@ -64,7 +44,7 @@ function OpQuestion(){
 					else{
 						$("#msg-upload").addClass("text-danger");
 						$("#msg-upload").text("Upload failed.");
-						$("#messageTemp").html(data.responseText);
+						//$("#messageTemp").html(data.responseText);
 					}
 				}
 			});

@@ -15,6 +15,9 @@ define ( "dbport", "3306" );
 
 // Quizzenger Settings
 define ("APP_PATH","ENTER ME");
+define ("ATTACHMENT_PATH","content/attachments");
+define ("MAX_ATTACHMENT_SIZE_KByte",1024);
+define ("ATTACHMENT_ALLOWED_EXTENSIONS","image/jpg, image/jpeg, image/png");
 define ("SINGLECHOICE_ANSWER_COUNT","4");
 define ("SINGLECHOICE_TYPE","SingleChoice");
 define ("QUESTION_INPUTFIELD_MAX_LENGTH","320");

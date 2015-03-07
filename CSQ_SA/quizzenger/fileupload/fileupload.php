@@ -1,21 +1,24 @@
 <?php
+/*	@author Simon Zingg
+ *	this script uploads attachment to the defined path and checks for extensions, size and if already exists. 
+*/
 
-require_once("/../../includes/config.php");
-
-$test = "1";
-if(isset($_FILES["file"]["type"]))
-{
-	//check file error
-	if ($_FILES["file"]["error"] > 0)
-	{
-		header('Content-Type: application/json');
-		echo json_encode(array('result' => 'error', 'message' => $_FILES["file"]["errorMessage"]));
+	require_once("/../../includes/config.php");
+	
+	//check file uploaded
+	if(! isset($_FILES["file"]["type"])){
+		sendResponse('error', 'Upload fehlgeschlagen.');
 		return;
 	}
-	
+	//check file error
+	if($_FILES["file"]["error"] > 0){
+		sendResponse('error', $_FILES["file"]["errorMessage"]);
+		return;
+	}
+		
 	$temporary = explode(".", $_FILES["file"]["name"]);
 	$file_extension = end($temporary);
-
+	
 	$extensions = explode(",", ATTACHMENT_ALLOWED_EXTENSIONS);
 	$extensions = array_map('trim', $extensions);
 	
@@ -33,44 +36,47 @@ if(isset($_FILES["file"]["type"]))
 	}
 	
 	if (!$validExtension || !$containsExtension){
-		header('Content-Type: application/json');
-		echo json_encode(array('result' => 'error', 'message' => 'Das Format der Datei ist ungültig.'));
+		sendResponse('error', 'Das Format der Datei ist ungültig.');
 		return;
 	}
-
+	
 	//check for valid size
 	$validSize = ($_FILES["file"]["size"] < (MAX_ATTACHMENT_SIZE_KByte*1024));
 	if(!$validSize){
-		header('Content-Type: application/json');
-		echo json_encode(array('result' => 'error', 'message' => 'Die Datei ist zu gross. Maximale Grösse: '.MAX_ATTACHMENT_SIZE_KByte.' KByte'));
+		sendResponse('error', 'Die Datei ist zu gross. Maximale Grösse: '.MAX_ATTACHMENT_SIZE_KByte.' KByte');
 		return;
 	}
 	
 	$sourcePath = $_FILES['file']['tmp_name']; // Storing source path of the file in a variable
-	$targetPath = join_paths("../../", ATTACHMENT_PATH, $_FILES["file"]["name"]); // Target path where file is to be stored
+	$targetDir = join_paths("/../../", ATTACHMENT_PATH, 'temp');
+	$targetPath = join_paths($targetDir, $_FILES["file"]["name"]); // Target path where file is to be stored
 	$fileExists = file_exists($targetPath);
+	//check file exists
 	if (file_exists($targetPath)) {
-		header('Content-Type: application/json');
-		echo json_encode(array('result' => 'error', 'message' => 'Die Datei "'.$_FILES["file"]["name"].'" existiert bereits.'));
+		sendResponse('error', 'Die Datei "'.$_FILES["file"]["name"].'" existiert bereits.');
 		return;
 	}
 	
-	//move uploaded file
-	move_uploaded_file($sourcePath,$targetPath) ; 
+	//move uploaded file to temp path
+	if(! file_exists($targetDir)) { mkdir($targetDir, 0777, true); }
+	move_uploaded_file($sourcePath,$targetPath);
 	
 	//send success message
-	header('Content-Type: application/json');
-	echo json_encode(array('result' => 'success', 'message' => 'Die Datei "'.$_FILES["file"]["name"].'" wurde erfolgreich hochgeladen!'));
+	sendResponse('success', 'Die Datei "'.$_FILES["file"]["name"].'" wurde erfolgreich hochgeladen!');
 	return;
-}
 
-function join_paths() {
-	$paths = array();
-
-	foreach (func_get_args() as $arg) {
-		if ($arg !== '') { $paths[] = $arg; }
+	function sendResponse($result, $message){
+		header('Content-Type: application/json');
+		echo json_encode(array('result' => $result, 'message' => $message));
 	}
-
-	return preg_replace('#/+#','/',join('/', $paths));
-}
+	
+	function join_paths() {
+		$paths = array();
+	
+		foreach (func_get_args() as $arg) {
+			if ($arg !== '') { $paths[] = $arg; }
+		}
+	
+		return preg_replace('#/+#','/',join('/', $paths));
+	}
 ?>
