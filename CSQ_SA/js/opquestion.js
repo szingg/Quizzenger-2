@@ -2,15 +2,25 @@ function OpQuestion(){
 	var self = this;
 
 	this.initialize = function(){
-		uploadAttachment();
+		uploadAttachmentEvent();
+		showModalAttachFileEvent();
+		togglePanelsEvent();
+	};
+
+	var showModalAttachFileEvent = function(){
 		$("#btn-attach-file").click(function(){
 			$("#modalAttachFile").modal('show');
 		});
+	}
 
-	};
+	var togglePanelsEvent = function(){
+		$(".panel-heading.clickable").click(function(){
+			$(".panel-collapse.collapse").collapse("toggle");
+		});
+	}
 
 	//sends the attachment to the server and displays the response
-	var uploadAttachment = function(){
+	var uploadAttachmentEvent = function(){
 
 		$("#btn-uploadfile").click(function(e) {
 			e.preventDefault();

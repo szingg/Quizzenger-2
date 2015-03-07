@@ -135,34 +135,34 @@
 		<div id="modalAttachFile" class="modal fade">
 		    <div class="modal-dialog">
 		        <div class="modal-content">
-		            <div class="modal-header">
+		            <div class="modal-header bg-primary">
 		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		                <h4 class="modal-title">Datei anh&auml;ngen</h4>
 		            </div>
 		           <!-- <div class="modal-body">  -->
 		           <div class="">  
 		            	<div class="panel panel-default no-margin">
-			            	<a data-toggle="collapse" data-target="#collapseEmbed" href="#collapseOne">
-								<div class="panel-heading bg-primary ">
+			            <!-- <a data-toggle="collapse" data-target="#collapseEmbed" href="#collapseOne"> -->
+								<div class="panel-heading clickable">
 									<h4 class="panel-title">Video einbetten</h4>
 								</div>
-							</a>
-			            	<div id="collapseEmbed" class="panel-collapse collapse in">
+							 <!-- </a> -->
+			            	<div class="panel-collapse collapse in">
 								<div class="panel-body">
 									<div class="btn-group">
 										<input id="input-link" class=" pull-left" type="text" placeholder="Bitte geben Sei ihren Link ein"/>
 									</div>
 									<div class="btn-group">
-										<input id="btn-checkLink" class="btn btn-primary pull-left" type="button" value="Prüfen" />
+										<input id="btn-checkLink" class="btn btn-primary pull-left" type="button" value="Pr&uuml;fen" />
 									</div>
-								</div>		            	
+								</div>
 			            	</div>
 			            </div>
 			            <div class="panel panel-default no-margin">
-			            	<div class="panel-collapse collapse in">
-			               		<div class="panel-heading bg-primary">
-			            			<h4 class="panel-title">Bild hochladen</h4>
-			            		</div>
+		               		<div class="panel-heading clickable">
+		            			<h4 class="panel-title">Bild hochladen</h4>
+		            		</div>
+			            	<div class="panel-collapse collapse">
 			            		<div class="panel-body">
 									<form id="form-uploadFile" enctype="multipart/form-data">
 										<div class="form-group btn-group">

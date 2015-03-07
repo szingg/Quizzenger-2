@@ -136,3 +136,8 @@ label.css-label {
 .no-margin {
   margin: 0;
 }
+
+.clickable:hover {
+  cursor:pointer;
+  text-decoration: underline;
+}
