@@ -1,8 +1,22 @@
 // Quizzenger JavaScript.
+$(document).ready(function(e) {
+	var quizzenger = new Quizzenger();
+	quizzenger.initialize(e);
+});
+
+function Quizzenger() {
+	var self = this;
+
+	this.initialize = function(e){
+		var opquestion = new OpQuestion();
+		opquestion.initialize(e);
+	};
+}
+
 var quizzenger = {
 	question : {
 		getAttachmentType : function(url) {
-			var regexImage = /^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpe?g|gif|png)$/
+			var regexImage = /^.+\.(?:jpe?g|gif|png|bmp)$/
 			var regexYouTube = /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/;
 			var regexVimeo = /^(https?\:\/\/)?((www\.)?vimeo\.com)\/.+$/;
 
@@ -81,15 +95,14 @@ var quizzenger = {
 							break;
 					}
 				}
-				else if(Array.isArray(json[1])) {
-					json[1].forEach(attachmentWalker);
-				}
-				else if(Array.isArray(json[2])) {
-					json[2].forEach(attachmentWalker);
+
+				for(var i = 1; i < json.length - 1; i++) {
+					if(Array.isArray(json[i]))
+						json[i].forEach(attachmentWalker);
 				}
 			})(tree);
 
 			return markdown.renderJsonML(markdown.toHTMLTree(tree, 'Gruber'));
 		}
 	}
-};
+}
