@@ -80,6 +80,8 @@ CREATE TABLE IF NOT EXISTS `question` (
   `difficultycount` int(11) DEFAULT NULL,
   `rating` double DEFAULT NULL,
   `ratingcount` int(11) DEFAULT NULL,
+  `attachment` varchar(300) DEFAULT NULL;
+  `attachment_local` tinyint(1) DEFAULT NULL;
   PRIMARY KEY (`id`),
   KEY `fk_userquestion` (`user_id`),
   KEY `fk_categoryquestion` (`category_id`)
