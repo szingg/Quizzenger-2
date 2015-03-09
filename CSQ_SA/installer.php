@@ -8,21 +8,22 @@ if(isset($_POST['install'])){
 		die ("MySQL Connection error");
 	}
 	echo("<p style=\"color:green;\">Connected to DB</p><br>");
-	
+
 	$result = mysqli_query($link,"CREATE DATABASE IF NOT EXISTS ".db);
 	if(!mysqli_select_db($link ,db)) {
-		die ("Couldn't connect to Database ".db);		
+		die ("Couldn't connect to Database ".db);
 	}
-	
+
 	echo("<p style=\"color:green;\">Created DB or DB existed already</p><br>");
-	
+
 	$result = mysqli_query($link,"USE DATABASE ".db);
-	
+
 	$sqlErrorCode=0;
 	$sqlFileToExecute='./install.sql';
 	// read the sql file
-	$f = fopen($sqlFileToExecute,"r+");
+	$f = fopen($sqlFileToExecute,"r");
 	$sqlFile = fread($f, filesize($sqlFileToExecute));
+	fclose($f);
 	$sqlArray = explode(';',$sqlFile);
 	foreach ($sqlArray as $stmt) {
 		if (strlen($stmt)>3 && substr(ltrim($stmt),0,2)!='/*') {
@@ -47,7 +48,7 @@ if(isset($_POST['install'])){
 	}
 	echo("<hr>");
 	echo"<b>Remove following files: installer.php, install.sql!</b>";
-	
+
 }else{?>
 	<h3>Welcome to the Quizzenger Installer</h3>
 	<b>0.</b> Requirements: PHP 5, Mysql 5, a Webserver, PHP Mysql Native Driver<br>
@@ -70,7 +71,7 @@ if(isset($_POST['install'])){
 		<input type="hidden" name="install" value="go">
 		<input type="submit" value="Install">
 	</form>
-	
+
 	<br><hr>
 	Prequisites installation "Script" under Debian based systems:<br>
 	<i>sudo apt-get install apache2<br>
@@ -78,5 +79,5 @@ if(isset($_POST['install'])){
 	sudo apt-get install libapache2-mod-php5<br>
 	sudo apt-get install php5-mysqlnd<br>
 	sudo /etc/init.d/apache2 restart</i>
-	
+
 <?php } ?>
