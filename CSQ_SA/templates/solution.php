@@ -8,7 +8,7 @@ javascript:window.history.forward(1);
 
 if(isset($this->_['progress'])){ ?>
 	<div class="progress">
-		<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="<?=  $this->_['progress']; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=  $this->_['progress']; ?>%"> 
+		<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="<?=  $this->_['progress']; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=  $this->_['progress']; ?>%">
 			<b><?=  $this->_['progress'];?>% (<?= $this->_['currentcounter']."/".$this->_['questioncount']?>)</b>
 			<span class="sr-only">
 				<?=  $this->_['progress']; ?>% beantwortet
@@ -28,16 +28,20 @@ if(isset($this->_['progress'])){ ?>
 		<?php }  ?>
 	</div>
 	<div class="panel-body">
-		<p><?=  htmlspecialchars($this->_ ['question']['questiontext']);?></p>
-	</div> 
+		<div id="question-content" data-attachment="https://sinv-56014.edu.hsr.ch/auto-deploy/CSQ_SA/templates/img/header_50.png"><?php echo htmlspecialchars($this->_ ['question']['questiontext']); ?></div>
+		<script>
+			$("#question-content").html(quizzenger.markdown.generate($("#question-content").text(),
+				$("#question-content").attr('data-attachment')));
+		</script>
+	</div>
 
 	<!-- List group -->
-	<ul class="list-group">	
+	<ul class="list-group">
 		<?php
 			foreach ($this->_['answers'] as $entry) {?>
-				<li class="list-group-item list-group-item-<?php 
+				<li class="list-group-item list-group-item-<?php
 				if ($entry['correctness']==100){
-					echo "success"; 
+					echo "success";
 				}elseif ($this->_['selectedAnswer'] == $entry['id']){
 					echo "danger";
 				} else {
@@ -61,7 +65,7 @@ if(isset($this->_['progress'])){ ?>
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-lg-6">
-				<?php 
+				<?php
 					include('rating.php');
 				?>
 				</div>
@@ -75,8 +79,8 @@ if(isset($this->_['progress'])){ ?>
 		<strong><?=htmlspecialchars($this->_ ['pointsearned'])?></strong> Punkte!
 	</div>
 <?php } ?>
-		
-<a href="<?php 
+
+<a href="<?php
 	if(isset($this->_ ['nextQuestion'])) {
 		echo(htmlspecialchars($this->_ ['nextQuestion']).'" class="btn btn-primary">Nächste Frage</a>');
 	} else {
