@@ -71,6 +71,10 @@ class QuestionModel{
 		if(! isset ($_POST['opquestion_form_questionType'],  $_POST ['opquestion_form_correctness'])){
 			$missingParam=true;
 		}
+		if(! isset ($_POST ['opquestion_form_attachmentOld'], $_POST ['opquestion_form_attachment'], $_POST ['opquestion_form_attachmentLocal'])){
+			$missingParam=true;
+		}
+		
 		if($operation =="new" && $chosenCategory && sizeof($categoryModel->getChildren($chosenCategory))!=0){
 			$missingParam=true; // CHOSEN CAT WASNT A SUB CAT
 		}
@@ -95,23 +99,19 @@ class QuestionModel{
 		if ($_POST['opquestion_form_questionType'] == SINGLECHOICE_TYPE){
 			$type = $_POST ['opquestion_form_questionType'];
 			if($operation=="new"){
-				//TODO: check for Missing ParametersOpQwa
-				$attachment = null;
-				$attachment_local = null;
-				$linkOrFile = $_POST['opquestion_form_linkOrFile'];
-				//TODO: switch funktioniert nicht.
-				switch($linkOrFile){
-					case 'Link' : case 'link' :
-						$attachment = $_POST['opquestion_form_inputLink'];
-						$attachment_local = 0; //false
-						break;
-					case 'File': case 'file' :
-						$attachment = $_POST['opquestion_form_selectedFile'];
-						$attachment_local = 1; //true
-						break;
-				}
 				
-				$questionID=$this->newQuestion($type,$_POST ['opquestion_form_questionText'],$_SESSION['user_id'],$chosenCategory, $attachment, $attachment_local);
+				$questionID=$this->newQuestion($type,$_POST ['opquestion_form_questionText'],$_SESSION['user_id'],$chosenCategory, $_POST ['opquestion_form_attachment'],$_POST ['opquestion_form_attachmentLocal']);
+				//moveTempFile
+				if($_POST ['opquestion_form_attachmentLocal'] =='1'){
+					$success = $this->moveTempFile($_POST ['opquestion_form_attachment']);
+					if($success == false){
+						//TODO: Fehlerbehandlung
+						$this->logger->log ( "Attachment could not be moved", Logger::WARNING );
+					}
+				}			
+				//remove all files in temp dir
+				$this->removeAllFilesInTempDir();
+				//insert all Answers to Db
 				for ($i = 1; $i <= SINGLECHOICE_ANSWER_COUNT; $i++) {
 					if($_POST ['opquestion_form_correctness'] == $i){
 						$correctnessOfAnswer=100;
@@ -121,7 +121,19 @@ class QuestionModel{
 					$answerModel->newAnswer($correctnessOfAnswer,$_POST ['opquestion_form_answer'.$i],$_POST['opquestion_form_answerexplanation'.$i], $questionID);
 				}
 			}elseif ($operation=="edit"){	
-				$questionID=$this->editQuestion($type,$_POST ['opquestion_form_questionText'],$_SESSION['user_id'],$_POST['opquestion_form_question_id']);
+				$questionID=$this->editQuestion($type,$_POST ['opquestion_form_questionText'],$_SESSION['user_id'],$_POST['opquestion_form_question_id'], $_POST ['opquestion_form_attachment'],$_POST ['opquestion_form_attachmentLocal']);
+				//moveTempFile
+				if($_POST ['opquestion_form_attachmentLocal'] =='1' && $_POST ['opquestion_form_attachment'] != $_POST ['opquestion_form_attachmentOld']){
+					$success = $this->moveTempFile($_POST ['opquestion_form_attachment']);
+					$this->removeAttachment($_POST ['opquestion_form_attachmentOld']);
+					if($success == false){
+						//TODO: Fehlerbehandlung
+						$this->logger->log ( "Attachment could not be moved", Logger::WARNING );
+					}
+				}
+				//remove all files in temp dir
+				$this->removeAllFilesInTempDir();
+				//edit answers
 				$answers = $answerModel->getAnswersByQuestionID ($_POST['opquestion_form_question_id'] );
 				$i=0;
 				foreach ( $answers as $answer){
@@ -150,7 +162,41 @@ class QuestionModel{
 		}
 		$this->logger->log ( "Invalid questionType used in questionmodel", Logger::WARNING );
 		header ( 'Location: ./index.php?view=error&err=err_db_query_failed' );
-		die ();
+		die();
+	}
+	
+	private function moveTempFile($file){
+		$path = getcwd();
+		$targetDir = $this->join_paths($path, ATTACHMENT_PATH);
+		$sourceDir = $this->join_paths($targetDir, 'temp');
+		{
+			$targetFile = $this->join_paths($targetDir, $file);
+			$sourceFile = $this->join_paths($sourceDir, $file);
+			return rename($sourceFile, $targetFile);
+		}
+	}
+	
+	private function removeAttachment($file){
+		$path = getcwd();
+		$targetPath = $this->join_paths($path, ATTACHMENT_PATH, $file);
+		return unlink($targetPath);
+	}
+	
+	private function removeAllFilesInTempDir(){
+		$path = getcwd();
+		$targetDir = $this->join_paths($path, ATTACHMENT_PATH);
+		$sourceDir = $this->join_paths($targetDir, 'temp', '*');
+		array_map('unlink', glob($sourceDir));
+	}
+	
+	private function join_paths() {
+		$paths = array();
+	
+		foreach (func_get_args() as $arg) {
+			if ($arg !== '') { $paths[] = $arg; }
+		}
+	
+		return preg_replace('#/+#','/',join('/', $paths));
 	}
 	
 	private function handleNewTagCreation($questionID,$operation,$tagModel){
@@ -230,10 +276,10 @@ class QuestionModel{
 		}
 	}
 
-	public function editQuestion($type, $questiontext, $userID, $question_id){
+	public function editQuestion($type, $questiontext, $userID, $question_id, $attachment, $attachment_local){
 		if($this->userIDhasPermissionOnQuestionID($question_id,$_SESSION ['user_id'])){
 			$this->logger->log ( "Editing Question with ID :".$question_id, Logger::INFO );
-			return $this->mysqli->s_insert("UPDATE question SET type=?, questiontext=?, user_id=? WHERE id=?",array('s', 's','i','i'),array($type,$questiontext,$userID,$question_id));
+			return $this->mysqli->s_insert("UPDATE question SET type=?, questiontext=?, user_id=?, attachment=?, attachment_local=? WHERE id=?",array('s', 's','i','s','i','i'),array($type,$questiontext,$userID,$attachment,$attachment_local,$question_id));
 		}else{
 			$this->logger->log ( "Unauthorized try to edit of Question with ID :".$question_id, Logger::WARNING );
 		}

@@ -27,8 +27,8 @@ function OpQuestion(){
 				$("#msg-link").text("");
 				$("#modalAttachFile").modal('hide');
 				//write values to opquestion form
-				$("#opquestion_form_inputLink").val($("#inputLink").val());
-				$("#opquestion_form_linkOrFile").val("Link");
+				$("#opquestion_form_attachment").val($("#inputLink").val());
+				$("#opquestion_form_attachmentLocal").val("0"); //false
 			}
 			else{
 				$("#msg-link").text("Link ist ungültig.");
@@ -88,8 +88,8 @@ function OpQuestion(){
 							$("#msg-upload").text("");
 							$("#modalAttachFile").modal('hide');
 							//write values to opquestion form
-							$("#opquestion_form_selectedFile").val($("#selectedFile").val());
-							$("#opquestion_form_linkOrFile").val("File");
+							$("#opquestion_form_attachment").val($("#selectedFile").val());
+							$("#opquestion_form_attachmentLocal").val("1"); //true
 							/*
 							var selFile = $("#selectedFile")[0];
 							var files = $(selFile).attr("files");
