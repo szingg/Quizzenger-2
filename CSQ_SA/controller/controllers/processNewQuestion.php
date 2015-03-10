@@ -7,7 +7,7 @@
 			$chosenCategory=$categoryModel->createCategory($_POST['opquestion_form_chosenCategoryName'],$_POST['opquestion_form_chosenCategory_parent_id']);
 		}
 		
-		$addedQuestion = $questionModel->opQuestionWithAnswers ( $answerModel,$categoryModel, $tagModel, "new",$chosenCategory );
+		$addedQuestion = $questionModel->opQuestionWithAnswers ( $answerModel,$categoryModel, $tagModel, "new", $chosenCategory);
 		if($addedQuestion > 0)
 		{
 			$this->logger->log("addScoreToCategory", Logger::INFO);

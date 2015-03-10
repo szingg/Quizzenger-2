@@ -69,7 +69,12 @@
 			</div>
 			<div class="form-group">
 				<div class="btn-group"><input id="btn-attach-file" type="button" class="btn btn-primary" value="Datei anh&auml;ngen"> </div>
-				<div class="btn-group" id="msg-upload"></div>
+				<div class="btn-group text-success" id="msg-attach"></div>
+				<div hidden="true">
+					<input name="opquestion_form_linkOrFile" id="opquestion_form_linkOrFile" type="text"/>
+					<input name="opquestion_form_inputLink" id="opquestion_form_inputLink" type="text"/>
+					<input name="opquestion_form_selectedFile" id="opquestion_form_selectedFile" type="text"/>
+				</div>
 			</div>
 			<h3>Antworten:</h3>
 			<div class="form-group">
@@ -130,56 +135,60 @@
 						</div><!-- /.col-lg-6 --></div><!-- /.row --><?php 
 					}
 				}?>	 
+
+			<div id="messageTemp"></div>
 		</form>
-		
-		<div id="modalAttachFile" class="modal fade">
-		    <div class="modal-dialog">
-		        <div class="modal-content">
-		            <div class="modal-header bg-primary">
-		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		                <h4 class="modal-title">Datei anh&auml;ngen</h4>
-		            </div>
-		           <!-- <div class="modal-body">  -->
-		           <div class="">  
-		            	<div class="panel panel-default no-margin">
-			            <!-- <a data-toggle="collapse" data-target="#collapseEmbed" href="#collapseOne"> -->
-								<div class="panel-heading clickable">
-									<h4 class="panel-title">Video einbetten</h4>
-								</div>
-							 <!-- </a> -->
-			            	<div class="panel-collapse collapse in">
-								<div class="panel-body">
-									<div class="btn-group">
-										<input id="input-link" class=" pull-left" type="text" size=60" placeholder="Bitte geben Sei ihren Link ein"/>
-									</div>
-									<div class="btn-group">
-										<input id="btn-checkLink" class="btn btn-primary pull left" type="button" value="Pr&uuml;fen" />
-									</div>
-								</div>
-			            	</div>
+			<div id="modalAttachFile" class="modal fade">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header bg-primary">
+			                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			                <h4 class="modal-title">Datei anh&auml;ngen</h4>
 			            </div>
-			            <div class="panel panel-default no-margin">
-		               		<div class="panel-heading clickable">
-		            			<h4 class="panel-title">Bild hochladen</h4>
-		            		</div>
-			            	<div class="panel-collapse collapse">
-			            		<div class="panel-body">
-									<form id="form-uploadFile" enctype="multipart/form-data">
-										<div class="form-group btn-group">
-						            		<input id="file-selected" class="btn btn-default pull-left" type="file" name="file" id="file" required accept="<?= ATTACHMENT_ALLOWED_EXTENSIONS ;?>" />
-						            	</div>
-						            	<div class="form-group btn-group">
-											<input id="btn-uploadfile" class="btn btn-primary pull-left" type="button" value="Upload" />
+			           <!-- <div class="modal-body">  -->
+			           <div class="">  
+			            	<div class="panel panel-default no-margin">
+				            <!-- <a data-toggle="collapse" data-target="#collapseEmbed" href="#collapseOne"> -->
+									<div class="panel-heading clickable">
+										<h4 class="panel-title">Video einbetten</h4>
+									</div>
+								 <!-- </a> -->
+				            	<div class="panel-collapse collapse in">
+									<div class="panel-body">
+										<div class="btn-group">
+											<input id="inputLink" class="pull-left" type="text" size="60" placeholder="Bitte geben Sei ihren Link ein"/>
 										</div>
-									</form>
+										<div class="btn-group">
+											<input id="btn-checkLink" class="btn btn-primary pull left" type="button" value="Pr&uuml;fen" />
+										</div>
+										<div class="text-danger" id="msg-link"></div>
+									</div>
+				            	</div>
+				            </div>
+				            <div class="panel panel-default no-margin">
+			               		<div class="panel-heading clickable">
+			            			<h4 class="panel-title">Bild hochladen</h4>
+			            		</div>
+				            	<div class="panel-collapse collapse">
+				            		<div class="panel-body">
+										<form id="form-uploadFile" enctype="multipart/form-data">
+											<div class="btn-group">
+							            		<input id="selectedFile" class="btn btn-default pull-left" type="file" name="file" id="file" required accept="<?= ATTACHMENT_ALLOWED_EXTENSIONS ;?>" />
+							            	</div>
+							            	<div class="btn-group">
+												<input id="btn-uploadfile" class="btn btn-primary pull-left" type="button" value="Upload" />
+											</div>
+											<div class="text-danger" id="msg-upload"></div>
+										</form>
+									</div>
 								</div>
 							</div>
-						</div>
-		            </div> <!-- modal-body -->
-		        </div> <!-- modal-content -->
-		    </div> <!-- modal-dialog -->
-		</div>
-		<div id="messageTemp"></div>
+			            </div> <!-- modal-body -->
+			        </div> <!-- modal-content -->
+			    </div> <!-- modal-dialog -->
+			</div>
+		
+		
 <?php } 
 // Add different question types here
 ?>

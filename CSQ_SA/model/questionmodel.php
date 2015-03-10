@@ -95,7 +95,23 @@ class QuestionModel{
 		if ($_POST['opquestion_form_questionType'] == SINGLECHOICE_TYPE){
 			$type = $_POST ['opquestion_form_questionType'];
 			if($operation=="new"){
-				$questionID=$this->newQuestion($type,$_POST ['opquestion_form_questionText'],$_SESSION['user_id'],$chosenCategory);
+				//TODO: check for Missing ParametersOpQwa
+				$attachment = null;
+				$attachment_local = null;
+				$linkOrFile = $_POST['opquestion_form_linkOrFile'];
+				//TODO: switch funktioniert nicht.
+				switch($linkOrFile){
+					case 'Link' : case 'link' :
+						$attachment = $_POST['opquestion_form_inputLink'];
+						$attachment_local = 0; //false
+						break;
+					case 'File': case 'file' :
+						$attachment = $_POST['opquestion_form_selectedFile'];
+						$attachment_local = 1; //true
+						break;
+				}
+				
+				$questionID=$this->newQuestion($type,$_POST ['opquestion_form_questionText'],$_SESSION['user_id'],$chosenCategory, $attachment, $attachment_local);
 				for ($i = 1; $i <= SINGLECHOICE_ANSWER_COUNT; $i++) {
 					if($_POST ['opquestion_form_correctness'] == $i){
 						$correctnessOfAnswer=100;
@@ -197,9 +213,9 @@ class QuestionModel{
 		return $this->mysqli->getQueryResultArray($result);
 	}
 	
-	public function newQuestion($type, $questiontext, $userID, $categoryID){
+	public function newQuestion($type, $questiontext, $userID, $categoryID, $attachment, $attachment_local){
 		$this->logger->log ( "Creating Question with ID", Logger::INFO );
-		return $this->mysqli->s_insert("INSERT INTO question (type, questiontext, user_id, category_id,created) VALUES (?, ?, ?, ?, ?)",array('s', 's','i','i','s'),array($type,$questiontext,$userID,$categoryID,null));		
+		return $this->mysqli->s_insert("INSERT INTO question (type, questiontext, user_id, category_id,created,attachment,attachment_local) VALUES (?, ?, ?, ?, ?, ?, ?)",array('s', 's','i','i','s','s','i'),array($type,$questiontext,$userID,$categoryID,null,$attachment,$attachment_local));		
 	}
 
 	public function removeQuestion($question_id){

@@ -48,7 +48,8 @@
 	}
 	
 	$sourcePath = $_FILES['file']['tmp_name']; // Storing source path of the file in a variable
-	$targetDir = join_paths("/../../", ATTACHMENT_PATH, 'temp');
+	$path = getcwd();
+	$targetDir = join_paths($path, "/../../", ATTACHMENT_PATH, 'temp');
 	$targetPath = join_paths($targetDir, $_FILES["file"]["name"]); // Target path where file is to be stored
 	$fileExists = file_exists($targetPath);
 	//check file exists
@@ -57,7 +58,7 @@
 		return;
 	}
 	
-	//move uploaded file to temp path
+	//move uploaded file to temp path	
 	if(! file_exists($targetDir)) { mkdir($targetDir, 0777, true); }
 	move_uploaded_file($sourcePath,$targetPath);
 	
