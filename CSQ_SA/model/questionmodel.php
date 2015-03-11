@@ -105,7 +105,6 @@ class QuestionModel{
 				if($_POST ['opquestion_form_attachmentLocal'] =='1'){
 					$success = $this->moveTempFile($_POST ['opquestion_form_attachment']);
 					if($success == false){
-						//TODO: Fehlerbehandlung
 						$this->logger->log ( "Attachment could not be moved", Logger::WARNING );
 					}
 				}			
@@ -127,7 +126,6 @@ class QuestionModel{
 					$success = $this->moveTempFile($_POST ['opquestion_form_attachment']);
 					$this->removeAttachment($_POST ['opquestion_form_attachmentOld']);
 					if($success == false){
-						//TODO: Fehlerbehandlung
 						$this->logger->log ( "Attachment could not be moved", Logger::WARNING );
 					}
 				}

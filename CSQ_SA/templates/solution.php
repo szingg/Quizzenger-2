@@ -82,7 +82,7 @@ if(isset($this->_['progress'])){ ?>
 
 <a href="<?php
 	if(isset($this->_ ['nextQuestion'])) {
-		echo(htmlspecialchars($this->_ ['nextQuestion']).'" class="btn btn-primary">Nächste Frage</a>');
+		echo($this->_ ['nextQuestion'].'" class="btn btn-primary">Nächste Frage</a>');
 	} else {
 		echo("index.php?view=questionlist&amp;category=".$this->_ ['question']['category_id'].'" class="btn btn-primary">Zurück zur Fragenliste</a>');
 	}

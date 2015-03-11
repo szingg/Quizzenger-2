@@ -72,13 +72,15 @@
 				<div class="btn-group text-success" id="msg-attach">
 					<?php
 						$msgAttach = "";
-						switch($question['attachment_local']){
-							case '0':
-								$msgAttach = "Video eingebettet.";
-								break;
-							case '1':
-								$msgAttach =  "Datei ".$question['attachment']." angeh&auml;ngt.";
-								break;
+						if($operation=="edit"){
+							switch($question['attachment_local']){
+								case '0':
+									$msgAttach = "Video eingebettet.";
+									break;
+								case '1':
+									$msgAttach =  "Datei ".$question['attachment']." angeh&auml;ngt.";
+									break;
+							}
 						}
 						echo $msgAttach;
 					?>
@@ -169,7 +171,7 @@
 				            	<div class="panel-collapse collapse in">
 									<div class="panel-body">
 										<div class="btn-group">
-											<input id="inputLink" class="pull-left" type="text" size="60" placeholder="Bitte geben Sei ihren Link ein" value="<?php if($question['attachment_local']=='0'){ echo $question['attachment']; }?>"/>
+											<input id="inputLink" class="pull-left" type="text" size="60" placeholder="Bitte geben Sei ihren Link ein" value="<?php if($operation=="edit" && $question['attachment_local']=='0'){ echo $question['attachment']; }?>"/>
 										</div>
 										<div class="btn-group">
 											<input id="btn-checkLink" class="btn btn-primary pull left" type="button" value="Pr&uuml;fen" />

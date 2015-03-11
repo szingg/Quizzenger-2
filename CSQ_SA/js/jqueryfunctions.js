@@ -6,17 +6,17 @@ $(function(){
 	
 	window.setTimeout(function() {
 	    $(".alertautoremove").fadeTo(1500, 0).slideUp(500, function(){
-	        $(this).remove(); 
-	    });  
+	        $(this).remove();
+	    });
 	}, 3000);
-	 
+
 	$('#quiz_generator_form_count').on('change', function() {
 		$('#quiz_generator_form_count_text').val($(this).val());
 	});
 	$('#quiz_generator_form_count').on('input', function() {
 		$('#quiz_generator_form_count_text').val($(this).val());
 	});
-	
+
 	$('.remove-row').on('click', function(event) {
 		var element = $(this);
 		var id = element.data('qid');
@@ -46,8 +46,8 @@ $(function(){
 		        break;
 		    default:
 		    	break;
-	    } 
-		
+	    }
+
 		bootbox.confirm( message, function(result) {
 			if(result){
 				if(type == 'question'){
@@ -74,8 +74,8 @@ $(function(){
 			}
 		});
 	});
-	
-	
+
+
 	// ================================================================================
 	// DATATABLES
 	// ================================================================================
@@ -87,7 +87,7 @@ $(function(){
         responsive: true,
         "aLengthMenu": [[5, 10, 15, -1], [5,10,15, "Alle"]]
     } );
-	
+
 	$('#tableQuestionList').DataTable( {
         responsive: true,
         "order": [[ 1, "desc" ]]
@@ -126,7 +126,7 @@ $(function(){
 $(document).ready(function() {
     $('.opquestion_form').bootstrapValidator({
         message: 'This value is not valid',
-        fields: { 
+        fields: {
         	opquestion_form_chosenCorrectAnswer: {
                 validators: {
                     notEmpty: {
@@ -135,26 +135,26 @@ $(document).ready(function() {
 				    between: {
 				        min: 1,
 				        max: 4,
-				        message: 'Dies ist keine gültige Antwort (1-4)'  
+				        message: 'Dies ist keine gültige Antwort (1-4)'
 				    }
                 }
             },
-        	opquestion_form_chosenCategoryName:{ 
-        		validators:{ 
+        	opquestion_form_chosenCategoryName:{
+        		validators:{
 		            notEmpty: {
 		                message: ' '
 		            }
         		}
         	},
-        	opquestion_form_chosenCategory:{ 
-        		validators:{ 
+        	opquestion_form_chosenCategory:{
+        		validators:{
 		            notEmpty: {
 		                message: 'Es muss eine Kategorie gewählt werden'
 		            },
 				    between: {
 				        min: -1,
 				        max: 999,
-				        message: 'Dies ist keine gültige Kategorie'  
+				        message: 'Dies ist keine gültige Kategorie'
 				    }
         		}
         	},
@@ -357,7 +357,7 @@ $(document).ready(function() {
                         message: 'Das Passwort darf nicht gleich wie der Benutzername sein'
                     }
                 }
-            }            
+            }
         }
     });
 });
