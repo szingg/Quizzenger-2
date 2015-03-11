@@ -88,6 +88,10 @@ class AjaxController {
 					$viewInner->assign('reports', $list);
 				}
 				break;
+			case 'fileupload':
+				require_once("/../quizzenger/fileupload/fileupload.php");
+				$fileupload = new FileUpload($_FILES);
+				return $fileupload->processFileUpload();				
 			case 'default' :
 			default :
 				break;	

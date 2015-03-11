@@ -71,7 +71,8 @@ function OpQuestion(){
 			e.preventDefault();
 			var form = $("#form-uploadFile")[0];
 			$.ajax({
-				url: "quizzenger/fileupload/fileupload.php", // Url to which the request is send
+				//url: "quizzenger/fileupload/fileupload.php", // Url to which the request is send
+				url: "index.php?view=fileupload&type=ajax",
 				type: "POST",             // Type of request to be send, called as method
 				data: new FormData(form), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
 				//data: file[0],
@@ -91,17 +92,6 @@ function OpQuestion(){
 							$("#opquestion_form_attachmentTempFileName").val($("#selectedFile").val()); //full filename
 							$("#opquestion_form_attachment").val($("#selectedFile").val().split('.').pop()); //file-extension
 							$("#opquestion_form_attachmentLocal").val("1"); //true
-							/*
-							var selFile = $("#selectedFile")[0];
-							var files = $(selFile).attr("files");
-							var file = $("#selectedFile")[0].files[0];
-							var val = $(selFile).val();
-							var val1 = $($(selFile)[0]).val();
-							var formField = $("#opquestion_form_selectedFile")[0];
-							$(formField).attr("files", files);
-							var z = $("#opquestion_form_selectedFile:first");
-							$("#opquestion_form_linkOrFile").val("File");
-							*/
 							return;
 						}
 						else{
@@ -109,9 +99,9 @@ function OpQuestion(){
 							return;
 						}
 					}
-					else{						
+					else{
 						$("#msg-upload").text("Upload failed.");
-						//$("#messageTemp").html(data.responseText);
+						$("#messageTemp").html(data.responseText);
 					}
 				}
 			});
