@@ -1,10 +1,7 @@
 @CHARSET "ISO-8859-1";
 
-
-
 ::selection { background: #4089c8; color: #fff; }
 ::-moz-selection { background: #4089c8; color: #fff; }
-
 
 body {
 	padding-top: 70px;
@@ -20,29 +17,29 @@ body {
 
 
 .centered {
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+	position: fixed;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 .glyphicon-none:before {
-    content: "\2122";
-    color: transparent !important;
+	content: "\2122";
+	color: transparent !important;
 }
 
 #questionTextAddition {
-  border:2px solid #ccc;
-  display: none;
-  width:400px;
-  margin-top: 10px;
-  padding: 5px;
-  background:#FFF;
-  position:absolute;
+	border:2px solid #ccc;
+	display: none;
+	width:400px;
+	margin-top: 10px;
+	padding: 5px;
+	background:#FFF;
+	position:absolute;
 }
 
 #questionTextSpan:hover #questionTextAddition {
-  display: block;
+	display: block;
 }
 
 input[type=radio].css-checkbox {
@@ -50,7 +47,7 @@ input[type=radio].css-checkbox {
 }
 input[type=radio].css-checkbox + label.css-label {
 	padding-left:23px;
-	height:23px; 
+	height:23px;
 	display:inline-block;
 	line-height:22px;
 	background-repeat:no-repeat;
@@ -58,7 +55,6 @@ input[type=radio].css-checkbox + label.css-label {
 	font-size:22px;
 	vertical-align:middle;
 	cursor:pointer;
-
 }
 
 input[type=radio].css-checkbox:checked + label.css-label {
@@ -76,59 +72,58 @@ label.css-label {
 }
 
 .panel-heading a:after {
-    font-family: 'Glyphicons Halflings';
-    content: "\e114";    
-    float: right; 
-    color: grey; 
+	font-family: 'Glyphicons Halflings';
+	content: "\e114";
+	float: right;
+	color: grey;
 }
 .panel-heading a.collapsed:after {
-    content: "\e080";
+	content: "\e080";
 }
 
 
 /* RATING STAR PART  */
 #hide {
-    display:none;
+	display:none;
 }
- 
-.rating input {
-    position:absolute;
-    filter:alpha(opacity=0);
-    -moz-opacity:0;
-    -khtml-opacity:0;
-    opacity:0;
-    cursor:pointer;
-    width:17px;
-}
- 
-.rating span {
-    width:24px;
-    height:16px;
-    line-height:16px;
-    padding:1px 22px 1px 0; /* 1px FireFox fix */
-    background:url(../templates/img/star.png) no-repeat -22px 0;
-}
- 
-/* Change span immediately following the checked radio */
 
+.rating input {
+	position:absolute;
+	filter:alpha(opacity=0);
+	-moz-opacity:0;
+	-khtml-opacity:0;
+	opacity:0;
+	cursor:pointer;
+	width:17px;
+}
+
+.rating span {
+	width:24px;
+	height:16px;
+	line-height:16px;
+	padding:1px 22px 1px 0; /* 1px FireFox fix */
+	background:url(../templates/img/star.png) no-repeat -22px 0;
+}
+
+/* Change span immediately following the checked radio */
 .rating input:checked + span {
-    background-position:-22px 0;
+	background-position:-22px 0;
 }
- 
+
 /* Reset all remaining stars back to default background.
-   This supersedes the above due to its ordering. */
- 
+This supersedes the above due to its ordering. */
+
 .rating input:checked + span ~ span {
-    background-position:0 0;
+		background-position:0 0;
 }
-   
+
 .rating input:hover + span {
-    background-position:-22px 0;
+		background-position:-22px 0;
 }
- 
+
 /* Reset all remaining stars back to default background.
-   This supersedes the above due to its ordering. */
- 
+This supersedes the above due to its ordering. */
+
 .rating input:hover + span ~ span {
     background-position:0 0;
 }             
@@ -140,4 +135,24 @@ label.css-label {
 .clickable:hover {
   cursor:pointer;
   text-decoration: underline;
+	background-position:0 0;
+}
+
+.video-container {
+	width: 100%;
+	position: relative;
+	padding-bottom: 56.25%;
+	height: 0;
+	overflow: hidden;
+	max-width: 100%;
+}
+
+.video-container iframe,
+.video-container object,
+.video-container embed {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 }

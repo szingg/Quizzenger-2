@@ -35,6 +35,7 @@ function checkActiveTab($openedView){
 	    <link href="datatables/extensions/Responsive/css/dataTables.responsive.css" rel="stylesheet">
 	    <script type="text/javascript" src="js/ajax.js"></script>
 	    <script src="js/jquery-1.11.1.min.js"></script>
+	    <script type="text/javascript" src="js/markdown.min.js"></script>
 	    <script type="text/javascript" src="js/bootstrap.min.js"></script>
 	    <script type="text/javascript" src="js/custom.js"></script> 
 	   	<script type="text/javascript" src="js/jqueryfunctions.js"></script>

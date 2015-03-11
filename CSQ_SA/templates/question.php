@@ -28,13 +28,11 @@ if(isset($this->_['progress'])){ ?>
 		<?php }  ?>
 	</div>
 	<div class="panel-body">
-		<p>
-			<b><?=  htmlspecialchars($this->_ ['question']['questiontext']);?></b>
-			<?php
-			if (isset ( $this->_ ['weight'] )) {
-				echo ("(" . $this->_ ['weight'] . " Punkte)");
-			} ?>
-		</p>
+		<div id="question-content" data-attachment="https://hyneman/quizzenger/CSQ_SA/templates/img/header_50.png"><?php echo htmlspecialchars($this->_ ['question']['questiontext']); ?></div>
+		<script>
+			$("#question-content").html(quizzenger.markdown.generate($("#question-content").text(),
+				$("#question-content").attr('data-attachment')));
+		</script>
 	</div>
 
 	<!-- List group -->
@@ -51,7 +49,7 @@ if(isset($this->_['progress'])){ ?>
 </div>
 <div class="row">
   <div class="col-md-6">
-  	<div class="panel panel-default" id="panelInfo">	
+  	<div class="panel panel-default" id="panelInfo">
   		<div class="panel-heading">
 			<h4 class="panel-title">Infos</h4>
 		</div>
