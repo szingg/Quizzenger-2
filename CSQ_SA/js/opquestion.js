@@ -81,14 +81,15 @@ function OpQuestion(){
 				success: function(data)   // A function to be called if request succeeds
 				{
 				},
-				complete: function(data){					
+				complete: function(data){
 					if($(data).has("responseJSON") && data.responseJSON !== undefined ){
 						if(data.responseJSON.result == "success"){
 							$("#msg-attach").text(data.responseJSON.message);
 							$("#msg-upload").text("");
 							$("#modalAttachFile").modal('hide');
 							//write values to opquestion form
-							$("#opquestion_form_attachment").val($("#selectedFile").val());
+							$("#opquestion_form_attachmentTempFileName").val($("#selectedFile").val()); //full filename
+							$("#opquestion_form_attachment").val($("#selectedFile").val().split('.').pop()); //file-extension
 							$("#opquestion_form_attachmentLocal").val("1"); //true
 							/*
 							var selFile = $("#selectedFile")[0];
