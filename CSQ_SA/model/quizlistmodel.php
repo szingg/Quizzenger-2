@@ -3,7 +3,7 @@ class QuizListModel{
 
 	var $mysqli;
 	var $logger;
-	
+
 	function __construct($mysqliP, $logP) {
 		$this->mysqli = $mysqliP;
 		$this->logger = $logP;
@@ -13,7 +13,7 @@ class QuizListModel{
 		return $this->mysqli->getQueryResultArray($result);
 	}
 
-	
+
 	function getNumberOfQuestions($quizId){
 		$result = $this->mysqli->s_query("SELECT COUNT(*) FROM quiztoquestion WHERE `quiz_id` =?",array('i'),array($quizId));
 		$result=  $this->mysqli->getSingleResult($result);
@@ -25,7 +25,7 @@ class QuizListModel{
 		$result=  $this->mysqli->getSingleResult($result);
 		return $result ["COUNT(*)"];
 	}
-	
-	
+
+
 }
 ?>

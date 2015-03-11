@@ -52,7 +52,7 @@
 							<?= $this->_['tags'][$i]?>
 						</td>
 						<td>
-							<?php 
+							<?php
 								if(is_null($question['rating'])){
 									echo("<span style='font-size:0;'>0</span>Keine Bewertung vorhanden");
 								}else{
@@ -67,11 +67,11 @@
 							<?=htmlspecialchars($question['difficultycount'])?>
 						</td>
 						<?php if($GLOBALS['loggedin']){ ?>
-								
+
 								<td class="hidden-xs">
-								
+
 									<label> <input type="checkbox" name="addtoquiz[]" class="hidden-xs" value="<?php echo $question['id']; ?>"></label>&nbsp;
-								
+
 								<?php if(isset($this->_ ['myquestions']) && $this->_ ['myquestions']=="myquestions" ){?>
 									<a class="remove-row" href="javascript:void()" data-qid="<?php echo $question['id']; ?>" data-type="question">
 										<span class="glyphicon glyphicon-remove"></span>
@@ -82,7 +82,7 @@
 									</a>
 								<?php } ?>
 								</td>
-						<?php 
+						<?php
 						}?>
 					</tr>
 				<?php } ?>
@@ -145,7 +145,7 @@
 	</div>
 </form>
 
-<?php 
+<?php
 
 function createDifficultyString($difficulty,$difficultycount){
 	if($difficultycount<MIN_DIFFICULTY_COUNT_NEEDED_TO_SHOW){
@@ -158,7 +158,7 @@ function createDifficultyString($difficulty,$difficultycount){
 	}elseif($difficulty>50 && $difficulty<=75){
 		return "Normal";
 	}elseif($difficulty>75 && $difficulty<=100){
-		return "Einfach";	
+		return "Einfach";
 	}
 	return "Noch unbekannt";
 }

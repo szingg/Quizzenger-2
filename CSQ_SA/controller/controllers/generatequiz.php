@@ -16,5 +16,5 @@
 	$viewInner->assign ( 'roots', $roots );
 	$viewInner->assign ( 'mode', 'generator' );
 	$viewInner->assign ( 'type', $type );
-	
+
 ?>

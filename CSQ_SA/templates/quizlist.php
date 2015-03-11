@@ -31,7 +31,7 @@
 							<?= htmlspecialchars($quiz['performances']); ?>
 						</td>
 						<td class="hidden-xs">
-							<a class="remove-row" href="javascript:void()" data-qid="<?php echo $quiz['id']; ?>" data-type="quiz"> 
+							<a class="remove-row" href="javascript:void()" data-qid="<?php echo $quiz['id']; ?>" data-type="quiz">
 							<span class="glyphicon glyphicon-remove"></span> </a>
 							<button type="button" class="btn btn-link btn-xs"
 								data-toggle="modal"
@@ -51,8 +51,8 @@
 	<button type="button" class="btn btn-success hidden-xs" data-toggle="modal" data-target="#newQuizDialog2">
 		Quiz erstellen
 	</button>
-	<a href="?view=generatequiz" class="btn btn-success hidden-xs"> 
-		Quiz generieren 
+	<a href="?view=generatequiz" class="btn btn-success hidden-xs">
+		Quiz generieren
 	</a>
 </form>
 
@@ -121,4 +121,3 @@
 		</div>
 	</div>
 </form>
-

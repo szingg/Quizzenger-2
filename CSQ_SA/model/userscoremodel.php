@@ -18,7 +18,7 @@ class UserScoreModel{
 		if($this->mysqli->getSingleResult($result)['COUNT(*)'] == 0){
 			$this->mysqli->s_insert("INSERT INTO userscore (user_id, category_id, score) VALUES (?, ?, ?)", array('i', 'i', 'i'), array($user_id, $category_id, $score));
 			$newscore=$score;
-		} 
+		}
 		else {
 			$newscore = $score + $this->getCategoryScore($user_id, $category_id);
 			$this->mysqli->s_query("UPDATE userscore SET score=? WHERE user_id =? AND category_id = ?", array('i', 'i', 'i'), array($newscore, $user_id, $category_id));
@@ -31,16 +31,16 @@ class UserScoreModel{
 		$catscore = $this->mysqli->getSingleResult($result)['score'];
 		return ($catscore==null)?0:$catscore;
 	}
-	
+
 	function getUserScore($user_id){
 		$result = $this->mysqli->s_query("SELECT SUM(score) FROM userscore WHERE user_id=?", array('i'), array($user_id));
 		$score =$this->mysqli->getSingleResult($result)['SUM(score)'];
 		return ($score==null)?0:$score;
 	}
-	
-	function getUserScoreAllCategories($user_id){ 
+
+	function getUserScoreAllCategories($user_id){
 		$result = $this->mysqli->s_query("SELECT category.name, category.id,userscore.score FROM userscore LEFT JOIN category ON userscore.category_id=category.id WHERE user_id=? ORDER BY category.name", array('i'), array($user_id));
-		return $this->mysqli->getQueryResultArray($result);	
+		return $this->mysqli->getQueryResultArray($result);
 	}
 }
 ?>

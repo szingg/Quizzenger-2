@@ -1,14 +1,14 @@
 <?php
 class RegistrationModel {
-	
+
 	var $mysqli;
 	var $logger;
-	
+
 	function __construct($mysqliP, $logP) {
 		$this->mysqli = $mysqliP;
 		$this->logger = $logP;
 	}
-	
+
 	public function processRegistration($username,$email,$password) {
 		$error_msg = "";
 		if ((is_null($username)) || (is_null($email)) || (is_null($password))) {
@@ -21,12 +21,12 @@ class RegistrationModel {
 				$error_msg = "err_register_invalid_mail";
 			}
 			$password = hash ( 'sha512', $password );
-			
+
 			// Username validity isn't checked, only sanitized
-				
+
 			$prep_stmt = "SELECT id FROM user WHERE email = ? LIMIT 1";
 			$stmt = $this->mysqli ->prepare ( $prep_stmt );
-				
+
 			// check if mail is already registered
 			if ($stmt) {
 				$stmt->bind_param ( 's', $email );
@@ -39,11 +39,11 @@ class RegistrationModel {
 				$error_msg = "err_register_check";
 			}
 			$stmt->close ();
-				
+
 			// check if username is already registered
 			$prep_stmt = "SELECT id FROM user WHERE username = ? LIMIT 1";
 			$stmt = $this->mysqli ->prepare ( $prep_stmt );
-				
+
 			if ($stmt) {
 				$stmt->bind_param ( 's', $username );
 				$stmt->execute ();
@@ -55,13 +55,13 @@ class RegistrationModel {
 				$error_msg = "err_register_check";
 			}
 			$stmt->close ();
-				
+
 			if (empty ( $error_msg )) {
 				// We don't need to set seed since PHP 5.2.1
 				// Uniqid for more entropy due to mt_rand not being 100% top notch
 				$random_salt = hash ( 'sha512', uniqid ( mt_rand (), true ) );
 				$password = hash ( 'sha512', $password . $random_salt );
-			
+
 				if ($insert_stmt = $this->mysqli->prepare ( "INSERT INTO user (username, email, password, salt) VALUES (?, ?, ?, ?)" )) {
 					$insert_stmt->bind_param ( 'ssss', $username, $email, $password, $random_salt );
 					if (! $insert_stmt->execute ()) {

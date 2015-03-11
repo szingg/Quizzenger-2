@@ -1,26 +1,26 @@
 <?php
 	load_includes();
 	https_only();
-	
+
 	$GLOBALS["time_start"] = microtime(true);
 
 	$log = new Logger();
-		
+
 	$request = array_merge ( $_GET, $_POST );
-	
+
 	if (isset ( $request ['type'] ) && $request ['type'] == "ajax") {
 		$controller = new AjaxController ( $request ,$log);
 	} else {
 		$controller = new Controller ( $request,$log );
 	}
-	
+
 	echo $controller->display ();
 
-	
+
 	// -----------------------
-	
-	
-	function https_only(){ // can be turned off in settings 
+
+
+	function https_only(){ // can be turned off in settings
 		if ((FORCE_HTTPS_CONNECTION && $_SERVER ['HTTPS'] != "on" )) {
 			header ( "HTTP/1.1 301 Moved Permanently" );
 			$redirect = "https://" . $_SERVER ['HTTP_HOST'] . $_SERVER ['REQUEST_URI'];
@@ -28,7 +28,7 @@
 			die ();
 		}
 	}
-	
+
 	function load_includes(){
 		include ('includes/config.php');
 		include ('includes/logger.php');
@@ -52,5 +52,5 @@
 		include ('model/moderationmodel.php');
 		include ('model/reportmodel.php');
 	}
-	
+
 ?>

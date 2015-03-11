@@ -7,5 +7,5 @@
 		$error = filter_input(INPUT_GET, 'err',	 $filter = FILTER_SANITIZE_SPECIAL_CHARS);
 	}
 	$viewInner->assign ( 'err', $error);
-	
+
 ?>

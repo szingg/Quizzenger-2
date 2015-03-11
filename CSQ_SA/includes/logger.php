@@ -3,7 +3,7 @@ class Logger {
 	protected $fileHandle;
 	protected $timeFormat = 'd.m.Y - H:i:s';
 	protected $today;
-	
+
 	const INFO = '[INFO]';
 	const WARNING = '[WARNING]';
 	const ERROR = '[ERROR]';
@@ -12,7 +12,7 @@ class Logger {
 		$today = date("Y-m-d");
 		$filePath= LOGPATH.$today.".log";
 		if (is_null ( $this->fileHandle )) {
-			$this->openLogFile ($filePath);				
+			$this->openLogFile ($filePath);
 		}
 	}
 	public function log($message, $messageLevel = Logger::INFO) {

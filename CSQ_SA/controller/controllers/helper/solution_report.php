@@ -17,5 +17,5 @@
 			$reportModel->addReport("rating", $this->request['ratingReport'], NULL, $_SESSION['user_id'], $question['category_id']);
 		}
 	}
-		
+
 ?>

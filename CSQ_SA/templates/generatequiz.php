@@ -19,7 +19,7 @@ $roots = $this->_ ['roots'];
 					<?php include "categorylist.php"; ?>
 					<div id="generatorSelectedCategories">
 					<!-- GETS FILLED WITH BADGES -->
-					</div>		
+					</div>
 				</div>
 			</div>
 		</div>
@@ -42,7 +42,7 @@ $roots = $this->_ ['roots'];
 										id="quiz_generator_form_difficulty_1"
 										name="quiz_generator_form_difficulty[]" value="0"> Einfach
 									</label>
-								</div> 
+								</div>
 								<div>
 									<label> <input type="checkbox"
 										id="quiz_generator_form_difficulty_2"
@@ -54,7 +54,7 @@ $roots = $this->_ ['roots'];
 										id="quiz_generator_form_difficulty_3"
 										name="quiz_generator_form_difficulty[]" value="2"> Moderat
 									</label>
-								</div> 
+								</div>
 								<div>
 									<label> <input type="checkbox"
 										id="quiz_generator_form_difficulty_4"
@@ -62,7 +62,7 @@ $roots = $this->_ ['roots'];
 									</label>
 								</div>
 						</div>
-						<p class="hidden-md hidden-lg">&nbsp;</p>	
+						<p class="hidden-md hidden-lg">&nbsp;</p>
 						<!-- MAX COUNT -->
 				  		<div class="col-md-4">
 				  			<h4>Maximale Anzahl Fragen</h4><hr>

@@ -1,11 +1,11 @@
-<?php 
+<?php
 	$user = $this->_ ['user'];
 	$questionCount = $this->_ ['questioncount'];
 	$quizCount = $this->_ ['quizcount'];
 	$userScore = $this->_ ['userscore'];
 	$categoryscores = $this->_ ['categoryscores'];
 	$moderatedCategories = $this->_ ['moderatedcategories'];
-	$absolvedCount = $this->_ ['absolvedcount'];	
+	$absolvedCount = $this->_ ['absolvedcount'];
 
 	if (isset($this->_['message'])){
 		echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($this->_['message']).'</div>';
@@ -16,7 +16,7 @@
 		<?php
 			if(!$this->_ ['alreadyreported']){?>
 			<button type="button" class="btn btn-link btn-xs pull-right" data-toggle="modal" data-target="#newUserReportDialog">Benutzer melden</button>
-			<?php } 
+			<?php }
 		?>
 	</div>
 		<div class="panel-body">
@@ -24,18 +24,18 @@
   				<div class="col-md-6">
 					<h4><img alt="ribbon" src="<?=APP_PATH?>/templates/img/ribbon.png"> Punkte pro Kategorie</h4>
 					<table style="width:100%">
-						<?php 
+						<?php
 							foreach($categoryscores as $catScore){
 								echo('<tr><td width="180px">'.htmlspecialchars($catScore['name'])."</td>");
 								echo("<td>".'<span class="badge alert-success">'.htmlspecialchars($catScore['score'])."</span></td></tr>");
 							}
-						?> 
+						?>
 					</table>
 					<br><h4>Gesamtpunktezahl <?= ' <span class="badge alert-success">'.htmlspecialchars($userScore).'</span>'?></h4><br>
-					
+
 				</div>
   				<div class="col-md-6">
-					<?php 
+					<?php
 					if($user['superuser']){
 						echo('<h4 style="color:red"><img alt="superuser" src="'.htmlspecialchars(APP_PATH).'/templates/img/superuser.png"> Ist Superuser</h4><br>');
 					}
@@ -65,8 +65,8 @@
 				</div>
 				<div class="panel-body">
 					<strong>Email:</strong> <?php echo htmlspecialchars($user['email']);?><br>
-					<strong>ID:</strong> <?php echo htmlspecialchars($user['id']);?><br>	
-					<br>				
+					<strong>ID:</strong> <?php echo htmlspecialchars($user['id']);?><br>
+					<br>
 					<form class="change_password_form" action="./index.php?view=processChangepassword"  method="post" id="change_password_form" name="change_password_form">
 		          		<div class="form-group">
 		          			<input type="hidden" class="form-control" id="change_password_form_email" name="change_password_form_email" value="<?php echo $_SESSION['email']; // we need this so the browser pw manager knows which account we are changing password for, else he might ask?>" />

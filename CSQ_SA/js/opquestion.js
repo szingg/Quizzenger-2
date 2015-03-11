@@ -81,7 +81,7 @@ function OpQuestion(){
 				success: function(data)   // A function to be called if request succeeds
 				{
 				},
-				complete: function(data){					
+				complete: function(data){
 					if($(data).has("responseJSON") && data.responseJSON !== undefined ){
 						if(data.responseJSON.result == "success"){
 							$("#msg-attach").text(data.responseJSON.message);
@@ -108,7 +108,7 @@ function OpQuestion(){
 							return;
 						}
 					}
-					else{						
+					else{
 						$("#msg-upload").text("Upload failed.");
 						//$("#messageTemp").html(data.responseText);
 					}

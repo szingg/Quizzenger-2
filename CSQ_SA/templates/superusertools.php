@@ -21,7 +21,7 @@
 					<tr>
 						<td><a href="index.php?view=user&amp;id=<?=$reportedUser['user_id']?>"><?= htmlspecialchars($reportedUser['username']) ?></a></td>
 						<td>
-							<a href="javascript:void()" onclick="getReports(<?php echo $reportedUser['user_id']; ?>, 'user')" 
+							<a href="javascript:void()" onclick="getReports(<?php echo $reportedUser['user_id']; ?>, 'user')"
 						   		data-toggle="modal" data-target="#reportList"><?=$reportedUser['COUNT(*)']?>
 						 	</a>
 					 	</td>
@@ -33,10 +33,10 @@
 							</a>
 							<a href="javascript:void()" class="remove-row" data-type="userreports" data-qid="<?= $reportedUser['user_id'] ?>">
 								<span class="glyphicon glyphicon-ok"></span>
-							</a>							
+							</a>
 						</td>
 					</tr> <?php }
-				}?>			
+				}?>
 				</tbody>
 			</table>
 		</div>
@@ -67,7 +67,7 @@
 					</td>
 				</tr> <?php
 			}
-			}?>			
+			}?>
 			</tbody>
 		</table>
 		<br>
@@ -84,14 +84,14 @@
 			<form method="post">
 				Kategoriebereich:<br>
 				<input name="superusertools_form_new_cat_middle" type="text">
-				Parent: 
+				Parent:
 				<select name="superusertools_form_new_cat_middle_parent">
 				<?php
 					foreach($this->_['upperCats'] as $cat){
 						echo('<option value="'.$cat['id'].'">'.htmlspecialchars($cat['name']).'</option>');
-					} 
+					}
 				?>
-				</select> 
+				</select>
 				<input type="submit" value="Kategoriebereich erstellen">
 			</form>
 			<br>
@@ -103,9 +103,9 @@
 				<?php
 					foreach($this->_['middleCats'] as $cat){
 						echo('<option value="'.$cat['id'].'">'.htmlspecialchars($cat['name']).'</option>');
-					} 
+					}
 				?>
-				</select> 
+				</select>
 				<input type="submit" value="Thema erstellen">
 			</form>
 			<br>

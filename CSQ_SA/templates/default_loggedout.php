@@ -10,7 +10,7 @@
 		Projekt unter der GPLv3 Version lizenziert.
 	</p>
 	<p>
-		<b>Die neuste hinzugefügte Frage</b> (<?=$this->_ ['newestquestion']['created']?>)<br> <a href="index.php?view=question&amp;id=<?= $this->_ ['newestquestion']['id']?>"><?= htmlspecialchars($this->_['newestquestion']['questiontext'])?></a>			
+		<b>Die neuste hinzugefügte Frage</b> (<?=$this->_ ['newestquestion']['created']?>)<br> <a href="index.php?view=question&amp;id=<?= $this->_ ['newestquestion']['id']?>"><?= htmlspecialchars($this->_['newestquestion']['questiontext'])?></a>
 	</p>
 	<br>
 	<p>

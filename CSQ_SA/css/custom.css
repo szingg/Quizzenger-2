@@ -126,7 +126,7 @@ This supersedes the above due to its ordering. */
 
 .rating input:hover + span ~ span {
     background-position:0 0;
-}             
+}
 
 .no-margin {
   margin: 0;

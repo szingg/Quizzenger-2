@@ -137,10 +137,10 @@
 							<div class="input-group">
 								<span class="input-group-addon">
 									<span class="glyphicon glyphicon-link"></span>
-								</span> 
-								<input type="text" class="form-control" onClick="this.setSelectionRange(0, this.value.length)" 
+								</span>
+								<input type="text" class="form-control" onClick="this.setSelectionRange(0, this.value.length)"
 										value="<?=  htmlspecialchars(APP_PATH)."/index.php?view=quizstart&amp;quizid=". $this->_ ['quizinfo']['quizid']; ?>"
-								> 
+								>
 							</div><br>
 							<a href="<?= htmlspecialchars(APP_PATH)."/index.php?view=quizstart&amp;quizid=". $this->_ ['quizinfo']['quizid']; ?>">Zum Quiz</a>
 						</div>

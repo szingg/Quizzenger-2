@@ -6,17 +6,17 @@
 	$question_id = $this->_ ['questionID'];
 	$userIsModHere= $this->_ ['userismodhere'];
 	$userHasAlreadyRated= $this->_ ['useralreadyrated'];
-	
+
 	if(empty($ratings)){
 		echo("Es wurden noch keine Kommentare oder Bewertungen abgegeben<br><br>");
-	} else {	
+	} else {
 		echo("Durchschnittliche Bewertung: [".number_format(($meanRating), 1, ".", "." )."] ".createStarsString($meanRating)."<br><hr>");
-		?><ul class="list-group"><?php 
+		?><ul class="list-group"><?php
 		foreach ($ratings as $rating){
 			?>
 			<li class="list-group-item">
-				<?php 
-				echo(createRatingString($rating,$userIsModHere)); 
+				<?php
+				echo(createRatingString($rating,$userIsModHere));
 				foreach($comments as $comment){
 					echo("<ul>");
 					if($comment['parent']==$rating['id']){
@@ -37,27 +37,27 @@
 							</div>
 						</div>
 					</div></ul>
-				<?php }?>		
-			</li><?php  
+				<?php }?>
+			</li><?php
 		}
-		?></ul><?php 
+		?></ul><?php
 	}
-	
+
 	if($GLOBALS ['loggedin']){
 		echo(createRatingForm($question_id,$userHasAlreadyRated));
 	}else{
 		echo('Um an der Community teilzunehmen müssen Sie sich zuerst <a href="index.php?view=login">einloggen</a>.');
 	}
-	
-	
-	
-	function createRatingForm($question_id,$userHasAlreadyRated){ 
+
+
+
+	function createRatingForm($question_id,$userHasAlreadyRated){
 		$fieldState=($userHasAlreadyRated)?"disabled":"";
 		$buttonText=($userHasAlreadyRated)?"Sie haben bereits Bewertet":"Bewertung abschicken";
 		return('
 			<input type="text" class="form-control" id="rating" name="rating" placeholder="Bewertung (optional)" '.$fieldState.'/>
 			<br>
-			<div class="rating"> 
+			<div class="rating">
 				Ihre Bewertung der Frage: &nbsp;&nbsp;
 			    <input type="radio" name="rating" value="0" '.$fieldState.'/><span id="hide"></span>
 			    <input type="radio" name="rating" value="1" '.$fieldState.'/><span></span>
@@ -67,28 +67,28 @@
 			    <input type="radio" name="rating" value="5" '.$fieldState.'/><span></span>
 			</div>
 			<br>
-			<div id="ratingdiv"></div> 
+			<div id="ratingdiv"></div>
 			<button type="button" class="btn btn-primary btn-block" onclick="newRating('.$question_id.');" id="ratingFormButton" value="commentButton" '.$fieldState.'>'.$buttonText.'</button>
-	
+
 	');
 	}
-	
+
 	function createCommentForm($id,$question_id){
 	return('
 			<input type="text" class="form-control" id="comment'.$id.'" name="comment'.$id.'" placeholder="Kommentar"  />
 			<br>
 			<div id="commentdiv'.$id.'"></div>
 			<button type="button" class="btn btn-primary btn-block" onclick="newComment('.$question_id.','.$id.');" id="commentFormButton'.$id.'" value="commentButton" >Kommentar absenden</button>
-  
+
 	');
 	}
-	
+
 	function createRatingString($rating,$userIsModHere){
 		$strng='<a target="_blank" href="index.php?view=user&amp;id='.$rating['user_id'].'">';
 		$modString= ($rating['ismod'])?'<img alt="Moderator" src="'.htmlspecialchars(APP_PATH).'/templates/img/moderator.png">':"" ;
 		$suString= ($rating['issuperuser'])?'<img alt="Sueruser" src="'.htmlspecialchars(APP_PATH).'/templates/img/superuser.png">':"" ;
-		
-		
+
+
 		$strng2=$rating['author'].'</a>'.$modString.$suString.' am '.$rating['created'];
 		if($userIsModHere){
 			$strng2=$strng2.'<button type="button" class="btn btn-link btn-xs" data-toggle="modal" data-target="#removeRatingDialog" onClick="setRemoveRating('.$rating['id'].')"><span class="glyphicon glyphicon-remove"></span></button>';
@@ -99,14 +99,14 @@
 		$strng2=$strng2.'<br>';
 		if($rating['stars']!=0){
 				$strng2=$strng2.(createStarsString($rating['stars'])."<br>");
-		} 
+		}
 		if($rating['comment']!=null){
 			$strng2=$strng2.$rating['comment']."<br>";
 		}
 		return $strng.$strng2."<br>";
 	}
 	//<span class="glyphicon glyphicon-remove"></span>
-	
+
 	function createStarsString($stars){
 		$stars=round($stars);
 		$maxStars=RATING_MAX_STARS;
@@ -163,5 +163,4 @@
 	</div>
 </div>
 </form>
-
 

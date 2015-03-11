@@ -1,10 +1,10 @@
-<?php 
+<?php
 	$type = $this->_ ['type'];
 	$operation = $this->_ ['operation'];
 	$answers = array("-"); // index starts with 1, array with 0 -> fill first element
-	$answersSolution = array("-"); 
+	$answersSolution = array("-");
 	$answersExplanation = array("-");
-	
+
 	if($operation=="edit"){
 		$submitButtonName="submit_opquestion_edit_btn";
 		$question = $this->_ ['question'];
@@ -14,7 +14,7 @@
 			$tags=$tags.$tag['tag'].",";
 		}
 		foreach ( $this->_ ['answers'] as $answer ){
-			array_push($answers,$answer['text']); 
+			array_push($answers,$answer['text']);
 			array_push($answersSolution,$answer['correctness']);
 			array_push($answersExplanation,$answer['explanation']);
 		}
@@ -27,13 +27,13 @@
 		}
 		$tags="";
 		$questiontext="";
-	} 
+	}
 	if($type==SINGLECHOICE_TYPE){ ?>
-	<form class="opquestion_form"  role="form" action="./index.php?view=<?=($operation=="new")?"processNewQuestion":"processEditQuestion"; ?>" method="post" id="newquestion_<?= (SINGLECHOICE_TYPE);?>" name="newquestion_<?= (SINGLECHOICE_TYPE);?>">  		
+	<form class="opquestion_form"  role="form" action="./index.php?view=<?=($operation=="new")?"processNewQuestion":"processEditQuestion"; ?>" method="post" id="newquestion_<?= (SINGLECHOICE_TYPE);?>" name="newquestion_<?= (SINGLECHOICE_TYPE);?>">
 		<?php if($operation=="new"){?>
 			<h3>Frage hinzufügen</h3>
 			<h4>Erfasse eine neue Frage und teile diese mit allen Quizzenger Mitgliedern</h4><br>
-			<h3>Thema wählen:</h3> 
+			<h3>Thema wählen:</h3>
 			<div class="form-group">
 				<div class="input-group">
 					<span class="input-group-addon">Gewähltes Thema</span>
@@ -42,10 +42,10 @@
 					<input style="visibility: hidden; width:45px;" type="text" class="form-control" data-bv-excluded="true" id="opquestion_form_chosenCategory_parent_id" name="opquestion_form_chosenCategory_parent_id"  value="" readonly >
 				</div>
 			</div>
-			<?php 
-			include('categorylist.php');							
+			<?php
+			include('categorylist.php');
 		} ?>
-		
+
 		<h3>Frage:</h3>
 			<div style="display: none;">
 			<?php if($operation=="edit"){ ?>
@@ -101,16 +101,16 @@
 						}
 					}elseif($operation=="new"){
 						$correctAnswer="";
-					}	
+					}
 					?>
 					<input style="width:45px;" type="text" maxlength="1" size="1" class="form-control" data-bv-excluded="false" id="opquestion_form_chosenCorrectAnswer" name="opquestion_form_chosenCorrectAnswer"  value="<?=$correctAnswer?>" readonly>
 				</div>
 			</div>
-			<?php 
+			<?php
 				$rows=ceil(SINGLECHOICE_ANSWER_COUNT/2);
 				for ($i = 1; $i <= $rows ; $i++) {
 				  ?><br><div class="row">
-					<?php 
+					<?php
 						$questionRowCount=2;
 						if($i==$rows && SINGLECHOICE_ANSWER_COUNT% 2 != 0){
 							$questionRowCount=1;
@@ -132,22 +132,22 @@
 									<textarea id="opquestion_form_answerexplanation<?= $index ?>" maxlength="<?= ANSWER_EXPLANATION_INPUTFIELD_MAX_LENGTH ?>" placeholder="Optionale Erklärung" name="opquestion_form_answerexplanation<?= $index ?>" rows="<?= ANSWER_EXPLANATION_INPUTFIELD_ROWCOUNT?>" class="form-control"><?= htmlspecialchars($answersExplanation[$index])?></textarea>
 								</div>
 							 </div><!-- /.col-lg-6 -->
-							<?php 
+							<?php
 						}
 						if($questionRowCount==1){
 							?><br><div class="col-lg-6">
 								<button class="btn btn-lg btn-primary btn-block" type="submit" id="opquestion_form_<?=$submitButtonName?>"><?= ($operation=="new")?"Frage erfassen":"Änderungen speichern";?></button>
-							</div><!-- /.col-lg-6 --><?php 
+							</div><!-- /.col-lg-6 --><?php
 						}
-					?>	
+					?>
 					</div><br>
-				<?php 
+				<?php
 					if($questionRowCount==2 && $i==$rows){
 						?><br><div class="row"><div class="col-lg-12">
 							<button class="btn btn-lg btn-primary btn-block" type="submit" id="opquestion_form_<?=$submitButtonName?>"><?= ($operation=="new")?"Frage erfassen":"Änderungen speichern";?></button>
-						</div><!-- /.col-lg-6 --></div><!-- /.row --><?php 
+						</div><!-- /.col-lg-6 --></div><!-- /.row --><?php
 					}
-				}?>	 
+				}?>
 
 			<div id="messageTemp"></div>
 		</form>
@@ -159,7 +159,7 @@
 			                <h4 class="modal-title">Datei anh&auml;ngen</h4>
 			            </div>
 			           <!-- <div class="modal-body">  -->
-			           <div class="">  
+			           <div class="">
 			            	<div class="panel panel-default no-margin">
 				            <!-- <a data-toggle="collapse" data-target="#collapseEmbed" href="#collapseOne"> -->
 									<div class="panel-heading clickable">
@@ -200,8 +200,8 @@
 			        </div> <!-- modal-content -->
 			    </div> <!-- modal-dialog -->
 			</div>
-		
-		
-<?php } 
+
+
+<?php }
 // Add different question types here
 ?>

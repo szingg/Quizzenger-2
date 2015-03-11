@@ -1,9 +1,9 @@
 <div class="jumbotron">
 	<h1>Quiz Beendet</h1>
 	<p>Du hast <?php echo $this->_['score']; ?> von <?php echo $this->_['maxScore']; ?> Punkten erreicht! </p>
-	
+
 	<form
-		<?php 
+		<?php
 			if($this->_['quiz_id']==-1){
 			?>		action="?view=myquizzes&amp;savegeneratedquiz=<?php echo $this->_['session_id']; ?>"<?php
 			}else{
@@ -14,11 +14,11 @@
 			<button type="submit" class="btn btn-success">Quiz speichern</button>
 			<?php  if($this->_['quiz_id']==-1){ ?>
 				<a href="?view=generatequiz" class="btn btn-primary" role="button">
-					Weiter lernen 
+					Weiter lernen
 				</a>
-			<?php }else{ ?>		
+			<?php }else{ ?>
 				<a href="?view=quizstart&amp;quizid=<?= $this->_['quiz_id']; ?>" class="btn btn-primary" role="button">
-					Quiz wiederholen 
+					Quiz wiederholen
 				</a>
 			<?php }?>
 		</p>

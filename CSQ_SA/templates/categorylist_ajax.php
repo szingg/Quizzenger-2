@@ -1,7 +1,7 @@
 <?php
 $class="";
 foreach ( $this->_ ['categories'] as $category ) {
-	if ($this->_ ['container'] == "categories") { 
+	if ($this->_ ['container'] == "categories") {
 		$onclick = "onclick=\"showCategories(this," . $category ['id'] . ", 'subcategories')\"";
 		if( isset($this->_ ['mode'])){
 			$onclick = "onclick=\"setParentCategory('".$category ['id']."');showCategories(this," . $category ['id'] . ", 'subcategories', '". $this->_ ['mode'] ."' )\"";
@@ -39,5 +39,5 @@ if ($this->_ ['container'] != "categories" && isset($this->_['mode']) && $this->
 			<span class="glyphicon glyphicon-plus"></span>
 		</span>
 		<input type="text" style="width:290px;" autofocus="" required="required" placeholder="Themenbereich Name" name="categorylist_ajax_new_category" id="categorylist_ajax_new_category" class="form-control">
-	</a><?php 
+	</a><?php
 }?>

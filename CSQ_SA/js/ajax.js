@@ -3,9 +3,9 @@ function chooseOnlyCategory(selection, element,catname){
 	setActiveElement(element);
 	document.getElementById("opquestion_form_chosenCategoryName").value=catname;
     $(".opquestion_form").bootstrapValidator('revalidateField', 'opquestion_form_chosenCategory');
-    
+
     document.getElementById("createNewCategoryInList").className="list-group-item";
-    className = "list-group-item";    
+    className = "list-group-item";
     $(".opquestion_form").bootstrapValidator('revalidateField', 'opquestion_form_chosenCategoryName');
 }
 
@@ -65,9 +65,9 @@ function showCategories(element, parentId, containerId, mode) {
 		}
 	}
 	if(mode === false){
-		xmlhttp.open("GET", "index.php?view=categorylist_ajax&type=ajax&id=" + parentId + "&container=" + containerId, true);		
+		xmlhttp.open("GET", "index.php?view=categorylist_ajax&type=ajax&id=" + parentId + "&container=" + containerId, true);
 	} else if(mode=='add_question') {
-		xmlhttp.open("GET", "index.php?view=categorylist_ajax&type=ajax&mode=add_question&id=" + parentId + "&container=" + containerId, true);		
+		xmlhttp.open("GET", "index.php?view=categorylist_ajax&type=ajax&mode=add_question&id=" + parentId + "&container=" + containerId, true);
 	} else if(mode=='generator'){
 		xmlhttp.open("GET", "index.php?view=categorylist_ajax&type=ajax&mode=generator&id=" + parentId + "&container=" + containerId, true);
 	}
@@ -82,10 +82,10 @@ function newRating(question_id){
 	parent = null;
 
 	ajaxGET("index.php?view=addrating_ajax&type=ajax&question_id="+question_id+"&stars="+stars+"&comment="+comment+"&parent="+parent);
-	
+
 	var child = document.getElementById('ratingdiv');
-	document.getElementById('ratingFormButton').disabled = true; 
-	document.getElementById('ratingFormButton').innerHTML= 'Bewertung abgeschickt'; 
+	document.getElementById('ratingFormButton').disabled = true;
+	document.getElementById('ratingFormButton').innerHTML= 'Bewertung abgeschickt';
 
 }
 
@@ -96,8 +96,8 @@ function newComment(question_id,parent){
 
 	ajaxGET("index.php?view=addrating_ajax&type=ajax&question_id="+question_id+"&stars="+stars+"&comment="+comment+"&parent="+parent);
 	var child = document.getElementById('commentdiv'+parent);
-	document.getElementById('commentFormButton'+parent).disabled = true; 
-	document.getElementById('commentFormButton'+parent).innerHTML= 'Kommentar abgeschickt'; 
+	document.getElementById('commentFormButton'+parent).disabled = true;
+	document.getElementById('commentFormButton'+parent).innerHTML= 'Kommentar abgeschickt';
 }
 
 function deleteQuestionFromQuiz(quiz, question){
@@ -118,7 +118,7 @@ function ajaxGET(url){
 	if (window.XMLHttpRequest) {
 		xmlhttp = new XMLHttpRequest();
 	}
-	xmlhttp.open("GET", url, true);		
+	xmlhttp.open("GET", url, true);
 	xmlhttp.send();
 }
 
@@ -146,18 +146,18 @@ function getReports(object_id, type){
 	}
 	xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			
+
 			var oTable = $('#tableListOfReports').dataTable();
 			oTable.fnDestroy();
-			
+
 			document.getElementById('tablebodyreports').innerHTML = xmlhttp.responseText;
-			
+
 			$('#tableListOfReports').dataTable({
 				responsive: true,
 		        "order": [[ 1, "desc" ]]
 			});
 		}
 	}
-	xmlhttp.open("GET", "index.php?view=report_list&type=ajax&id=" + object_id +"&reporttype=" + type, true);		
+	xmlhttp.open("GET", "index.php?view=report_list&type=ajax&id=" + object_id +"&reporttype=" + type, true);
 	xmlhttp.send();
 }

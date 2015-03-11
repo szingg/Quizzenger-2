@@ -22,14 +22,14 @@
 					</a>
 				</td>
 				<td class="hidden-xs">
-					<a href="javascript:void()" onclick="getReports(<?=  $reportedQuestion['question_id']; ?>, 'question')" 
+					<a href="javascript:void()" onclick="getReports(<?=  $reportedQuestion['question_id']; ?>, 'question')"
 					   data-toggle="modal" data-target="#reportList"><?=  $reportedQuestion['COUNT(*)'];?>
 					 </a>
 				</td>
 				<td class="hidden-xs">
 					<a href="?view=editquestion&amp;id=<?=  $reportedQuestion['question_id']; ?>">
 						<span class="glyphicon glyphicon-edit"></span>
-					</a> 
+					</a>
 					<a class="remove-row" href="javascript:void()"
 						data-toggle="tooltip" data-placement="top" title="Frage l&ouml;schen"
 						data-qid="<?=  $reportedQuestion['id']; ?>" data-type="question">
@@ -53,6 +53,6 @@
 				<td class="hidden-xs">
 				</td>
 			</tr> <?php }
-	}?>			
+	}?>
 	</tbody>
 </table>

@@ -27,7 +27,7 @@
 			          		<input class="form-control" placeholder="Passwort wiederholen" type="password" name="register_form_password_confirm" id="register_form_password_confirm" />
 			          	</div>
 			          	<br>
-			           	<button class="btn btn-lg btn-primary btn-block" type="submit" value="Register" /> 
+			           	<button class="btn btn-lg btn-primary btn-block" type="submit" value="Register" />
 			           		Registrieren
 			           	</button>
 			        </form>

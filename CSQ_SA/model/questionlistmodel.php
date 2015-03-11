@@ -4,37 +4,37 @@ class QuestionListModel{
 
 	var $mysqli;
 	var $logger;
-	
+
 	function __construct($mysqliP, $logP) {
 		$this->mysqli = $mysqliP;
 		$this->logger = $logP;
 	}
-	
-	public function getAllQuestions(){ 
+
+	public function getAllQuestions(){
 		$result = $this->mysqli->s_query("SELECT * FROM question",array(),array(),true);
 		while($row = $result->fetch_array(MYSQLI_ASSOC)){
 			$this->entries[]=$row;
 		}
 		return $this->entries;
 	}
-	
-	
+
+
 	function getQuestionsByCategoryID($id){
 		$result = $this->mysqli->s_query("SELECT * FROM question WHERE category_id=?",array('i'),array($id));
 		return $result;
 	}
-	
+
 	function getQuestionsByUserID($id){
 		$result = $this->mysqli->s_query("SELECT * FROM question WHERE user_id=?",array('i'),array($id));
 		return $result;
 	}
-	
+
 	function getQuestionsByUserIDCount($id){
 		$result = $this->mysqli->s_query("SELECT COUNT(*) FROM question WHERE user_id=?",array('i'),array($id));
 		$result=  $this->mysqli->getSingleResult($result);
 		return $result ["COUNT(*)"];
 	}
-	
+
 	function searchQuestions($searchText){
 		$pattern = "%". $searchText ."%";
 		$result = $this->mysqli->s_query("SELECT q.*

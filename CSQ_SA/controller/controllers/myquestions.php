@@ -1,6 +1,6 @@
 <?php
 	$viewInner->setTemplate ( 'questionlist' );
-	
+
 	if ($GLOBALS ['loggedin']) {
 		$questions = $questionListModel->getQuestionsByUserID ( $_SESSION ['user_id'] );
 		$viewInner->assign ( 'questions', $questions );
@@ -10,7 +10,7 @@
 
 
 		include("helper/question_tag.php");
-		
+
 		if (isset ( $this->request ['addtoquiz'] ) && is_array ( $this->request ['addtoquiz'] ) && isset ( $this->request ['quiz_id'] ) && $this->request ['quiz_id'] > 0) {
 			foreach ( $this->request ['addtoquiz'] as $question ) {
 				$quizModel->addQuestionToQuiz ( $this->request ['quiz_id'], $question );

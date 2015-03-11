@@ -1,6 +1,6 @@
 <?php
 	$viewInner->setTemplate ( 'blankContent' );
-	
+
 	if(isset($_POST['login_form_password'])){
 		$password = $_POST['login_form_password'];
 	}else{
@@ -11,6 +11,6 @@
 	}else{
 		$email = null;
 	}
-	
+
 	$sessionModel->processLogin ($email,$password);
 ?>

@@ -5,7 +5,7 @@ class Controller {
 	private $viewOuter = null;
 	var $mysqli;
 	var $logger;
-	
+
 	public function __construct($request, $pLog) {
 		$this->logger = $pLog;
 		$this->viewOuter = new View ();
@@ -13,7 +13,7 @@ class Controller {
 		$this->template = ! empty ( $request ['view'] ) ? $request ['view'] : 'default';
 		$this->mysqli = new sqlhelper ( $this->logger );
 	}
-	
+
 	public function display() {
 		$questionListModel = new QuestionListModel ( $this->mysqli, $this->logger );
 		$questionModel = new QuestionModel ( $this->mysqli, $this->logger );
@@ -30,15 +30,15 @@ class Controller {
 		$userscoreModel = new UserScoreModel ( $this->mysqli, $this->logger );
 		$moderationModel = new ModerationModel( $this->mysqli, $this->logger );
 		$reportModel = new ReportModel( $this->mysqli, $this->logger );
-		
-		
+
+
 		$sessionModel->sec_session_start();
-		
+
 		$_SESSION ['current_view'] = $this->template;
-		
-				
+
+
 		$viewInner = new View ();
-		
+
 		switch ($this->template) {
 
 			case 'about' :
@@ -54,7 +54,7 @@ class Controller {
 				include("controllers/default.php");
 				break;
 		}
-		
+
 		// loads the head, css etc.
 		$this->viewOuter->setTemplate ( 'skeleton' );
 		$this->viewOuter->assign ( 'csq_footer', 'Die Wissensplattform' );

@@ -28,7 +28,7 @@
 				<td>
 					<a href="?view=editquestion&amp;id=<?=  $moderatedQuestion['question_id']; ?>">
 						<span class="glyphicon glyphicon-edit"></span>
-					</a> 	
+					</a>
 					<a class="remove-row" href="javascript:void()" data-toggle="tooltip" data-placement="top" title="Frage l&ouml;schen" data-type="question" data-qid="<?=  $moderatedQuestion['question_id']; ?>">
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
@@ -64,6 +64,6 @@
 				</td>
 			</tr> <?php
 		}
-	}?>			
+	}?>
 	</tbody>
 </table>

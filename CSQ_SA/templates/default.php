@@ -2,8 +2,8 @@
 	<div class="jumbotron">
 		<h1>Hallo <?php echo htmlspecialchars($this->_['username']); ?>!</h1>
 		<p class="lead">Sch&ouml;n, dass du vorbeischaust.</p>
-	</div>	
-	
+	</div>
+
 	<!--  SUPER USER  -->
 	<?php
 	if($_SESSION['superuser']){?>
@@ -16,20 +16,20 @@
 			</a>
 			<div id="collapseSuperuser" class="panel-collapse collapse">
 				<div class="panel-body">
-					<?php include("superusertools.php");?>			
+					<?php include("superusertools.php");?>
 				</div>
 			</div>
 		</div>
 	<?php } ?>
-	
-	
+
+
 	<!--  PERSONAL REPORTED ITEMS  -->
 	<div class="panel panel-default">
 		<div class="panel-heading">Folgende Inhalte von dir wurden gemeldet</div>
 		<?php include("personal_report_table.php")?>
 	</div>
-	
-	
+
+
 	<!--  MODERATOR REPORTS  -->
 	<div class="panel panel-default hidden-xs">
 		<div class="panel-heading">
@@ -37,8 +37,8 @@
 		</div>
 		<?php include("mod_report_table.php");?>
 	</div>
-	
-	
+
+
 	<div class="modal fade" tabindex="-1" role="dialog"
 		aria-labelledby="myLargeModalLabel" aria-hidden="true" id="reportList">
 		<div class="modal-dialog modal-lg">
@@ -59,14 +59,14 @@
 							</tr>
 						</thead>
 						<tbody id="tablebodyreports">
-	
+
 						</tbody>
 					</table>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 
 	<!--  PERSONAL QUESTION HISTORY  -->
 	<div class="panel panel-default" id="panelQuestionHistoryUser" >
@@ -78,6 +78,6 @@
 		</div>
 	</div>
 	<!-- LOGGED OUT  -->
-<?php } else { 
-		include("default_loggedout.php");	
+<?php } else {
+		include("default_loggedout.php");
 } ?>
