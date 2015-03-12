@@ -301,7 +301,7 @@ CREATE TABLE IF NOT EXISTS `achievement` (
   `description` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `type` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `image` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `attributes` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `arguments` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
   `bonus_score` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
@@ -313,7 +313,7 @@ CREATE TABLE IF NOT EXISTS `achievement` (
 --
 CREATE TABLE IF NOT EXISTS `achievementtrigger` (
   `achievement_id` int(11) NOT NULL,
-  `type` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   KEY `fk_achievement_achievementtrigger` (`achievement_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
 
