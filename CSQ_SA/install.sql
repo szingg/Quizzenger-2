@@ -268,7 +268,8 @@ CREATE TABLE IF NOT EXISTS `userscore` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
-  `score` int(11) NOT NULL,
+  `producer_score` int(11),
+  `consumer_score` int(11),
   PRIMARY KEY (`id`),
   KEY `fk_useruserscore` (`user_id`),
   KEY `fk_categoryuserscore` (`category_id`)
