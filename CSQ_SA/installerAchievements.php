@@ -2,23 +2,24 @@
 include("includes/config.php");
 if(isset($_POST['install'])){
 
-	echo("Connecting to DB<br>");
+	echo("Connecting to DB...<br>");
 	$link = mysqli_connect(dbhost.":".dbport, dbuser, dbpassword) ;
 	if (!$link) {
 		die ("MySQL Connection error");
 	}
 	echo("<p style=\"color:green;\">Connected to DB</p><br>");
 
-	$result = mysqli_query($link,"CREATE DATABASE IF NOT EXISTS ".db);
+	//$result = mysqli_query($link,"CREATE DATABASE IF NOT EXISTS ".db);
 	if(!mysqli_select_db($link ,db)) {
 		die ("Couldn't connect to Database ".db);
 	}
 
-	echo("<p style=\"color:green;\">Created DB or DB existed already</p><br>");
-
 	$result = mysqli_query($link,"USE DATABASE ".db);
+	echo("<p style=\"color:green;\">Connected to DB ".db."</p><br>");
 
+	
 	$sqlErrorCode=0;
+	/*
 	$sqlFileToExecute='./install.sql';
 	// read the sql file
 	$f = fopen($sqlFileToExecute,"r");
@@ -36,6 +37,48 @@ if(isset($_POST['install'])){
 			}
 		}
 	}
+	*/
+	$xml = simplexml_load_file('achievements.xml');
+	//check version
+	if(!isset($xml['version'])){
+		echo("<p style=\"color:red;\">achievements.xml could not successfully be parsed.</p><br>");
+		die();
+	} 
+	$version = '2.0';
+	if($xml['version'] != $version){
+		echo("<p style=\"color:red;\">Version conflict. Expected Version is '".$version."' </p><br>");
+		die();
+	}
+	foreach ($xml->achievements[0]->achievement as $ach){
+		$type = '"'.$link->real_escape_string($ach['type']).'"';
+		$name = '"'.$link->real_escape_string($ach->name).'"';
+		$order = '"'.$link->real_escape_string($ach->order).'"';
+		$description = '"'.$link->real_escape_string($ach->description).'"';
+		$image = '"'.$link->real_escape_string($ach->image).'"';
+		$arguments = '"'.$link->real_escape_string($ach->arguments->asXML()).'"';
+		$args1 = $ach->arguments->asXML();
+		$bonusscore = '"'.$link->real_escape_string($ach->bonusscore).'"';
+		
+		$result = $link->query("INSERT INTO achievement (name, description, type, image, attributes, bonus_score) VALUES ($name, $description, $type, $image, $arguments, $bonusscore)");
+		if($result){
+			$achievementId = $link->insert_id;
+			foreach($ach->triggers->trigger as $trigger){
+				$triggerName = '"'.$link->real_escape_string($trigger['name']).'"';
+				$resultTrigger = $link->query("INSERT INTO achievementtrigger (achievement_id, type) VALUES ($achievementId, $triggerName)");
+				if($resultTrigger){}
+				else{
+					echo('<p style=\"color:red;\">Insert Failed! Error : ('. $link->errno .') '. $link->error .'</p><br>');
+					die();
+				}
+			}	
+		}
+		else{
+			echo('<p style=\"color:red;\">Insert Failed! Error : ('. $link->errno .') '. $link->error .'</p><br>');
+			die();
+		}
+		//$achId = mysqli->s_insert("INSERT INTO question (type, questiontext, user_id, category_id,created,attachment,attachment_local) VALUES (?, ?, ?, ?, ?, ?, ?)",array('s', 's','i','i','s','s','i'),array($type,$questiontext,$userID,$categoryID,null,$attachment,$attachment_local));
+		
+	}
 	if ($sqlErrorCode == 0) {
 		echo("<p style=\"color:green;\">Finished successfully!</p><br>");
 	} else {
@@ -47,7 +90,7 @@ if(isset($_POST['install'])){
 		echo("</p>");
 	}
 	echo("<hr>");
-	echo"<b>Remove following files: installer.php, install.sql!</b>";
+	echo"<b>Remove following files: achievements.xml, installerAchievements.php!</b>";
 
 }else{?>
 	<h3>Welcome to the Quizzenger Achievement Installer</h3>
@@ -59,7 +102,7 @@ if(isset($_POST['install'])){
 	<b>4.</b>Press the Install Button<br><br>
 
 
-	<form action="installer.php" method="post">
+	<form action="installerAchievements.php" method="post">
 		<input type="hidden" name="install" value="go">
 		<input type="submit" value="Install Achievements">
 	</form>
