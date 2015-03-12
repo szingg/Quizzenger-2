@@ -101,7 +101,7 @@ function OpQuestion(){
 					}
 					else{
 						$("#msg-upload").text("Upload failed.");
-						$("#messageTemp").html(data.responseText);
+						//$("#messageTemp").html(data.responseText);
 					}
 				}
 			});
