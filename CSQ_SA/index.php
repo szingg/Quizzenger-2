@@ -1,4 +1,6 @@
 <?php
+	require_once 'quizzenger/autoloader.php';
+
 	load_includes();
 	https_only();
 
