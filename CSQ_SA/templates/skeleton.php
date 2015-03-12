@@ -94,7 +94,8 @@ function checkActiveTab($openedView){
 							$pageBefore = filter_input(INPUT_GET, 'pageBefore', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
 							if (is_null($pageBefore) && checkActiveTab("login")){echo checkActiveTab("login");} ?>><?php
 							if($GLOBALS['loggedin']){
-								echo "<a href=\"index.php?view=logout\"><span class=\"glyphicon glyphicon-log-out\"></span> Logout";
+								//echo "<a href=\"index.php?view=logout\"><span class=\"glyphicon glyphicon-log-out\"></span>".$this->_['username']." Logout";
+								echo "<a href=\"index.php?view=logout\"><span class=\"glyphicon glyphicon-log-out\"></span>Logout";
 							}else{
 								echo "<a href=\"index.php?view=login\"><span class=\"glyphicon glyphicon-log-in\"></span> Login";
 							}

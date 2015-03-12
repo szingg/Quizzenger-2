@@ -28,7 +28,24 @@ if(isset($this->_['progress'])){ ?>
 		<?php }  ?>
 	</div>
 	<div class="panel-body">
-		<div id="question-content" data-attachment="https://sinv-56014.edu.hsr.ch/auto-deploy/CSQ_SA/templates/img/header_50.png"><?php echo htmlspecialchars($this->_ ['question']['questiontext']); ?></div>
+		<div id="question-content" data-attachment="<?php 
+			$link = "";
+			$question = $this->_ ['question'];
+			switch($question['attachment_local']){
+				case '0':
+					$link = $question['attachment'];
+					break;
+				case '1':
+					$paths = array();
+					$paths[] = ATTACHMENT_PATH;
+					$paths[] = $question['id'].'.'.$question['attachment'];
+						
+					$link = preg_replace('#/+#','/',join('/', $paths));
+					break;
+			}
+			echo $link 
+			?>"><?php echo htmlspecialchars($this->_ ['question']['questiontext']); ?>
+		</div>
 		<script>
 			$("#question-content").html(quizzenger.markdown.generate($("#question-content").text(),
 				$("#question-content").attr('data-attachment')));
@@ -82,7 +99,7 @@ if(isset($this->_['progress'])){ ?>
 
 <a href="<?php
 	if(isset($this->_ ['nextQuestion'])) {
-		echo(htmlspecialchars($this->_ ['nextQuestion']).'" class="btn btn-primary">Nächste Frage</a>');
+		echo($this->_ ['nextQuestion'].'" class="btn btn-primary">Nächste Frage</a>');
 	} else {
 		echo("index.php?view=questionlist&amp;category=".$this->_ ['question']['category_id'].'" class="btn btn-primary">Zurück zur Fragenliste</a>');
 	}
