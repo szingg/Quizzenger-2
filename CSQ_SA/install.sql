@@ -268,11 +268,56 @@ CREATE TABLE IF NOT EXISTS `userscore` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
-  `score` int(11) NOT NULL,
+  `producer_score` int(11),
+  `consumer_score` int(11),
   PRIMARY KEY (`id`),
   KEY `fk_useruserscore` (`user_id`),
   KEY `fk_categoryuserscore` (`category_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `userachievement`
+--
+
+CREATE TABLE IF NOT EXISTS `userachievement` (
+  `achievement_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `achieved_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  KEY `fk_user_userachievement` (`user_id`),
+  KEY `fk_achievement_userachievement` (`achievement_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `achievement`
+--
+
+CREATE TABLE IF NOT EXISTS `achievement` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `type` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `image` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `attributes` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `bonus_score` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `achievementtrigger`
+--
+CREATE TABLE IF NOT EXISTS `achievementtrigger` (
+  `achievement_id` int(11) NOT NULL,
+  `type` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  KEY `fk_achievement_achievementtrigger` (`achievement_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
+
+-- --------------------------------------------------------
 
 --
 -- Constraints for dumped tables
@@ -355,6 +400,21 @@ ALTER TABLE `tagtoquestion`
 ALTER TABLE `userscore`
   ADD CONSTRAINT `fk_categoryuserscore` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_useruserscore` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON UPDATE CASCADE;
+
+
+--
+-- Constraints for table `achievementtrigger`
+--
+ALTER TABLE `achievementtrigger`
+  ADD CONSTRAINT `fk_achievement_achievementtrigger` FOREIGN KEY (`achievement_id`) REFERENCES `achievement` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `userachievement`
+--
+ALTER TABLE `userachievement`
+  ADD CONSTRAINT `fk_user_userachievement` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_achievement_userachievement` FOREIGN KEY (`achievement_id`) REFERENCES `achievement` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
