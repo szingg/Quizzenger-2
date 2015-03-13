@@ -3,6 +3,7 @@
 namespace quizzenger\achievements {
 	use \mysqli as mysqli;
 	use \quizzenger\data\ArgumentCollection as ArgumentCollection;
+	use \quizzenger\achievements\IAchievement as IAchievement;
 
 	class AchievementDispatcher {
 		private $mysqli;
@@ -11,17 +12,36 @@ namespace quizzenger\achievements {
 			$this->mysqli = $mysqli;
 		}
 
-		public function dispatchSingle($id, $event, $type, $arguments) {
-			//
+		private static function createAchievementInstance($type) {
+			require_once 'plugins/achievements/' . $type . 'Achievement.php';
+			$qualified = "\\quizzenger\\plugins\\achievements\\" . $type . "Achievement";
+			return new $qualified();
 		}
 
-		public function dispatch($event, ArgumentCollection $arguments) {
+		private function grantAchievement($collection, $id) {
+			// Grant the specified achievement to the current user.
+			$statement = $this->mysqli->prepare('INSERT INTO `userachievement`'
+				. ' (achievement_id, user_id) VALUES (?, ?);');
+
+			$userId = $collection->get('user-id');
+			$statement->bind_param('ii', $id, $userId);
+			$statement->execute();
+		}
+
+		public function dispatchSingle($collection, $id, $event, $type, $arguments) {
+			$achievement = self::createAchievementInstance($type);
+			if($achievement->grant($this->mysqli, $id, $event, $type, $arguments)) {
+				$this->grantAchievement($collection, $id);
+			}
+		}
+
+		public function dispatch($event, ArgumentCollection $collection) {
 			// Select all non-granted achievements triggered by $event.
 			$statement = $this->mysqli->prepare('SELECT id, type, arguments FROM `achievement` WHERE id'
 				. ' NOT IN (SELECT achievement_id FROM `userachievement` WHERE user_id = ?)'
 				. ' AND id IN (SELECT achievement_id FROM `achievementtrigger` WHERE name = ?);');
 
-			$userId = $arguments->get('user-id');
+			$userId = $collection->get('user-id');
 			$statement->bind_param('is', $userId, $event);
 
 			$statement->execute();
@@ -35,7 +55,7 @@ namespace quizzenger\achievements {
 						$args = [];
 					}
 
-					$this->dispatchSingle($id, $event, $type, $args);
+					$this->dispatchSingle($collection, $id, $event, $type, $args);
 				}
 				$result->close();
 			}
