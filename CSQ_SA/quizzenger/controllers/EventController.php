@@ -1,8 +1,10 @@
 <?php
 
 namespace quizzenger\controllers {
+	use \stdClass as stdClass;
 	use \SplEnum as SplEnum;
 	use \mysqli as mysqli;
+	use \quizzenger\data\ArgumentCollection as ArgumentCollection;
 	use \quizzenger\scoring\ScoreDispatcher as ScoreDispatcher;
 	use \quizzenger\achievements\AchievementDispatcher as AchievementDispatcher;
 
@@ -17,8 +19,11 @@ namespace quizzenger\controllers {
 			$this->achievementDispatcher = new AchievementDispatcher($this->mysqli);
 		}
 
-		public function fire($event, $arguments = []) {
+		public function fire($event, ArgumentCollection $arguments = null) {
 			$event = strtolower($event);
+			if($arguments === null)
+				$arguments = new ArgumentCollection();
+
 			$this->scoreDispatcher->dispatch($event, $arguments);
 			$this->achievementDispatcher->dispatch($event, $arguments);
 		}
