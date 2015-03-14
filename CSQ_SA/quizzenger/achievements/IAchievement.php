@@ -15,7 +15,7 @@ namespace quizzenger\achievements {
 		 * @param object $arguments List of arguments defined for the achievement.
 		 * @return boolean Returns true if the specific achievement is to be granted, false otherwise.
 		**/
-		public function grant(mysqli $database, $event, $arguments)
+		public function grant(mysqli $database, $id, $event, $type, $arguments);
 	} // interface IAchievement
 } // namespace quizzenger\achievements
 
