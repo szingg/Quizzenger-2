@@ -109,7 +109,7 @@ function checkActiveTab($openedView){
 				$message = filter_input(INPUT_GET, 'info', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
 				if(!is_null($message) && defined($message)){
 					$message = constant($message);
-					echo('<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($message).'</div>');
+					echo('<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.$message.'</div>');
 				}
 			?>
 			<noscript>
