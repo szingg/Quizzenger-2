@@ -18,7 +18,7 @@ namespace quizzenger\achievements {
 			return new $qualified();
 		}
 
-		private function grantAchievement($collection, $id) {
+		private function grantAchievement(ArgumentCollection $collection, $id) {
 			// Grant the specified achievement to the current user.
 			$statement = $this->mysqli->prepare('INSERT INTO `userachievement`'
 				. ' (achievement_id, user_id) VALUES (?, ?);');
@@ -30,7 +30,7 @@ namespace quizzenger\achievements {
 
 		public function dispatchSingle($collection, $id, $event, $type, $arguments) {
 			$achievement = self::createAchievementInstance($type);
-			if($achievement->grant($this->mysqli, $id, $event, $type, $arguments)) {
+			if($achievement->grant($this->mysqli, $collection, $id, $event, $type, $arguments)) {
 				$this->grantAchievement($collection, $id);
 			}
 		}
