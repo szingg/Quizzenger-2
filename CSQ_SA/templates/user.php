@@ -54,34 +54,118 @@
 					Anzahl beantworteter Fragen: <span class="badge"><?= $absolvedCount ?></span>
 				</div>
 			</div>
+			<div class="rankbar">
+					<div class="rank">
+						<div class="point clickable">
+							<img src="templates/img/moderator.png"></img>
+						</div>
+				    	<div class="rankTooltip hide">
+				        	Neuling (1000 Punkte)
+				        </div>
+				    </div>
+				    <div class="rank">
+				    	<div class="point clickable">
+				    		<img src="templates/img/ribbon.png"></img>
+				    	</div>
+				    	<div class="rankTooltip hide">
+				        	Besucher (2500 Punkte)
+				        </div>
+				    </div>
+				    <div class="rank">
+				    	<div class="point clickable">
+				    		<img src="templates/img/modstar.png"></img>
+				    	</div>
+				    	<div class="rankTooltip hide">
+				        	Einsteiger
+				        </div>
+				    </div>
+				    <div class="rank">
+				    	<div class="point clickable">
+				    		<img src="templates/img/superuser.png"></img>
+				    	</div>
+				    	<div class="rankTooltip hide">
+				        	Aufsteiger
+				        </div>
+				    </div>
+				    <div class="rank">
+				    	<div class="point clickable"></div>
+				    	<div class="rankTooltip hide">
+				        	Fragekener
+				        </div>
+				    </div>
+				    <div class="rank">
+				    	<div class="point clickable"></div>
+				    	<div class="rankTooltip hide">
+				        	Alleskönner
+				        </div>
+				    </div>
+				    <div class="rank">
+				    	<div class="point clickable"></div>
+				    	<div class="rankTooltip hide">
+				        	Profi
+				        </div>
+				    </div>
+				    <div class="rank">
+				    	<div class="point clickable"></div>
+				    	<div class="rankTooltip hide">
+				        	Veteran
+				        </div>
+				    </div>
+				    <div class="rank">
+				    	<div class="point clickable"></div>
+				    	<div class="rankTooltip hide">
+				        	Meister
+				        </div>
+				    </div>
+				    <div class="rank">
+				    	<div class="point clickable"></div>
+				    	<div class="rankTooltip hide">
+				        	Baron
+				        </div>
+				    </div>
+				    <div class="rank">
+				    	<div class="point clickable"></div>
+				    	<div class="rankTooltip hide">
+				        	Legende (60'000 Punkte)
+				        </div>
+				    </div>
+				</div>
 			<hr>
+			<div>
+				
+
+			</div>
 		</div>
 	</div>
 	<?php
 		if(isset($_SESSION ['user_id']) && $user['id']== $_SESSION ['user_id'] && $GLOBALS['loggedin'] ){?>
 			<div class="panel panel-default">
-				<div class="panel-heading">
-					<strong>Account Einstellungen</strong>
+				<div class="panel-heading clickable">
+					<a class="" data-toggle="collapse" data-target="#collapseChangePasswort" >
+						<strong>Passwort ändern</strong>
+					</a>
 				</div>
-				<div class="panel-body">
-					<strong>Email:</strong> <?php echo htmlspecialchars($user['email']);?><br>
-					<strong>ID:</strong> <?php echo htmlspecialchars($user['id']);?><br>
-					<br>
-					<form class="change_password_form" action="./index.php?view=processChangepassword"  method="post" id="change_password_form" name="change_password_form">
-		          		<div class="form-group">
-		          			<input type="hidden" class="form-control" id="change_password_form_email" name="change_password_form_email" value="<?php echo $_SESSION['email']; // we need this so the browser pw manager knows which account we are changing password for, else he might ask?>" />
-		          		</div>
-		          		<div class="form-group">
-		          			<input class="form-control" type="password" placeholder="Passwort" name="change_password_form_password" id="change_password_form_password"/><br>
-		          		</div>
-						<div class="form-group">
-		          			<input class="form-control" placeholder="Passwort wiederholen" type="password" name="change_password_form_password_confirm" id="change_password_form_password_confirm" /><br>
-		          		</div>
-		           		<button class="btn btn btn-primary" value="ChangePW" type="submit" />
-		           			Passwort ändern
-		           		</button>
-	              	</form>
-		   		</div>
+				<div id="collapseChangePassword" class="panel-collapse collapse">
+					<div class="panel-body">
+						<strong>Email:</strong> <?php echo htmlspecialchars($user['email']);?><br>
+						<strong>ID:</strong> <?php echo htmlspecialchars($user['id']);?><br>
+						<br>
+						<form class="change_password_form" action="./index.php?view=processChangepassword"  method="post" id="change_password_form" name="change_password_form">
+			          		<div class="form-group">
+			          			<input type="hidden" class="form-control" id="change_password_form_email" name="change_password_form_email" value="<?php echo $_SESSION['email']; // we need this so the browser pw manager knows which account we are changing password for, else he might ask?>" />
+			          		</div>
+			          		<div class="form-group">
+			          			<input class="form-control" type="password" placeholder="Passwort" name="change_password_form_password" id="change_password_form_password"/><br>
+			          		</div>
+							<div class="form-group">
+			          			<input class="form-control" placeholder="Passwort wiederholen" type="password" name="change_password_form_password_confirm" id="change_password_form_password_confirm" /><br>
+			          		</div>
+			           		<button class="btn btn btn-primary" value="ChangePW" type="submit" />
+			           			Passwort ändern
+			           		</button>
+		              	</form>
+			   		</div>
+			   	</div>
 		   	</div>
 		<?php }?>
 

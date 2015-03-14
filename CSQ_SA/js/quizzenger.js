@@ -10,6 +10,13 @@ function Quizzenger() {
 	this.initialize = function(e){
 		var opquestion = new OpQuestion();
 		opquestion.initialize(e);
+
+		$(".point").click(function(){
+			//hide all
+			$(".rankTooltip").removeClass("setVisible").addClass("hide");
+			//show this tooltip
+			$(this).parent().find("> .rankTooltip").removeClass("hide").addClass("setVisible");
+		});
 	};
 }
 
