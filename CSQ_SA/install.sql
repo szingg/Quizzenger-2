@@ -285,6 +285,7 @@ CREATE TABLE IF NOT EXISTS `userachievement` (
   `achievement_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `achieved_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY(achievement_id, user_id),
   KEY `fk_user_userachievement` (`user_id`),
   KEY `fk_achievement_userachievement` (`achievement_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
@@ -301,7 +302,7 @@ CREATE TABLE IF NOT EXISTS `achievement` (
   `description` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `type` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `image` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `arguments` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `arguments` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `bonus_score` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
@@ -314,6 +315,7 @@ CREATE TABLE IF NOT EXISTS `achievement` (
 CREATE TABLE IF NOT EXISTS `achievementtrigger` (
   `achievement_id` int(11) NOT NULL,
   `name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY(achievement_id, name),
   KEY `fk_achievement_achievementtrigger` (`achievement_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
 
