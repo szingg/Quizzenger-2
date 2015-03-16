@@ -19,9 +19,18 @@ namespace quizzenger\controllers {
 			$this->achievementDispatcher = new AchievementDispatcher($this->mysqli);
 		}
 
-		public function fire(UserEvent $event) {
+		private function dispatch(UserEvent $event) {
 			$this->scoreDispatcher->dispatch($event);
 			$this->achievementDispatcher->dispatch($event);
+		}
+
+		private function fireAlways(UserEvent $cause) {
+			$this->dispatch(new UserEvent('always', $cause->user()));
+		}
+
+		public function fire(UserEvent $event) {
+			$this->dispatch($event);
+			$this->fireAlways($event);
 		}
 	} // class EventController
 } // namespace quizzenger\controllers
