@@ -36,9 +36,9 @@ namespace quizzenger\achievements {
 		}
 
 		public function dispatch(UserEvent $event) {
-			// Select all non-granted achievements triggered by $event.
-			$statement = $this->mysqli->prepare('SELECT id, type, arguments FROM `achievement` WHERE id'
-				. ' NOT IN (SELECT achievement_id FROM `userachievement` WHERE user_id = ?)'
+			// Select all non-granted achievements triggered by the current event.
+			$statement = $this->mysqli->prepare('SELECT id, type, arguments FROM `achievement`'
+				. ' WHERE id NOT IN (SELECT achievement_id FROM `userachievement` WHERE user_id = ?)'
 				. ' AND id IN (SELECT achievement_id FROM `achievementtrigger` WHERE name = ?);');
 
 			$userId = $event->user();
@@ -56,11 +56,12 @@ namespace quizzenger\achievements {
 						$args = [];
 					}
 
+					$currentEvent = clone $event;
 					foreach($args as $name => $value) {
-						$event->set($name, $value);
+						$currentEvent->set($name, $value);
 					}
 
-					$this->dispatchSingle($id, $type, $event);
+					$this->dispatchSingle($id, $type, $currentEvent);
 				}
 				$result->close();
 			}
