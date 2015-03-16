@@ -2,7 +2,7 @@
 
 namespace quizzenger\scoring {
 	use \mysqli as mysqli;
-	use \quizzenger\data\ArgumentCollection as ArgumentCollection;
+	use \quizzenger\data\UserEvent as UserEvent;
 
 	class ScoreDispatcher {
 		private $mysqli;
@@ -11,7 +11,7 @@ namespace quizzenger\scoring {
 			$this->mysqli = $mysqli;
 		}
 
-		public function dispatch($event, ArgumentCollection $arguments) {
+		public function dispatch(UserEvent $event) {
 			//
 		}
 	} // class ScoreDispatcher

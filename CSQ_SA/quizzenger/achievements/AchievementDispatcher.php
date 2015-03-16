@@ -2,7 +2,7 @@
 
 namespace quizzenger\achievements {
 	use \mysqli as mysqli;
-	use \quizzenger\data\ArgumentCollection as ArgumentCollection;
+	use \quizzenger\data\UserEvent as UserEvent;
 	use \quizzenger\achievements\IAchievement as IAchievement;
 
 	class AchievementDispatcher {
@@ -18,31 +18,32 @@ namespace quizzenger\achievements {
 			return new $qualified();
 		}
 
-		private function grantAchievement(ArgumentCollection $collection, $id) {
+		private function grantAchievement($id, UserEvent $event) {
 			// Grant the specified achievement to the current user.
 			$statement = $this->mysqli->prepare('INSERT INTO `userachievement`'
 				. ' (achievement_id, user_id) VALUES (?, ?);');
 
-			$userId = $collection->get('user-id');
+			$userId = $event->user();
 			$statement->bind_param('ii', $id, $userId);
 			$statement->execute();
 		}
 
-		public function dispatchSingle($collection, $id, $event, $type, $arguments) {
+		public function dispatchSingle($id, $type, UserEvent $event) {
 			$achievement = self::createAchievementInstance($type);
-			if($achievement->grant($this->mysqli, $collection, $id, $event, $type, $arguments)) {
-				$this->grantAchievement($collection, $id);
+			if($achievement->grant($this->mysqli, $event)) {
+				$this->grantAchievement($id, $event);
 			}
 		}
 
-		public function dispatch($event, ArgumentCollection $collection) {
+		public function dispatch(UserEvent $event) {
 			// Select all non-granted achievements triggered by $event.
 			$statement = $this->mysqli->prepare('SELECT id, type, arguments FROM `achievement` WHERE id'
 				. ' NOT IN (SELECT achievement_id FROM `userachievement` WHERE user_id = ?)'
 				. ' AND id IN (SELECT achievement_id FROM `achievementtrigger` WHERE name = ?);');
 
-			$userId = $collection->get('user-id');
-			$statement->bind_param('is', $userId, $event);
+			$userId = $event->user();
+			$eventName = $event->name();
+			$statement->bind_param('is', $userId, $eventName);
 
 			$statement->execute();
 			$result = $statement->get_result();
@@ -55,7 +56,11 @@ namespace quizzenger\achievements {
 						$args = [];
 					}
 
-					$this->dispatchSingle($collection, $id, $event, $type, $args);
+					foreach($args as $name => $value) {
+						$event->set($name, $value);
+					}
+
+					$this->dispatchSingle($id, $type, $event);
 				}
 				$result->close();
 			}

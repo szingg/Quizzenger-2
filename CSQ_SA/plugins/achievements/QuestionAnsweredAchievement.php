@@ -1,13 +1,13 @@
 <?php
 	namespace quizzenger\plugins\achievements {
 		use \mysqli as mysqli;
-		use \quizzenger\data\ArgumentCollection as ArgumentCollection;
+		use \quizzenger\data\UserEvent as UserEvent;
 		use \quizzenger\achievements\IAchievement as IAchievement;
 
 		class QuestionAnsweredAchievement implements IAchievement {
-			public function grant(mysqli $database, ArgumentCollection $collection, $id, $event, $type, $arguments) {
-				$userId = $collection->get('user-id');
-				$questionCount = $arguments['question-count'];
+			public function grant(mysqli $database, UserEvent $event) {
+				$userId = $event->user();
+				$questionCount = $event->get('question-count');
 
 				$statement = $database->prepare('SELECT COUNT(*) as count FROM `questionperformance`'
 					. ' WHERE user_id = ? AND questionCorrect > 0');
