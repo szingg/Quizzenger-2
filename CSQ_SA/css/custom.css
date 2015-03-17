@@ -207,12 +207,18 @@ div>a {
     height: 30px;
     border-radius: 50%;
     box-shadow: 0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
-    background: #DFF0D8;
-    background-image: linear-gradient(to bottom, #DFF0D8 0px, #C8E5BC 100%);
+    background: #cdcdcd;
     position:relative;
     left: 50%;
     margin-left: -15px;
     top:0px;
+}
+
+.point-active {
+   /* grau */
+  /*background: #DFF0D8; */
+  background-image: linear-gradient(to bottom, #DFF0D8 0px, #C8E5BC 100%);*/
+ /* box-shadow: 0 0 0 4px #DFF0D8, inset 0 2px 0 rgba(0,0,0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);*/
 }
 
 .point img {
@@ -224,11 +230,6 @@ div>a {
   top: 50%;
   margin-left: -8px;
   margin-top: -8px;
-}
-
-.point-ach-inactive {
-  /*background: #cdcdcd; */
-  background: #ffb2b2;
 }
 
 .point-ach {
