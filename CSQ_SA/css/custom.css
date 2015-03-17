@@ -254,6 +254,40 @@ div>a {
 
 
 
+.tooltipCustom{
+    display: inline;
+    position: relative;
+}
+
+
+
+.tooltipCustom:hover:before{
+    border: solid;
+    border-color: #333 transparent;
+    border-width: 6px 6px 0 6px;
+    bottom: 20px;
+    content: "";
+    left: 50%;
+    position: absolute;
+    z-index: 99;
+}
+
+
+
+.tooltipCustom:hover:after{
+    background: #333;
+    background: rgba(0,0,0,.8);
+    border-radius: 5px;
+    bottom: 26px;
+    color: #fff;
+    content: attr(title);
+    left: 20%;
+    padding: 5px 15px;
+    position: absolute;
+    z-index: 98;
+    width: 220px;
+}
+
 .rankTooltip:before {
     /* arrow */
     display: flex;
@@ -271,3 +305,49 @@ div>a {
     /*top:-7px;*/
     top: -20px;
 }
+
+.myTooltip:before{
+  /* arrow */
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #eee;
+    margin-left: -10px;   /* -border */
+    content: "";
+    left: 50%;
+    top: 33px; /* point-height */
+    /*bottom: 20px; */
+    position: absolute;
+    z-index: 99;
+}
+
+.myTooltip:after{
+    /* text */
+    vertical-align:top;
+    text-align: center;
+    background:#eee;
+    color:#000;
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:10px;
+    padding-bottom:10px;
+
+    /*overflow: hidden; */
+    overflow: visible;
+    min-width: 100%;
+    /*position:relative; */
+
+    top: 40px;
+    /*margin-top: 40px; */
+    border-radius:3px;
+
+    display: block;
+/*  bottom: 26px;   */
+    content: attr(tooltip);
+    /* left: 20%; */
+    padding: 5px 15px;
+    position: absolute;
+    z-index: 98;
+    /*width: 220px; */
+}
+
+

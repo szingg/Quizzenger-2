@@ -13,9 +13,14 @@ function Quizzenger() {
 
 		$(".point").click(function(){
 			//hide all
-			$(".rankTooltip").removeClass("setVisible").addClass("hide");
+			//$(".rankTooltip").removeClass("setVisible").addClass("hide");
 			//show this tooltip
-			$(this).parent().find("> .rankTooltip").removeClass("hide").addClass("setVisible");
+			//$(this).parent().find("> .rankTooltip").removeClass("hide").addClass("setVisible");
+
+			//hide all
+			$(".rank").removeClass("myTooltip");
+			//show this tooltip
+			$(this).parent().addClass("myTooltip");
 		});
 	};
 }

@@ -56,13 +56,13 @@
 			</div>
 			<div class="scrollable">
 				<div class="rankbar hidden-xs hidden-sm ">
-						<div class="rank">
+						<div class="rank" tooltip="Neuling (1000 Punkte)">
 							<div class="point clickable">
 								<img src="templates/img/moderator.png"></img>
 							</div>
 					    	<div class="rankTooltip hide">Neuling (1000 Punkte)</div>
 					    </div>
-					    <div class="rank">
+					    <div class="rank" tooltip="Besucher (2500 Punkte)">
 					    	<div class="point clickable">
 					    		<img src="templates/img/ribbon.png"></img>
 					    	</div>
@@ -70,7 +70,7 @@
 					        	Besucher (2500 Punkte)
 					        </div>
 					    </div>
-					    <div class="rank">
+					    <div class="rank" tooltip="Einsteiger">
 					    	<div class="point clickable">
 					    		<img src="templates/img/modstar.png"></img>
 					    	</div>
@@ -78,7 +78,7 @@
 					        	Einsteiger
 					        </div>
 					    </div>
-					    <div class="rank">
+					    <div class="rank" tooltip="Aufsteiger">
 					    	<div class="point clickable">
 					    		<img src="templates/img/superuser.png"></img>
 					    	</div>
@@ -86,53 +86,63 @@
 					        	Aufsteiger
 					        </div>
 					    </div>
-					    <div class="rank">
+					    <div class="rank" tooltip="Fragekenner">
 					    	<div class="point clickable"></div>
 					    	<div class="rankTooltip hide">
 					        	Fragekenner
 					        </div>
 					    </div>
-					    <div class="rank">
+					    <div class="rank" tooltip="Alleskönner">
 					    	<div class="point clickable"></div>
 					    	<div class="rankTooltip hide">
 					        	Alleskönner
 					        </div>
 					    </div>
-					    <div class="rank">
+					    <div class="rank" tooltip="Profi">
 					    	<div class="point clickable"></div>
 					    	<div class="rankTooltip hide">
 					        	Profi
 					        </div>
 					    </div>
-					    <div class="rank">
+					    <div class="rank" tooltip="Veteran">
 					    	<div class="point clickable"></div>
 					    	<div class="rankTooltip hide">
 					        	Veteran
 					        </div>
 					    </div>
-					    <div class="rank">
+					    <div class="rank" tooltip="Meister">
 					    	<div class="point clickable"></div>
 					    	<div class="rankTooltip hide">
 					        	Meister
 					        </div>
 					    </div>
-					    <div class="rank">
+					    <div class="rank" tooltip="Baron">
 					    	<div class="point clickable"></div>
 					    	<div class="rankTooltip hide">
 					        	Baron
 					        </div>
 					    </div>
-					    <div class="rank">
+					    <div class="rank" tooltip="Legende (60'000 Punkte)">
 					    	<div class="point clickable"></div>
 					    	<div class="rankTooltip hide">
 					        	Legende (60'000 Punkte)
 					        </div>
 					    </div>
-					</div>
-				<hr>
-				<div>
+				</div>
 			</div>
-
+			<hr>
+			<!--  -->
+			<div>
+				<h4>Achievements</h4>
+				<div class="tooltipCustom" title="DAs ist mein Tooltip">1 </div>
+				<div class="tooltipCustom" title="DAs ist mein Tooltip"> 2</div>
+				<div class="tooltipCustom" title="DAs ist mein Tooltip"> 3jerlkgfjaldkfjalkefjalk</div>
+				<div >
+					<div class="point clickable">
+						<img src="templates/img/moderator.png"></img>
+					</div>
+			    	<div class="rankTooltip hide">Du hast 200 Fragen korrekt beantwortet.</div>
+				</div>
 			</div>
 		</div>
 	</div>
