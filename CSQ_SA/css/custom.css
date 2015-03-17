@@ -173,11 +173,15 @@ div>a {
     background:#eee;
     width:100% - 36px;
     position:relative;
-    white-space:nowrap;
     margin-left: 18px;
     margin-top: 1em;
+    white-space:nowrap;
     margin-bottom: 5em;
     /*padding:20px 0 10px 0; */
+}
+
+.scrollable {
+  /*overflow-x: scroll; */
 }
 
 
@@ -185,8 +189,10 @@ div>a {
     display: inline-block;
     vertical-align:top;
 
-    margin-left: -20px;
-    margin-right: 80px;
+    /*margin-left: -20px;
+    margin-right: 80px; */
+    width: 9%;  /*gibt probleme, mit jquery.*/
+    min-width: 80px;
     margin-top: -15px;
     font-size:12px;
     text-align:center;
@@ -195,7 +201,7 @@ div>a {
 }
 
 .point {
-    display:inline-block;
+    display:flex;
     vertical-align:top;
 
     width: 30px;
@@ -206,6 +212,7 @@ div>a {
     background-image: linear-gradient(to bottom, #DFF0D8 0px, #C8E5BC 100%);
     position:relative;
     left: 50%;
+    margin-left: -15px;
     top:0px;
 }
 
@@ -222,12 +229,13 @@ div>a {
 
 .setVisible {
   visibility: visible;
-  display: inline-block;
+  display: inline-flex;
 }
 
 .rankTooltip {
-    display:inline-block;
+    display: inline-flex;
     vertical-align:top;
+    text-align: center;
     background:#eee;
     color:#000;
     padding-left:10px;
@@ -235,9 +243,12 @@ div>a {
     padding-top:10px;
     padding-bottom:10px;
 
+    /*overflow: hidden; */
+    overflow: visible;
     position:relative;
 
-    margin-top: 40px;
+    top: 13px;
+    /*margin-top: 40px; */
     border-radius:3px;
 }
 
@@ -245,16 +256,18 @@ div>a {
 
 .rankTooltip:before {
     /* arrow */
+    display: flex;
     content:'';
     width: 0;
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     border-bottom: 10px solid #eee;
-    margin-left: -10px; /* -border */
+    margin-left: -10px;   /* -border */
 
-    display:block;
-    position: absolute;
+    /*margin: 0 auto; */
+    position: relative;
     left: 50%;
-    top:-7px;
+    /*top:-7px;*/
+    top: -20px;
 }

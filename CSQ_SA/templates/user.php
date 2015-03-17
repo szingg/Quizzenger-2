@@ -54,85 +54,84 @@
 					Anzahl beantworteter Fragen: <span class="badge"><?= $absolvedCount ?></span>
 				</div>
 			</div>
-			<div class="rankbar">
-					<div class="rank">
-						<div class="point clickable">
-							<img src="templates/img/moderator.png"></img>
-						</div>
-				    	<div class="rankTooltip hide">
-				        	Neuling (1000 Punkte)
-				        </div>
-				    </div>
-				    <div class="rank">
-				    	<div class="point clickable">
-				    		<img src="templates/img/ribbon.png"></img>
-				    	</div>
-				    	<div class="rankTooltip hide">
-				        	Besucher (2500 Punkte)
-				        </div>
-				    </div>
-				    <div class="rank">
-				    	<div class="point clickable">
-				    		<img src="templates/img/modstar.png"></img>
-				    	</div>
-				    	<div class="rankTooltip hide">
-				        	Einsteiger
-				        </div>
-				    </div>
-				    <div class="rank">
-				    	<div class="point clickable">
-				    		<img src="templates/img/superuser.png"></img>
-				    	</div>
-				    	<div class="rankTooltip hide">
-				        	Aufsteiger
-				        </div>
-				    </div>
-				    <div class="rank">
-				    	<div class="point clickable"></div>
-				    	<div class="rankTooltip hide">
-				        	Fragekener
-				        </div>
-				    </div>
-				    <div class="rank">
-				    	<div class="point clickable"></div>
-				    	<div class="rankTooltip hide">
-				        	Alleskönner
-				        </div>
-				    </div>
-				    <div class="rank">
-				    	<div class="point clickable"></div>
-				    	<div class="rankTooltip hide">
-				        	Profi
-				        </div>
-				    </div>
-				    <div class="rank">
-				    	<div class="point clickable"></div>
-				    	<div class="rankTooltip hide">
-				        	Veteran
-				        </div>
-				    </div>
-				    <div class="rank">
-				    	<div class="point clickable"></div>
-				    	<div class="rankTooltip hide">
-				        	Meister
-				        </div>
-				    </div>
-				    <div class="rank">
-				    	<div class="point clickable"></div>
-				    	<div class="rankTooltip hide">
-				        	Baron
-				        </div>
-				    </div>
-				    <div class="rank">
-				    	<div class="point clickable"></div>
-				    	<div class="rankTooltip hide">
-				        	Legende (60'000 Punkte)
-				        </div>
-				    </div>
-				</div>
-			<hr>
-			<div>
-				
+			<div class="scrollable">
+				<div class="rankbar hidden-xs hidden-sm ">
+						<div class="rank">
+							<div class="point clickable">
+								<img src="templates/img/moderator.png"></img>
+							</div>
+					    	<div class="rankTooltip hide">Neuling (1000 Punkte)</div>
+					    </div>
+					    <div class="rank">
+					    	<div class="point clickable">
+					    		<img src="templates/img/ribbon.png"></img>
+					    	</div>
+					    	<div class="rankTooltip hide">
+					        	Besucher (2500 Punkte)
+					        </div>
+					    </div>
+					    <div class="rank">
+					    	<div class="point clickable">
+					    		<img src="templates/img/modstar.png"></img>
+					    	</div>
+					    	<div class="rankTooltip hide">
+					        	Einsteiger
+					        </div>
+					    </div>
+					    <div class="rank">
+					    	<div class="point clickable">
+					    		<img src="templates/img/superuser.png"></img>
+					    	</div>
+					    	<div class="rankTooltip hide">
+					        	Aufsteiger
+					        </div>
+					    </div>
+					    <div class="rank">
+					    	<div class="point clickable"></div>
+					    	<div class="rankTooltip hide">
+					        	Fragekenner
+					        </div>
+					    </div>
+					    <div class="rank">
+					    	<div class="point clickable"></div>
+					    	<div class="rankTooltip hide">
+					        	Alleskönner
+					        </div>
+					    </div>
+					    <div class="rank">
+					    	<div class="point clickable"></div>
+					    	<div class="rankTooltip hide">
+					        	Profi
+					        </div>
+					    </div>
+					    <div class="rank">
+					    	<div class="point clickable"></div>
+					    	<div class="rankTooltip hide">
+					        	Veteran
+					        </div>
+					    </div>
+					    <div class="rank">
+					    	<div class="point clickable"></div>
+					    	<div class="rankTooltip hide">
+					        	Meister
+					        </div>
+					    </div>
+					    <div class="rank">
+					    	<div class="point clickable"></div>
+					    	<div class="rankTooltip hide">
+					        	Baron
+					        </div>
+					    </div>
+					    <div class="rank">
+					    	<div class="point clickable"></div>
+					    	<div class="rankTooltip hide">
+					        	Legende (60'000 Punkte)
+					        </div>
+					    </div>
+					</div>
+				<hr>
+				<div>
+			</div>
 
 			</div>
 		</div>
