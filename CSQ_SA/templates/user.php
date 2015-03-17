@@ -134,14 +134,77 @@
 			<!--  -->
 			<div>
 				<h4>Achievements</h4>
-				<div class="tooltipCustom" title="DAs ist mein Tooltip">1 </div>
-				<div class="tooltipCustom" title="DAs ist mein Tooltip"> 2</div>
-				<div class="tooltipCustom" title="DAs ist mein Tooltip"> 3jerlkgfjaldkfjalkefjalk</div>
-				<div >
-					<div class="point clickable">
-						<img src="templates/img/moderator.png"></img>
-					</div>
-			    	<div class="rankTooltip hide">Du hast 200 Fragen korrekt beantwortet.</div>
+				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach point-ach-inactive clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach point-ach-inactive clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach point-ach-inactive clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach point-ach-inactive clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach point-ach-inactive clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach point-ach-inactive clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach point-ach-inactive clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach point-ach-inactive clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach point-ach-inactive clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach point-ach-inactive clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach point-ach-inactive clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-ach point-ach-inactive clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
 				</div>
 			</div>
 		</div>

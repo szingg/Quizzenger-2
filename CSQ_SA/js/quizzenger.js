@@ -11,7 +11,7 @@ function Quizzenger() {
 		var opquestion = new OpQuestion();
 		opquestion.initialize(e);
 
-		$(".point").click(function(){
+		$(".rank").click(function(){
 			//hide all
 			//$(".rankTooltip").removeClass("setVisible").addClass("hide");
 			//show this tooltip
@@ -20,8 +20,18 @@ function Quizzenger() {
 			//hide all
 			$(".rank").removeClass("myTooltip");
 			//show this tooltip
-			$(this).parent().addClass("myTooltip");
+			$(this).addClass("myTooltip");
+			//$(this).parent().addClass("myTooltip");
 		});
+
+		$(".point-ach").click(function(){
+			//hide all
+			$(".point-ach").removeClass("myTooltip");
+			//show this tooltip
+			$(this).addClass("myTooltip");
+			//$(this).parent().addClass("myTooltip");
+		});	
+
 	};
 }
 

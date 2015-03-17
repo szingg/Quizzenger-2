@@ -194,7 +194,6 @@ div>a {
     width: 9%;  /*gibt probleme, mit jquery.*/
     min-width: 80px;
     margin-top: -15px;
-    font-size:12px;
     text-align:center;
     position:relative;
     top:0px;
@@ -225,6 +224,21 @@ div>a {
   top: 50%;
   margin-left: -8px;
   margin-top: -8px;
+}
+
+.point-ach-inactive {
+  /*background: #cdcdcd; */
+  background: #ffb2b2;
+}
+
+.point-ach {
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin: 10px;
+  float: left;
+  border-radius: 10%;
+  left: auto;
 }
 
 .setVisible {
@@ -314,7 +328,9 @@ div>a {
     margin-left: -10px;   /* -border */
     content: "";
     left: 50%;
-    top: 33px; /* point-height */
+    /*top: 33px;  */ /* point-height */
+    top: 100%;
+    margin-top:  3px; /* border */
     /*bottom: 20px; */
     position: absolute;
     z-index: 99;
@@ -326,25 +342,29 @@ div>a {
     text-align: center;
     background:#eee;
     color:#000;
-    padding-left:10px;
+  /*padding-left:10px;
     padding-right:10px;
     padding-top:10px;
-    padding-bottom:10px;
+    padding-bottom:10px;  */
+    padding: 5px 15px;
 
     /*overflow: hidden; */
     overflow: visible;
     min-width: 100%;
     /*position:relative; */
 
-    top: 40px;
+    /*top: 40px;*/
+    margin-top:  10px; /* border + arrow */
+    top: 100%;
     /*margin-top: 40px; */
     border-radius:3px;
 
     display: block;
+    font-size:12px;
 /*  bottom: 26px;   */
     content: attr(tooltip);
     /* left: 20%; */
-    padding: 5px 15px;
+
     position: absolute;
     z-index: 98;
     /*width: 220px; */
