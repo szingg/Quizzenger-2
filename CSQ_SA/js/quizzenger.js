@@ -10,6 +10,28 @@ function Quizzenger() {
 	this.initialize = function(e){
 		var opquestion = new OpQuestion();
 		opquestion.initialize(e);
+
+		$(".rank").click(function(){
+			//hide all
+			//$(".rankTooltip").removeClass("setVisible").addClass("hide");
+			//show this tooltip
+			//$(this).parent().find("> .rankTooltip").removeClass("hide").addClass("setVisible");
+
+			//hide all
+			$(".rank").removeClass("myTooltip");
+			//show this tooltip
+			$(this).addClass("myTooltip");
+			//$(this).parent().addClass("myTooltip");
+		});
+
+		$(".point-ach").click(function(){
+			//hide all
+			$(".point-ach").removeClass("myTooltip");
+			//show this tooltip
+			$(this).addClass("myTooltip");
+			//$(this).parent().addClass("myTooltip");
+		});	
+
 	};
 }
 
