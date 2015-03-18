@@ -301,7 +301,7 @@ CREATE TABLE IF NOT EXISTS `achievement` (
   `name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `description` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `type` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `image` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `image` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   `arguments` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `bonus_score` int(11) NOT NULL,
   PRIMARY KEY (`id`)
