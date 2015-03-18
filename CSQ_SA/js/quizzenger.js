@@ -10,8 +10,30 @@ function Quizzenger() {
 	this.initialize = function(e){
 		var opquestion = new OpQuestion();
 		opquestion.initialize(e);
+
+		$(".rank").click(function(){
+			self.showTooltip("rank", this);
+		});
+		$(".rank").hover(function(){
+			self.showTooltip("rank", this);
+		});
+
+		$(".point-achievement").click(function(){
+			self.showTooltip("point-achievement", this);
+		});
+		$(".point-achievement").hover(function(){
+			self.showTooltip("point-achievement", this);
+		});
 	};
+
+	this.showTooltip= function(cssClass, showElement){
+		//hide all
+		$("."+cssClass).removeClass("achievement-tooltip");
+		//show this tooltip
+		$(showElement).addClass("achievement-tooltip");
+	}
 }
+
 
 var quizzenger = {
 	question : {

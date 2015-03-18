@@ -54,34 +54,187 @@
 					Anzahl beantworteter Fragen: <span class="badge"><?= $absolvedCount ?></span>
 				</div>
 			</div>
+			<div class="scrollable">
+				<div class="rankbar hidden-xs hidden-sm ">
+						<div class="rank" data-tooltip="Neuling (1000 Punkte)">
+							<div class="point point-rank clickable">
+								<img src="templates/img/moderator.png"></img>
+							</div>
+					    	<div class="rankdata-tooltip hide">Neuling (1000 Punkte)</div>
+					    </div>
+					    <div class="rank" data-tooltip="Besucher (2500 Punkte)">
+					    	<div class="point point-rank point-active clickable">
+					    		<img src="templates/img/ribbon.png"></img>
+					    	</div>
+					    </div>
+					    <div class="rank" data-tooltip="Einsteiger">
+					    	<div class="point point-rank clickable">
+					    		<img src="templates/img/modstar.png"></img>
+					    	</div>
+					    	<div class="rankdata-tooltip hide">
+					        	Einsteiger
+					        </div>
+					    </div>
+					    <div class="rank" data-tooltip="Aufsteiger">
+					    	<div class="point point-rank clickable">
+					    		<img src="templates/img/superuser.png"></img>
+					    	</div>
+					    	<div class="rankdata-tooltip hide">
+					        	Aufsteiger
+					        </div>
+					    </div>
+					    <div class="rank" data-tooltip="Fragekenner">
+					    	<div class="point point-rank clickable"></div>
+					    	<div class="rankdata-tooltip hide">
+					        	Fragekenner
+					        </div>
+					    </div>
+					    <div class="rank" data-tooltip="Alleskönner">
+					    	<div class="point point-rank clickable"></div>
+					    	<div class="rankdata-tooltip hide">
+					        	Alleskönner
+					        </div>
+					    </div>
+					    <div class="rank" data-tooltip="Profi">
+					    	<div class="point point-rank clickable"></div>
+					    	<div class="rankdata-tooltip hide">
+					        	Profi
+					        </div>
+					    </div>
+					    <div class="rank" data-tooltip="Veteran">
+					    	<div class="point point-rank clickable"></div>
+					    	<div class="rankdata-tooltip hide">
+					        	Veteran
+					        </div>
+					    </div>
+					    <div class="rank" data-tooltip="Meister">
+					    	<div class="point point-rank clickable"></div>
+					    	<div class="rankdata-tooltip hide">
+					        	Meister
+					        </div>
+					    </div>
+					    <div class="rank" data-tooltip="Baron">
+					    	<div class="point point-rank clickable"></div>
+					    	<div class="rankdata-tooltip hide">
+					        	Baron
+					        </div>
+					    </div>
+					    <div class="rank" data-tooltip="Legende (60'000 Punkte)">
+					    	<div class="point point-rank clickable"></div>
+					    	<div class="rankdata-tooltip hide">
+					        	Legende (60'000 Punkte)
+					        </div>
+					    </div>
+				</div>
+			</div>
 			<hr>
+			<!--  -->
+			<div id="achievements">
+				<h4>Achievements</h4>
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
+					<img src="templates/img/moderator.png"></img>
+				</div>
+			</div>
 		</div>
 	</div>
 	<?php
 		if(isset($_SESSION ['user_id']) && $user['id']== $_SESSION ['user_id'] && $GLOBALS['loggedin'] ){?>
 			<div class="panel panel-default">
-				<div class="panel-heading">
-					<strong>Account Einstellungen</strong>
+				<div class="panel-heading clickable">
+					<a class="" data-toggle="collapse" data-target="#collapseChangePasswort" >
+						<strong>Passwort ändern</strong>
+					</a>
 				</div>
-				<div class="panel-body">
-					<strong>Email:</strong> <?php echo htmlspecialchars($user['email']);?><br>
-					<strong>ID:</strong> <?php echo htmlspecialchars($user['id']);?><br>
-					<br>
-					<form class="change_password_form" action="./index.php?view=processChangepassword"  method="post" id="change_password_form" name="change_password_form">
-		          		<div class="form-group">
-		          			<input type="hidden" class="form-control" id="change_password_form_email" name="change_password_form_email" value="<?php echo $_SESSION['email']; // we need this so the browser pw manager knows which account we are changing password for, else he might ask?>" />
-		          		</div>
-		          		<div class="form-group">
-		          			<input class="form-control" type="password" placeholder="Passwort" name="change_password_form_password" id="change_password_form_password"/><br>
-		          		</div>
-						<div class="form-group">
-		          			<input class="form-control" placeholder="Passwort wiederholen" type="password" name="change_password_form_password_confirm" id="change_password_form_password_confirm" /><br>
-		          		</div>
-		           		<button class="btn btn btn-primary" value="ChangePW" type="submit" />
-		           			Passwort ändern
-		           		</button>
-	              	</form>
-		   		</div>
+				<div id="collapseChangePassword" class="panel-collapse collapse">
+					<div class="panel-body">
+						<strong>Email:</strong> <?php echo htmlspecialchars($user['email']);?><br>
+						<strong>ID:</strong> <?php echo htmlspecialchars($user['id']);?><br>
+						<br>
+						<form class="change_password_form" action="./index.php?view=processChangepassword"  method="post" id="change_password_form" name="change_password_form">
+			          		<div class="form-group">
+			          			<input type="hidden" class="form-control" id="change_password_form_email" name="change_password_form_email" value="<?php echo $_SESSION['email']; // we need this so the browser pw manager knows which account we are changing password for, else he might ask?>" />
+			          		</div>
+			          		<div class="form-group">
+			          			<input class="form-control" type="password" placeholder="Passwort" name="change_password_form_password" id="change_password_form_password"/><br>
+			          		</div>
+							<div class="form-group">
+			          			<input class="form-control" placeholder="Passwort wiederholen" type="password" name="change_password_form_password_confirm" id="change_password_form_password_confirm" /><br>
+			          		</div>
+			           		<button class="btn btn btn-primary" value="ChangePW" type="submit" />
+			           			Passwort ändern
+			           		</button>
+		              	</form>
+			   		</div>
+			   	</div>
 		   	</div>
 		<?php }?>
 
