@@ -57,6 +57,7 @@ class Controller {
 
 		// loads the head, css etc.
 		$this->viewOuter->setTemplate ( 'skeleton' );
+		$this->viewOuter->assign('username', $userModel->getUsernameByID($_SESSION['user_id']));
 		$this->viewOuter->assign ( 'csq_footer', 'Die Wissensplattform' );
 		$this->viewOuter->assign ( 'csq_content', $viewInner->loadTemplate () );
 		// Return the whole page now

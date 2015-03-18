@@ -118,7 +118,7 @@ var quizzenger = {
 					}
 				}
 
-				for(var i = 1; i < json.length - 1; i++) {
+				for(var i = 1; i < json.length; i++) {
 					if(Array.isArray(json[i]))
 						json[i].forEach(attachmentWalker);
 				}

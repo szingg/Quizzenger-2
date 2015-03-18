@@ -94,7 +94,7 @@ function checkActiveTab($openedView){
 							$pageBefore = filter_input(INPUT_GET, 'pageBefore', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
 							if (is_null($pageBefore) && checkActiveTab("login")){echo checkActiveTab("login");} ?>><?php
 							if($GLOBALS['loggedin']){
-								echo "<a href=\"index.php?view=logout\"><span class=\"glyphicon glyphicon-log-out\"></span> Logout";
+								echo "<a href=\"index.php?view=logout\"><span class=\"glyphicon glyphicon-log-out\"></span> Logout ".htmlspecialchars($this->_['username']);
 							}else{
 								echo "<a href=\"index.php?view=login\"><span class=\"glyphicon glyphicon-log-in\"></span> Login";
 							}
@@ -109,7 +109,7 @@ function checkActiveTab($openedView){
 				$message = filter_input(INPUT_GET, 'info', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
 				if(!is_null($message) && defined($message)){
 					$message = constant($message);
-					echo('<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($message).'</div>');
+					echo('<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.$message.'</div>');
 				}
 			?>
 			<noscript>

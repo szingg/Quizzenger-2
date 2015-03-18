@@ -71,7 +71,7 @@ class QuestionModel{
 		if(! isset ($_POST['opquestion_form_questionType'],  $_POST ['opquestion_form_correctness'])){
 			$missingParam=true;
 		}
-		if(! isset ($_POST ['opquestion_form_attachmentOld'], $_POST ['opquestion_form_attachment'], $_POST ['opquestion_form_attachmentLocal'])){
+		if(! isset ($_POST ['opquestion_form_attachmentOld'],$_POST ['opquestion_form_attachmentTempFileName'],  $_POST ['opquestion_form_attachment'], $_POST ['opquestion_form_attachmentLocal'])){
 			$missingParam=true;
 		}
 
@@ -103,9 +103,8 @@ class QuestionModel{
 				$questionID=$this->newQuestion($type,$_POST ['opquestion_form_questionText'],$_SESSION['user_id'],$chosenCategory, $_POST ['opquestion_form_attachment'],$_POST ['opquestion_form_attachmentLocal']);
 				//moveTempFile
 				if($_POST ['opquestion_form_attachmentLocal'] =='1'){
-					$success = $this->moveTempFile($_POST ['opquestion_form_attachment']);
+					$success = $this->moveTempFile($_POST['opquestion_form_attachmentTempFileName'], $questionID.'.'.$_POST['opquestion_form_attachment']);
 					if($success == false){
-						//TODO: Fehlerbehandlung
 						$this->logger->log ( "Attachment could not be moved", Logger::WARNING );
 					}
 				}
@@ -120,14 +119,13 @@ class QuestionModel{
 					}
 					$answerModel->newAnswer($correctnessOfAnswer,$_POST ['opquestion_form_answer'.$i],$_POST['opquestion_form_answerexplanation'.$i], $questionID);
 				}
-			}elseif ($operation=="edit"){
-				$questionID=$this->editQuestion($type,$_POST ['opquestion_form_questionText'],$_SESSION['user_id'],$_POST['opquestion_form_question_id'], $_POST ['opquestion_form_attachment'],$_POST ['opquestion_form_attachmentLocal']);
+			}elseif ($operation=="edit"){	
+				$questionID=$this->editQuestion($type,$_POST['opquestion_form_questionText'],$_SESSION['user_id'],$_POST['opquestion_form_question_id'], $_POST ['opquestion_form_attachment'],$_POST ['opquestion_form_attachmentLocal']);
 				//moveTempFile
-				if($_POST ['opquestion_form_attachmentLocal'] =='1' && $_POST ['opquestion_form_attachment'] != $_POST ['opquestion_form_attachmentOld']){
-					$success = $this->moveTempFile($_POST ['opquestion_form_attachment']);
-					$this->removeAttachment($_POST ['opquestion_form_attachmentOld']);
+				if($_POST ['opquestion_form_attachmentLocal'] =='1' && $_POST ['opquestion_form_attachmentTempFileName'] != $_POST ['opquestion_form_attachmentOld']){
+					$this->removeAttachment($questionID.'.'.$_POST ['opquestion_form_attachmentOld']);
+					$success = $this->moveTempFile($_POST['opquestion_form_attachmentTempFileName'], $questionID.'.'.$_POST['opquestion_form_attachment']);
 					if($success == false){
-						//TODO: Fehlerbehandlung
 						$this->logger->log ( "Attachment could not be moved", Logger::WARNING );
 					}
 				}
@@ -165,23 +163,38 @@ class QuestionModel{
 		die();
 	}
 
-	private function moveTempFile($file){
+	/**
+	 * Moves a file from the temporary attachment directory to the attachment directory
+	 * @param $oldFilename filename used in the temp dir
+	 * @param $newFilename filename used in the attachment dir
+	 * @return bool Returns true on success or false on failure.
+	 */
+	private function moveTempFile($oldFilename, $newFilename){
 		$path = getcwd();
 		$targetDir = $this->join_paths($path, ATTACHMENT_PATH);
 		$sourceDir = $this->join_paths($targetDir, 'temp');
-		{
-			$targetFile = $this->join_paths($targetDir, $file);
-			$sourceFile = $this->join_paths($sourceDir, $file);
-			return rename($sourceFile, $targetFile);
-		}
+		$targetFile = $this->join_paths($targetDir, $newFilename);
+		$sourceFile = realpath($this->join_paths($sourceDir, $oldFilename));
+		//check if sourceFile is in tempDir. This check prevents xss 
+		if($sourceDir==false || dirname($sourceFile) !== realpath($sourceDir)) return false;
+		return rename($sourceFile, $targetFile);
 	}
-
+	
+	/**
+	 * Removes a specific files in the attachment directory
+	 * @param $file attachment/file to delete
+	 * @return bool Returns true on success or false on failure. 
+	 */
 	private function removeAttachment($file){
 		$path = getcwd();
 		$targetPath = $this->join_paths($path, ATTACHMENT_PATH, $file);
 		return unlink($targetPath);
 	}
-
+	
+	/**
+	 * Removes all files in the temporary attachment directory
+	 * @return no return value
+	 */
 	private function removeAllFilesInTempDir(){
 		$path = getcwd();
 		$targetDir = $this->join_paths($path, ATTACHMENT_PATH);
@@ -189,13 +202,17 @@ class QuestionModel{
 		array_map('unlink', glob($sourceDir));
 	}
 
+	/**
+	 * Joins multiple path-fragments to a single path
+	 * @param  Comma-separated list of directory- and file-fragments 
+	 * @return Returns the joined path
+	*/
 	private function join_paths() {
 		$paths = array();
 
 		foreach (func_get_args() as $arg) {
 			if ($arg !== '') { $paths[] = $arg; }
 		}
-
 		return preg_replace('#/+#','/',join('/', $paths));
 	}
 

@@ -71,22 +71,30 @@
 				<div class="btn-group"><input id="btn-attach-file" type="button" class="btn btn-primary" value="Datei anh&auml;ngen"> </div>
 				<div class="btn-group text-success" id="msg-attach">
 					<?php
-						$msgAttach = "";
-						switch($question['attachment_local']){
-							case '0':
-								$msgAttach = "Video eingebettet.";
-								break;
-							case '1':
-								$msgAttach =  "Datei ".$question['attachment']." angeh&auml;ngt.";
-								break;
+						$link = "";
+						if($operation=="edit"){
+							switch($question['attachment_local']){
+								case '0':
+									$link = htmlspecialchars($question['attachment']);
+									echo '<b><a class="text-success" href="'.$link.'">Anhang</a></b> eingebettet.';
+									break;
+								case '1':
+									$paths = array();
+									$paths[] = ATTACHMENT_PATH;
+									$paths[] = $question['id'].'.'.htmlspecialchars($question['attachment']);
+									
+									$link = preg_replace('#/+#','/',join('/', $paths));
+									echo '<b><a class="text-success" href="'.$link.'">Anhang</a></b> eingebettet.';
+									break;
+							}
 						}
-						echo $msgAttach;
 					?>
 				</div>
 				<div hidden="true">
-					<input name="opquestion_form_attachment" id="opquestion_form_attachment" type="text" value="<?= $question['attachment'] ?>"/>
-					<input name="opquestion_form_attachmentLocal" id="opquestion_form_attachmentLocal" type="text" value="<?= $question['attachment_local'] ?>"/>
-					<input name="opquestion_form_attachmentOld" id="opquestion_form_attachmentOld" type="text" value="<?= $question['attachment'] ?>" />
+					<input name="opquestion_form_attachment" id="opquestion_form_attachment" type="text" value="<?= htmlspecialchars($question['attachment']) ?>"/>
+					<input name="opquestion_form_attachmentTempFileName" id="opquestion_form_attachmentTempFileName" type="text" value="<?= htmlspecialchars($question['attachment']) ?>"/>
+					<input name="opquestion_form_attachmentLocal" id="opquestion_form_attachmentLocal" type="text" value="<?= htmlspecialchars($question['attachment_local']) ?>"/>
+					<input name="opquestion_form_attachmentOld" id="opquestion_form_attachmentOld" type="text" value="<?= htmlspecialchars($question['attachment']) ?>" />
 				</div>
 			</div>
 			<h3>Antworten:</h3>
@@ -156,7 +164,7 @@
 			        <div class="modal-content">
 			            <div class="modal-header bg-primary">
 			                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                <h4 class="modal-title">Datei anh&auml;ngen</h4>
+			                <h4 class="modal-title">Datei anhängen</h4>
 			            </div>
 			           <!-- <div class="modal-body">  -->
 			           <div class="">
@@ -169,7 +177,7 @@
 				            	<div class="panel-collapse collapse in">
 									<div class="panel-body">
 										<div class="btn-group">
-											<input id="inputLink" class="pull-left" type="text" size="60" placeholder="Bitte geben Sei ihren Link ein" value="<?php if($question['attachment_local']=='0'){ echo $question['attachment']; }?>"/>
+											<input id="inputLink" class="pull-left" type="text" size="60" placeholder="Bitte geben Sei ihren Link ein" value="<?php if($operation=="edit" && $question['attachment_local']=='0'){ echo htmlspecialchars($question['attachment']); }?>"/>
 										</div>
 										<div class="btn-group">
 											<input id="btn-checkLink" class="btn btn-primary pull left" type="button" value="Pr&uuml;fen" />
