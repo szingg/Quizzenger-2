@@ -13,13 +13,20 @@ define ( "db", "csq" );
 define ( "dbhost", "ENTER ME" );
 define ( "dbport", "3306" );
 
-// Quizzenger Settings
-define ("APP_PATH","ENTER ME");
+//Attachment Settings
 define ("ATTACHMENT_PATH","content/attachments");
 define ("MAX_ATTACHMENT_SIZE_KByte",1024);
 define ("ATTACHMENT_ALLOWED_EXTENSIONS","image/jpg, image/jpeg, image/png");
+//Achievement Settings
+define ("ACHIEVEMENT_PATH","content/achievements");
+define ("ACHIEVEMENT_IMAGE_EXTENSION","png");
+//Rank Settings
+define ("RANK_PATH","content/ranks");
+define ("RANK_IMAGE_EXTENSION","png");
+//Question Settings
 define ("SINGLECHOICE_ANSWER_COUNT","4");
 define ("SINGLECHOICE_TYPE","SingleChoice");
+//Layout Settings
 define ("QUESTION_INPUTFIELD_MAX_LENGTH","320");
 define ("QUESTION_INPUTFIELD_MAX_ROWCOUNT","3");
 define ("ANSWER_INPUTFIELD_MAX_LENGTH","160");
@@ -27,17 +34,19 @@ define ("ANSWER_INPUTFIELD_ROWCOUNT","2");
 define ("ANSWER_EXPLANATION_INPUTFIELD_MAX_LENGTH","320");
 define ("ANSWER_EXPLANATION_INPUTFIELD_ROWCOUNT","1");
 define ("USER_INACTIVE_NAME_ADDITION","(inaktiv)");
-define ("DIFFERENT_QUESTION_WEIGHTS", "5");
+define ("QUESTIONHISTORY_NEWEST_SHOWNCOUNT",10);
+define ("SHOW_PROCESSING_TIME",true);
+define ("QUESTIONTEXT_CUTOFF_LENGTH",75);
+//SCORE
 define ("QUESTION_ANSWERED_SCORE", "2");
 define ("QUESTION_CREATED_SCORE", "5");
 define ("ADD_RATING_SCORE", "1");
 define ("QUIZ_TAKEN_SCORE", "1");
 define ("MODERATION_SCORE", "100");
 define ("RATING_MAX_STARS", "5");
-define ("QUESTIONTEXT_CUTOFF_LENGTH",75);
+//Logical Settings
 define ("MIN_DIFFICULTY_COUNT_NEEDED_TO_SHOW",5);
-define ("QUESTIONHISTORY_NEWEST_SHOWNCOUNT",10);
-define ("SHOW_PROCESSING_TIME",true);
+define ("DIFFERENT_QUESTION_WEIGHTS", "5");
 
 
 // Log Settings
