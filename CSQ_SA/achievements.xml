@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<quizzenger version="2.0">
+	<achievements>
+		<achievement type="QuestionAnsweredCorrect">
+			<name>200 Fragen!</name>
+			<order>200</order>
+			<description>Du hast 200 Fragen korrekt beantwortet.</description>
+			<image>question-answered-200</image>
+			<bonusscore>200</bonusscore>
+			<arguments>
+				<argument name="question-count" value="100" />
+			</arguments>
+			<triggers>
+				<trigger name="question-answered" />
+				<trigger name="game-question-answered" />
+			</triggers>
+		</achievement>
+		<achievement type="Date">
+			<name>Weihnachtsmann</name>
+			<order>100</order>
+			<description>Du hast eine Frage an Weihnachten korrekt gelöst.</description>
+			<image>date-christmas</image>
+			<bonusscore>50</bonusscore>
+			<arguments>
+				<argument name="date" value="*-12-24" />
+			</arguments>
+			<triggers>
+				<trigger name="always" />
+			</triggers>
+		</achievement>
+	</achievements>
+</quizzenger>
