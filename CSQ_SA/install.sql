@@ -315,9 +315,22 @@ CREATE TABLE IF NOT EXISTS `achievement` (
 CREATE TABLE IF NOT EXISTS `achievementtrigger` (
   `achievement_id` int(11) NOT NULL,
   `name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY(achievement_id, name),
+  PRIMARY KEY(`achievement_id`, `name`),
   KEY `fk_achievement_achievementtrigger` (`achievement_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rank`
+--
+CREATE TABLE IF NOT EXISTS `rank` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `threshold` int(11) NOT NULL,
+  `image` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY(`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 

@@ -38,13 +38,11 @@ if(isset($_POST['install'])){
 	$result = mysqli_query($link,"USE DATABASE ".db);
 	echo("<p style=\"color:green;\">Connected to DB ".db."</p><br>");
 
-	
-
-	$xml = simplexml_load_file('achievements.xml');
+	$xml = simplexml_load_file('settings.xml');
 	//check version
 	if(!isset($xml['version'])){
 		throwXmlParseException();
-	} 
+	}
 	$version = '2.0';
 	if($xml['version'] != $version){
 		throwVersionException($version);
@@ -58,8 +56,7 @@ if(isset($_POST['install'])){
 		$order = '"'.$link->real_escape_string($ach->order).'"';
 		$description = '"'.$link->real_escape_string($ach->description).'"';
 		$image = '"'.$link->real_escape_string($ach->image).'"';
-		//$arguments = '"'.$link->real_escape_string($ach->arguments->asXML()).'"';
-		//$argumentsJSON = json_decode(json_encode((array) $ach->arguments), 1);
+
 		$arguments = array();
 		foreach($ach->arguments->argument as $arg){
 			if(! isset($arg["name"], $arg["value"])){
@@ -70,7 +67,7 @@ if(isset($_POST['install'])){
 		$arguments = '"'.$link->real_escape_string(json_encode($arguments)).'"'; //decode with json_decode($arguments, true);
 		$bonusscore = '"'.$link->real_escape_string($ach->bonusscore).'"';
 		$triggers = $ach->triggers;
-		
+
 		$result = $link->query("INSERT INTO achievement (name, description, type, image, arguments, bonus_score) VALUES ($name, $description, $type, $image, $arguments, $bonusscore)");
 		if($result){
 			$achievementId = $link->insert_id;
@@ -85,29 +82,49 @@ if(isset($_POST['install'])){
 				else{
 					throwSqlInsertException($link);
 				}
-			}	
+			}
 		}
 		else{
 			throwSqlInsertException($link);
 		}
-		
 	}
+	echo("<p style=\"color:green;\">Achievements successfully installed!</p><br>");
+
+	foreach ($xml->ranks[0]->rank as $rank){
+		if(! isset($rank['name'], $rank['threshold'],$rank['image'])){
+			throwMalformedXMLException();
+		}
+		$name = '"'.$link->real_escape_string($rank['name']).'"';
+		$threshold = '"'.$link->real_escape_string($rank['threshold']).'"';
+		$image = '"'.$link->real_escape_string($rank['image']).'"';
+
+		$result = $link->query("INSERT INTO rank (name, threshold, image) VALUES ($name, $threshold, $image)");
+		if($result){}
+		else{
+			throwSqlInsertException($link);
+		}
+	}
+	echo("<p style=\"color:green;\">Ranks successfully installed!</p><br>");
+
 	echo("<hr>");
-	echo"<b>Remove following files: achievements.xml, installerAchievements.php!</b>";
+	echo"<b>Remove following files: settings.xml, installerSettings.php!</b>";
 
 }else{?>
-	<h3>Welcome to the Quizzenger Achievement Installer</h3>
-	<b>1.</b> Specify your required Achievements in the achievements.xml file.
+	<h3>Welcome to the Quizzenger Settings Installer</h3>
+	<b>1.</b> Specify your required Achievements, Ranks and Triggers in the settings.xml file.
 	 Please just use the presetted Achievement Types and Triggers.
+	 Otherwise you have to write your own Achievement or Rank plugin.
 	 Consider that the attributes of each Achievement depend on its type.<br><br>
 	<b>2.</b>Save the images which correspond to the Achievements in the content/achievements folger or a public folder of your choice.<br><br>
-	<b>3.</b>Open the config.php file and set the 'ACHIEVEMENT_PATH' and the 'ACHIEVEMENT_IMAGE_EXTENSION' constants.<br><br>
+	<b>3.</b>Open the config.php file and set the 'ACHIEVEMENT_PATH', 'ACHIEVEMENT_IMAGE_EXTENSION',
+	'RANK_PATH' and the 'RANK_IMAGE_EXTENSION' constants.<br><br>
+	<br><br>
 	<b>4.</b>Press the Install Button<br><br>
 
 
-	<form action="installerAchievements.php" method="post">
+	<form action="installerSettings.php" method="post">
 		<input type="hidden" name="install" value="go">
-		<input type="submit" value="Install Achievements">
+		<input type="submit" value="Install Settings">
 	</form>
 
 	<br><hr>

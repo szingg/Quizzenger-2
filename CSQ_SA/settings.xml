@@ -29,4 +29,17 @@
 			</triggers>
 		</achievement>
 	</achievements>
+	<ranks>
+		<rank name="Neuling" threshold="0" image="neuling" />
+		<rank name="Besucher" threshold="1000" image="besucher" />
+		<rank name="Einsteiger" threshold="2500" image="einsteiger" />
+		<rank name="Aufsteiger" threshold="5000" image="aufsteiger" />
+		<rank name="Fragekenner" threshold="8000" image="fragekenner" />
+		<rank name="Alleskönner" threshold="12000" image="alleskoenner" />
+		<rank name="Profi" threshold="18000" image="profi" />
+		<rank name="Veteran" threshold="26000" image="veteran" />
+		<rank name="Meister" threshold="34000" image="meister" />
+		<rank name="Baron" threshold="44000" image="baron" />
+		<rank name="Legende" threshold="60000" image="legende" />
+	</ranks>
 </quizzenger>
