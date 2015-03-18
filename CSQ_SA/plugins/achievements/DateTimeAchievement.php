@@ -54,7 +54,7 @@
 			public function grant(mysqli $database, UserEvent $event) {
 				$dateTime = $event->get('date-time');
 				$matches = self::match($dateTime);
-				
+
 				if($matches === false)
 					return false;
 
