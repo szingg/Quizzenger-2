@@ -8,7 +8,7 @@
 	$_SESSION ['counter'. $session_id] = 0;
 
 	if (count ( $_SESSION ['questions'. $session_id] ) > 0) {
-		$firstUrl = "?view=question&amp;id=" . $_SESSION ['questions'. $session_id] [0] . "&amp;session_id=". $session_id;
+		$firstUrl = "?view=question&id=" . $_SESSION ['questions'. $session_id] [0] . "&session_id=". $session_id;
 	} else {
 		$firstUrl = "?view=quizend";
 	}

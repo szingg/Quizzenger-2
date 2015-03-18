@@ -63,7 +63,7 @@
 			$viewInner->assign ( 'progress', $progress );
 
 			if (count ( $_SESSION ['questions'. $session_id] ) > $_SESSION ['counter'. $session_id]) {
-				$viewInner->assign ( 'nextQuestion', "?view=question&amp;id=" . $_SESSION ['questions'. $session_id] [$_SESSION ['counter'. $session_id]] . "&amp;session_id=" . $session_id);
+				$viewInner->assign ( 'nextQuestion', "?view=question&id=" . $_SESSION ['questions'. $session_id] [$_SESSION ['counter'. $session_id]] . "&amp;session_id=" . $session_id);
 			} else {
 				$viewInner->assign ( 'nextQuestion', "?view=quizend&session_id=". $session_id);
 			}
