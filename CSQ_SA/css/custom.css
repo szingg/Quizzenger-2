@@ -249,7 +249,7 @@ div>a {
   left: 50%;
   top: 50%;
   margin-left: -32px;
-  margin-top: -32px;*/
+  margin-top: -32px;
 }
 
 .achievement-tooltip:before{
@@ -283,6 +283,7 @@ div>a {
     content: attr(data-tooltip);
     position: absolute;
     z-index: 98;
+    box-shadow: 0 0 3px #888;
 }
 
 
