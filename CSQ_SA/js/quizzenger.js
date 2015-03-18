@@ -12,28 +12,28 @@ function Quizzenger() {
 		opquestion.initialize(e);
 
 		$(".rank").click(function(){
-			//hide all
-			//$(".rankTooltip").removeClass("setVisible").addClass("hide");
-			//show this tooltip
-			//$(this).parent().find("> .rankTooltip").removeClass("hide").addClass("setVisible");
-
-			//hide all
-			$(".rank").removeClass("myTooltip");
-			//show this tooltip
-			$(this).addClass("myTooltip");
-			//$(this).parent().addClass("myTooltip");
+			self.showTooltip("rank", this);
+		});
+		$(".rank").hover(function(){
+			self.showTooltip("rank", this);
 		});
 
-		$(".point-ach").click(function(){
-			//hide all
-			$(".point-ach").removeClass("myTooltip");
-			//show this tooltip
-			$(this).addClass("myTooltip");
-			//$(this).parent().addClass("myTooltip");
-		});	
-
+		$(".point-achievement").click(function(){
+			self.showTooltip("point-achievement", this);
+		});
+		$(".point-achievement").hover(function(){
+			self.showTooltip("point-achievement", this);
+		});
 	};
+
+	this.showTooltip= function(cssClass, showElement){
+		//hide all
+		$("."+cssClass).removeClass("achievement-tooltip");
+		//show this tooltip
+		$(showElement).addClass("achievement-tooltip");
+	}
 }
+
 
 var quizzenger = {
 	question : {
