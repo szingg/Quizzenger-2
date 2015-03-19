@@ -26,18 +26,17 @@
 			$reportModel->addReport("user", $this->request ['id'], NULL, $_SESSION['user_id'], NULL);
 		}
 	}
-	$alreadyReported= $reportModel->checkIfUserAlreadyDoneReport("user", $userID, $_SESSION ['user_id']);
+	$alreadyReported = $reportModel->checkIfUserAlreadyDoneReport("user", $userID, $_SESSION ['user_id']);
 
+	$achievementList = $userModel->getAchievementList($userID);
 
-	$viewInner->assign ('alreadyreported',$alreadyReported);
-	$viewInner->assign ( 'user', $user );
-	$viewInner->assign ( 'quizcount', $quizCount );
-	$viewInner->assign ( 'questioncount', $questionCount );
-	$viewInner->assign ( 'userscore', $userscore );
-	$viewInner->assign ( 'categoryscores', $categoryscores );
-	$viewInner->assign ( 'moderatedcategories', $moderatedCategories );
-	$viewInner->assign ( 'absolvedcount', $absolvedCount );
-
-
-
+	$viewInner->assign('alreadyreported',$alreadyReported);
+	$viewInner->assign('user', $user );
+	$viewInner->assign('quizcount', $quizCount );
+	$viewInner->assign('questioncount', $questionCount );
+	$viewInner->assign('userscore', $userscore );
+	$viewInner->assign('categoryscores', $categoryscores );
+	$viewInner->assign('moderatedcategories', $moderatedCategories );
+	$viewInner->assign('absolvedcount', $absolvedCount );
+	$viewInner->assign('achievementlist', $achievementList);
 ?>

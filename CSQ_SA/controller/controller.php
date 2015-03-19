@@ -55,7 +55,7 @@ class Controller {
 				require_once("/../../gamification/controller/gamecontroller.php");
 				new GameController($viewInner);
 				$viewInner = GameController.loadView();
-				
+
 			default:
 				include("controllers/default.php");
 				break;

@@ -6,6 +6,7 @@
 	$categoryscores = $this->_ ['categoryscores'];
 	$moderatedCategories = $this->_ ['moderatedcategories'];
 	$absolvedCount = $this->_ ['absolvedcount'];
+	$achievementList = $this->_['achievementlist'];
 
 	if (isset($this->_['message'])){
 		echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($this->_['message']).'</div>';
@@ -128,78 +129,11 @@
 			<!--  -->
 			<div id="achievements">
 				<h4>Achievements</h4>
-				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
-				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
-					<img src="templates/img/moderator.png"></img>
-				</div>
+				<?php while($current = $achievementList->fetch_object()): ?>
+					<div class="point point-achievement clickable <?php echo $current->achieved ? ' point-active' : ''; ?>" data-tooltip="<?php echo htmlspecialchars("★ {$current->name} ★ $current->description"); ?>">
+						<img src="content/achievements/<?php echo $current->image; ?>.png" />
+					</div>
+				<?php endwhile; ?>
 			</div>
 		</div>
 	</div>

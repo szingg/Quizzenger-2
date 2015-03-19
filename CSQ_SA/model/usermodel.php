@@ -2,10 +2,10 @@
 
 class UserModel{
 
-	var $mysqli;
-	var $logger;
+	private $mysqli;
+	private $logger;
 
-	function __construct($mysqliP, $logP) {
+	public function __construct($mysqliP, $logP) {
 		$this->mysqli = $mysqliP;
 		$this->logger = $logP;
 	}
@@ -15,12 +15,12 @@ class UserModel{
 		return $this->mysqli->getSingleResult($result);
 	}
 
-	function isSuperuser($user_id){
+	public function isSuperuser($user_id){
 		$result = $this->mysqli->s_query("SELECT superuser FROM user WHERE id=?",array('i'),array($user_id));
 		return $this->mysqli->getSingleResult($result)['superuser']  ? true : false;
 	}
 
-	function getQuestionAbsolvedCount($user_id){
+	public function getQuestionAbsolvedCount($user_id){
 		$result = $this->mysqli->s_query("SELECT COUNT(DISTINCT question_id) FROM questionperformance WHERE user_id=?",array('i'),array($user_id));
 		$result=  $this->mysqli->getSingleResult($result);
 		return $result ["COUNT(DISTINCT question_id)"];
@@ -75,7 +75,7 @@ class UserModel{
 		return $username;
 	}
 
-	function changePassword($pwHash, $mysqli){
+	public function changePassword($pwHash, $mysqli){
 		$random_salt = hash ( 'sha512', uniqid ( mt_rand (), true ) );
 		$passwordForDB = hash ( 'sha512', $pwHash . $random_salt );
 
@@ -91,6 +91,15 @@ class UserModel{
 		} else {
 			return false;
 		}
+	}
+
+	public function getAchievementList($userId) {
+		return $this->mysqli->s_query('SELECT id, name, sort_order, description, image, bonus_score,'
+			. ' (SELECT CASE WHEN EXISTS '
+				. ' (SELECT * FROM userachievement WHERE userachievement.achievement_id = id AND userachievement.user_id = ?)'
+				. ' THEN 1 ELSE 0 END) as achieved'
+			. ' FROM achievement'
+			. ' ORDER BY sort_order ASC, name ASC', ['i'], [$userId], false);
 	}
 }
 ?>
