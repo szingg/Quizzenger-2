@@ -94,7 +94,7 @@ class UserModel{
 	}
 
 	public function getAchievementList($userId) {
-		return $this->mysqli->s_query('SELECT id, name, sort_order, description, image, bonus_score,'
+		return $this->mysqli->s_query('SELECT name, sort_order, description, image, bonus_score,'
 			. ' (SELECT CASE WHEN EXISTS '
 				. ' (SELECT * FROM userachievement WHERE userachievement.achievement_id = id AND userachievement.user_id = ?)'
 				. ' THEN 1 ELSE 0 END) as achieved'
