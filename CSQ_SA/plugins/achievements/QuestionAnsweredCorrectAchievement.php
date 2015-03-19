@@ -5,7 +5,7 @@
 		use \quizzenger\data\UserEvent as UserEvent;
 		use \quizzenger\achievements\IAchievement as IAchievement;
 
-		class QuestionAnsweredAchievement implements IAchievement {
+		class QuestionAnsweredCorrectAchievement implements IAchievement {
 			public function grant(mysqli $database, UserEvent $event) {
 				$userId = $event->user();
 				$questionCount = $event->get('question-count');
@@ -16,7 +16,7 @@
 				$statement->bind_param('i', $userId);
 
 				if($statement->execute() === false) {
-					Log::error('Database Query failed in QuestionAnsweredAchievement.');
+					Log::error('Database Query failed in QuestionAnsweredCorrectAchievement.');
 					return false;
 				}
 
@@ -27,6 +27,6 @@
 
 				return false;
 			}
-		} // class QuestionAnsweredAchievement
+		} // class QuestionAnsweredCorrectAchievement
 	} // namespace quizzenger\plugins\achievements
 ?>
