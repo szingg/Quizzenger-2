@@ -1,6 +1,6 @@
 <?php
 /*	@author Simon Zingg
- *	this script uploads attachment to the defined path and checks for extensions, size and if already exists.
+ *	This script uploads attachment to the defined path and checks for extensions, size and if already exists.
 */
 class FileUpload{
 	var $files;

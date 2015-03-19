@@ -43,6 +43,9 @@
 	//Game View
 	$viewGame = new View();
 	$viewGame->setTemplate ( 'gamelobby' );
+	$GameModel = new \quizzenger\gamification\model\GameModel($this->mysqli, $quizModel);
+	$openGames = $GameModel->getOpenGames();
+	$viewGame->assign ( 'openGames', $openGames );
 	$quizzes = $quizListModel->getUserQuizzesByUserID ( $_SESSION ['user_id'] );
 	$viewGame->assign ( 'quizzes', $quizzes );
 	
