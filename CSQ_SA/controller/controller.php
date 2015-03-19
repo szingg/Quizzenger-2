@@ -41,7 +41,7 @@ class Controller {
 
 		switch ($this->template) {
 
-			case 'about' :
+			case 'about' : case 'learn' :
 			case 'question' :case 'login' : case 'user' : case 'solution' : case 'questionlist' : case 'myquestions' :
 			case 'mycontent' : case 'myquizzes' : case 'quizdetail' : case 'quizstart' : case 'quizend' : case 'categorylist' :
 			case 'logout' : case 'error' : case 'register' : case 'processLogin' : case 'processChangepassword' : case 'processRegistration' :
