@@ -24,22 +24,24 @@
 							</tr>
 						</thead>
 						<tbody>
-						<?php /*$i=-1; foreach ( $this->_ ['questions'] as $question ) {
-								$i++; */ ?>
+						<?php $i=-1; foreach ( $this->_ ['openGames'] as $game ) {
+								$i++;  ?>
 							<tr>
 								<td>
 									<a href="?view=todo">
-										Testgame
+										<?php echo htmlspecialchars($game['name']); ?>
 									</a>
 								</td>
-								<td class="hidden-xs">7 Teilnehmer </td>
-								<td class="hidden-xs">WuTänClän </td>
+								<td class="hidden-xs"><?php echo (isset($game['members'])?$game['members']:'0').' Teilnehmer'; ?> </td>
+								<td class="hidden-xs"><?php echo htmlspecialchars($game['username']); ?></td>
 								<td class="hidden-xs">
 									<a href="?view=todo" >
 										<span class="glyphicon glyphicon-ok-sign"></span>
 									</a>
 								</td>
 							</tr>
+						<?php } ?>
+							<!--
 							<tr>
 								<td>
 									<a href="?view=todo">
@@ -67,7 +69,7 @@
 										<span class="glyphicon glyphicon-ok-sign"></span>
 									</a>
 								</td>
-							</tr>
+							</tr> -->
 						</tbody>
 					</table>
 				</div> <!-- panel-body -->

@@ -343,6 +343,7 @@ CREATE TABLE IF NOT EXISTS `rank` (
 
 CREATE TABLE IF NOT EXISTS `gamesession` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
   `quiz_id` int(11) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `has_started` timestamp NULL DEFAULT NULL,
