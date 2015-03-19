@@ -2,6 +2,7 @@
 
 namespace quizzenger\achievements {
 	use \mysqli as mysqli;
+	use \quizzenger\logging\Log as Log;
 	use \quizzenger\data\UserEvent as UserEvent;
 	use \quizzenger\achievements\IAchievement as IAchievement;
 
@@ -64,6 +65,9 @@ namespace quizzenger\achievements {
 					$this->dispatchSingle($id, $type, $currentEvent);
 				}
 				$result->close();
+			}
+			else {
+				Log::error('Could not execute DB query.');
 			}
 		}
 	} // class AchievementDispatcher
