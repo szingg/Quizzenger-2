@@ -1,0 +1,153 @@
+[1mdiff --cc CSQ_SA/css/custom.css[m
+[1mindex e7fe32b,dda966b..0000000[m
+[1m--- a/CSQ_SA/css/custom.css[m
+[1m+++ b/CSQ_SA/css/custom.css[m
+[36m@@@ -166,10 -166,7 +166,9 @@@[m [mdiv>a [m
+    height: 100%;[m
+  }[m
+  [m
+[31m- [m
+  /* ----------------------------------------------- */[m
+[32m +/*                    Rankbar                      */[m
+[32m +/* ----------------------------------------------- */[m
+  [m
+  .rankbar {[m
+      height:4px;[m
+[1mdiff --cc CSQ_SA/js/quizzenger.js[m
+[1mindex 4033337,1250450..0000000[m
+[1m--- a/CSQ_SA/js/quizzenger.js[m
+[1m+++ b/CSQ_SA/js/quizzenger.js[m
+[1mdiff --cc CSQ_SA/templates/user.php[m
+[1mindex 4a21763,d6952dc..0000000[m
+[1m--- a/CSQ_SA/templates/user.php[m
+[1m+++ b/CSQ_SA/templates/user.php[m
+[36m@@@ -119,11 -119,11 +119,8 @@@[m
+  					        	Baron[m
+  					        </div>[m
+  					    </div>[m
+[31m -					    <div class="rank" tooltip="Legende (60'000 Punkte)">[m
+[31m -					    	<div class="point clickable"></div>[m
+[31m -					    	<div class="rankTooltip hide">[m
+[31m -					        	Legende (60'000 Punkte)[m
+[31m -					        </div>[m
+[32m +					    <div class="rank" data-tooltip="Legende (60'000 Punkte)">[m
+[32m +					    	<div class="point point-rank clickable"></div>[m
+[31m- 					    	<div class="rankdata-tooltip hide">[m
+[31m- 					        	Legende (60'000 Punkte)[m
+[31m- 					        </div>[m
+  					    </div>[m
+  				</div>[m
+  			</div>[m
+[36m@@@ -131,76 -131,76 +128,76 @@@[m
+  			<!--  -->[m
+  			<div id="achievements">[m
+  				<h4>Achievements</h4>[m
+[31m -				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m +				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m -				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m +				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m- 				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[31m -				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m++				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m- 				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[31m -				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m++				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m -				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m +				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m -				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m +				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m- 				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[31m -				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m++				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m- 				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[31m -				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m++				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m -				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m +				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m -				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m +				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m- 				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[31m -				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m++				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m- 				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[31m -				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m++				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m -				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m +				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m -				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m +				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m- 				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[31m -				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m++				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m- 				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[31m -				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m++				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m -				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m +				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m -				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m +				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m- 				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[31m -				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m++				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m- 				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[31m -				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m++				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m -				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m +				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m -				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m +				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m- 				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[31m -				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m++				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+[31m- 				<div class="point point-achievement point point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[31m -				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+[32m++				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">[m
+  					<img src="templates/img/moderator.png"></img>[m
+  				</div>[m
+  			</div>[m

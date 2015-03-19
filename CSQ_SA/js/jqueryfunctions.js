@@ -100,7 +100,6 @@ $(function(){
     } );
 	$('#tableQuizList').DataTable( {
         responsive: true
-
     } );
 	$('#tableQuestionPerformances').DataTable( {
         responsive: true
@@ -117,6 +116,13 @@ $(function(){
         "bFilter": false,
         "paging":   false,
 	});
+	$('#tableNewGame').DataTable( {
+        responsive: true
+    } );
+    $('#tableOpenGames').DataTable( {
+        responsive: true
+    } );
+
 });
 // ================================================================================
 // VALIDATORS

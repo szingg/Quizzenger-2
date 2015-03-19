@@ -56,74 +56,71 @@
 			</div>
 			<div class="scrollable">
 				<div class="rankbar hidden-xs hidden-sm ">
-						<div class="rank" tooltip="Neuling (1000 Punkte)">
-							<div class="point clickable">
+						<div class="rank" data-tooltip="Neuling (1000 Punkte)">
+							<div class="point point-rank clickable">
 								<img src="templates/img/moderator.png"></img>
 							</div>
-					    	<div class="rankTooltip hide">Neuling (1000 Punkte)</div>
+					    	<div class="rankdata-tooltip hide">Neuling (1000 Punkte)</div>
 					    </div>
-					    <div class="rank" tooltip="Besucher (2500 Punkte)">
-					    	<div class="point point-active clickable">
+					    <div class="rank" data-tooltip="Besucher (2500 Punkte)">
+					    	<div class="point point-rank point-active clickable">
 					    		<img src="templates/img/ribbon.png"></img>
 					    	</div>
 					    </div>
-					    <div class="rank" tooltip="Einsteiger">
-					    	<div class="point clickable">
+					    <div class="rank" data-tooltip="Einsteiger">
+					    	<div class="point point-rank clickable">
 					    		<img src="templates/img/modstar.png"></img>
 					    	</div>
-					    	<div class="rankTooltip hide">
+					    	<div class="rankdata-tooltip hide">
 					        	Einsteiger
 					        </div>
 					    </div>
-					    <div class="rank" tooltip="Aufsteiger">
-					    	<div class="point clickable">
+					    <div class="rank" data-tooltip="Aufsteiger">
+					    	<div class="point point-rank clickable">
 					    		<img src="templates/img/superuser.png"></img>
 					    	</div>
-					    	<div class="rankTooltip hide">
+					    	<div class="rankdata-tooltip hide">
 					        	Aufsteiger
 					        </div>
 					    </div>
-					    <div class="rank" tooltip="Fragekenner">
-					    	<div class="point clickable"></div>
-					    	<div class="rankTooltip hide">
+					    <div class="rank" data-tooltip="Fragekenner">
+					    	<div class="point point-rank clickable"></div>
+					    	<div class="rankdata-tooltip hide">
 					        	Fragekenner
 					        </div>
 					    </div>
-					    <div class="rank" tooltip="Alleskönner">
-					    	<div class="point clickable"></div>
-					    	<div class="rankTooltip hide">
+					    <div class="rank" data-tooltip="Alleskönner">
+					    	<div class="point point-rank clickable"></div>
+					    	<div class="rankdata-tooltip hide">
 					        	Alleskönner
 					        </div>
 					    </div>
-					    <div class="rank" tooltip="Profi">
-					    	<div class="point clickable"></div>
-					    	<div class="rankTooltip hide">
+					    <div class="rank" data-tooltip="Profi">
+					    	<div class="point point-rank clickable"></div>
+					    	<div class="rankdata-tooltip hide">
 					        	Profi
 					        </div>
 					    </div>
-					    <div class="rank" tooltip="Veteran">
-					    	<div class="point clickable"></div>
-					    	<div class="rankTooltip hide">
+					    <div class="rank" data-tooltip="Veteran">
+					    	<div class="point point-rank clickable"></div>
+					    	<div class="rankdata-tooltip hide">
 					        	Veteran
 					        </div>
 					    </div>
-					    <div class="rank" tooltip="Meister">
-					    	<div class="point clickable"></div>
-					    	<div class="rankTooltip hide">
+					    <div class="rank" data-tooltip="Meister">
+					    	<div class="point point-rank clickable"></div>
+					    	<div class="rankdata-tooltip hide">
 					        	Meister
 					        </div>
 					    </div>
-					    <div class="rank" tooltip="Baron">
-					    	<div class="point clickable"></div>
-					    	<div class="rankTooltip hide">
+					    <div class="rank" data-tooltip="Baron">
+					    	<div class="point point-rank clickable"></div>
+					    	<div class="rankdata-tooltip hide">
 					        	Baron
 					        </div>
 					    </div>
-					    <div class="rank" tooltip="Legende (60'000 Punkte)">
-					    	<div class="point clickable"></div>
-					    	<div class="rankTooltip hide">
-					        	Legende (60'000 Punkte)
-					        </div>
+					    <div class="rank" data-tooltip="Legende (60'000 Punkte)">
+					    	<div class="point point-rank clickable"></div>
 					    </div>
 				</div>
 			</div>
@@ -131,76 +128,76 @@
 			<!--  -->
 			<div id="achievements">
 				<h4>Achievements</h4>
-				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
-				<div class="point point-ach point-active clickable" tooltip="Du hast 200 Fragen korrekt beantwortet.">
+				<div class="point point-achievement point-active clickable" data-tooltip="Du hast 200 Fragen korrekt beantwortet.">
 					<img src="templates/img/moderator.png"></img>
 				</div>
 			</div>

@@ -167,6 +167,8 @@ div>a {
 }
 
 /* ----------------------------------------------- */
+/*                    Rankbar                      */
+/* ----------------------------------------------- */
 
 .rankbar {
     height:4px;
@@ -180,18 +182,10 @@ div>a {
     /*padding:20px 0 10px 0; */
 }
 
-.scrollable {
-  /*overflow-x: scroll; */
-}
-
-
 .rank {
     display: inline-block;
     vertical-align:top;
-
-    /*margin-left: -20px;
-    margin-right: 80px; */
-    width: 9%;  /*gibt probleme, mit jquery.*/
+    width: 9%;
     min-width: 80px;
     margin-top: -15px;
     text-align:center;
@@ -200,25 +194,15 @@ div>a {
 }
 
 .point {
-    display:flex;
     vertical-align:top;
-
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
     box-shadow: 0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
     background: #cdcdcd;
     position:relative;
-    left: 50%;
-    margin-left: -15px;
     top:0px;
 }
 
 .point-active {
-   /* grau */
-  /*background: #DFF0D8; */
-  background-image: linear-gradient(to bottom, #DFF0D8 0px, #C8E5BC 100%);*/
- /* box-shadow: 0 0 0 4px #DFF0D8, inset 0 2px 0 rgba(0,0,0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);*/
+  background-image: linear-gradient(to bottom, #DFF0D8 0px, #C8E5BC 100%);
 }
 
 .point img {
@@ -232,143 +216,74 @@ div>a {
   margin-top: -8px;
 }
 
-.point-ach {
+.point-rank {
+  display:flex;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  left: 50%;
+  margin-left: -15px;
+}
+
+/* ----------------------------------------------- */
+/*                 Achievement                     */
+/* ----------------------------------------------- */
+
+
+.point-achievement {
   display: block;
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   margin: 10px;
   float: left;
   border-radius: 10%;
   left: auto;
 }
 
-.setVisible {
-  visibility: visible;
-  display: inline-flex;
+.point-achievement img {
+  display: block;
+  width: 64px;
+  height: 64px;
+  position: relative;
+  margin: auto;
+  left: 50%;
+  top: 50%;
+  margin-left: -32px;
+  margin-top: -32px;
 }
 
-.rankTooltip {
-    display: inline-flex;
-    vertical-align:top;
-    text-align: center;
-    background:#eee;
-    color:#000;
-    padding-left:10px;
-    padding-right:10px;
-    padding-top:10px;
-    padding-bottom:10px;
-
-    /*overflow: hidden; */
-    overflow: visible;
-    position:relative;
-
-    top: 13px;
-    /*margin-top: 40px; */
-    border-radius:3px;
-}
-
-
-
-.tooltipCustom{
-    display: inline;
-    position: relative;
-}
-
-
-
-.tooltipCustom:hover:before{
-    border: solid;
-    border-color: #333 transparent;
-    border-width: 6px 6px 0 6px;
-    bottom: 20px;
-    content: "";
-    left: 50%;
-    position: absolute;
-    z-index: 99;
-}
-
-
-
-.tooltipCustom:hover:after{
-    background: #333;
-    background: rgba(0,0,0,.8);
-    border-radius: 5px;
-    bottom: 26px;
-    color: #fff;
-    content: attr(title);
-    left: 20%;
-    padding: 5px 15px;
-    position: absolute;
-    z-index: 98;
-    width: 220px;
-}
-
-.rankTooltip:before {
+.achievement-tooltip:before{
     /* arrow */
-    display: flex;
-    content:'';
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid #eee;
-    margin-left: -10px;   /* -border */
-
-    /*margin: 0 auto; */
-    position: relative;
-    left: 50%;
-    /*top:-7px;*/
-    top: -20px;
-}
-
-.myTooltip:before{
-  /* arrow */
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     border-bottom: 10px solid #eee;
     margin-left: -10px;   /* -border */
     content: "";
     left: 50%;
-    /*top: 33px;  */ /* point-height */
     top: 100%;
-    margin-top:  3px; /* border */
-    /*bottom: 20px; */
+    margin-top:  3px;
     position: absolute;
     z-index: 99;
 }
 
-.myTooltip:after{
+.achievement-tooltip:after{
     /* text */
     vertical-align:top;
     text-align: center;
     background:#eee;
     color:#000;
-  /*padding-left:10px;
-    padding-right:10px;
-    padding-top:10px;
-    padding-bottom:10px;  */
     padding: 5px 15px;
-
-    /*overflow: hidden; */
     overflow: visible;
     min-width: 100%;
-    /*position:relative; */
-
-    /*top: 40px;*/
     margin-top:  10px; /* border + arrow */
     top: 100%;
-    /*margin-top: 40px; */
     border-radius:3px;
-
     display: block;
     font-size:12px;
-/*  bottom: 26px;   */
-    content: attr(tooltip);
-    /* left: 20%; */
-
+    content: attr(data-tooltip);
     position: absolute;
     z-index: 98;
-    /*width: 220px; */
+    box-shadow: 0 0 3px #888;
 }
 
 

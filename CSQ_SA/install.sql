@@ -114,11 +114,13 @@ CREATE TABLE IF NOT EXISTS `questionperformance` (
   `user_id` int(11) NOT NULL,
   `questionCorrect` int(11) NOT NULL,
   `session_id` int(11) DEFAULT NULL,
+  `gamesession_id` int(11) DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `fk_userquestionperformance` (`user_id`),
   KEY `fk_questionquestionperformance` (`question_id`),
-  KEY `fk_sessionquestionperformance` (`session_id`)
+  KEY `fk_sessionquestionperformance` (`session_id`),
+  KEY `fk_gamesessionquestionperformance` (`gamesession_id`),
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 -- --------------------------------------------------------
@@ -301,7 +303,7 @@ CREATE TABLE IF NOT EXISTS `achievement` (
   `name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `description` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `type` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `image` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `image` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   `arguments` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `bonus_score` int(11) NOT NULL,
   PRIMARY KEY (`id`)
@@ -315,11 +317,54 @@ CREATE TABLE IF NOT EXISTS `achievement` (
 CREATE TABLE IF NOT EXISTS `achievementtrigger` (
   `achievement_id` int(11) NOT NULL,
   `name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY(achievement_id, name),
+  PRIMARY KEY(`achievement_id`, `name`),
   KEY `fk_achievement_achievementtrigger` (`achievement_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
 
 -- --------------------------------------------------------
+
+--
+-- Table structure for table `rank`
+--
+CREATE TABLE IF NOT EXISTS `rank` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `threshold` int(11) NOT NULL,
+  `image` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY(`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+
+--
+-- Table structure for table `gamesession`
+--
+
+CREATE TABLE IF NOT EXISTS `gamesession` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `quiz_id` int(11) NOT NULL,
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `has_started` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_quizgamesession` (`quiz_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gamemember`
+--
+CREATE TABLE IF NOT EXISTS `gamemember` (
+  `gamesession_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY(`gamesession_id`, `user_id`),
+  KEY `fk_gamesession_gamemember` (`gamesession_id`),
+  KEY `fk_user_gamemember` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
+
+-- --------------------------------------------------------
+
 
 --
 -- Constraints for dumped tables
@@ -350,6 +395,7 @@ ALTER TABLE `question`
 --
 ALTER TABLE `questionperformance`
   ADD CONSTRAINT `fk_sessionquestionperformance` FOREIGN KEY (`session_id`) REFERENCES `quizsession` (`id`),
+  ADD CONSTRAINT `fk_gamesessionquestionperformance` FOREIGN KEY (`gamesession_id`) REFERENCES `gamesession` (`id`),
   ADD CONSTRAINT `fk_questionquestionperformance` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_userquestionperformance` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -416,6 +462,20 @@ ALTER TABLE `achievementtrigger`
 ALTER TABLE `userachievement`
   ADD CONSTRAINT `fk_user_userachievement` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_achievement_userachievement` FOREIGN KEY (`achievement_id`) REFERENCES `achievement` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `gamesession`
+--
+ALTER TABLE `gamesession`
+  ADD CONSTRAINT `fk_quizgamesession` FOREIGN KEY (`quiz_id`) REFERENCES `quiz` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `gamemember`
+--
+ALTER TABLE `gamemember`
+  ADD CONSTRAINT `fk_gamesession_gamemember` FOREIGN KEY (`gamesession_id`) REFERENCES `gamesession` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_user_gamemember` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
