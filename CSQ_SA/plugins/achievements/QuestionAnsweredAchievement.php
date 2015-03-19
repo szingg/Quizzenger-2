@@ -1,6 +1,7 @@
 <?php
 	namespace quizzenger\plugins\achievements {
 		use \mysqli as mysqli;
+		use \quizzenger\logging\Log as Log;
 		use \quizzenger\data\UserEvent as UserEvent;
 		use \quizzenger\achievements\IAchievement as IAchievement;
 
@@ -14,8 +15,10 @@
 
 				$statement->bind_param('i', $userId);
 
-				if($statement->execute() === false)
+				if($statement->execute() === false) {
+					Log::error('Database Query failed in QuestionAnsweredAchievement.');
 					return false;
+				}
 
 				if($result = $statement->get_result()) {
 					if($result->fetch_object()->count >= $questionCount)
