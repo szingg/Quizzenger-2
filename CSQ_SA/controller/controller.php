@@ -1,4 +1,5 @@
 <?php
+use quizzenger\gamification\model\GameModel;
 class Controller {
 	private $request = null;
 	private $template = '';
@@ -50,6 +51,11 @@ class Controller {
 			case 'default' :
 				include("controllers/".$this->template.".php");
 				break;
+			case 'game' :
+				require_once("/../../gamification/controller/gamecontroller.php");
+				new GameController($viewInner);
+				$viewInner = GameController.loadView();
+				
 			default:
 				include("controllers/default.php");
 				break;
