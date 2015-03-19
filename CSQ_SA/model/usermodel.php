@@ -99,7 +99,7 @@ class UserModel{
 				. ' (SELECT * FROM userachievement WHERE userachievement.achievement_id = id AND userachievement.user_id = ?)'
 				. ' THEN 1 ELSE 0 END) as achieved'
 			. ' FROM achievement'
-			. ' ORDER BY sort_order ASC, name ASC', ['i'], [$userId], false);
+			. ' ORDER BY type ASC, sort_order ASC, name ASC', ['i'], [$userId], false);
 	}
 }
 ?>
