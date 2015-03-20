@@ -7,6 +7,7 @@
 	$moderatedCategories = $this->_ ['moderatedcategories'];
 	$absolvedCount = $this->_ ['absolvedcount'];
 	$achievementList = $this->_['achievementlist'];
+	$rankList = $this->_['ranklist'];
 
 	if (isset($this->_['message'])){
 		echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($this->_['message']).'</div>';
@@ -56,73 +57,14 @@
 				</div>
 			</div>
 			<div class="scrollable">
-				<div class="rankbar hidden-xs hidden-sm ">
-						<div class="rank" data-tooltip="Neuling (1000 Punkte)">
-							<div class="point point-rank clickable">
-								<img src="templates/img/moderator.png"></img>
+				<div class="rankbar hidden-xs hidden-sm">
+					<?php while($current = $rankList->fetch_object()): ?>
+						<div class="rank" data-tooltip="<?php echo "{$current->name} ({$current->threshold} Punkte)"; ?>">
+							<div class="point point-rank clickable <?php echo $userScore >= $current->threshold ? 'point-active' : ''; ?>">
+								<img src="<?php echo "content/ranks/{$current->image}.png"; ?>"></img>
 							</div>
-					    	<div class="rankdata-tooltip hide">Neuling (1000 Punkte)</div>
-					    </div>
-					    <div class="rank" data-tooltip="Besucher (2500 Punkte)">
-					    	<div class="point point-rank point-active clickable">
-					    		<img src="templates/img/ribbon.png"></img>
-					    	</div>
-					    </div>
-					    <div class="rank" data-tooltip="Einsteiger">
-					    	<div class="point point-rank clickable">
-					    		<img src="templates/img/modstar.png"></img>
-					    	</div>
-					    	<div class="rankdata-tooltip hide">
-					        	Einsteiger
-					        </div>
-					    </div>
-					    <div class="rank" data-tooltip="Aufsteiger">
-					    	<div class="point point-rank clickable">
-					    		<img src="templates/img/superuser.png"></img>
-					    	</div>
-					    	<div class="rankdata-tooltip hide">
-					        	Aufsteiger
-					        </div>
-					    </div>
-					    <div class="rank" data-tooltip="Fragekenner">
-					    	<div class="point point-rank clickable"></div>
-					    	<div class="rankdata-tooltip hide">
-					        	Fragekenner
-					        </div>
-					    </div>
-					    <div class="rank" data-tooltip="Alleskönner">
-					    	<div class="point point-rank clickable"></div>
-					    	<div class="rankdata-tooltip hide">
-					        	Alleskönner
-					        </div>
-					    </div>
-					    <div class="rank" data-tooltip="Profi">
-					    	<div class="point point-rank clickable"></div>
-					    	<div class="rankdata-tooltip hide">
-					        	Profi
-					        </div>
-					    </div>
-					    <div class="rank" data-tooltip="Veteran">
-					    	<div class="point point-rank clickable"></div>
-					    	<div class="rankdata-tooltip hide">
-					        	Veteran
-					        </div>
-					    </div>
-					    <div class="rank" data-tooltip="Meister">
-					    	<div class="point point-rank clickable"></div>
-					    	<div class="rankdata-tooltip hide">
-					        	Meister
-					        </div>
-					    </div>
-					    <div class="rank" data-tooltip="Baron">
-					    	<div class="point point-rank clickable"></div>
-					    	<div class="rankdata-tooltip hide">
-					        	Baron
-					        </div>
-					    </div>
-					    <div class="rank" data-tooltip="Legende (60'000 Punkte)">
-					    	<div class="point point-rank clickable"></div>
-					    </div>
+						</div>
+					<?php endwhile; ?>
 				</div>
 			</div>
 			<hr>

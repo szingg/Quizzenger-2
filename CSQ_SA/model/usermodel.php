@@ -1,6 +1,6 @@
 <?php
 
-class UserModel{
+class UserModel {
 
 	private $mysqli;
 	private $logger;
@@ -95,11 +95,18 @@ class UserModel{
 
 	public function getAchievementList($userId) {
 		return $this->mysqli->s_query('SELECT name, sort_order, description, image, bonus_score,'
-			. ' (SELECT CASE WHEN EXISTS '
-				. ' (SELECT * FROM userachievement WHERE userachievement.achievement_id = id AND userachievement.user_id = ?)'
+			. ' (SELECT CASE WHEN EXISTS'
+				. ' (SELECT * FROM userachievement WHERE userachievement.achievement_id=id AND userachievement.user_id=?)'
 				. ' THEN 1 ELSE 0 END) as achieved'
 			. ' FROM achievement'
 			. ' ORDER BY type ASC, sort_order ASC, name ASC', ['i'], [$userId], false);
+	}
+
+	public function getRankList($userId) {
+		return $this->mysqli->s_query('SELECT name, threshold, image'
+			. ' FROM rank'
+			. ' ORDER BY threshold ASC',
+			[], [], false);
 	}
 }
 ?>

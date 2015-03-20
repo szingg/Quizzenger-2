@@ -29,6 +29,7 @@
 	$alreadyReported = $reportModel->checkIfUserAlreadyDoneReport("user", $userID, $_SESSION ['user_id']);
 
 	$achievementList = $userModel->getAchievementList($userID);
+	$rankList = $userModel->getRankList($userID);
 
 	$viewInner->assign('alreadyreported',$alreadyReported);
 	$viewInner->assign('user', $user );
@@ -39,4 +40,5 @@
 	$viewInner->assign('moderatedcategories', $moderatedCategories );
 	$viewInner->assign('absolvedcount', $absolvedCount );
 	$viewInner->assign('achievementlist', $achievementList);
+	$viewInner->assign('ranklist', $rankList);
 ?>
