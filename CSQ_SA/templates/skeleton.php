@@ -37,6 +37,7 @@ function checkActiveTab($openedView){
 	    <script src="js/jquery-1.11.1.min.js"></script>
 	    <script type="text/javascript" src="js/markdown.min.js"></script>
 	    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+	    <script type="text/javascript" src="js/doT.min.js"></script>
 	    <script type="text/javascript" src="js/custom.js"></script>
 	   	<script type="text/javascript" src="js/jqueryfunctions.js"></script>
 	   	<script type="text/javascript" src="js/opquestion.js"></script>

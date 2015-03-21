@@ -1,4 +1,22 @@
 <?php ?>
+	<script id="dot-openGameRow" type="text/x-dot-template">
+		<tr>
+			<td>
+				<a href="?view=gamestart&gameid={{=it.id}}">
+					{{=it.name}}
+				</a>
+			</td>
+			<td class="hidden-xs">
+			{{?it.members==null}}0 {{?}}
+			{{?it.members!=null}}{{=it.members}} {{?}}Teilnehmer</td>
+			<td class="hidden-xs">{{=it.username}}</td>
+			<td class="hidden-xs">
+				<a href="?view=gamestart&gameid={{=it.id}}">
+					<span class="glyphicon glyphicon-ok-sign"></span>
+				</a>
+			</td>
+		</tr>
+	</script>
 	<div class="panel-group">
 		<div class="panel panel-default no-margin">
 			<a data-toggle="collapse" data-target="#openGames" href="#openGames">
@@ -23,7 +41,7 @@
 								<th class="hidden-xs">Beitreten</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="tableBodyOpenGames">
 						<?php $i=-1; foreach ( $this->_ ['openGames'] as $game ) {
 								$i++;  ?>
 							<tr>

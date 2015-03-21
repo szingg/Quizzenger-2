@@ -1,11 +1,13 @@
 function Gamification(){
 	var self = this;
+	var gameLobbyTimer;
 
 	this.initialize = function(){
 		self.showModalNewGameEvent();
 		self.saveNewGameEvent();
 		self.joinGameEvent();
 		self.leaveGameEvent();
+		self.gameLobbyTimer();
 	};
 
 	this.showModalNewGameEvent = function(){
@@ -72,5 +74,54 @@ function Gamification(){
 			});
 		});
 	}
+
+	this.gameLobbyTimer = function(){
+		$("#gameLobby").focus(function(e){
+			alert("focus");
+		});
+		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e){
+			if(e.currentTarget.hash == "#generateQuiz"){
+				//removeTimer
+				clearInterval(gameLobbyTimer);
+			}
+			if(e.currentTarget.hash == "#gameLobby"){
+				//setTimer
+				gameLobbyTimer = window.setInterval(function(){
+					self.updateOpenGames();
+				}, 2000);
+			}
+		});
+	}
+
+	this.updateOpenGames = function(){
+		$.ajax({
+				url: "index.php?view=getOpenGames&type=ajax",
+				type: "GET",
+				contentType: false,
+				cache: false,
+				processData:false,
+				complete: function(data){
+					if(data.responseJSON === undefined) return;
+					$("#tableBodyOpenGames").html("");
+					$(data.responseJSON.data).each(function(id, game){
+						self.appendTemplateToContainer("dot-openGameRow", game, "tableBodyOpenGames"));
+					});
+					$("#tableOpenGames").DataTable().draw();
+				}
+			});
+	}
+
+	this.applyTemplate = function(template, parameters, container) {
+		container = "#" + container;
+		template = "#" + template;
+		$(container).html((doT.template($(template).text()))(parameters));
+	};
+
+	this.appendTemplateToContainer = function(template, parameters, container) {
+		container = "#" + container;
+		template = "#" + template;
+		$(container).html($(container).html() + (doT.template($(template).text()))(parameters));
+	};
+
 
 }
