@@ -65,8 +65,13 @@ namespace quizzenger\gamification\model {
 		 * Gets all members of a game
 		 */
 		public function getGameMembersByGameId($game_id){
-			$result = $this->mysqli->s_query("SELECT u.username as member FROM gamemember g, user u WHERE g.gamesession_id = ? AND g.user_id = u.id",array('i'),array($game_id));
+			$result = $this->mysqli->s_query("SELECT g.user_id, u.username as member FROM gamemember g, user u WHERE g.gamesession_id = ? AND g.user_id = u.id",array('i'),array($game_id));
 			return $this->mysqli->getQueryResultArray($result);
+		}
+		
+		public function isGameMember($user_id, $game_id){
+			$result = $this->mysqli->s_query("SELECT * FROM gamemember WHERE gamesession_id = ? AND user_id = ?",array('i','i'),array($game_id, $user_id));
+			return $result->num_rows > 0;
 		}
 		
 		/*
@@ -91,13 +96,6 @@ namespace quizzenger\gamification\model {
 					'WHERE g.has_started IS NULL');
 			return $this->mysqli->getQueryResultArray($result);
 		}
-		/*
-		Select g.name, u.username, session.members from gamesession g
-		join quiz q on g.quiz_id = q.id
-		join user u on q.user_id = u.id
-		left join (select gamesession_id, count(user_id) as members from gamemember group by gamesession_id) as session  on g.id = session.gamesession_id
-		where g.has_started is NULL;
-		*/
 		
 		/*
 		 * User join a game.

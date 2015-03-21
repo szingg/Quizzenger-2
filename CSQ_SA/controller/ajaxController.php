@@ -1,5 +1,5 @@
 <?php
-class AjaxController {
+class AjaxController {	
 	private $request = null;
 	private $template = '';
 	private $viewOuter = null;
@@ -28,6 +28,7 @@ class AjaxController {
 		$reportModel = new ReportModel( $this->mysqli, $this->logger );
 		$questionModel = new QuestionModel($this->mysqli, $this->logger);
 		$userModel = new UserModel( $this->mysqli, $this->logger );
+		$gameModel = new \quizzenger\gamification\model\GameModel($this->mysqli, $quizModel);
 
 		$sessionModel->sec_session_start();
 
@@ -91,7 +92,21 @@ class AjaxController {
 			case 'fileupload':
 				require_once("/../quizzenger/fileupload/fileupload.php");
 				$fileupload = new FileUpload($_FILES);
-				return $fileupload->processFileUpload();				
+				return $fileupload->processFileUpload();
+			case 'joinGame' :
+				$result = $gameModel->userJoinGame($_SESSION['user_id'], $this->request['gameid']);
+				$result == 0? $result = 'success' : 'error';
+				return $this->sendJSONResponse($result, '', '');
+			case 'leaveGame' :
+				$gameModel->userLeaveGame($_SESSION['user_id'], $this->request['gameid']);
+				break;
+			case 'getGameMembers': 
+				$data = $gameModel->getGameMembersByGameId($this->request['gameid']);
+				return $this->sendJSONResponse('', '', $data);
+				break;
+			case 'getOpenGames' :
+				$data = $gameModel->getOpenGames();
+				return $this->sendJSONResponse('', '', $data);
 			case 'default' :
 			default :
 				break;
@@ -100,6 +115,17 @@ class AjaxController {
 		$this->viewOuter->setTemplate ( 'blankContent' );
 		$this->viewOuter->assign ( 'content', $viewInner->loadTemplate () );
 		return $this->viewOuter->loadTemplate ();
+	}
+	
+	/*
+	 * Sends a json response.
+	 * @param $result e.g. success or error
+	 * @param $message send an optional message
+	 * @param $data optional data
+	 */
+	private function sendJSONResponse($result, $message, $data){
+		header('Content-Type: application/json');
+		echo json_encode(array('result' => $result, 'message' => $message, 'data' => $data));
 	}
 }
 ?>

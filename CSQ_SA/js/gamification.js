@@ -4,6 +4,8 @@ function Gamification(){
 	this.initialize = function(){
 		self.showModalNewGameEvent();
 		self.saveNewGameEvent();
+		self.joinGameEvent();
+		self.leaveGameEvent();
 	};
 
 	this.showModalNewGameEvent = function(){
@@ -29,4 +31,46 @@ function Gamification(){
 			window.location.href = "index.php?view=gamenew&quizid="+quizId+"&gamename="+gameName;
 		});
 	}
+
+	this.joinGameEvent = function(){
+		$("#joinGame").click(function(){
+			var gameId = $("#gameId").text();
+
+			$.ajax({
+				url: "index.php?view=joinGame&type=ajax&gameid="+gameId,
+				type: "GET",
+				contentType: false,
+				cache: false,
+				processData:false,
+				complete: function(data){
+					if(data.responseJSON !== undefined && data.responseJSON.result == "success"){
+						$("#leaveGame").parent().removeAttr('hidden');
+						$("#joinGame").parent().attr('hidden', 'true');
+					}
+					else{
+						alert("Something went wrong");
+					}
+				}
+			});
+		});
+	}
+
+	this.leaveGameEvent = function(){
+		$("#leaveGame").click(function(){
+			var gameId = $("#gameId").text();
+
+			$.ajax({
+				url: "index.php?view=leaveGame&type=ajax&gameid="+gameId,
+				type: "GET",
+				contentType: false,
+				cache: false,
+				processData:false,
+				complete: function(data){
+					$("#joinGame").parent().removeAttr('hidden');
+					$("#leaveGame").parent().attr('hidden', 'true');
+				}
+			});
+		});
+	}
+
 }

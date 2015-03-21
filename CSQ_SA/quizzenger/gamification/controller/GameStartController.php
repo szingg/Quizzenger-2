@@ -39,7 +39,17 @@ namespace quizzenger\gamification\controller {
 			else $gameinfo = $gameinfo[0]; 
 			$this->view->assign ( 'gameinfo', $gameinfo );
 			
-			$this->view->assign ( 'isOwner', $gameinfo['owner_id'] == $_SESSION['user_id']);
+			$admin = "";
+			if($this->isGameOwner($gameinfo['owner_id'])){
+				$adminView = new \View();
+				$adminView->setTemplate ( 'gameadmin' );
+				
+				$admin = $adminView->loadTemplate(); 
+			}
+			$this->view->assign ( 'admin', $admin );
+			
+			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $game_id);
+			$this->view->assign ( 'isMember', $isMember );
 			
 			$members = $this->gameModel->getGameMembersByGameId($game_id);
 			$this->view->assign ( 'members', $members );
@@ -65,6 +75,10 @@ namespace quizzenger\gamification\controller {
 			$this->view->assign ( 'quizinfo', $quizinfo );
 			*/
 			return $this->view;
+		}
+		
+		private function isGameOwner($owner_id){
+			return $owner_id == $_SESSION['user_id'];
 		}
 		
 		private function checkLogin(){

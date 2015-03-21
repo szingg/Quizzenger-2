@@ -8,47 +8,28 @@ javascript:window.history.forward(1);
 	} */ ?>
 	<h1>Willkommen zum Game XY</h1>
 
-	<p>
-  		<!-- wenn nicht beigetreten-->
-  		<a href="<?php /* echo $this->_ ['quizinfo']['firstUrl']; */ ?>" class="btn btn-primary btn-lg" role="button">
-	  		Beitreten
-		</a>
-		<!-- else-->
-		<a href="<?php /* echo $this->_ ['quizinfo']['firstUrl']; */ ?>" class="btn btn-primary btn-lg" role="button">
-	  		Austreten
-		</a>
+		<br>
 		<p>
 			Warten, bis das Game gestartet wird...
-		</p>
-
-	</p>
-
-	<a data-toggle="collapse" data-target="#participants" href="#participants">
-		<h4 class="panel-title"><?php echo count($this->_ ['members']); ?> Teilnehmer</h4>
-	</a>
-	<div id="participants" class="panel-collapse collapse in">
-		<ul>
-			<?php  foreach ($this->_ ['members'] as $member ) {
-				echo '<li>'. $member['member'] .'</li>';
-			} ?>
-		</ul>
-	</div>
-</div>
-<?php if($this->_ ['isOwner']){ ?>
-<div class="panel panel-default no-margin">
-	<a data-toggle="collapse" data-target="#gameAdmin" href="#gameAdmin">
-		<div class="panel-heading bg-info text-info">
-			<h4 class="panel-title">Game-Administration</h4>
+		</p> <br>
+		<a data-toggle="collapse" data-target="#participants" href="#participants">
+			<h4 class="panel-title"><?php echo count($this->_ ['members']); ?> Teilnehmer</h4>
+		</a>
+		<div id="participants" class="panel-collapse collapse">
+			<ul>
+				<?php  foreach ($this->_ ['members'] as $member ) {
+					echo '<li>'. $member['member'] .'</li>';
+				} ?>
+			</ul>
 		</div>
-	</a>
-	<div id="gameAdmin" class="panel-collapse collapse in">
-		<div class="panel-body">
-			<div class="btn-group">
-				<input id="btn-uploadfile" class="btn btn-primary pull-left" type="button" value="Game starten" />
-				<input id="btn-uploadfile" class="btn btn-primary pull-left" type="button" value="Game beenden" />
-			</div>
-			<h4> view mit status teilnehmer</h4>
+		<br>
+  		<span id="gameId" hidden="true"><?php echo $this->_ ['gameinfo']['game_id']; ?></span>
+  		<div <?= ($this->_ ['isMember']?'':'hidden="true"') ?>>
+  			<input id="leaveGame" class="btn btn-primary btn-lg" role="button" value="Austreten"></input>
+  		</div>
+  		<div <?= ($this->_ ['isMember']?'hidden="true"':'') ?>>
+			<input id="joinGame" class="btn btn-primary btn-lg" role="button" value="Teilnehmen"></input>
 		</div>
-	</div>
+
 </div>
-<?php } ?>
+<?php echo $this->_ ['admin']; ?>
