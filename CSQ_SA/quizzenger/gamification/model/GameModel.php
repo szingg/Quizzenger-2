@@ -7,9 +7,6 @@ namespace quizzenger\gamification\model {
 	use \quizzenger\logging\Log as Log;
 	use \SqlHelper as SqlHelper;
 	use \QuizModel as QuizModel;
-	//use \quizzenger\data\UserEvent as UserEvent;
-	//use \quizzenger\scoring\ScoreDispatcher as ScoreDispatcher;
-	//use \quizzenger\achievements\AchievementDispatcher as AchievementDispatcher;
 
 	/*	@author Simon Zingg
 	 *	The GameModel provides data which is used for games.
@@ -17,14 +14,10 @@ namespace quizzenger\gamification\model {
 	class GameModel {
 		private $mysqli;
 		private $quizModel;
-		//private $scoreDispatcher;
-		//private $achievementDispatcher;
 
 		public function __construct(SqlHelper $mysqli, QuizModel $quizModel) {
 			$this->mysqli = $mysqli;
 			$this->quizModel = $quizModel;
-			//$this->scoreDispatcher = new ScoreDispatcher($this->mysqli);
-			//$this->achievementDispatcher = new AchievementDispatcher($this->mysqli);
 		}
 		
 		/*
@@ -53,7 +46,7 @@ namespace quizzenger\gamification\model {
 		 * @return Returns username of the gameowner if successful, else null
 		 */
 		public function getGameOwnerByGameId($game_id){
-			$result = $this->mysqli->s_query("Select user_id from gamesession g, quiz q where g.quiz_id = q.id and g.id=?",array('i'),array($game_id));
+			$result = $this->mysqli->s_query("SELECT user_id FROM gamesession g, quiz q WHERE g.quiz_id = q.id and g.id=?",array('i'),array($game_id));
 			$resultArray = $this->mysqli->getQueryResultArray($result);
 			if($result->num_rows > 0 && isset($resultArray[0]['user_id'])){
 				return $resultArray[0]['user_id'];
@@ -66,12 +59,12 @@ namespace quizzenger\gamification\model {
 		 * @return Always returns false, because query didn't get any results when delete
 		 */
 		public function getOpenGames(){
-			$result = $this->mysqli->query('Select g.name, u.username, session.members from gamesession g '.
-					'join quiz q on g.quiz_id = q.id '.
-					'join user u on q.user_id = u.id '.
-					'left join (select gamesession_id, count(user_id) as members from gamemember '.
-					'group by gamesession_id) as session  on g.id = session.gamesession_id '.
-					'where g.has_started is NULL');
+			$result = $this->mysqli->query('SELECT g.name, u.username, session.members FROM gamesession g '.
+					'JOIN quiz q ON g.quiz_id = q.id '.
+					'JOIN user u ON q.user_id = u.id '.
+					'LEFT JOIN (SELECT gamesession_id, count(user_id) AS members FROM gamemember '.
+					'GROUP BY gamesession_id) AS session ON g.id = session.gamesession_id '.
+					'WHERE g.has_started IS NULL');
 			return $this->mysqli->getQueryResultArray($result);
 		}
 		/*
