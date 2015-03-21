@@ -28,48 +28,19 @@
 								$i++;  ?>
 							<tr>
 								<td>
-									<a href="?view=todo">
+									<a href="<?php echo '?view=gamestart&gameid=' . $game['id']; ?>">
 										<?php echo htmlspecialchars($game['name']); ?>
 									</a>
 								</td>
 								<td class="hidden-xs"><?php echo (isset($game['members'])?$game['members']:'0').' Teilnehmer'; ?> </td>
 								<td class="hidden-xs"><?php echo htmlspecialchars($game['username']); ?></td>
 								<td class="hidden-xs">
-									<a href="?view=todo" >
+									<a href="<?php echo '?view=gamestart&gameid=' . $game['id']; ?>" >
 										<span class="glyphicon glyphicon-ok-sign"></span>
 									</a>
 								</td>
 							</tr>
 						<?php } ?>
-							<!--
-							<tr>
-								<td>
-									<a href="?view=todo">
-										Game for joy
-									</a>
-								</td>
-								<td class="hidden-xs">0 Teilnehmer </td>
-								<td class="hidden-xs">Reläxx </td>
-								<td class="hidden-xs">
-									<a href="?view=todo">
-										<span class="glyphicon glyphicon-ok-sign"></span>
-									</a>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<a href="?view=todo">
-										fourtyfor
-									</a>
-								</td>
-								<td class="hidden-xs">500 Teilnehmer </td>
-								<td class="hidden-xs">Halligalli</td>
-								<td class="hidden-xs">
-									<a href="?view=todo" >
-										<span class="glyphicon glyphicon-ok-sign"></span>
-									</a>
-								</td>
-							</tr> -->
 						</tbody>
 					</table>
 				</div> <!-- panel-body -->
@@ -96,7 +67,10 @@
 								foreach ( $this->_ ['quizzes'] as $quiz ) { ?>
 								<tr>
 									<td>
-										<a href="?view=todo">
+									<!--<a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#newQuizDialog" href="javascript:void()">
+									Neues Quiz
+								</a> -->
+										<a data-toggle="modal" data-target="#newGameDialog" data-quiz-id="<?= $quiz['id'] ?>" data-quiz-name="<?= htmlspecialchars($quiz['name']); ?>" href="javascript:void()">
 											<?= htmlspecialchars($quiz['name']); ?>
 										</a>
 									</td>
@@ -110,5 +84,28 @@
 				</div>
 			</div>
 	    </div>
+		<div class="modal fade" id="newGameDialog" tabindex="-1" role="dialog"
+			aria-labelledby="newGameModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						</button>
+						<span id="quizIdModal" hidden="true"></span>
+						<h4 class="modal-title" id="newGameModalLabel">Neues Game erstellen aus Quiz</h4>
+					</div>
+					<div class="modal-body">
+						<input type="text" autofocus="" required="required"
+							placeholder="Game Name" id="gameNameModal"
+							class="form-control">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+						<input id="saveNewGame" type="button" class="btn btn-primary" value="Speichern"></input>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div> <!-- panel-group -->
 <?php ?>

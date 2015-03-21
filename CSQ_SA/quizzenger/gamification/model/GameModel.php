@@ -10,6 +10,7 @@ namespace quizzenger\gamification\model {
 
 	/*	@author Simon Zingg
 	 *	The GameModel provides data which is used for games.
+	 *	Each method which modifies the database (INSERT, UPDATE, DELETE) checks if input parameters are set.
 	 */
 	class GameModel {
 		private $mysqli;
@@ -32,14 +33,20 @@ namespace quizzenger\gamification\model {
 				return $this->mysqli->s_insert("INSERT INTO gamesession (name, quiz_id) VALUES (?, ?)",array('s','i'),array($name, $quiz_id));
 			}
 			else{
-				log::warning('Unauthorized try to add new Gamesession for Quiz-ID :'.$question_id)
+				log::warning('Unauthorized try to add new Gamesession for Quiz-ID :'.$question_id);
 				return null;
 			}
 		}
 		
 		public function startGame($game_id){
-			log::info('Start Game with ID :'.$game_id)
-			$this->mysqli->s_query("UPDATE gamesession SET has_started=CURRENT_TIMESTAMP WHERE id=?",array('i'),array($game_id));
+			if(isset($game_id) && $this->quizModel->userIDhasPermissionOnQuizId($quiz_id,$_SESSION ['user_id'])){
+				log::info('Start Game with ID :'.$game_id);
+				$this->mysqli->s_query("UPDATE gamesession SET has_started=CURRENT_TIMESTAMP WHERE id=?",array('i'),array($game_id));
+			}
+			else{
+				log::warning('Unauthorized try to add new Gamesession for Quiz-ID :'.$question_id);
+				return null;
+			}
 		}
 		
 		/*
@@ -55,11 +62,28 @@ namespace quizzenger\gamification\model {
 		}
 		
 		/*
+		 * Gets all members of a game
+		 */
+		public function getGameMembersByGameId($game_id){
+			$result = $this->mysqli->s_query("SELECT u.username as member FROM gamemember g, user u WHERE g.gamesession_id = ? AND g.user_id = u.id",array('i'),array($game_id));
+			return $this->mysqli->getQueryResultArray($result);
+		}
+		
+		/*
+		 * Gets game info. For more information about the columns consult the query
+		 */
+		public function getGameInfoByGameId($game_id){
+			$result = $this->mysqli->s_query("SELECT g.id as game_id, g.name as gamename, created_on, has_started, quiz_id, ".
+					"user_id as owner_id, q.name as quizname, created as quiz_created_on FROM gamesession g, quiz q ".
+					"WHERE g.id = ? AND g.quiz_id = q.id",array('i'),array($game_id));
+			return $this->mysqli->getQueryResultArray($result);
+		}
+		
+		/*
 		 * Gets all open games.
-		 * @return Always returns false, because query didn't get any results when delete
 		 */
 		public function getOpenGames(){
-			$result = $this->mysqli->query('SELECT g.name, u.username, session.members FROM gamesession g '.
+			$result = $this->mysqli->query('SELECT g.id, g.name, u.username, session.members FROM gamesession g '.
 					'JOIN quiz q ON g.quiz_id = q.id '.
 					'JOIN user u ON q.user_id = u.id '.
 					'LEFT JOIN (SELECT gamesession_id, count(user_id) AS members FROM gamemember '.
@@ -77,10 +101,11 @@ namespace quizzenger\gamification\model {
 		
 		/*
 		 * User join a game.
-		 *  
-		 * @return Returns 0 if successful else you will be redirected to the error page because entry already exists //TODO:
+		 *   //TODO:
+		 * @return Returns 0 if successful else you will be redirected to the error page because entry already exists. Returns null when no input parameters are passed.
 		 */
 		public function userJoinGame($user_id, $game_id){
+			if(! isset($user_id, $game_id)) return null;
 			log::info('User joins game ID:'.$game_id);
 			return $this->mysqli->s_insert("INSERT INTO gamemember (gamesession_id, user_id) VALUES (?, ?)",array('i','i'),array($game_id, $user_id));
 		}
@@ -89,6 +114,7 @@ namespace quizzenger\gamification\model {
 		* @return Always returns false, because query didn't get any results when delete
 		*/
 		public function userLeaveGame($user_id, $game_id){
+			if(! isset($user_id, $game_id)) return false;
 			log::info('User leaves game ID:'.$game_id);
 			return $this->mysqli->s_query("DELETE FROM gamemember WHERE gamesession_id=? AND user_id=?",array('i','i'),array($game_id, $user_id));
 		}

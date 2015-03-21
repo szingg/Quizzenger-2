@@ -24,19 +24,17 @@ javascript:window.history.forward(1);
 	</p>
 
 	<a data-toggle="collapse" data-target="#participants" href="#participants">
-		<h4 class="panel-title">Teilnehmer</h4>
+		<h4 class="panel-title"><?php echo count($this->_ ['members']); ?> Teilnehmer</h4>
 	</a>
 	<div id="participants" class="panel-collapse collapse in">
 		<ul>
-			<li>Teilnehmer1 </li>
-			<li>Teilnehmer2 </li>
-			<li>Teilnehmer3 </li>
-			<li>Teilnehmer1 </li>
-			<li>Teilnehmer1 </li>
-			<li>Teilnehmer1 </li>
+			<?php  foreach ($this->_ ['members'] as $member ) {
+				echo '<li>'. $member['member'] .'</li>';
+			} ?>
 		</ul>
 	</div>
 </div>
+<?php if($this->_ ['isOwner']){ ?>
 <div class="panel panel-default no-margin">
 	<a data-toggle="collapse" data-target="#gameAdmin" href="#gameAdmin">
 		<div class="panel-heading bg-info text-info">
@@ -53,3 +51,4 @@ javascript:window.history.forward(1);
 		</div>
 	</div>
 </div>
+<?php } ?>

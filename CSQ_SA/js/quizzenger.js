@@ -11,6 +11,9 @@ function Quizzenger() {
 		var opquestion = new OpQuestion();
 		opquestion.initialize(e);
 
+		var gamification = new Gamification();
+		gamification.initialize(e);
+
 		$(".rank").click(function(){
 			self.showTooltip("rank", this);
 		});

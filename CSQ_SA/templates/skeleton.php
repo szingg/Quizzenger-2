@@ -40,6 +40,7 @@ function checkActiveTab($openedView){
 	    <script type="text/javascript" src="js/custom.js"></script>
 	   	<script type="text/javascript" src="js/jqueryfunctions.js"></script>
 	   	<script type="text/javascript" src="js/opquestion.js"></script>
+	   	<script type="text/javascript" src="js/gamification.js"></script>
 	   	<script type="text/javascript" src="js/quizzenger.js"></script>
 	    <script type="text/javascript" charset="utf-8" src="datatables/media/js/jquery.dataTables.min.js"></script>
 	    <script type="text/javascript" charset="utf-8" src="datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
