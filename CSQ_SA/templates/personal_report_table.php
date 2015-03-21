@@ -32,7 +32,7 @@
 					</a>
 					<a class="remove-row" href="javascript:void()"
 						data-toggle="tooltip" data-placement="top" title="Frage l&ouml;schen"
-						data-qid="<?=  $reportedQuestion['id']; ?>" data-type="question">
+						data-qid="<?=  $reportedQuestion['question_id']; ?>" data-type="question">
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 				</td>

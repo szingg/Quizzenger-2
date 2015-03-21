@@ -7,6 +7,7 @@
 	$GLOBALS["time_start"] = microtime(true);
 
 	$log = new Logger();
+	\quizzenger\logging\Log::set($log);
 
 	$request = array_merge ( $_GET, $_POST );
 

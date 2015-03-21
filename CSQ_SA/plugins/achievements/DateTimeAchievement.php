@@ -1,6 +1,7 @@
 <?php
 	namespace quizzenger\plugins\achievements {
 		use \mysqli as mysqli;
+		use \quizzenger\logging\Log as Log;
 		use \quizzenger\data\UserEvent as UserEvent;
 		use \quizzenger\achievements\IAchievement as IAchievement;
 
@@ -55,8 +56,10 @@
 				$dateTime = $event->get('date-time');
 				$matches = self::match($dateTime);
 
-				if($matches === false)
+				if($matches === false) {
+					Log::error('Syntax error in date-time argument: ' . $event->get('date-time'));
 					return false;
+				}
 
 				return self::checkConditions($matches);
 			}
