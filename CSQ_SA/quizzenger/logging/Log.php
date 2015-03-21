@@ -14,6 +14,10 @@ namespace quizzenger\logging {
 		public static function set(Logger $legacy) {
 			self::$legacy = $legacy;
 		}
+		
+		public static function get(){
+			return self::$legacy;
+		}
 
 		public static function info($message) {
 			self::$legacy->log($message, Logger::INFO);

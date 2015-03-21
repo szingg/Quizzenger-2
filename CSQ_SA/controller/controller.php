@@ -52,7 +52,6 @@ class Controller {
 				include("controllers/".$this->template.".php");
 				break;
 			case 'game' :
-				require_once("/../quizzenger/gamification/controller/gamecontroller.php");
 				$gameController = new \quizzenger\gamification\controller\GameController($viewInner);
 				$viewInner = $gameController->loadView();
 				

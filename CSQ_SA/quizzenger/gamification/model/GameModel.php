@@ -4,7 +4,7 @@ namespace quizzenger\gamification\model {
 	use \stdClass as stdClass;
 	use \SplEnum as SplEnum;
 	use \mysqli as mysqli;
-	use \Logger as Logger;
+	use \quizzenger\logging\Log as Log;
 	use \SqlHelper as SqlHelper;
 	use \QuizModel as QuizModel;
 	//use \quizzenger\data\UserEvent as UserEvent;
@@ -17,14 +17,12 @@ namespace quizzenger\gamification\model {
 	class GameModel {
 		private $mysqli;
 		private $quizModel;
-		private $logger;
 		//private $scoreDispatcher;
 		//private $achievementDispatcher;
 
 		public function __construct(SqlHelper $mysqli, QuizModel $quizModel) {
 			$this->mysqli = $mysqli;
 			$this->quizModel = $quizModel;
-			$this->logger = new Logger();
 			//$this->scoreDispatcher = new ScoreDispatcher($this->mysqli);
 			//$this->achievementDispatcher = new AchievementDispatcher($this->mysqli);
 		}
@@ -37,17 +35,17 @@ namespace quizzenger\gamification\model {
 		*/
 		public function getNewGameSessionId($quiz_id, $name){
 			if(isset($quiz_id, $name) && $this->quizModel->userIDhasPermissionOnQuizId($quiz_id,$_SESSION ['user_id'])){
-				$this->logger->log ( "Getting New Game Session for Quiz-ID :".$quiz_id, Logger::INFO );
+				log::info('Getting New Game Session for Quiz-ID :'.$quiz_id);
 				return $this->mysqli->s_insert("INSERT INTO gamesession (name, quiz_id) VALUES (?, ?)",array('s','i'),array($name, $quiz_id));
 			}
 			else{
-				$this->logger->log ( "Unauthorized try to add new Gamesession for Quiz-ID :".$question_id, Logger::WARNING );
+				log::warning('Unauthorized try to add new Gamesession for Quiz-ID :'.$question_id)
 				return null;
 			}
 		}
 		
 		public function startGame($game_id){
-			$this->logger->log ( "Start Game with ID :".$game_id, Logger::INFO );
+			log::info('Start Game with ID :'.$game_id)
 			$this->mysqli->s_query("UPDATE gamesession SET has_started=CURRENT_TIMESTAMP WHERE id=?",array('i'),array($game_id));
 		}
 		
@@ -90,7 +88,7 @@ namespace quizzenger\gamification\model {
 		 * @return Returns 0 if successful else you will be redirected to the error page because entry already exists //TODO:
 		 */
 		public function userJoinGame($user_id, $game_id){
-			$this->logger->log ( "User joins game ID :".$game_id, Logger::INFO );
+			log::info('User joins game ID:'.$game_id);
 			return $this->mysqli->s_insert("INSERT INTO gamemember (gamesession_id, user_id) VALUES (?, ?)",array('i','i'),array($game_id, $user_id));
 		}
 		
@@ -98,7 +96,7 @@ namespace quizzenger\gamification\model {
 		* @return Always returns false, because query didn't get any results when delete
 		*/
 		public function userLeaveGame($user_id, $game_id){
-			$this->logger->log ( "User leaves game ID :".$game_id, Logger::INFO );
+			log::info('User leaves game ID:'.$game_id);
 			return $this->mysqli->s_query("DELETE FROM gamemember WHERE gamesession_id=? AND user_id=?",array('i','i'),array($game_id, $user_id));
 		}
 		/*

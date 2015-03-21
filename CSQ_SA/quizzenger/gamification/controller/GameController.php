@@ -5,14 +5,14 @@ namespace quizzenger\gamification\controller {
 	use \SplEnum as SplEnum;
 	use \mysqli as mysqli;
 	use \SqlHelper as SqlHelper;
-	use \Logger as Logger;
+	use \quizzenger\logging\Log as Log;
 	use \quizzenger\gamification\model\GameModel as GameModel;
+	
 
 	class GameController{
 		private $mysqli;
 		private $view;
 		private $gameModel;
-		private $logger;
 		private $sqlhelper;
 		private $request;
 		private $quizModel;
@@ -20,9 +20,8 @@ namespace quizzenger\gamification\controller {
 
 		public function __construct($view) {
 			$this->view = $view;
-			$this->logger = new Logger();
-			$this->sqlhelper = new SqlHelper($this->logger);
-			$this->quizModel = new \QuizModel($this->sqlhelper, $this->logger); // Backslash means: from global Namespace
+			$this->sqlhelper = new SqlHelper(log::get());
+			$this->quizModel = new \QuizModel($this->sqlhelper, log::get()); // Backslash means: from global Namespace
 			$this->gameModel = new GameModel($this->sqlhelper, $this->quizModel);
 			$this->request = array_merge ( $_GET, $_POST );
 			
