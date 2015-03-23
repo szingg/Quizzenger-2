@@ -7,7 +7,7 @@ namespace quizzenger\gamification\controller {
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
 	use \quizzenger\gamification\model\GameModel as GameModel;
-	
+
 
 	class GameStartController{
 		private $mysqli;
@@ -16,7 +16,6 @@ namespace quizzenger\gamification\controller {
 		private $sqlhelper;
 		private $request;
 		private $quizModel;
-		
 
 		public function __construct($view) {
 			$this->view = $view;
@@ -25,69 +24,66 @@ namespace quizzenger\gamification\controller {
 			$this->gameModel = new GameModel($this->sqlhelper, $this->quizModel);
 			$this->request = array_merge ( $_GET, $_POST );
 		}
-		
 		public function loadView(){
 			$this->checkLogin();
-			
+
 			//gamestart
 			$this->view->setTemplate ( 'gamestart' );
-			
+
 			$game_id = $this->request ['gameid'];
-			
+
 			$gameinfo = $this->gameModel->getGameInfoByGameId($game_id);
 			if(count($gameinfo) <= 0) $this->redirectToErrorPage();
-			else $gameinfo = $gameinfo[0]; 
+			else $gameinfo = $gameinfo[0];
 			$this->view->assign ( 'gameinfo', $gameinfo );
-			
+
 			$admin = "";
 			if($this->isGameOwner($gameinfo['owner_id'])){
 				$adminView = new \View();
 				$adminView->setTemplate ( 'gameadmin' );
-				
-				$admin = $adminView->loadTemplate(); 
+
+				$admin = $adminView->loadTemplate();
 			}
 			$this->view->assign ( 'admin', $admin );
-			
+
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $game_id);
 			$this->view->assign ( 'isMember', $isMember );
-			
+
 			$members = $this->gameModel->getGameMembersByGameId($game_id);
 			$this->view->assign ( 'members', $members );
-			
+
 			/*$_SESSION ['game_id'. $game_id] = $game_id;
 			$_SESSION ['questions'. $session_id] = $this->quizModel->getQuestionArray ( $gameinfo['quiz_id'] );
 			$_SESSION ['counter'. $session_id] = 0;
-			
-			
+
 			if (count ( $_SESSION ['questions'. $session_id] ) > 0) {
 				$firstUrl = "?view=question&id=" . $_SESSION ['questions'. $session_id] [0] . "&gameid=". $game_id;
 			} else {
 				$firstUrl = "?view=quizend";
 			}
-			
-			
+
 			$quizinfo = array (
 					'quizid' => $this->request ['quizid'],
 					'quizname' => $this->quizModel->getQuizName ( $this->request ['quizid'] ),
 					'firstUrl' => $firstUrl
 			);
-			
+
 			$this->view->assign ( 'quizinfo', $quizinfo );
 			*/
 			return $this->view;
 		}
-		
+
 		private function isGameOwner($owner_id){
 			return $owner_id == $_SESSION['user_id'];
 		}
-		
+
 		private function checkLogin(){
 			if (! $GLOBALS ['loggedin']) {
 				header ( 'Location: ./index.php?view=login&pageBefore=' . $this->template );
 				die ();
 			}
 		}
-		
+
 		private function redirectToErrorPage(){
 			define ( "err_db_query_failed", "Oops, es wurde eine ungültige Datenbank abfrage getätigt" );
 			die ();
