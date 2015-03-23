@@ -1,6 +1,8 @@
 <?php
 	$user = $this->_['user'];
 	$userList = $this->_['userlist'];
+	$questionList = $this->_['questionlist'];
+	$authorList = $this->_['authorlist'];
 
 	if (isset($this->_['message'])){
 		echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($this->_['message']).'</div>';
@@ -29,14 +31,32 @@
 					</ol>
 				</div>
 			</div>
-			<div role="tabpanel" class="tab-pane" id="tab-question-report">
-				<div class="panel-body">bar</div>
-			</div>
 			<div role="tabpanel" class="tab-pane" id="tab-author-report">
-				<div class="panel-body">bar</div>
+				<div class="panel-body">
+					<ol>
+						<?php
+							while($current = $authorList->fetch_object()) {
+								echo '<li>' . htmlspecialchars($current->username) . '</li>';
+							}
+						?>
+					</ol>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="tab-question-report">
+				<div class="panel-body">
+					<ol>
+						<?php
+							while($current = $questionList->fetch_object()) {
+								echo '<li>' . htmlspecialchars($current->questiontext) . '</li>';
+							}
+						?>
+					</ol>
+				</div>
 			</div>
 			<div role="tabpanel" class="tab-pane" id="tab-system-report">
-				<div class="panel-body">bar</div>
+				<div class="panel-body">
+					System Report.
+				</div>
 			</div>
 		</div>
 	</div>

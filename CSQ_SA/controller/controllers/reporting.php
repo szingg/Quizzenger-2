@@ -11,8 +11,12 @@
 	}
 
 	$user = $userModel->getUserByID($userId);
-	$userList = $reportingModel->getUserList($userId);
+	$userList = $reportingModel->getUserList();
+	$questionList = $reportingModel->getQuestionList();
+	$authorList = $reportingModel->getAuthorList();
 
 	$viewInner->assign('user', $user);
 	$viewInner->assign('userlist', $userList);
+	$viewInner->assign('questionlist', $questionList);
+	$viewInner->assign('authorlist', $authorList);
 ?>
