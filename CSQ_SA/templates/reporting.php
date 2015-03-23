@@ -25,22 +25,19 @@
 					<table class="table quizzenger-report-table">
 						<thead>
 							<tr>
-								<th>Frage</th>
-								<th>Bewertung</th>
-								<th>Schwierigkeit</th>
-								<th>Durchführungen</th>
+								<th>Name</th>
+								<th>Rang</th>
+								<th>Score</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>aaa</td><td>aaa</td><td>aaa</td><td>aaa</td>
-							</tr>
-							<tr>
-								<td>bbb</td><td>bbb</td><td>bbb</td><td>bbb</td>
-							</tr>
-							<tr>
-								<td>ccc</td><td>ccc</td><td>ccc</td><td>ccc</td>
-							</tr>
+							<?php
+								while($current = $userList->fetch_object()) {
+									echo "<tr>";
+									echo "<td>{$current->username}</td><td>n/a</td><td>n/a</td>";
+									echo "</tr>";
+								}
+							?>
 						</tbody>
 					</table>
 				</div>
