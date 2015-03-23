@@ -116,13 +116,15 @@ $(function(){
         "bFilter": false,
         "paging":   false,
 	});
-	$('#tableNewGame').DataTable( {
+	$('#tableNewGame').DataTable({
         responsive: true
-    } );
-    $('#tableOpenGames').DataTable( {
+    });
+    $('#tableOpenGames').DataTable({
         responsive: true
-    } );
-
+    });
+    $('.quizzenger-report-table').DataTable({
+    	responsive: true
+    });
 });
 // ================================================================================
 // VALIDATORS
