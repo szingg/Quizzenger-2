@@ -26,6 +26,7 @@
 						<thead>
 							<tr>
 								<th>Name</th>
+								<th>Erstellt</th>
 								<th>Rang</th>
 								<th>Score</th>
 							</tr>
@@ -34,7 +35,7 @@
 							<?php
 								while($current = $userList->fetch_object()) {
 									echo "<tr>";
-									echo "<td>{$current->username}</td><td>n/a</td><td>n/a</td>";
+									echo "<td>{$current->username}</td><td>{$current->created_on}</td><td>n/a</td><td>n/a</td>";
 									echo "</tr>";
 								}
 							?>
