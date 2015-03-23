@@ -11,7 +11,7 @@ class ReportingModel {
 	}
 
 	public function getUserList($userId) {
-		return $this->mysqli->s_query('SELECT username FROM user',
+		return $this->mysqli->s_query('SELECT username FROM user ORDER BY username ASC',
 			[], [], false);
 	}
 }
