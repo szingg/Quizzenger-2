@@ -54,31 +54,6 @@
 					</table>
 				</div>
 			</div>
-			<div role="tabpanel" class="tab-pane" id="tab-author-report">
-				<div class="panel-body">
-					<table class="table quizzenger-report-table">
-						<thead>
-							<tr>
-								<th>Frage</th>
-								<th>Bewertung</th>
-								<th>Schwierigkeit</th>
-								<th>Durchführungen</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>ddd</td><td>ddd</td><td>ddd</td><td>ddd</td>
-							</tr>
-							<tr>
-								<td>eee</td><td>eee</td><td>eee</td><td>eee</td>
-							</tr>
-							<tr>
-								<td>fff</td><td>fff</td><td>fff</td><td>fff</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
 			<div role="tabpanel" class="tab-pane" id="tab-question-report">
 				<div class="panel-body">
 					<table class="table quizzenger-report-table">
@@ -107,6 +82,31 @@
 									echo '</tr>';
 								}
 							?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="tab-author-report">
+				<div class="panel-body">
+					<table class="table quizzenger-report-table">
+						<thead>
+							<tr>
+								<th>Frage</th>
+								<th>Bewertung</th>
+								<th>Schwierigkeit</th>
+								<th>Durchführungen</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>ddd</td><td>ddd</td><td>ddd</td><td>ddd</td>
+							</tr>
+							<tr>
+								<td>eee</td><td>eee</td><td>eee</td><td>eee</td>
+							</tr>
+							<tr>
+								<td>fff</td><td>fff</td><td>fff</td><td>fff</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
