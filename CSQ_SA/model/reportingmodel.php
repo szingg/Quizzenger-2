@@ -19,13 +19,16 @@ class ReportingModel {
 			. ' SUM(userscore.consumer_score) AS consumer_score'
 			. ' FROM user'
 			. ' JOIN (userscore) ON (user.id=userscore.user_id)'
-			. ' GROUP BY userscore.user_id'
+			. ' GROUP BY user.id'
 			. ' ORDER BY user.id ASC',
 			[], [], false);
 	}
 
 	public function getQuestionList() {
-		return $this->mysqli->s_query('SELECT questiontext FROM question ORDER BY created ASC',
+		return $this->mysqli->s_query('SELECT id, questiontext, created, lastModified AS last_modified,'
+			. ' ROUND(difficulty, 2) AS difficulty, (rating / ratingcount) AS rating,'
+			. ' "n/a" AS solved_count'
+			. ' FROM question ORDER BY created ASC',
 			[], [], false);
 	}
 

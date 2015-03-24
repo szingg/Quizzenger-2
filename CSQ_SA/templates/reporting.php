@@ -7,6 +7,10 @@
 	if (isset($this->_['message'])){
 		echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($this->_['message']).'</div>';
 	}
+
+	$outputRow = function($text) {
+		echo '<td>' . htmlspecialchars($text) . '</td>';
+	};
 ?>
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -35,10 +39,6 @@
 						</thead>
 						<tbody>
 							<?php
-								$outputRow = function($text) {
-									echo '<td>' . htmlspecialchars($text) . '</td>';
-								};
-
 								while($current = $userList->fetch_object()) {
 									echo "<tr>";
 									$outputRow($current->id);
@@ -84,22 +84,29 @@
 					<table class="table quizzenger-report-table">
 						<thead>
 							<tr>
+								<th>ID</th>
 								<th>Frage</th>
+								<th>Erstellt</th>
+								<th>Modifiziert</th>
 								<th>Bewertung</th>
 								<th>Schwierigkeit</th>
-								<th>Durchführungen</th>
+								<th>Gelöst</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>ggg</td><td>ggg</td><td>ggg</td><td>ggg</td>
-							</tr>
-							<tr>
-								<td>hhh</td><td>hhh</td><td>hhh</td><td>hhh</td>
-							</tr>
-							<tr>
-								<td>iii</td><td>iii</td><td>iii</td><td>iii</td>
-							</tr>
+							<?php
+								while($current = $questionList->fetch_object()) {
+									echo '<tr>';
+									$outputRow($current->id);
+									$outputRow($current->questiontext);
+									$outputRow($current->created);
+									$outputRow($current->last_modified);
+									$outputRow($current->rating);
+									$outputRow($current->difficulty);
+									$outputRow($current->solved_count);
+									echo '</tr>';
+								}
+							?>
 						</tbody>
 					</table>
 				</div>
