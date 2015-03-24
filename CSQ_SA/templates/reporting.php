@@ -25,17 +25,28 @@
 					<table class="table quizzenger-report-table">
 						<thead>
 							<tr>
+								<th>ID</th>
 								<th>Name</th>
 								<th>Erstellt</th>
 								<th>Rang</th>
-								<th>Score</th>
+								<th>Producer</th>
+								<th>Consumer</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php
+								$outputRow = function($text) {
+									echo '<td>' . htmlspecialchars($text) . '</td>';
+								};
+
 								while($current = $userList->fetch_object()) {
 									echo "<tr>";
-									echo "<td>{$current->username}</td><td>{$current->created_on}</td><td>n/a</td><td>n/a</td>";
+									$outputRow($current->id);
+									$outputRow($current->username);
+									$outputRow($current->created_on);
+									$outputRow($current->rank);
+									$outputRow($current->producer_score);
+									$outputRow($current->consumer_score);
 									echo "</tr>";
 								}
 							?>
