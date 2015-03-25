@@ -31,6 +31,7 @@ class Controller {
 		$userscoreModel = new UserScoreModel ( $this->mysqli, $this->logger );
 		$moderationModel = new ModerationModel( $this->mysqli, $this->logger );
 		$reportModel = new ReportModel( $this->mysqli, $this->logger );
+		$reportingModel = new ReportingModel($this->mysqli, $this->logger);
 
 
 		$sessionModel->sec_session_start();
@@ -47,7 +48,7 @@ class Controller {
 			case 'mycontent' : case 'myquizzes' : case 'quizdetail' : case 'quizstart' : case 'quizend' : case 'categorylist' :
 			case 'logout' : case 'error' : case 'register' : case 'processLogin' : case 'processChangepassword' : case 'processRegistration' :
 			case 'newquestion' : case 'generatequiz' : case 'editquestion' : case 'processNewQuestion' : case 'processGenerateQuiz':
-			case 'log': case 'questionpool': case 'processEditQuestion' :
+			case 'log': case 'questionpool': case 'processEditQuestion': case 'reporting':
 			case 'default' :
 				include("controllers/".$this->template.".php");
 				break;

@@ -16,10 +16,10 @@
 	<!-- Tab panes -->
 	<div class="tab-content">
 		<div role="tabpanel" class="tab-pane active" id="myquestions">
-			<?php include("questionlist.php")?>
+			<?php include("questionlist.php"); ?>
 		</div>
 		<div role="tabpanel" class="tab-pane" id="myquizzes">
-			<?php include("quizlist.php");?>
+			<?php include("quizlist.php"); ?>
 		</div>
 	</div>
 </div>

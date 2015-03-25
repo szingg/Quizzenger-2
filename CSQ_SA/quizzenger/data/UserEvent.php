@@ -24,7 +24,7 @@ namespace quizzenger\data {
 
 		public function get($name) {
 			if(array_key_exists($name, $this->arguments) === false)
-				throw new InvalidArgumentException('The requested argument has not been defined.');
+				throw new InvalidArgumentException("The requested argument '$name' has not been defined.");
 
 			return $this->arguments[$name];
 		}

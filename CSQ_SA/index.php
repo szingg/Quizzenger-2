@@ -33,27 +33,28 @@
 	}
 
 	function load_includes(){
-		include ('includes/config.php');
-		include ('includes/logger.php');
-		include ('includes/sqlhelper.php');
-		include ('controller/controller.php');
-		include ('controller/ajaxController.php');
-		//include ('model/model.php');
-		include ('view/view.php');
-		include ('model/sessionmodel.php');
-		include ('model/ratingmodel.php');
-		include ('model/tagmodel.php');
-		include ('model/registrationmodel.php');
-		include ('model/questionlistmodel.php');
-		include ('model/questionmodel.php');
-		include ('model/categorymodel.php');
-		include ('model/usermodel.php');
-		include ('model/answermodel.php');
-		include ('model/quizlistmodel.php');
-		include ('model/quizmodel.php');
-		include ('model/userscoremodel.php');
-		include ('model/moderationmodel.php');
-		include ('model/reportmodel.php');
+		include('includes/config.php');
+		include('includes/logger.php');
+		include('includes/sqlhelper.php');
+		include('controller/controller.php');
+		include('controller/ajaxController.php');
+		//include('model/model.php');
+		include('view/view.php');
+		include('model/sessionmodel.php');
+		include('model/ratingmodel.php');
+		include('model/tagmodel.php');
+		include('model/registrationmodel.php');
+		include('model/questionlistmodel.php');
+		include('model/questionmodel.php');
+		include('model/categorymodel.php');
+		include('model/usermodel.php');
+		include('model/answermodel.php');
+		include('model/quizlistmodel.php');
+		include('model/quizmodel.php');
+		include('model/userscoremodel.php');
+		include('model/moderationmodel.php');
+		include('model/reportmodel.php');
+		include('model/reportingmodel.php');
 	}
 
 ?>

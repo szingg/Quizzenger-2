@@ -17,15 +17,21 @@ function Quizzenger() {
 		$(".rank").click(function(){
 			self.showTooltip("rank", this);
 		});
-		$(".rank").hover(function(){
-			self.showTooltip("rank", this);
+		$(".rank").mouseenter(function(){
+			$(this).addClass("achievement-tooltip");
+		});
+		$(".rank").mouseleave(function(){
+			$(this).removeClass("achievement-tooltip");
 		});
 
 		$(".point-achievement").click(function(){
 			self.showTooltip("point-achievement", this);
 		});
-		$(".point-achievement").hover(function(){
-			self.showTooltip("point-achievement", this);
+		$(".point-achievement").mouseenter(function(){
+			$(this).addClass("achievement-tooltip");
+		});
+		$(".point-achievement").mouseleave(function(){
+			$(this).removeClass("achievement-tooltip");
 		});
 	};
 
