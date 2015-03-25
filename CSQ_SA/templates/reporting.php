@@ -49,8 +49,8 @@
 									$outputRow($current->id);
 									$outputRow($current->username);
 									$outputRow($current->created_on);
-									$outputRow("<img src=\"{$rankImagePath}\" />"
-										. ' ' . htmlspecialchars($current->rank), true);
+									$outputRow("<span style=\"display:none\">{$current->rank_threshold}</span>"
+										. "<img src=\"{$rankImagePath}\" />" . ' ' . htmlspecialchars($current->rank), true);
 									$outputRow((int)$current->producer_score);
 									$outputRow((int)$current->consumer_score);
 									echo "</tr>";

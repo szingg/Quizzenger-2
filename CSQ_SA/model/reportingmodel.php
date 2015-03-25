@@ -16,6 +16,7 @@ class ReportingModel {
 			. ' (SELECT rank.name FROM rank WHERE rank.threshold<=(producer_score+consumer_score)*producer_multiplier OR rank.threshold=0'
 			. '     ORDER BY rank.threshold DESC LIMIT 1) AS rank,'
 			. ' (SELECT rank.image FROM rank WHERE rank.name=rank) AS rank_image,'
+			. ' (SELECT rank.threshold FROM rank WHERE rank.name=rank) AS rank_threshold,'
 			. ' SUM(userscore.producer_score) AS producer_score,'
 			. ' SUM(userscore.consumer_score) AS consumer_score'
 			. ' FROM user'
