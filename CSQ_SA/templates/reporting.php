@@ -26,7 +26,7 @@
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active" id="tab-user-report">
 				<div class="panel-body">
-					<table class="table quizzenger-report-table">
+					<table id="tableReportUserList" class="table">
 						<thead>
 							<tr>
 								<th>ID</th>
