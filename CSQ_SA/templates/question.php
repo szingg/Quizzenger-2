@@ -39,11 +39,11 @@ if(isset($this->_['progress'])){ ?>
 					$paths = array();
 					$paths[] = ATTACHMENT_PATH;
 					$paths[] = $question['id'].'.'.$question['attachment'];
-						
+
 					$link = preg_replace('#/+#','/',join('/', $paths));
 					break;
 			}
-			echo $link 
+			echo $link
 			?>"><?php echo htmlspecialchars($this->_ ['question']['questiontext']); ?></div>
 		<script>
 			$("#question-content").html(quizzenger.markdown.generate($("#question-content").text(),
