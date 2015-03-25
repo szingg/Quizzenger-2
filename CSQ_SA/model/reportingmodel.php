@@ -13,7 +13,7 @@ class ReportingModel {
 	public function getUserList() {
 		return $this->mysqli->s_query('SELECT user.id, user.username, user.created_on,'
 			. ' (SELECT settings.value FROM settings WHERE settings.name="q.scoring.producer-multiplier" LIMIT 1) as producer_multiplier,'
-			. ' (SELECT rank.name FROM rank WHERE rank.threshold<=(producer_score+consumer_score)*producer_multiplier'
+			. ' (SELECT rank.name FROM rank WHERE rank.threshold<=(producer_score+consumer_score)*producer_multiplier OR rank.threshold=0'
 			. '     ORDER BY rank.threshold DESC LIMIT 1) AS rank,'
 			. ' SUM(userscore.producer_score) AS producer_score,'
 			. ' SUM(userscore.consumer_score) AS consumer_score'
