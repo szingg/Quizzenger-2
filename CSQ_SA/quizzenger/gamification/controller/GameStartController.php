@@ -35,22 +35,25 @@ namespace quizzenger\gamification\controller {
 			$gameinfo = $this->gameModel->getGameInfoByGameId($game_id);
 			if(count($gameinfo) <= 0) $this->redirectToErrorPage();
 			else $gameinfo = $gameinfo[0];
+			$this->checkGameStarted($gameinfo['has_started']);
 			$this->view->assign ( 'gameinfo', $gameinfo );
-
-			$admin = "";
-			if($this->isGameOwner($gameinfo['owner_id'])){
-				$adminView = new \View();
-				$adminView->setTemplate ( 'gameadmin' );
-
-				$admin = $adminView->loadTemplate();
-			}
-			$this->view->assign ( 'admin', $admin );
 
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $game_id);
 			$this->view->assign ( 'isMember', $isMember );
 
 			$members = $this->gameModel->getGameMembersByGameId($game_id);
 			$this->view->assign ( 'members', $members );
+			
+			//adminView
+			$admin = "";
+			if($this->isGameOwner($gameinfo['owner_id'])){
+				$adminView = new \View();
+				$adminView->setTemplate ( 'gameadmin' );
+				$adminView->assign('gameinfo', $gameinfo);
+			
+				$admin = $adminView->loadTemplate();
+			}
+			$this->view->assign ( 'admin', $admin );
 
 			/*$_SESSION ['game_id'. $game_id] = $game_id;
 			$_SESSION ['questions'. $session_id] = $this->quizModel->getQuestionArray ( $gameinfo['quiz_id'] );
@@ -83,9 +86,15 @@ namespace quizzenger\gamification\controller {
 				die ();
 			}
 		}
+		
+		private function checkGameStarted($has_started){
+			if ( isset($has_started)) {
+				$this->redirectToErrorPage('err_game_has_started');
+			}
+		}
 
-		private function redirectToErrorPage(){
-			define ( "err_db_query_failed", "Oops, es wurde eine ungültige Datenbank abfrage getätigt" );
+		private function redirectToErrorPage($errorCode = 'err_db_query_failed'){
+			header('Location: ./index.php?view=error&err='.$errorCode);
 			die ();
 		}
 	} // class GameController

@@ -131,9 +131,6 @@ $(function(){
 			{"width" : "5%", "targets" : [0, 3, 4, 5]}
 		]
 	});
-    $('#tableOpenGames').DataTable( {
-        "responsive": true
-    } );
 });
 // ================================================================================
 // VALIDATORS

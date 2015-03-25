@@ -26,12 +26,30 @@ namespace quizzenger\gamification\controller {
 
 		public function loadView(){
 			$this->checkLogin();
-
-			$gameid = $this->gameModel->getNewGameSessionId($this->request ['quizid'], $this->request ['gamename']);
+			
+			$quiz_id = $this->request ['quizid'];
+			$gamename = $this->request ['gamename'];
+			
+			$this->checkPermission($quiz_id);
+			$gameid = $this->gameModel->getNewGameSessionId($quiz_id, $gamename);
 
 			$this->redirect($gameid);
 		}
-
+		
+		/*
+		 * Checks Permission for given quiz id. dies if not permitted
+		 */
+		private function checkPermission($quiz_id){
+			if (! $this->quizModel->userIDhasPermissionOnQuizId($quiz_id,$_SESSION ['user_id'])) {
+				log::warning('Unauthorized try to add new Gamesession for Quiz-ID :'.game_id);
+				header('Location: ./index.php?view=error&err=err_not_authorized');
+				die();
+			}
+		}
+		
+		/*
+		 * Checks login. dies if not logged in
+		 */
 		private function checkLogin(){
 			if (! $GLOBALS ['loggedin']) {
 				header ( 'Location: ./index.php?view=login&pageBefore=' . $this->template );
@@ -41,7 +59,7 @@ namespace quizzenger\gamification\controller {
 
 		private function redirect($gameid){
 			if($gameid == null){
-				define ( "err_db_query_failed", "Oops, es wurde eine ungültige Datenbank abfrage getätigt" );
+				header('Location: ./index.php?view=error&err=err_db_query_failed');
 			}
 			else{
 				header ( 'Location: ./index.php?view=gamestart&gameid=' . $gameid );

@@ -4,9 +4,12 @@ function Gamification(){
 
 	this.initialize = function(){
 		self.showModalNewGameEvent();
-		self.saveNewGameEvent();
+		//self.saveNewGameEvent();
 		self.joinGameEvent();
 		self.leaveGameEvent();
+		self.startGameEvent();
+		self.stopGameEvent();
+		self.gameStartTimer();
 		self.gameLobbyTimer();
 	};
 
@@ -18,12 +21,15 @@ function Gamification(){
 
 		    //quizId
 		    var quizId = $(e.relatedTarget).data("quiz-id");
-		    $("#quizIdModal").text(quizId);
+		    $("#quizIdModal").val(quizId);
 		});
 	}
 
 	this.saveNewGameEvent = function(){
-		$("#saveNewGame").click(function(e){
+		/*$('submitNewGame').submit(function() {
+  			return false;
+		}); */
+		/*$("#saveNewGame").submit(function(e){
 			var quizId = $("#quizIdModal").text();
 			var gameName = $("#gameNameModal").val();
 			if(gameName == false){
@@ -31,7 +37,7 @@ function Gamification(){
 				return;
 			}
 			window.location.href = "index.php?view=gamenew&quizid="+quizId+"&gamename="+gameName;
-		});
+		}); */
 	}
 
 	this.joinGameEvent = function(){
@@ -75,10 +81,72 @@ function Gamification(){
 		});
 	}
 
-	this.gameLobbyTimer = function(){
-		$("#gameLobby").focus(function(e){
-			alert("focus");
+	this.startGameEvent = function(){
+		$("#startGame").click(function(){
+			var gameId = $("#gameId").text();
+
+			$.ajax({
+				url: "index.php?view=startGame&type=ajax&gameid="+gameId,
+				type: "GET",
+				contentType: false,
+				cache: false,
+				processData:false,
+				complete: function(data){
+					//nothing, because you will be redirected
+				}
+			});
 		});
+	}
+
+	this.stopGameEvent = function(){
+		$("#stopGame").click(function(){
+			var gameId = $("#gameId").text();
+
+			$.ajax({
+				url: "index.php?view=stopGame&type=ajax&gameid="+gameId,
+				type: "GET",
+				contentType: false,
+				cache: false,
+				processData:false,
+				complete: function(data){
+					//nothing, because you will be redirected
+				}
+			});
+		});
+	}
+
+	this.gameStartTimer = function(){
+		if(! self.contains(document.URL, 'view=gamestart')) return;
+		var gameId = $("#gameId").text();
+
+		window.setInterval(function(){
+			$.ajax({
+				url: "index.php?view=getGameStartInfo&type=ajax&gameid="+gameId,
+				type: "GET",
+				contentType: false,
+				cache: false,
+				processData:false,
+				complete: function(data){
+					if(data.responseJSON === undefined) return;
+					var resp = data.responseJSON.data;
+
+					//startGame
+					if(resp.gameinfo.has_started != null){
+						window.location.href = "index.php?view=gamequestion&gameid=" + resp.gameinfo.game_id;
+					}
+
+					//updateMembers
+					$('#participantCount').text(resp.members.length);
+					$('#participantList').html('');
+					$(resp.members).each(function(id, member){
+						$('#participantList').append('<li>' + member.member +'</li>');
+					});
+				}
+			});
+		}, 2000);
+	}
+
+	this.gameLobbyTimer = function(){
 		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e){
 			if(e.currentTarget.hash == "#generateQuiz"){
 				//removeTimer
@@ -140,6 +208,14 @@ function Gamification(){
 		container = "#" + container;
 		template = "#" + template;
 		$(container).html($(container).html() + (doT.template($(template).text()))(parameters));
+	};
+
+	/*
+	* Checks if obj1 contains obj2
+	* @return Returns true if contains, else false
+	*/
+	this.contains = function(obj1, obj2){
+		return obj1.indexOf(obj2) > -1;
 	};
 
 

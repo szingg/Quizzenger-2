@@ -6,19 +6,19 @@ javascript:window.history.forward(1);
 		header('Location: index.php');
 		die();
 	} */ ?>
-	<h1>Willkommen zum Game XY</h1>
+	<h1>Willkommen zum Game '<?php echo htmlspecialchars($this->_ ['gameinfo']['gamename']); ?>'</h1>
 
 		<br>
 		<p>
 			Warten, bis das Game gestartet wird...
 		</p> <br>
 		<a data-toggle="collapse" data-target="#participants" href="#participants">
-			<h4 class="panel-title"><?php echo count($this->_ ['members']); ?> Teilnehmer</h4>
+			<h4 class="panel-title"><span id="participantCount"><?php echo count($this->_ ['members']); ?></span> Teilnehmer</h4>
 		</a>
 		<div id="participants" class="panel-collapse collapse">
-			<ul>
+			<ul id="participantList">
 				<?php  foreach ($this->_ ['members'] as $member ) {
-					echo '<li>'. $member['member'] .'</li>';
+					echo '<li>'. htmlspecialchars($member['member']) .'</li>';
 				} ?>
 			</ul>
 		</div>

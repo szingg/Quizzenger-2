@@ -100,11 +100,27 @@ class AjaxController {
 			case 'leaveGame' :
 				$gameModel->userLeaveGame($_SESSION['user_id'], $this->request['gameid']);
 				break;
+			case 'startGame' :
+				$result = $gameModel->startGame($this->request['gameid']);
+				break;
+			case 'stopGame' :
+				$result = $gameModel->stopGame($this->request['gameid']);
+				break;
 			case 'getGameMembers': 
 				$data = $gameModel->getGameMembersByGameId($this->request['gameid']);
 				return $this->sendJSONResponse('', '', $data);
-				break;
-			case 'getGameInfo' : break;
+			case 'getGameStartInfo' : 
+				$game_id = $this->request['gameid'];
+				$gameinfo = $gameModel->getGameInfoByGameId($game_id)[0];
+				$isMember = $gameModel->isGameMember($_SESSION['user_id'], $game_id);
+				$members = $gameModel->getGameMembersByGameId($game_id);
+				
+				$data = [
+						'gameinfo' => $gameinfo,
+						'isMember' => $isMember,
+						'members' => $members
+				];
+				return $this->sendJSONResponse('', '', $data);
 			case 'getOpenGames' :
 				$data = $gameModel->getOpenGames();
 				return $this->sendJSONResponse('', '', $data);
