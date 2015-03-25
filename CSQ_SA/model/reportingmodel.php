@@ -18,7 +18,7 @@ class ReportingModel {
 			. ' SUM(userscore.producer_score) AS producer_score,'
 			. ' SUM(userscore.consumer_score) AS consumer_score'
 			. ' FROM user'
-			. ' JOIN (userscore) ON (user.id=userscore.user_id)'
+			. ' LEFT JOIN (userscore) ON (user.id=userscore.user_id)'
 			. ' GROUP BY user.id'
 			. ' ORDER BY user.id ASC',
 			[], [], false);
