@@ -32,4 +32,4 @@ javascript:window.history.forward(1);
 		</div>
 
 </div>
-<?php echo $this->_ ['admin']; ?>
+<?php echo $this->_ ['adminView']; ?>

@@ -16,6 +16,8 @@ namespace quizzenger\gamification\controller {
 		private $sqlhelper;
 		private $request;
 		private $quizModel;
+		private $gameid;
+		private $gameinfo;
 
 		public function __construct($view) {
 			$this->view = $view;
@@ -27,53 +29,65 @@ namespace quizzenger\gamification\controller {
 		public function loadView(){
 			$this->checkLogin();
 
-			//gamestart
+			
+			$this->loadViewContent();
+			
+			$this->loadAdminView();
+			
+			$this->setGameSession();
+			
+			return $this->view;
+		}
+		
+		private function loadViewContent(){
 			$this->view->setTemplate ( 'gamestart' );
-
-			$game_id = $this->request ['gameid'];
-
-			$gameinfo = $this->gameModel->getGameInfoByGameId($game_id);
-			if(count($gameinfo) <= 0) $this->redirectToErrorPage();
-			else $gameinfo = $gameinfo[0];
-			$this->checkGameStarted($gameinfo['has_started']);
-			$this->view->assign ( 'gameinfo', $gameinfo );
-
-			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $game_id);
+			
+			$this->gameid = $this->request ['gameid'];
+			
+			$this->gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
+			if(count($this->gameinfo) <= 0) $this->redirectToErrorPage();
+			else $this->gameinfo = $this->gameinfo[0];
+			$this->checkGameStarted($this->gameinfo['has_started']);
+			$this->view->assign ( 'gameinfo', $this->gameinfo );
+			
+			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
 			$this->view->assign ( 'isMember', $isMember );
-
-			$members = $this->gameModel->getGameMembersByGameId($game_id);
+			
+			$members = $this->gameModel->getGameMembersByGameId($this->gameid);
 			$this->view->assign ( 'members', $members );
 			
-			//adminView
-			$admin = "";
-			if($this->isGameOwner($gameinfo['owner_id'])){
+			/*
+			 if (count ( $_SESSION ['questions'. $session_id] ) > 0) {
+			 $firstUrl = "?view=question&id=" . $_SESSION ['questions'. $session_id] [0] . "&gameid=". $this->gameid;
+			 } else {
+			 $firstUrl = "?view=quizend";
+			 }
+			 	
+			 $quizinfo = array (
+			 'quizid' => $this->request ['quizid'],
+			 'quizname' => $this->quizModel->getQuizName ( $this->request ['quizid'] ),
+			 'firstUrl' => $firstUrl
+			 );
+			 	
+			 $this->view->assign ( 'quizinfo', $quizinfo );
+			 */
+		}
+		private function setGameSession(){
+			$_SESSION ['gameid'] = $this->gameid;
+			$_SESSION ['gamequestions'] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
+			$_SESSION ['gamecounter'] = 0;
+			
+		}
+		private function loadAdminView(){
+			$adminView = "";
+			if($this->isGameOwner($this->gameinfo['owner_id'])){
 				$adminView = new \View();
 				$adminView->setTemplate ( 'gameadmin' );
-				$adminView->assign('gameinfo', $gameinfo);
-			
-				$admin = $adminView->loadTemplate();
+				$adminView->assign('gameinfo', $this->gameinfo);
+					
+				$adminView = $adminView->loadTemplate();
 			}
-			$this->view->assign ( 'admin', $admin );
-
-			/*$_SESSION ['game_id'. $game_id] = $game_id;
-			$_SESSION ['questions'. $session_id] = $this->quizModel->getQuestionArray ( $gameinfo['quiz_id'] );
-			$_SESSION ['counter'. $session_id] = 0;
-
-			if (count ( $_SESSION ['questions'. $session_id] ) > 0) {
-				$firstUrl = "?view=question&id=" . $_SESSION ['questions'. $session_id] [0] . "&gameid=". $game_id;
-			} else {
-				$firstUrl = "?view=quizend";
-			}
-
-			$quizinfo = array (
-					'quizid' => $this->request ['quizid'],
-					'quizname' => $this->quizModel->getQuizName ( $this->request ['quizid'] ),
-					'firstUrl' => $firstUrl
-			);
-
-			$this->view->assign ( 'quizinfo', $quizinfo );
-			*/
-			return $this->view;
+			$this->view->assign ( 'adminView', $adminView );
 		}
 
 		private function isGameOwner($owner_id){
