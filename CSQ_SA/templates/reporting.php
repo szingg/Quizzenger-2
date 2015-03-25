@@ -45,8 +45,8 @@
 									$outputRow($current->username);
 									$outputRow($current->created_on);
 									$outputRow($current->rank);
-									$outputRow($current->producer_score);
-									$outputRow($current->consumer_score);
+									$outputRow((int)$current->producer_score);
+									$outputRow((int)$current->consumer_score);
 									echo "</tr>";
 								}
 							?>
