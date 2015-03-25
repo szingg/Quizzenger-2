@@ -8,8 +8,11 @@
 		echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($this->_['message']).'</div>';
 	}
 
-	$outputRow = function($text) {
-		echo '<td>' . htmlspecialchars($text) . '</td>';
+	$outputRow = function($text, $raw = false) {
+		if($raw)
+			echo "<td>$text</td>";
+		else
+			echo '<td>' . htmlspecialchars($text) . '</td>';
 	};
 ?>
 <div class="panel panel-default">
@@ -40,11 +43,14 @@
 						<tbody>
 							<?php
 								while($current = $userList->fetch_object()) {
+									$rankImagePath = RANK_PATH . "/{$current->rank_image}." . RANK_IMAGE_EXTENSION;
+
 									echo "<tr>";
 									$outputRow($current->id);
 									$outputRow($current->username);
 									$outputRow($current->created_on);
-									$outputRow($current->rank);
+									$outputRow("<img src=\"{$rankImagePath}\" />"
+										. ' ' . htmlspecialchars($current->rank), true);
 									$outputRow((int)$current->producer_score);
 									$outputRow((int)$current->consumer_score);
 									echo "</tr>";
