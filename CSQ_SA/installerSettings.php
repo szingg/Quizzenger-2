@@ -1,6 +1,6 @@
 <?php
 
-function throwXmlParseException(){ 
+function throwXmlParseException(){
 	echo("<p style=\"color:red; \">achievements.xml could not successfully be parsed.</p><br>");
 	die();
 }

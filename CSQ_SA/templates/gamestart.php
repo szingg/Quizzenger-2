@@ -24,7 +24,7 @@ javascript:window.history.forward(1);
 		</div>
 		<br>
   		<span id="gameId" hidden="true"><?php echo $this->_ ['gameinfo']['game_id']; ?></span>
-  		<div <?= ($this->_ ['isMember']?'':'hidden="true"') ?>>
+  		<div <?= ($this->_ ['isMember'] ?'':'hidden="true"') ?>>
   			<input id="leaveGame" class="btn btn-primary btn-lg" role="button" value="Austreten"></input>
   		</div>
   		<div <?= ($this->_ ['isMember']?'hidden="true"':'') ?>>

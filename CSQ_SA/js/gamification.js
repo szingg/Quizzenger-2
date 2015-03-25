@@ -94,6 +94,7 @@ function Gamification(){
 	}
 
 	this.updateOpenGames = function(){
+
 		$.ajax({
 				url: "index.php?view=getOpenGames&type=ajax",
 				type: "GET",
@@ -102,13 +103,31 @@ function Gamification(){
 				processData:false,
 				complete: function(data){
 					if(data.responseJSON === undefined) return;
-					$("#tableBodyOpenGames").html("");
+					//$("#tableBodyOpenGames").html("");
+					var table = $('#tableOpenGames').DataTable();
+					//table.destroy();
+					table.rows().remove();
+					var template = '#dot-openGameRow';
 					$(data.responseJSON.data).each(function(id, game){
-						self.appendTemplateToContainer("dot-openGameRow", game, "tableBodyOpenGames"));
+						var tempHtml = (doT.template($(template).text()))(game);
+						table.row.add($(tempHtml));
+						//self.appendTemplateToContainer("dot-openGameRow", game, "tableBodyOpenGames");
 					});
-					$("#tableOpenGames").DataTable().draw();
+				/*	$('#tableOpenGames').DataTable( {
+        				responsive: true
+    				} ); */
+					table.draw();
 				}
 			});
+
+		/*
+		var table = $('#tableOpenGames');
+		var x = table.data();
+		var i = 1;
+		//table.ajax.url('index.php?view=getOpenGames&type=ajax');
+		/*table.ajax.reload( function(data, dt){
+			var x = 1;
+		}, false ); */
 	}
 
 	this.applyTemplate = function(template, parameters, container) {

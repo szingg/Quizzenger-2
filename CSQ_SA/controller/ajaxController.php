@@ -104,6 +104,7 @@ class AjaxController {
 				$data = $gameModel->getGameMembersByGameId($this->request['gameid']);
 				return $this->sendJSONResponse('', '', $data);
 				break;
+			case 'getGameInfo' : break;
 			case 'getOpenGames' :
 				$data = $gameModel->getOpenGames();
 				return $this->sendJSONResponse('', '', $data);

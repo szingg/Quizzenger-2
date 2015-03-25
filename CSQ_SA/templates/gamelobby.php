@@ -42,7 +42,7 @@
 							</tr>
 						</thead>
 						<tbody id="tableBodyOpenGames">
-						<?php $i=-1; foreach ( $this->_ ['openGames'] as $game ) {
+						<?php $i=-1;  foreach ( $this->_ ['openGames'] as $game ) {
 								$i++;  ?>
 							<tr>
 								<td>
@@ -58,7 +58,7 @@
 									</a>
 								</td>
 							</tr>
-						<?php } ?>
+						<?php }  ?>
 						</tbody>
 					</table>
 				</div> <!-- panel-body -->

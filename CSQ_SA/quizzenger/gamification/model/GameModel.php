@@ -70,7 +70,7 @@ namespace quizzenger\gamification\model {
 		}
 
 		public function isGameMember($user_id, $game_id){
-			$result = $this->mysqli->s_query("SELECT * FROM gamemember WHERE gamesession_id = ? AND user_id = ?",array('i','i'),array($game_id, $user_id));
+			$result = $this->mysqli->s_query("SELECT * FROM gamemember WHERE gamesession_id = ? AND user_id = ?",['i','i'],[$game_id, $user_id]);
 			return $result->num_rows > 0;
 		}
 
@@ -80,7 +80,7 @@ namespace quizzenger\gamification\model {
 		public function getGameInfoByGameId($game_id){
 			$result = $this->mysqli->s_query("SELECT g.id as game_id, g.name as gamename, created_on, has_started, quiz_id, ".
 					"user_id as owner_id, q.name as quizname, created as quiz_created_on FROM gamesession g, quiz q ".
-					"WHERE g.id = ? AND g.quiz_id = q.id",array('i'),array($game_id));
+					"WHERE g.id = ? AND g.quiz_id = q.id",['i'],[$game_id]);
 			return $this->mysqli->getQueryResultArray($result);
 		}
 

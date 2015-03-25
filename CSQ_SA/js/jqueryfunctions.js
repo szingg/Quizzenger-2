@@ -120,7 +120,7 @@ $(function(){
         responsive: true
     } );
     $('#tableOpenGames').DataTable( {
-        responsive: true
+        "responsive": true
     } );
 
 });
