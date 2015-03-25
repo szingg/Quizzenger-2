@@ -59,9 +59,10 @@
 			<div class="scrollable">
 				<div class="rankbar hidden-xs hidden-sm">
 					<?php while($current = $rankList->fetch_object()): ?>
-						<div class="rank" data-tooltip="<?php echo "{$current->name} ({$current->threshold} Punkte)"; ?>">
+						<div class="rank" data-tooltip-title="<?php echo htmlspecialchars($current->name); ?>"
+							data-tooltip-text="<?php echo htmlspecialchars("{$current->threshold} Punkte"); ?>">
 							<div class="point point-rank clickable <?php echo $userScore >= $current->threshold ? 'point-active' : ''; ?>">
-								<img src="<?php echo "content/ranks/{$current->image}.png"; ?>"></img>
+								<img src="<?php echo RANK_PATH . "/{$current->image}." . RANK_IMAGE_EXTENSION; ?>"></img>
 							</div>
 						</div>
 					<?php endwhile; ?>
@@ -72,8 +73,10 @@
 			<div id="achievements">
 				<h4>Achievements</h4>
 				<?php while($current = $achievementList->fetch_object()): ?>
-					<div class="point point-achievement clickable <?php echo $current->achieved ? ' point-active' : ''; ?>" data-tooltip="<?php echo htmlspecialchars("★ {$current->name} ★ $current->description"); ?>">
-						<img src="content/achievements/<?php echo $current->image; ?>.png" />
+					<div class="point point-achievement clickable <?php echo $current->achieved ? ' point-active' : ''; ?>"
+						data-tooltip-title="<?php echo '★ ' . htmlspecialchars($current->name) . ' ★'; ?>"
+						data-tooltip-text="<?php echo htmlspecialchars($current->description); ?>">
+						<img src="<?php echo ACHIEVEMENT_PATH . "/{$current->image}." . ACHIEVEMENT_IMAGE_EXTENSION; ?>" />
 					</div>
 				<?php endwhile; ?>
 			</div>
