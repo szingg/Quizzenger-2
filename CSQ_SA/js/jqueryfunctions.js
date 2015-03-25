@@ -123,13 +123,14 @@ $(function(){
 		responsive: true
 	});
 	$('#tableReportUserList').DataTable({
-		 "autoWidth": false,
-		"columnDefs": [
+		"responsive" : true,
+		"autoWidth" : false,
+		"columnDefs" : [
 			{"className" : "dt-right", "targets": [0, 4, 5]},
 			{"width" : "60%", "targets" : [1]},
 			{"width" : "20%", "targets" : [2]},
 			{"width" : "5%", "targets" : [0, 3, 4, 5]}
-		]
+		],
 	});
     $('#tableOpenGames').DataTable( {
         "responsive": true
