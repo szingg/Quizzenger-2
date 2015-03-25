@@ -13,6 +13,9 @@ define ( "db", "csq" );
 define ( "dbhost", "ENTER ME" );
 define ( "dbport", "3306" );
 
+// Quizzenger Settings
+define ("APP_PATH","https://quizzenger.ch");
+
 //Attachment Settings
 define ("ATTACHMENT_PATH","content/attachments");
 define ("MAX_ATTACHMENT_SIZE_KByte",1024);
