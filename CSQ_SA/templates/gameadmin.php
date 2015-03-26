@@ -11,7 +11,7 @@
 				<div <?= (isset($this->_['has_started']) ?'hidden="true"':'') ?>>
 					<input id="startGame" class="btn btn-primary pull-left" type="button" value="Game starten" />
 				</div>
-				<div <div <?= (isset($this->_['has_started']) ?'':'hidden="true"') ?>>
+				<div <?= (isset($this->_['has_started']) ?'':'hidden="true"') ?>>
 					<input id="stopGame" class="btn btn-primary pull-left" type="button" value="Game beenden" />
 				</div>
 			</div>
