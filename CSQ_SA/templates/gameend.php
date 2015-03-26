@@ -3,9 +3,9 @@
 	<p>Du hast <?php echo $this->_['score']; ?> von <?php echo $this->_['maxScore']; ?> Punkten erreicht! </p>
 
 	<p>
-		<a href="?view=learn" class="btn btn-primary" role="button">
+		<a href="?view=learn#gamelobby" class="btn btn-primary" role="button">
 			Weiter spielen
 		</a>
 	</p>
 </div>
-<?php echo $this->_[adminView]; ?>
+<?php echo $this->_['adminView']; ?>
