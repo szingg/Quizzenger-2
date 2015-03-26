@@ -28,6 +28,7 @@ namespace quizzenger\gamification\controller {
 			$this->gameModel = new GameModel($this->sqlhelper);
 			$this->request = array_merge ( $_GET, $_POST );
 			
+			$this->checkGameSessionParams();
 			$this->gameid = $_SESSION['gameid'];
 			$this->gamequestions = $_SESSION['gamequestions'];
 			$this->gamecounter = $_SESSION['gamecounter'];
@@ -47,8 +48,8 @@ namespace quizzenger\gamification\controller {
 		private function loadGameEndView(){
 			$this->view->setTemplate ( 'gameend' );
 
-			$score = $quizModel->getSingleChoiceScoreByGameId ( $this->gameinfo['game_id'], $this->gameinfo['quiz_id'] );
-			$maxScore = $quizModel->getMaxSingleChoiceScore ( $this->gameinfo['quiz_id'] );
+			$score = $this->quizModel->getSingleChoiceScoreByGameId ( $this->gameinfo['game_id'], $this->gameinfo['quiz_id'] );
+			$maxScore = $this->quizModel->getMaxSingleChoiceScore ( $this->gameinfo['quiz_id'] );
 
 			$this->view->assign ( 'score', $score );
 			$this->view->assign ( 'maxScore', $maxScore );
@@ -88,7 +89,12 @@ namespace quizzenger\gamification\controller {
 			if($isMember==false || $this->hasStarted($this->gameinfo['has_started'])==false){
 				redirectToErrorPage('err_not_authorized');
 			}
+		}		
+		private function checkGameSessionParams(){
+			if(! isset($_SESSION['gameid'], $_SESSION['gamequestions'], $_SESSION['gamecounter'])) redirectToErrorPage('err_not_authorized');
 		}
+		
+		
 		
 		/*
 		 * Gets the Gameinfo. Redirects to errorpage when no result returned.
@@ -98,9 +104,14 @@ namespace quizzenger\gamification\controller {
 			if(count($gameinfo) <= 0) redirectToErrorPage('err_db_query_failed');
 			else return $gameinfo[0];
 		}
-
 		private function isGameOwner($owner_id){
 			return $owner_id == $_SESSION['user_id'];
+		}
+		private function hasStarted($has_started){
+			return isset($has_started);
+		}
+		private function isFinished($is_finished){
+			return isset($is_finished);
 		}
 
 	} // class GameController

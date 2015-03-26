@@ -42,8 +42,7 @@
 							</tr>
 						</thead>
 						<tbody id="tableBodyOpenGames">
-						<?php $i=-1;  foreach ( $this->_ ['openGames'] as $game ) {
-								$i++;  ?>
+						<?php foreach ( $this->_ ['openGames'] as $game ) { ?>
 							<tr>
 								<td>
 									<a href="<?php echo '?view=gamestart&gameid=' . $game['id']; ?>">
@@ -64,7 +63,67 @@
 				</div> <!-- panel-body -->
 	    	</div> <!-- panel-collapse -->
 	    </div> <!-- panel -->
+	    <a class="panel btn btn-primary" data-toggle="modal" data-target="#newGame" href="javascript:void()">
+	    Game erstellen
+	    </a>
 
+	    
+	    <div class="modal fade" id="newGame" tabindex="-1" role="dialog"
+			aria-labelledby="newGameModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<form method="post">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+							</button>
+							<h4 class="modal-title" id="newGameModalLabel">Neues Game erstellen aus Quiz</h4>
+						</div>
+						<div class="modal-body">
+							<?php if( isset($this->_ ['quizzes']) && count($this->_ ['quizzes']) > 0 ){ ?>
+							<input type="text" autofocus="" required="required"
+								placeholder="Game Name" name="gamename" id="gameNameModal"
+								class="form-control" />
+							<hr>
+								<h4>Bitte Quiz auswählen</h4>
+								<table class="table" id="tableNewGame">
+									<thead>
+										<tr>
+											<th>Quizname</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach ( $this->_ ['quizzes'] as $quiz ) { ?>
+										
+											<tr class="clickable">
+												<td>
+													<input class="css-checkbox css-checkbox-relative" type="radio" required="required" name="quizid" value="<?= $quiz['id']; ?>">													
+														<?= htmlspecialchars($quiz['name']); ?>
+													</input>
+												</td>
+											</tr>
+											<?php
+											}
+										?>
+									</tbody>
+								</table>
+
+							<?php } else{ ?>
+							<div class="form-group">
+								Games werden aus Quizzes erstellt. Bitte zuerst ein <a class="text-primary" href="?view=mycontent#myquizzes">Quiz erstellen</a>
+							<?php } ?>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+							<!-- <input id="saveNewGame" type="button" class="btn btn-primary" value="Speichern"></input> -->
+							<button id="saveNewGame" type="submit" class="btn btn-primary" formaction="./index.php?view=gamenew">Speichern</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+<?php /* 
 	    <div class="panel panel-default no-margin">
 			<a data-toggle="collapse" data-target="#newGames" href="#newGames">
 				<div class="panel-heading bg-info text-info">
@@ -85,9 +144,7 @@
 								foreach ( $this->_ ['quizzes'] as $quiz ) { ?>
 								<tr>
 									<td>
-									<!--<a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#newQuizDialog" href="javascript:void()">
-									Neues Quiz
-								</a> -->
+
 										<a data-toggle="modal" data-target="#newGameDialog" data-quiz-id="<?= $quiz['id'] ?>" data-quiz-name="<?= htmlspecialchars($quiz['name']); ?>" href="javascript:void()">
 											<?= htmlspecialchars($quiz['name']); ?>
 										</a>
@@ -130,5 +187,6 @@
 				</div>
 			</div>
 		</div>
+		 */?>
 	</div> <!-- panel-group -->
 <?php ?>

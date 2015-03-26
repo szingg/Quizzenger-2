@@ -39,6 +39,7 @@ namespace quizzenger\gamification\controller {
 			$this->categoryModel = new \CategoryModel($this->sqlhelper, log::get());
 			//$this->userModel = new \UserModel($this->sqlhelper, log::get());
 
+			$this->checkGameSessionParams();
 			$this->gameid = $_SESSION['gameid'];
 			$this->gamequestions = $_SESSION['gamequestions'];
 			$this->gamecounter = $_SESSION['gamecounter'];
@@ -109,11 +110,11 @@ namespace quizzenger\gamification\controller {
 			$solutionView->assign ( 'selectedAnswer', $selectedAnswer );
 			
 			$alreadyReported= $this->reportModel->checkIfUserAlreadyDoneReport("question", $this->request ['id'] , $_SESSION ['user_id']);
-			$viewInner->assign ('alreadyreported',$alreadyReported);
+			$solutionView->assign ('alreadyreported',$alreadyReported);
 
+			$correctAnswer = $this->answerModel->getCorrectAnswer ( $questionID );
 			//TODO: Score ändern
 			/*
-			$correctAnswer = $this->answerModel->getCorrectAnswer ( $questionID );
 			if($GLOBALS['loggedin'] && $correctAnswer == $selectedAnswer){
 				if(!$userscoreModel->hasUserScoredQuestion( $this->request ['id'],$_SESSION['user_id'])){ // no multiple scoring for question
 					$userscoreModel->addScoreToCategory($_SESSION['user_id'], $question ['category_id'],QUESTION_ANSWERED_SCORE, $moderationModel);
@@ -124,26 +125,28 @@ namespace quizzenger\gamification\controller {
 			//$session_id = $this->request ['session_id'];
 			//$inc_counter=0;
 
-			if ($this->questionModel->gameAnswerExists ( $this->gameid, $questionID, $_SESSION['user_id'] ) == 0) {
+			if (! $this->questionModel->gameAnswerExists ( $this->gameid, $questionID, $_SESSION['user_id'] )) {
 				// Implement other Strategies if other question types are desired
 				$correct = ($correctAnswer == $selectedAnswer ? 100 : 0);
 				$this->questionModel->InsertQuestionPerformance ( $questionID, $_SESSION ['user_id'], $correct, null, $this->gameid );
-				$_SESSION['gamecounter'] += 1;
+				$_SESSION['gamecounter'] =  $this->gamecounter + 1;
 				$this->gamecounter = $_SESSION['gamecounter'];
 			}
 			//$_SESSION['gamecounter'] += $inc_counter;
 			
 			$questionCount = count ( $this->gamequestions );
-			$viewInner->assign ( 'questioncount', $questionCount );
-			$viewInner->assign ( 'currentcounter', $this->gamecounter );
-			$progress = round ( 100 * ($currentCounter / $questionCount) );
-			$viewInner->assign ( 'progress', $progress );
+			$solutionView->assign ( 'questioncount', $questionCount );
+			$solutionView->assign ( 'currentcounter', $this->gamecounter );
+			$progress = round ( 100 * ($this->gamecounter / $questionCount) );
+			$solutionView->assign ( 'progress', $progress );
 	
 			if ($questionCount > $this->gamecounter) {
-				$viewInner->assign ( 'nextQuestion', '?view=gamequestion');
+				$solutionView->assign ( 'nextQuestion', '?view=gamequestion');
 			} else {
-				$viewInner->assign ( 'nextQuestion', '?view=gameend');
+				$solutionView->assign ( 'nextQuestion', '?view=gameend');
 			}
+			
+			$solutionView->assign ( 'ratingView', '');
 			/* DELETE
 			//not in quiz context
 			$pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
@@ -178,27 +181,37 @@ namespace quizzenger\gamification\controller {
 		/*
 		 * Redirects if at leaste one condition fails
 		 * @Precondition User is logged in
-		 * @Precondition Setted SESSION and request params
 		 * @Precondition User is game member
 		 * @Precondition Game has started
 		 * @Precondition Game is not finished 
 		 */
 		private function checkPreconditions(){
 			checkLogin();
-			
-			//check session-fields
-			if(! isset($_SESSION['gameid'], $_SESSION['gamequestions'], $_SESSION['gamecounter'])) redirectToErrorPage('err_not_authorized');
 				
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
+			
+			if($isMember && ( $this->isFinished($this->gameinfo['is_finished']) || $this->gamecounter >= count($this->gamequestions)) ){
+				redirect('./index.php?view=gameend');
+			}
 			
 			//checkConditions
 			if(isset($this->request ['answer'])==false 
 					|| $isMember==false 
+					|| $this->gamecounter < count($this->gamequestions)
 					|| $this->isFinished($this->gameinfo['is_finished']) 
 					|| $this->hasStarted($this->gameinfo['has_started'])==false){
+				
 				redirectToErrorPage('err_not_authorized');
 			}
 		}
+		private function checkGameSessionParams(){
+			if(! isset($_SESSION['gameid'], $_SESSION['gamequestions']
+					, $_SESSION['gamecounter'], $this->request ['answer'])) {
+						
+				redirectToErrorPage('err_not_authorized');
+			}
+		}
+		
 
 		private function isGameOwner($owner_id){
 			return $owner_id == $_SESSION['user_id'];

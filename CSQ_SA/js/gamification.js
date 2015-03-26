@@ -11,6 +11,7 @@ function Gamification(){
 		self.stopGameEvent();
 		self.gameStartTimer();
 		self.gameLobbyTimer();
+		self.initTableNewGames();
 	};
 
 	this.showModalNewGameEvent = function(){
@@ -113,6 +114,15 @@ function Gamification(){
 				}
 			});
 		});
+	}
+
+	this.initTableNewGames = function(){
+		$('#tableNewGame tbody').on( 'click', 'tr', function () {
+			var x = $(this).find('input[type=radio]');
+        	$(this).find('input[type=radio]').prop('checked', true);
+    		$('#tableNewGame tbody > tr').removeClass('success');
+        	$(this).addClass('success');
+    	} );
 	}
 
 	this.gameStartTimer = function(){

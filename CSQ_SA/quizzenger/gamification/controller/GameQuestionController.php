@@ -37,7 +37,7 @@ namespace quizzenger\gamification\controller {
 			$this->reportModel = new \ReportModel($this->sqlhelper, log::get());
 			$this->categoryModel = new \CategoryModel($this->sqlhelper, log::get());
 
-			
+			$this->checkGameSessionParams();
 			$this->gameid = $_SESSION['gameid'];
 			$this->gamequestions = $_SESSION['gamequestions'];
 			$this->gamecounter = $_SESSION['gamecounter'];
@@ -112,27 +112,27 @@ namespace quizzenger\gamification\controller {
 		/*
 		 * Redirects if at leaste one condition fails
 		 * @Precondition User is logged in
-		 * @Precondition Setted SESSION params
 		 * @Precondition User is game member
 		 * @Precondition Game has started
 		 * @Precondition Game is not finished 
 		 */
 		private function checkPreconditions(){
 			checkLogin();
-			
-			//check session-fields
-			if(! isset($_SESSION['gameid'], $_SESSION['gamequestions'], $_SESSION['gamecounter'])) redirectToErrorPage('err_not_authorized');
 				
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
 				
-			if($isMember && $this->isFinished($this->gameinfo['is_finished'])){
-				//TODO: redirect('gameend');
+			if($isMember && ( $this->isFinished($this->gameinfo['is_finished']) || $this->gamecounter >= count($this->gamequestions)) ){
+				redirect('./index.php?view=gameend');
 			}
 			
 			//checkConditions
-			if($isMember==false || $this->isFinished($this->gameinfo['is_finished']) || $this->hasStarted($this->gameinfo['has_started'])==false){
+			if($isMember==false || $this->isFinished($this->gameinfo['is_finished']) 
+					|| $this->hasStarted($this->gameinfo['has_started'])==false){
 				redirectToErrorPage('err_not_authorized');
 			}
+		}
+		private function checkGameSessionParams(){
+			if(! isset($_SESSION['gameid'], $_SESSION['gamequestions'], $_SESSION['gamecounter'])) redirectToErrorPage('err_not_authorized');
 		}
 
 		private function isGameOwner($owner_id){

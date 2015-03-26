@@ -28,7 +28,7 @@ class QuestionModel{
 	function gameAnswerExists($gamesession, $question_id, $user_id){
 		$result = $this->mysqli->s_query("SELECT COUNT(*) as count FROM questionperformance WHERE gamesession_id=? AND question_id=? AND user_id=?",array('i','i','i'),array($gamesession,$question_id,$user_id));
 		$result = $this->mysqli->getSingleResult($result);
-		return $result["count"]==0;
+		return $result["count"]>0;
 	}
 
 	function setWeight($id, $weight){
