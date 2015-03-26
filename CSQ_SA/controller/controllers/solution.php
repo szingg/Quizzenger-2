@@ -37,8 +37,6 @@
 		$viewInner->assign ( 'userismodhere', $userIsModHere );
 		$viewInner->assign ( 'question', $question );
 
-
-
 		// Implement other Strategies if other question types are desired
 		$correct = ($correctAnswer == $selectedAnswer ? 100 : 0);
 
