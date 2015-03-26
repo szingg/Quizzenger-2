@@ -61,9 +61,13 @@ class Controller {
 				$viewInner = $gameNewController->loadView();
 				break;
 			case 'gamequestion' :
-					$gameQuestionController = new \quizzenger\gamification\controller\GameQuestionController($viewInner);
-					$viewInner = $gameQuestionController->loadView();
-					break;
+				$gameQuestionController = new \quizzenger\gamification\controller\GameQuestionController($viewInner);
+				$viewInner = $gameQuestionController->loadView();
+				break;
+			case 'gamesolution' :
+				$gameSolutionController = new \quizzenger\gamification\controller\GameSolutionController($viewInner);
+				$viewInner = $gameSolutionController->loadView();
+				break;
 			default:
 				include("controllers/default.php");
 				break;
