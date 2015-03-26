@@ -1,8 +1,5 @@
 <?php
-	if (! $GLOBALS ['loggedin']) {
-		header ( 'Location: ./index.php?view=login&pageBefore=' . $this->template );
-		die ();
-	}
+	checkLogin();
 
 	// only author and mods can edit
 	if (! $questionModel->userIDhasPermissionOnQuestionID ( $this->request ['id'], $_SESSION ['user_id'] )) {
