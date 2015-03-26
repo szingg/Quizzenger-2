@@ -9,27 +9,33 @@
 					$quizModel->addQuestionToQuiz ( $quiz_id, $question );
 				}
 			}
-			$viewInner->assign ( 'markQuiz', $quiz_id );
+			redirect('?view=mycontent&quizid='.$quiz_id.'&info=mes_add_questions_to_quiz#myquizzes');
 		}
 
 		if(isset($this->request['copyquiz'])){ //COPYING QUIZ
 			$copiedQuizID=$quizModel->copyQuiz($_SESSION['user_id'], $this->request['copyquiz']);
-			$viewInner->assign ( 'markQuiz', $copiedQuizID );
+			redirect('?view=mycontent&quizid='.$copiedQuizID);
 		}
 
 		if(isset($this->request['savegeneratedquiz'])){ // SAVING GENERATED QUIZ
 			$questions=$_SESSION ['questions'.$this->request['savegeneratedquiz']];
 			$copiedQuizID=$quizModel->saveGeneratedQuiz($_SESSION['user_id'], $questions);
-			$viewInner->assign ( 'markQuiz', $copiedQuizID );
+			redirect('?view=mycontent&quizid='.$copiedQuizID);
 		}
 
-		if(isset($this->request['quizNameField']) && $GLOBALS ['loggedin']){
-			if(isset($this->request['editQuizNameID'])){ // TODO check owner
+		if(isset($this->request['quizNameField'])){ //EDIT QUIZ NAME
+			$editedQuizId = $this->request['editQuizNameID'];
+			if(isset($this->request['editQuizNameID']) 
+					&& $quizModel->userIDhasPermissionOnQuizID($editedQuizId, $_SESSION['user_id']) ){
 				$quizModel->setQuizName($this->request['editQuizNameID'],$this->request['quizNameField']);
+				redirect('?view=mycontent&quizid='.$editedQuizId);
 			}
-			$viewInner->assign ( 'markQuiz', $this->request['editQuizNameID']);
 		}
 
+		//markEditedQuiz
+		if(isset($this->request['quizid'])){
+			$viewInner->assign ( 'markQuiz', $this->request['quizid']);
+		}
 
 		$quizzesList = $quizListModel->getUserQuizzesByUserID ( $_SESSION ['user_id'] );
 		$quizzes = array ();
