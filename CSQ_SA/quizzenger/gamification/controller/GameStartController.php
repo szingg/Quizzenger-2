@@ -25,11 +25,15 @@ namespace quizzenger\gamification\controller {
 			$this->quizModel = new \QuizModel($this->sqlhelper, log::get()); // Backslash means: from global Namespace
 			$this->gameModel = new GameModel($this->sqlhelper, $this->quizModel);
 			$this->request = array_merge ( $_GET, $_POST );
+			
+			$this->gameid = $this->request ['gameid'];
+			$this->gameinfo = $this->getGameInfo();
+			
 		}
 		public function loadView(){
 			checkLogin();
 			
-			$this->loadViewContent();
+			$this->loadGameStartView();
 			
 			$this->loadAdminView();
 			
@@ -38,14 +42,9 @@ namespace quizzenger\gamification\controller {
 			return $this->view;
 		}
 		
-		private function loadViewContent(){
+		private function loadGameStartView(){
 			$this->view->setTemplate ( 'gamestart' );
 			
-			$this->gameid = $this->request ['gameid'];
-			
-			$this->gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
-			if(count($this->gameinfo) <= 0) redirectToErrorPage('err_db_query_failed');
-			else $this->gameinfo = $this->gameinfo[0];
 			$this->checkGameStarted($this->gameinfo['has_started']);
 			$this->view->assign ( 'gameinfo', $this->gameinfo );
 			
@@ -87,6 +86,15 @@ namespace quizzenger\gamification\controller {
 				$adminView = $adminView->loadTemplate();
 			}
 			$this->view->assign ( 'adminView', $adminView );
+		}
+		
+		/*
+		 * Gets the Gameinfo. Redirects to errorpage when no result returned.
+		 */
+		private function getGameInfo(){
+			$gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
+			if(count($gameinfo) <= 0) redirectToErrorPage('err_db_query_failed');
+			else return $gameinfo[0];
 		}
 
 		private function isGameOwner($owner_id){
