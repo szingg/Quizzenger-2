@@ -75,8 +75,8 @@ function checkActiveTab($openedView){
 							<a href="?view=questionpool">
 							<span class="glyphicon glyphicon-list"></span> Fragepool</a>
 						</li>
-						<li class="<?=  checkActiveTab("generatequiz");?>">
-							<a href="?view=generatequiz"><span class="glyphicon glyphicon-random"></span> Lernen</a>
+						<li class="<?=  checkActiveTab("learn");?>">
+							<a href="?view=learn"><span class="glyphicon glyphicon-random"></span> Lernen</a>
 						</li>
 						<li class="hidden-xs <?=  checkActiveTab("newquestion");?>">
 							<a href="?view=newquestion"><span class="glyphicon glyphicon-plus"></span> Frage</a>
