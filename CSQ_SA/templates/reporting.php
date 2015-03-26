@@ -3,6 +3,8 @@
 	$userList = $this->_['userlist'];
 	$questionList = $this->_['questionlist'];
 	$authorList = $this->_['authorlist'];
+	$categoryId = $this->_['categoryid'];
+	$categoryList = $this->_['categorylist'];
 
 	if (isset($this->_['message'])){
 		echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($this->_['message']).'</div>';
@@ -31,6 +33,21 @@
 				<div class="panel-body">
 					<table id="tableReportUserList" class="table">
 						<thead>
+							<form id="tableReportUserList-category" method="GET">
+								<label>Kategorie&nbsp;</label>
+								<select form="tableReportUserList-category" name="category" onchange="this.form.submit()">
+									<option value="0">Alle Kategorien</option>
+									<?php
+										while($current = $categoryList->fetch_object()) {
+											if($current->id == $categoryId)
+												echo "<option value=\"{$current->id}\" selected>" . htmlspecialchars($current->name) . "</option>";
+											else
+												echo "<option value=\"{$current->id}\">" . htmlspecialchars($current->name) . "</option>";
+										}
+									?>
+								</select>
+								<input type="hidden" name="view" value="reporting" />
+							<form>
 							<tr>
 								<th>ID</th>
 								<th>Name</th>
@@ -51,7 +68,7 @@
 										. htmlspecialchars($current->username) . "</a>", true);
 									$outputRow($current->created_on);
 									$outputRow("<span style=\"display:none\">{$current->rank_threshold}</span>"
-										. "<img src=\"{$rankImagePath}\" />" . ' ' . htmlspecialchars($current->rank), true);
+										. ($current->rank_image != "" ? "<img src=\"{$rankImagePath}\" />" : "") . ' ' . htmlspecialchars($current->rank), true);
 									$outputRow((int)$current->producer_score);
 									$outputRow((int)$current->consumer_score);
 									echo "</tr>";

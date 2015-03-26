@@ -11,12 +11,16 @@
 	}
 
 	$user = $userModel->getUserByID($userId);
-	$userList = $reportingModel->getUserList();
+	$categoryId = (isset($_GET['category']) ? ((int)$_GET['category']) : 0);
+	$userList = $reportingModel->getUserList($categoryId);
 	$questionList = $reportingModel->getQuestionList();
 	$authorList = $reportingModel->getAuthorList();
+	$categoryList = $reportingModel->getCategoryList();
 
 	$viewInner->assign('user', $user);
+	$viewInner->assign('categoryid', $categoryId);
 	$viewInner->assign('userlist', $userList);
 	$viewInner->assign('questionlist', $questionList);
 	$viewInner->assign('authorlist', $authorList);
+	$viewInner->assign('categorylist', $categoryList);
 ?>
