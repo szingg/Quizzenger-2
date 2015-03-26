@@ -157,6 +157,19 @@ class QuizModel {
 		}
 		return $score;
 	}
+	function getSingleChoiceScoreByGameId($game_id, $quiz_id) {
+		$correctQuestions = $this->mysqli->s_query("SELECT question_id from questionperformance WHERE `gamesession_id` =  ?  AND `questionCorrect` = ". $this->questionCorrectValue,array('i'),array($game_id));
+		$score = 0;
+		foreach ( $correctQuestions as $question ) {
+			$w = $this->mysqli->s_query("SELECT weight FROM quiztoquestion WHERE `question_id` =  ?  AND `quiz_id` = ?",array('i','i'),array($question['question_id'],$quiz_id));
+			$weight = $this->mysqli->getSingleResult($w)['weight'];
+			if($weight == null || $weight < 1){
+				$weight = 1;
+			}
+			$score += $weight;
+		}
+		return $score;
+	}
 	function getMaxSingleChoiceScore($quiz_id){
 		$result  = $this->mysqli->s_query("SELECT SUM(weight) AS maxScore FROM quiztoquestion WHERE `quiz_id` = ?",array('i'),array($quiz_id));
 		return $this->mysqli->getSingleResult($result)['maxScore'];
