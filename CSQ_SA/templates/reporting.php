@@ -47,7 +47,8 @@
 
 									echo "<tr>";
 									$outputRow($current->id);
-									$outputRow($current->username);
+									$outputRow("<a href=\"" . APP_PATH . "/?view=user&amp;id={$current->id}\">"
+										. htmlspecialchars($current->username) . "</a>", true);
 									$outputRow($current->created_on);
 									$outputRow("<span style=\"display:none\">{$current->rank_threshold}</span>"
 										. "<img src=\"{$rankImagePath}\" />" . ' ' . htmlspecialchars($current->rank), true);
