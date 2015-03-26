@@ -26,21 +26,21 @@ namespace quizzenger\gamification\controller {
 			$this->request = array_merge ( $_GET, $_POST );
 		}
 		public function loadView(){
-			$this->checkLogin(); 
+			checkLogin(); 
 			
 			//check session-fields
 			if(! isset($_SESSION['gameid'], $_SESSION['gamequestions'], $_SESSION['gamecounter'])) $this->redirectToErrorPage('err_not_authorized');
 			$game_id = $_SESSION['gameid'];
 
 			$gameinfo = $this->gameModel->getGameInfoByGameId($game_id);
-			if(count($gameinfo) <= 0) $this->redirectToErrorPage();
+			if(count($gameinfo) <= 0) redirectToErrorPage('err_db_query_failed');
 			else $gameinfo = $gameinfo[0];
 			
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $game_id);
 			
 			//checkConditions
 			if($isMember==false || $this->isFinished($gameinfo['$is_finished']) || $this->hasStarted($gameinfo['has_started'])==false){
-				$this->redirectToErrorPage('err_not_authorized');
+				redirectToErrorPage('err_not_authorized');
 			}
 
 			

@@ -25,7 +25,7 @@ namespace quizzenger\gamification\controller {
 		}
 
 		public function loadView(){
-			$this->checkLogin();
+			checkLogin();
 			
 			$quiz_id = $this->request ['quizid'];
 			$gamename = $this->request ['gamename'];
@@ -46,25 +46,14 @@ namespace quizzenger\gamification\controller {
 				die();
 			}
 		}
-		
-		/*
-		 * Checks login. dies if not logged in
-		 */
-		private function checkLogin(){
-			if (! $GLOBALS ['loggedin']) {
-				header ( 'Location: ./index.php?view=login&pageBefore=' . $this->template );
-				die ();
-			}
-		}
 
 		private function redirect($gameid){
 			if($gameid == null){
-				header('Location: ./index.php?view=error&err=err_db_query_failed');
+				redirectToErrorPage('err_db_query_failed');
 			}
 			else{
-				header ( 'Location: ./index.php?view=gamestart&gameid=' . $gameid );
+				redirect('./index.php?view=gamestart&gameid=' . $gameid);
 			}
-			die ();
 		}
 	} // class GameController
 } // namespace quizzenger\gamification\controller
