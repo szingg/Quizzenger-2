@@ -1,32 +1,42 @@
 <?php
 
-	$viewInner->setTemplate ( 'question' );
 	$questionID= $this->request ['id'];
-
+	
+	//viewQuestionInfo
+	$viewQuestionInfo= new View();
+	$viewQuestionInfo->setTemplate('questioninfo');
+	
 	$question = $questionModel->getQuestion ( $questionID );
-	$viewInner->assign ( 'question', $question );
+	$viewQuestionInfo->assign( 'question', $question );
+	
 	$questionHistory = $questionModel->getHistoryForQuestionByID($questionID);
-	$viewInner->assign ( 'questionhistory', $questionHistory );
+	$viewQuestionInfo->assign( 'questionhistory', $questionHistory );
 
+	$author = $userModel->getUsernameByID ( $question ['user_id'] );
+	$viewQuestionInfo->assign ( 'author', $author );
+	$viewQuestionInfo->assign ( 'user_id',$question ['user_id']);
+	
+	$tags = $tagModel->getAllTagsByQuestionID ( $questionID );
+	$viewQuestionInfo->assign ( 'tags', $tags );
+	
+	$viewInner->assign( 'questioninfo', $viewQuestionInfo->loadTemplate());
+	
+	
+	//innerView
+	$viewInner->setTemplate ( 'question' );
+	
+	$viewInner->assign ( 'questionID', $questionID );
+	$viewInner->assign ( 'question', $question );
 	$categoryName = $categoryModel->getNameByID ( $question ['category_id'] );
 	$viewInner->assign ( 'category', $categoryName );
 
 	$answers = $answerModel->getAnswersByQuestionID ( $questionID );
 	$viewInner->assign ( 'answers', $answers );
-
-	$viewInner->assign ( 'questionID', $questionID );
-
-	$author = $userModel->getUsernameByID ( $question ['user_id'] );
-	$viewInner->assign ( 'author', $author );
-	$viewInner->assign ( 'user_id',$question ['user_id']);
-
-	$tags = $tagModel->getAllTagsByQuestionID ( $questionID );
-	$viewInner->assign ( 'tags', $tags );
-
+	
 	$alreadyReported= $reportModel->checkIfUserAlreadyDoneReport("question", $questionID , $_SESSION ['user_id']);
 	$viewInner->assign ('alreadyreported',$alreadyReported);
 
-
+	//set message
 	if(isset($this->request['questionReport']) && $GLOBALS ['loggedin']){
 		$viewInner->assign ('message', mes_sent_report);
 		if(isset($this->request['questionreportDescription'])){
@@ -36,6 +46,7 @@
 		}
 	}
 
+	//set message if user gained some score
 	if(isset($this->request['ratingReport']) && $GLOBALS ['loggedin']){
 		$viewInner->assign ('message', mes_sent_report);
 		if(isset($this->request['ratingreportDescription'])){
@@ -45,7 +56,7 @@
 		}
 	}
 
-
+	//case user makes quizsession
 	if (isset ( $this->request ['session_id'] )) {
 
 		$session_id = $this->request ['session_id'];
