@@ -15,7 +15,7 @@ javascript:window.history.forward(1);
 		<a data-toggle="collapse" data-target="#participants" href="#participants">
 			<h4 class="panel-title"><span id="participantCount"><?php echo count($this->_ ['members']); ?></span> Teilnehmer</h4>
 		</a>
-		<div id="participants" class="panel-collapse collapse">
+		<div id="participants" class="panel-collapse collapse in">
 			<ul id="participantList">
 				<?php  foreach ($this->_ ['members'] as $member ) {
 					echo '<li>'. htmlspecialchars($member['member']) .'</li>';

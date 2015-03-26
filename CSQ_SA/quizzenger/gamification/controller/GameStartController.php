@@ -27,8 +27,7 @@ namespace quizzenger\gamification\controller {
 			$this->request = array_merge ( $_GET, $_POST );
 		}
 		public function loadView(){
-			$this->checkLogin();
-
+			checkLogin();
 			
 			$this->loadViewContent();
 			
@@ -45,7 +44,7 @@ namespace quizzenger\gamification\controller {
 			$this->gameid = $this->request ['gameid'];
 			
 			$this->gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
-			if(count($this->gameinfo) <= 0) $this->redirectToErrorPage();
+			if(count($this->gameinfo) <= 0) redirectToErrorPage('err_db_query_failed');
 			else $this->gameinfo = $this->gameinfo[0];
 			$this->checkGameStarted($this->gameinfo['has_started']);
 			$this->view->assign ( 'gameinfo', $this->gameinfo );
@@ -94,23 +93,24 @@ namespace quizzenger\gamification\controller {
 			return $owner_id == $_SESSION['user_id'];
 		}
 
+		/*
 		private function checkLogin(){
 			if (! $GLOBALS ['loggedin']) {
 				header ( 'Location: ./index.php?view=login&pageBefore=' . $this->template );
 				die ();
 			}
-		}
+		}	*/
 		
 		private function checkGameStarted($has_started){
 			if ( isset($has_started)) {
-				$this->redirectToErrorPage('err_game_has_started');
+				redirectToErrorPage('err_game_has_started');
 			}
 		}
-
+/*
 		private function redirectToErrorPage($errorCode = 'err_db_query_failed'){
 			header('Location: ./index.php?view=error&err='.$errorCode);
 			die ();
-		}
+		} */
 	} // class GameController
 } // namespace quizzenger\gamification\controller
 
