@@ -46,7 +46,7 @@
 		}
 	}
 
-	//set message if user gained some score
+	//set message
 	if(isset($this->request['ratingReport']) && $GLOBALS ['loggedin']){
 		$viewInner->assign ('message', mes_sent_report);
 		if(isset($this->request['ratingreportDescription'])){
@@ -73,4 +73,7 @@
 		$sessionString = "";
 	}
 	$viewInner->assign ( 'session_id', $sessionString );
+	
+	$linkToSolution = '?view=solution&id='.$questionID.$sessionString;
+	$viewInner->assign ( 'linkToSolution', $linkToSolution);
 ?>

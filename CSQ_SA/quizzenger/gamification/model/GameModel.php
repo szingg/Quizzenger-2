@@ -3,10 +3,8 @@
 namespace quizzenger\gamification\model {
 	use \stdClass as stdClass;
 	use \SplEnum as SplEnum;
-	use \mysqli as mysqli;
 	use \quizzenger\logging\Log as Log;
 	use \SqlHelper as SqlHelper;
-	use \QuizModel as QuizModel;
 
 	/*	@author Simon Zingg
 	 *	The GameModel provides data which is used for games.
@@ -14,11 +12,9 @@ namespace quizzenger\gamification\model {
 	 */
 	class GameModel {
 		private $mysqli;
-		private $quizModel;
 
-		public function __construct(SqlHelper $mysqli, QuizModel $quizModel) {
+		public function __construct(SqlHelper $mysqli) {
 			$this->mysqli = $mysqli;
-			$this->quizModel = $quizModel;
 		}
 
 		/*

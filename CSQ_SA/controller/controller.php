@@ -60,6 +60,10 @@ class Controller {
 				$gameNewController = new \quizzenger\gamification\controller\GameNewController($viewInner);
 				$viewInner = $gameNewController->loadView();
 				break;
+			case 'gamequestion' :
+					$gameQuestionController = new \quizzenger\gamification\controller\GameQuestionController($viewInner);
+					$viewInner = $gameQuestionController->loadView();
+					break;
 			default:
 				include("controllers/default.php");
 				break;

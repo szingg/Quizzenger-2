@@ -56,7 +56,8 @@ if(isset($this->_['progress'])){ ?>
 	<?php
 	shuffle($this->_ ['answers']); //randomize answers
 	foreach ( $this->_ ['answers'] as $answer ) { ?>
-		<a href="?view=solution&amp;id=<?= ($this->_['questionID']); ?>&amp;answer=<?php echo $answer['id']; echo $this->_['session_id']; ?>">
+		<!-- <a href="?view=solution&amp;id=<?= ($this->_['questionID']); ?>&amp;answer=<?php echo $answer['id']; echo $this->_['session_id']; ?>">  -->
+		<a href="<?php echo $this->_['linkToSolution'] ;?>&amp;answer=<?php echo $answer['id'];?>">
 			<li class="list-group-item list-group-item-info">
 				<?= htmlspecialchars($answer['text']);?>
 			</li>
