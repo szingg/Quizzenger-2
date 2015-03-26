@@ -3,9 +3,9 @@
 		$viewInner->setTemplate ( 'solution' );
 
 		$question = $questionModel->getQuestion ( $this->request ['id'] );
+		
 		$author = $userModel->getUsernameByID ( $question ['user_id'] );
-		$userIsModHere =$userModel-> userIsModeratorOfCategory($_SESSION['user_id'], $question ['category_id']);
-
+		
 		$categoryName = $categoryModel->getNameByID ( $question ['category_id'] );
 
 		$answers = $answerModel->getAnswersByQuestionID ( $this->request ['id'] );

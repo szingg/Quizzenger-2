@@ -20,6 +20,16 @@ class QuestionModel{
 		$result=  $this->mysqli->getSingleResult($result);
 		return $result ["COUNT(*)"];
 	}
+	
+	/*
+	 * Checks if an answer for a specific game already exists. 
+	 * @return Returns true if exists, else false
+	 */
+	function gameAnswerExists($gamesession, $question_id, $user_id){
+		$result = $this->mysqli->s_query("SELECT COUNT(*) as count FROM questionperformance WHERE gamesession_id=? AND question_id=? AND user_id=?",array('i','i','i'),array($gamesession,$question_id,$user_id));
+		$result = $this->mysqli->getSingleResult($result);
+		return $result["count"]==0;
+	}
 
 	function setWeight($id, $weight){
 		$this->logger->log ( "Editing Weigth(".$weight.") for QuizToQuestion ID: ".$id, Logger::INFO );
@@ -43,7 +53,7 @@ class QuestionModel{
 // 	}
 
 
-	function InsertQuestionPerformance($question_id, $user_id, $questionCorrect, $session){
+	function InsertQuestionPerformance($question_id, $user_id, $questionCorrect, $session, $gamesession_id){
 		$difficultyResult =$this->mysqli->s_query("SELECT difficulty,difficultycount FROM question WHERE id=? ",array('i'),array($question_id));
 		$difficultyResult = $this->mysqli->getSingleResult($difficultyResult);
 		$difficulty= $difficultyResult['difficulty'];
@@ -54,7 +64,7 @@ class QuestionModel{
 		$this->mysqli->s_query("UPDATE question SET difficulty=?, difficultycount=? WHERE id=? ",array('d','i','i'),array($new_difficulty,$new_difficulty_count,$question_id));
 
 		$this->logger->log ( "Adding new QuestionPerformance for Question ID:".$question_id, Logger::INFO );
-		return $this->mysqli->s_insert("INSERT INTO questionperformance (question_id, user_id, questionCorrect, session_id) VALUES (?, ?, ?, ?)",array('i','i','i','i'),array($question_id, $user_id, $questionCorrect, $session));
+		return $this->mysqli->s_insert("INSERT INTO questionperformance (question_id, user_id, questionCorrect, session_id, gamesession_id) VALUES (?, ?, ?, ?, ?)",array('i','i','i','i','i'),array($question_id, $user_id, $questionCorrect, $session, $gamesession_id));
 	}
 
 

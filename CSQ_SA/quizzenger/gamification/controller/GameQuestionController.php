@@ -112,7 +112,7 @@ namespace quizzenger\gamification\controller {
 		/*
 		 * Redirects if at leaste one condition fails
 		 * @Precondition User is logged in
-		 * @Precondition Setted cookie params
+		 * @Precondition Setted SESSION params
 		 * @Precondition User is game member
 		 * @Precondition Game has started
 		 * @Precondition Game is not finished 

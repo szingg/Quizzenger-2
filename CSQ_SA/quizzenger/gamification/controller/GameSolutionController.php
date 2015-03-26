@@ -19,6 +19,7 @@ namespace quizzenger\gamification\controller {
 		private $answerModel;
 		private $reportModel;
 		private $categoryModel;
+		//private $userModel;
 		
 		private $gameid;
 		private $gamequestions;
@@ -29,15 +30,15 @@ namespace quizzenger\gamification\controller {
 			$this->view = $view;
 			$this->sqlhelper = new SqlHelper(log::get());
 			$this->request = array_merge ( $_GET, $_POST );
-			
+
 			$this->gameModel = new GameModel($this->sqlhelper);
 			$this->questionModel = new \QuestionModel($this->sqlhelper, log::get());
 			$this->quizModel = new \QuizModel($this->sqlhelper, log::get()); // Backslash means: from global Namespace
 			$this->answerModel = new \AnswerModel($this->sqlhelper, log::get());
 			$this->reportModel = new \ReportModel($this->sqlhelper, log::get());
 			$this->categoryModel = new \CategoryModel($this->sqlhelper, log::get());
+			//$this->userModel = new \UserModel($this->sqlhelper, log::get());
 
-			
 			$this->gameid = $_SESSION['gameid'];
 			$this->gamequestions = $_SESSION['gamequestions'];
 			$this->gamecounter = $_SESSION['gamecounter'];
@@ -47,10 +48,10 @@ namespace quizzenger\gamification\controller {
 			$this->checkPreconditions();
 
 			$this->view->setTemplate( 'gamesolution' );
-			
+
 			$this->loadSolutionView();
 			//$this->loadQuestionView();
-			
+
 			$this->loadAdminView();
 
 			return $this->view;
@@ -94,79 +95,61 @@ namespace quizzenger\gamification\controller {
 			$solutionView = new \View();
 			$solutionView->setTemplate ( 'solution' );
 			
-			if (isset ( $this->request ['id'] ) && isset ( $this->request ['answer'] )) {
-				$viewInner->setTemplate ( 'solution' );
+			$questionID = $this->gamequestions[$this->gamecounter];
+			$solutionView->assign ( 'questionID', $questionID );
+			$question = $this->questionModel->getQuestion ( $questionID );
+			$solutionView->assign ( 'question', $question );
 			
-				$question = $questionModel->getQuestion ( $this->request ['id'] );
-				$author = $userModel->getUsernameByID ( $question ['user_id'] );
-				$userIsModHere =$userModel-> userIsModeratorOfCategory($_SESSION['user_id'], $question ['category_id']);
+			$categoryName = $this->categoryModel->getNameByID ( $question ['category_id'] );
+			$solutionView->assign ( 'category', $categoryName );
 			
-				$categoryName = $categoryModel->getNameByID ( $question ['category_id'] );
+			$answers = $this->answerModel->getAnswersByQuestionID ( $questionID );
+			$solutionView->assign ( 'answers', $answers );
+			$selectedAnswer = $this->request ['answer'];
+			$solutionView->assign ( 'selectedAnswer', $selectedAnswer );
 			
-				$answers = $answerModel->getAnswersByQuestionID ( $this->request ['id'] );
-				$selectedAnswer = $this->request ['answer'];
-				$correctAnswer = $answerModel->getCorrectAnswer ( $this->request ['id'] );
-			
-				$alreadyReported= $reportModel->checkIfUserAlreadyDoneReport("question", $this->request ['id'] , $_SESSION ['user_id']);
-				$viewInner->assign ('alreadyreported',$alreadyReported);
-			
-				include("rating.php");
-			
-			
-				if($GLOBALS['loggedin'] && $correctAnswer == $selectedAnswer){
-					if(!$userscoreModel->hasUserScoredQuestion( $this->request ['id'],$_SESSION['user_id'])){ // no multiple scoring for question
-						$userscoreModel->addScoreToCategory($_SESSION['user_id'], $question ['category_id'],QUESTION_ANSWERED_SCORE, $moderationModel);
-						$viewInner->assign ( 'pointsearned', QUESTION_ANSWERED_SCORE );
-					}
+			$alreadyReported= $this->reportModel->checkIfUserAlreadyDoneReport("question", $this->request ['id'] , $_SESSION ['user_id']);
+			$viewInner->assign ('alreadyreported',$alreadyReported);
+
+			//TODO: Score ändern
+			/*
+			$correctAnswer = $this->answerModel->getCorrectAnswer ( $questionID );
+			if($GLOBALS['loggedin'] && $correctAnswer == $selectedAnswer){
+				if(!$userscoreModel->hasUserScoredQuestion( $this->request ['id'],$_SESSION['user_id'])){ // no multiple scoring for question
+					$userscoreModel->addScoreToCategory($_SESSION['user_id'], $question ['category_id'],QUESTION_ANSWERED_SCORE, $moderationModel);
+					$viewInner->assign ( 'pointsearned', QUESTION_ANSWERED_SCORE );
 				}
-			
-				include("helper/solution_report.php");
-			
-			
-				$viewInner->assign ( 'answers', $answers );
-				$viewInner->assign ( 'category', $categoryName );
-				$viewInner->assign ( 'author', $author );
-			
-				$viewInner->assign ( 'questionID', $this->request ['id'] );
-				$viewInner->assign ( 'selectedAnswer', $selectedAnswer );
-				$viewInner->assign ( 'userismodhere', $userIsModHere );
-				$viewInner->assign ( 'question', $question );
-			
+			} */
+
+			//$session_id = $this->request ['session_id'];
+			//$inc_counter=0;
+
+			if ($this->questionModel->gameAnswerExists ( $this->gameid, $questionID, $_SESSION['user_id'] ) == 0) {
 				// Implement other Strategies if other question types are desired
 				$correct = ($correctAnswer == $selectedAnswer ? 100 : 0);
-			
-				$pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
-			
-			
-				// Only relevant if question was answered in quiz context
-				if (isset ( $this->request ['session_id'] )  ) {
-					$session_id = $this->request ['session_id'];
-					$inc_counter=0;
-					if ($questionModel->answerExists ( $session_id, $this->request ['id'], $_SESSION['user_id'] ) == 0) { // Normal Quiz
-						$questionModel->InsertQuestionPerformance ( $this->request ['id'], $_SESSION ['user_id'], $correct, $session_id );
-						$inc_counter=1;
-					}
-					$_SESSION ['counter'. $session_id] += $inc_counter;
-					$questionCount= count ( $_SESSION ['questions'. $session_id] );
-					$currentCounter= $_SESSION ['counter'. $session_id];
-					$progress = round ( 100 * ($currentCounter / $questionCount) );
-					$viewInner->assign ( 'progress', $progress );
-					$viewInner->assign ( 'questioncount', $questionCount );
-					$viewInner->assign ( 'currentcounter', $currentCounter );
-					$viewInner->assign ( 'progress', $progress );
-			
-					if (count ( $_SESSION ['questions'. $session_id] ) > $_SESSION ['counter'. $session_id]) {
-						$viewInner->assign ( 'nextQuestion', "?view=question&id=" . $_SESSION ['questions'. $session_id] [$_SESSION ['counter'. $session_id]] . "&amp;session_id=" . $session_id);
-					} else {
-						$viewInner->assign ( 'nextQuestion', "?view=quizend&session_id=". $session_id);
-					}
-				}
-				else { // not in quiz context
-					if(!$pageWasRefreshed){
-						$questionModel->InsertQuestionPerformance ( $this->request ['id'], $_SESSION ['user_id'], $correct, NULL);
-					}
-				}
+				$this->questionModel->InsertQuestionPerformance ( $questionID, $_SESSION ['user_id'], $correct, null, $this->gameid );
+				$_SESSION['gamecounter'] += 1;
+				$this->gamecounter = $_SESSION['gamecounter'];
 			}
+			//$_SESSION['gamecounter'] += $inc_counter;
+			
+			$questionCount = count ( $this->gamequestions );
+			$viewInner->assign ( 'questioncount', $questionCount );
+			$viewInner->assign ( 'currentcounter', $this->gamecounter );
+			$progress = round ( 100 * ($currentCounter / $questionCount) );
+			$viewInner->assign ( 'progress', $progress );
+	
+			if ($questionCount > $this->gamecounter) {
+				$viewInner->assign ( 'nextQuestion', '?view=gamequestion');
+			} else {
+				$viewInner->assign ( 'nextQuestion', '?view=gameend');
+			}
+			/* DELETE
+			//not in quiz context
+			$pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
+			if(!$pageWasRefreshed){
+				$questionModel->InsertQuestionPerformance ( $this->request ['id'], $_SESSION ['user_id'], $correct, NULL);
+			}*/
 			
 			$this->view->assign ( 'solutionView', $solutionView->loadTemplate() );
 		}
@@ -195,7 +178,7 @@ namespace quizzenger\gamification\controller {
 		/*
 		 * Redirects if at leaste one condition fails
 		 * @Precondition User is logged in
-		 * @Precondition Setted cookie params
+		 * @Precondition Setted SESSION and request params
 		 * @Precondition User is game member
 		 * @Precondition Game has started
 		 * @Precondition Game is not finished 
@@ -207,13 +190,12 @@ namespace quizzenger\gamification\controller {
 			if(! isset($_SESSION['gameid'], $_SESSION['gamequestions'], $_SESSION['gamecounter'])) redirectToErrorPage('err_not_authorized');
 				
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
-				
-			if($isMember && $this->isFinished($this->gameinfo['is_finished'])){
-				//TODO: redirect('gameend');
-			}
 			
 			//checkConditions
-			if($isMember==false || $this->isFinished($this->gameinfo['is_finished']) || $this->hasStarted($this->gameinfo['has_started'])==false){
+			if(isset($this->request ['answer'])==false 
+					|| $isMember==false 
+					|| $this->isFinished($this->gameinfo['is_finished']) 
+					|| $this->hasStarted($this->gameinfo['has_started'])==false){
 				redirectToErrorPage('err_not_authorized');
 			}
 		}

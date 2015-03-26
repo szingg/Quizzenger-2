@@ -1,4 +1,5 @@
 <?php
+	$userIsModHere =$userModel-> userIsModeratorOfCategory($_SESSION['user_id'], $question ['category_id']);
 	$ratings = $ratingModel->getAllRatingsByQuestionID ( $this->request ['id'] );
 	$ratings = $ratingModel->enrichRatingsWithAuthorName ( $ratings, $userModel,$moderationModel,$questionModel,$reportModel );
 	$meanRating = $question['rating'];
@@ -16,7 +17,6 @@
 	$ratingView->assign ( 'ratings', $ratings );
 	$ratingView->assign ( 'comments', $comments );
 	$ratingView->assign ( 'meanRating', $meanRating );
-	//assigns from outer controller
 	$ratingView->assign ( 'questionID', $this->request ['id'] );
 	$ratingView->assign ( 'userismodhere', $userIsModHere );
 
