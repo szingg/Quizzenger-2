@@ -20,6 +20,7 @@
 	$systemStatus = new \stdClass();
 	$systemStatus->attachment_usage = $reportingModel->getAttachmentMemoryUsage();
 	$systemStatus->database_usage = $reportingModel->getDatabaseMemoryUsage();
+	$systemStatus->login_attempts = $reportingModel->getRecentLoginAttempts();
 
 	$viewInner->assign('user', $user);
 	$viewInner->assign('categoryid', $categoryId);

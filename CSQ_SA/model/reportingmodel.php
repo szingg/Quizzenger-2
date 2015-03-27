@@ -98,5 +98,11 @@ class ReportingModel {
 		}
 		return $size;
 	}
+
+	public function getRecentLoginAttempts() {
+		$statement = $this->mysqli->s_query('SELECT COUNT(*) AS count FROM login_attempts'
+			. '  WHERE time >= NOW() - INTERVAL 1 DAY', [], [], false);
+		return $statement->fetch_object()->count;
+	}
 }
 ?>

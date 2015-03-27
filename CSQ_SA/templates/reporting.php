@@ -161,6 +161,7 @@
 						echo date('Y-m-d H:i:s') . "\n"
 							. "Attachment Memory Usage : " . number_format($systemStatus->attachment_usage / 1000000.0, 2, '.', '') . "M\n"
 							. "Database Memory Usage   : " . number_format($systemStatus->database_usage / 1000000.0, 2, '.', '') . "M\n"
+							. "Login Attempts (24h)    : " . $systemStatus->login_attempts . "\n"
 					?></code></pre>
 				</div>
 			</div>
