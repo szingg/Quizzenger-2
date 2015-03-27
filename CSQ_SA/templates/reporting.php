@@ -101,7 +101,8 @@
 									$outputRow("<a href=\"" . APP_PATH . "/?view=question&amp;id={$current->id}\">"
 										. htmlspecialchars($current->questiontext) . "</a>", true);
 									$outputRow($current->category);
-									$outputRow($current->author);
+									$outputRow("<a href=\"" . APP_PATH . "/?view=user&amp;id={$current->author_id}\">"
+										. htmlspecialchars($current->author) . "</a>", true);
 									$outputRow("{$current->created} ({$current->last_modified})");
 
 									if($current->ratingcount != 0)
