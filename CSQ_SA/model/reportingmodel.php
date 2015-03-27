@@ -65,7 +65,8 @@ class ReportingModel {
 			. ' (SELECT AVG(stars) FROM rating WHERE rating.user_id=user.id GROUP BY rating.user_id) AS rating_average,'
 			. ' (SELECT AVG(difficulty) FROM question WHERE question.user_id=user.id GROUP BY question.user_id) AS difficulty_average'
 			. ' FROM user'
-			. ' WHERE user.id IN (SELECT user_id FROM question)',
+			. ' WHERE user.id IN (SELECT user_id FROM question)'
+			. ' ORDER BY user.id ASC',
 			[], [], false);
 	}
 
