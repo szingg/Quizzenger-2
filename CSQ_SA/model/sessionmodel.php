@@ -94,9 +94,21 @@ class SessionModel {
 					} else {
 						// Password is not correct
 						// We record this attempt in the database
-						$now = time ();
-						$mysqli->query ( "INSERT INTO login_attempts(user_id, time)
-								VALUES ('$user_id', '$now')" );
+						$ip = '0.0.0.0';
+						if(!empty($_SERVER['HTTP_CLIENT_IP'])) {
+							$ip = $_SERVER['HTTP_CLIENT_IP'];
+						}
+						else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+							$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+						}
+						else {
+							$ip = $_SERVER['REMOTE_ADDR'];
+						}
+
+						$longIp = ip2long($ip);
+						$mysqli->query("INSERT INTO login_attempts (user_id, ip)"
+							. " VALUES ('$user_id', '$longIp')");
+
 						return -1;
 					}
 				}
