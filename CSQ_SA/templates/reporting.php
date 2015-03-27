@@ -99,7 +99,8 @@
 								while($current = $questionList->fetch_object()) {
 									echo '<tr>';
 									$outputRow($current->id);
-									$outputRow($current->questiontext);
+									$outputRow("<a href=\"" . APP_PATH . "/?view=question&amp;id={$current->id}\">"
+										. htmlspecialchars($current->questiontext) . "</a>", true);
 									$outputRow('n/a');
 									$outputRow('n/a');
 									$outputRow($current->created);
