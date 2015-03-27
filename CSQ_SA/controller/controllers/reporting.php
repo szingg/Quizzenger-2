@@ -11,6 +11,12 @@
 	}
 
 	$user = $userModel->getUserByID($userId);
+
+	if(!$user['superuser']) {
+		header('Location: ./index.php?view=login&pageBefore=' . $this->template);
+		die();
+	}
+
 	$categoryId = (isset($_GET['category']) ? ((int)$_GET['category']) : 0);
 	$userList = $reportingModel->getUserList($categoryId);
 	$questionList = $reportingModel->getQuestionList();

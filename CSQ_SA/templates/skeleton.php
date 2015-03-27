@@ -87,9 +87,12 @@ function checkActiveTab($openedView){
 						<li class="<?=  checkActiveTab("user");?>">
 							<a href="?view=user"><span class="glyphicon glyphicon-user"></span> Mein Profil</a>
 						</li>
+
+						<?php if($this->_['superuser']): ?>
 						<li class="<?= checkActiveTab('reporting'); ?>">
 							<a href="?view=reporting"><span class="glyphicon glyphicon-stats"></span> Reporting</a>
 						</li>
+						<?php endif; ?>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="hidden-sm" style="margin-top:8px;">
