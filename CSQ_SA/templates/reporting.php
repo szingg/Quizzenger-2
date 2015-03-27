@@ -80,11 +80,13 @@
 			</div>
 			<div role="tabpanel" class="tab-pane" id="tab-question-report">
 				<div class="panel-body">
-					<table class="table quizzenger-report-table">
+					<table id="tableReportQuestionList" class="table">
 						<thead>
 							<tr>
 								<th>ID</th>
 								<th>Frage</th>
+								<th>Kategorie</th>
+								<th>Autor</th>
 								<th>Erstellt</th>
 								<th>Modifiziert</th>
 								<th>Bewertung</th>
@@ -98,6 +100,8 @@
 									echo '<tr>';
 									$outputRow($current->id);
 									$outputRow($current->questiontext);
+									$outputRow('n/a');
+									$outputRow('n/a');
 									$outputRow($current->created);
 									$outputRow($current->last_modified);
 									$outputRow($current->rating);

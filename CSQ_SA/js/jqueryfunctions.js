@@ -132,6 +132,13 @@ $(function(){
 			{"width" : "5%", "targets" : [0, 4, 5]}
 		],
 	});
+	$('#tableReportQuestionList').DataTable({
+		"responsive" : true,
+		"autoWidth" : false,
+		"columnDefs" : [
+			{"className" : "dt-right", "targets": [0, 6, 7, 8]}
+		],
+	});
     $('#tableOpenGames').DataTable( {
         "responsive": true
     } );
