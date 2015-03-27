@@ -124,25 +124,28 @@
 			</div>
 			<div role="tabpanel" class="tab-pane" id="tab-author-report">
 				<div class="panel-body">
-					<table class="table quizzenger-report-table">
+					<table id="tableReportAuthorList" class="table">
 						<thead>
 							<tr>
-								<th>Frage</th>
-								<th>Bewertung</th>
-								<th>Schwierigkeit</th>
-								<th>Durchführungen</th>
+								<th>ID</th>
+								<th>Name</th>
+								<th>Anzahl</th>
+								<th>&#216; Bewertung</th>
+								<th>&#216; Schwierigkeit</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>ddd</td><td>ddd</td><td>ddd</td><td>ddd</td>
-							</tr>
-							<tr>
-								<td>eee</td><td>eee</td><td>eee</td><td>eee</td>
-							</tr>
-							<tr>
-								<td>fff</td><td>fff</td><td>fff</td><td>fff</td>
-							</tr>
+							<?php
+								while($current = $authorList->fetch_object()) {
+									echo '<tr>';
+									$outputRow($current->id);
+									$outputRow($current->author);
+									$outputRow($current->count);
+									$outputRow($current->rating_average);
+									$outputRow($current->difficulty_average);
+									echo '</tr>';
+								}
+							?>
 						</tbody>
 					</table>
 				</div>

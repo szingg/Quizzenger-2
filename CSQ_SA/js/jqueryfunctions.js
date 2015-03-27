@@ -141,9 +141,17 @@ $(function(){
 			{"width" : "10%", "targets" : [4]}
 		],
 	});
-    $('#tableOpenGames').DataTable( {
+	$('#tableReportAuthorList').DataTable({
+		"responsive" : true,
+		"autoWidth" : false,
+		"columnDefs" : [
+			{"className" : "dt-right", "targets": [0, 2, 3, 4]},
+			{"width" : "5%", "targets" : [0, 2, 3, 4]}
+		],
+	});
+    $('#tableOpenGames').DataTable({
         "responsive": true
-    } );
+    });
 });
 // ================================================================================
 // VALIDATORS
