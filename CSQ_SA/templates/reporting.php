@@ -5,6 +5,7 @@
 	$authorList = $this->_['authorlist'];
 	$categoryId = $this->_['categoryid'];
 	$categoryList = $this->_['categorylist'];
+	$systemStatus = $this->_['systemstatus'];
 
 	if (isset($this->_['message'])){
 		echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($this->_['message']).'</div>';
@@ -155,27 +156,12 @@
 			</div>
 			<div role="tabpanel" class="tab-pane" id="tab-system-report">
 				<div class="panel-body">
-					<table class="table quizzenger-report-table">
-						<thead>
-							<tr>
-								<th>Frage</th>
-								<th>Bewertung</th>
-								<th>Schwierigkeit</th>
-								<th>Durchführungen</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>jjj</td><td>jjj</td><td>jjj</td><td>jjj</td>
-							</tr>
-							<tr>
-								<td>kkk</td><td>kkk</td><td>kkk</td><td>kkk</td>
-							</tr>
-							<tr>
-								<td>lll</td><td>lll</td><td>lll</td><td>lll</td>
-							</tr>
-						</tbody>
-					</table>
+					<p><b>System Status</b></p>
+					<pre><code><?php
+						echo date('Y-m-d H:i:s') . "\n"
+							. "Attachment Memory Usage : " . number_format($systemStatus->attachment_usage / 1000000.0, 2, '.', '') . "M\n"
+							. "Database Memory Usage   : " . number_format($systemStatus->database_usage / 1000000.0, 2, '.', '') . "M\n"
+					?></code></pre>
 				</div>
 			</div>
 		</div>

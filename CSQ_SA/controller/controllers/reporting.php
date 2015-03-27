@@ -17,10 +17,15 @@
 	$authorList = $reportingModel->getAuthorList();
 	$categoryList = $reportingModel->getCategoryList();
 
+	$systemStatus = new \stdClass();
+	$systemStatus->attachment_usage = $reportingModel->getAttachmentMemoryUsage();
+	$systemStatus->database_usage = $reportingModel->getDatabaseMemoryUsage();
+
 	$viewInner->assign('user', $user);
 	$viewInner->assign('categoryid', $categoryId);
 	$viewInner->assign('userlist', $userList);
 	$viewInner->assign('questionlist', $questionList);
 	$viewInner->assign('authorlist', $authorList);
 	$viewInner->assign('categorylist', $categoryList);
+	$viewInner->assign('systemstatus', $systemStatus);
 ?>

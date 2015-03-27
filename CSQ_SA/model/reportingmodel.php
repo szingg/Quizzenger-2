@@ -77,5 +77,26 @@ class ReportingModel {
 			. ' ORDER BY category.name ASC',
 			[], [], false);
 	}
+
+	public function getAttachmentMemoryUsage() {
+		$size = 0;
+		$iterator = new DirectoryIterator(ATTACHMENT_PATH);
+		foreach($iterator as $file) {
+			if($file->isDot() || $file->isDir())
+				continue;
+
+			$size += $file->getSize();
+		}
+		return $size;
+	}
+
+	public function getDatabaseMemoryUsage() {
+		$size = 0;
+		$statement = $this->mysqli->s_query('SHOW TABLE STATUS', [], [], false);
+		while($row = $statement->fetch_object()) {
+			$size += $row->Data_length + $row->Index_length;
+		}
+		return $size;
+	}
 }
 ?>
