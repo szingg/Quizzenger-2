@@ -100,7 +100,10 @@
 									$outputRow($current->id);
 									$outputRow("<a href=\"" . APP_PATH . "/?view=question&amp;id={$current->id}\">"
 										. htmlspecialchars($current->questiontext) . "</a>", true);
-									$outputRow($current->category);
+
+									$outputRow("<a href=\"" . APP_PATH . "/?view=questionlist&amp;category={$current->category_id}\">"
+										. htmlspecialchars($current->category) . "</a>", true);
+
 									$outputRow("<a href=\"" . APP_PATH . "/?view=user&amp;id={$current->author_id}\">"
 										. htmlspecialchars($current->author) . "</a>", true);
 									$outputRow("{$current->created} ({$current->last_modified})");
