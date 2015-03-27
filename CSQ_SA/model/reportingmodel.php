@@ -27,7 +27,7 @@ class ReportingModel {
 				[], [], false);
 		}
 		else {
-			return $this->mysqli->s_query('SELECT user.id, user.username, user.created_on,'
+			return $this->mysqli->s_query('SELECT user.id, user.username, DATE(user.created_on) AS created_on,'
 				. ' (SELECT settings.value FROM settings WHERE settings.name="q.scoring.producer-multiplier" LIMIT 1) as producer_multiplier,'
 				. ' "" AS rank,'
 				. ' "" AS rank_image,'
@@ -44,7 +44,7 @@ class ReportingModel {
 	}
 
 	public function getQuestionList() {
-		return $this->mysqli->s_query('SELECT id, questiontext, created, lastModified AS last_modified,'
+		return $this->mysqli->s_query('SELECT id, questiontext, DATE(created) AS created, DATE(lastModified) AS last_modified,'
 			. ' ROUND(difficulty, 2) AS difficulty, (rating / ratingcount) AS rating,'
 			. ' "n/a" AS solved_count'
 			. ' FROM question ORDER BY created ASC',
