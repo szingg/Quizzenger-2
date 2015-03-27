@@ -21,6 +21,7 @@
 	$systemStatus->attachment_usage = $reportingModel->getAttachmentMemoryUsage();
 	$systemStatus->database_usage = $reportingModel->getDatabaseMemoryUsage();
 	$systemStatus->login_attempts = $reportingModel->getRecentLoginAttempts();
+	$systemStatus->log_files = $reportingModel->getLogFiles();
 
 	$viewInner->assign('user', $user);
 	$viewInner->assign('categoryid', $categoryId);

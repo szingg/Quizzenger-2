@@ -104,5 +104,19 @@ class ReportingModel {
 			. '  WHERE time >= NOW() - INTERVAL 1 DAY', [], [], false);
 		return $statement->fetch_object()->count;
 	}
+
+	public function getLogFiles() {
+		$files = [];
+		$iterator = new DirectoryIterator(LOGPATH);
+		foreach($iterator as $file) {
+			if($file->isDot() || $file->isDir() || $file->getExtension() !== 'log')
+				continue;
+
+			$files[] = $file->getFilename();
+		}
+
+		natsort($files);
+		return array_reverse($files);
+	}
 }
 ?>

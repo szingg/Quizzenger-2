@@ -163,6 +163,16 @@
 							. "Database Memory Usage   : " . number_format($systemStatus->database_usage / 1000000.0, 2, '.', '') . "M\n"
 							. "Login Attempts (24h)    : " . $systemStatus->login_attempts . "\n"
 					?></code></pre>
+					<p><b>Log Files</b></p>
+					<ul>
+						<?php
+							foreach($systemStatus->log_files as $log) {
+								$log = htmlspecialchars($log);
+								$filename = htmlspecialchars(APP_PATH) . '/log/' . $log;
+								echo "<li><a href=\"$filename\">$log</a></li>";
+							}
+						?>
+					</ul>
 				</div>
 			</div>
 		</div>
