@@ -130,19 +130,21 @@
 								<th>ID</th>
 								<th>Name</th>
 								<th>Anzahl</th>
-								<th>&#216; Bewertung</th>
-								<th>&#216; Schwierigkeit</th>
+								<th>&#216;&nbsp;Bewertung</th>
+								<th>&#216;&nbsp;Schwierigkeit</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php
 								while($current = $authorList->fetch_object()) {
 									echo '<tr>';
-									$outputRow($current->id);
-									$outputRow($current->author);
+									$outputRow($current->author_id);
+									$outputRow("<a href=\"" . APP_PATH . "/?view=user&amp;id={$current->author_id}\">"
+										. htmlspecialchars($current->author) . "</a>", true);
+
 									$outputRow($current->question_count);
-									$outputRow($current->rating_average == ''
-										? '' : number_format($current->rating_average, 2, '.', ''));
+									$outputRow($current->rating_average == '' ? ''
+										: number_format($current->rating_average, 2, '.', ''));
 									$outputRow(number_format($current->difficulty_average, 2, '.', ''));
 									echo '</tr>';
 								}

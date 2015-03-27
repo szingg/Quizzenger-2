@@ -146,7 +146,9 @@ $(function(){
 		"autoWidth" : false,
 		"columnDefs" : [
 			{"className" : "dt-right", "targets": [0, 2, 3, 4]},
-			{"width" : "5%", "targets" : [0, 2, 3, 4]}
+			{"width" : "5%", "targets" : [0]},
+			{"width" : "15%", "targets" : [2, 3, 4]},
+			{"width" : "50%", "targets" : [1]}
 		],
 	});
     $('#tableOpenGames').DataTable({
