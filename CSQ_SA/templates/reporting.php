@@ -87,8 +87,7 @@
 								<th>Frage</th>
 								<th>Kategorie</th>
 								<th>Autor</th>
-								<th>Erstellt</th>
-								<th>Modifiziert</th>
+								<th>Datum</th>
 								<th>Bewertung</th>
 								<th>Schwierigkeit</th>
 								<th>Gelöst</th>
@@ -101,12 +100,16 @@
 									$outputRow($current->id);
 									$outputRow("<a href=\"" . APP_PATH . "/?view=question&amp;id={$current->id}\">"
 										. htmlspecialchars($current->questiontext) . "</a>", true);
-									$outputRow('n/a');
-									$outputRow('n/a');
-									$outputRow($current->created);
-									$outputRow($current->last_modified);
-									$outputRow($current->rating);
-									$outputRow($current->difficulty);
+									$outputRow($current->category);
+									$outputRow($current->author);
+									$outputRow("{$current->created} ({$current->last_modified})");
+
+									if($current->ratingcount != 0)
+										$outputRow(number_format((float)$current->rating / (float)$current->ratingcount, 1, '.', ''));
+									else
+										$outputRow('');
+
+									$outputRow(number_format($current->difficulty, 2, '.', ''));
 									$outputRow($current->solved_count);
 									echo '</tr>';
 								}

@@ -44,10 +44,16 @@ class ReportingModel {
 	}
 
 	public function getQuestionList() {
-		return $this->mysqli->s_query('SELECT id, questiontext, DATE(created) AS created, DATE(lastModified) AS last_modified,'
-			. ' ROUND(difficulty, 2) AS difficulty, (rating / ratingcount) AS rating,'
-			. ' "n/a" AS solved_count'
-			. ' FROM question ORDER BY created ASC',
+		return $this->mysqli->s_query('SELECT question.id, question.questiontext,'
+			. ' DATE(question.created) AS created, DATE(question.lastModified) AS last_modified,'
+			. ' question.difficulty, question.rating, question.ratingcount,'
+			. ' user.username AS author, category.name AS category, COUNT(questionperformance.question_id) AS solved_count'
+			. ' FROM question'
+			. ' JOIN user ON (user.id=question.user_id)'
+			. ' JOIN category ON (category.id=question.category_id)'
+			. ' JOIN questionperformance ON (questionperformance.question_id=question.id)'
+			. ' GROUP BY questionperformance.question_id'
+			. ' ORDER BY created ASC',
 			[], [], false);
 	}
 
