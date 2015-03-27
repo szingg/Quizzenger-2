@@ -61,7 +61,7 @@ class ReportingModel {
 
 	public function getAuthorList() {
 		return $this->mysqli->s_query('SELECT user.id, user.username AS author,'
-			. ' (SELECT COUNT(*) FROM question WHERE question.user_id=user.id GROUP BY question.user_id) AS count,'
+			. ' (SELECT COUNT(*) FROM question WHERE question.user_id=user.id GROUP BY question.user_id) AS question_count,'
 			. ' (SELECT AVG(stars) FROM rating WHERE rating.user_id=user.id GROUP BY rating.user_id) AS rating_average,'
 			. ' (SELECT AVG(difficulty) FROM question WHERE question.user_id=user.id GROUP BY question.user_id) AS difficulty_average'
 			. ' FROM user'

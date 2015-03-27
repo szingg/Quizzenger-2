@@ -140,9 +140,10 @@
 									echo '<tr>';
 									$outputRow($current->id);
 									$outputRow($current->author);
-									$outputRow($current->count);
-									$outputRow($current->rating_average);
-									$outputRow($current->difficulty_average);
+									$outputRow($current->question_count);
+									$outputRow($current->rating_average == ''
+										? '' : number_format($current->rating_average, 2, '.', ''));
+									$outputRow(number_format($current->difficulty_average, 2, '.', ''));
 									echo '</tr>';
 								}
 							?>
