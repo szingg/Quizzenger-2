@@ -136,7 +136,7 @@ namespace quizzenger\gamification\controller {
 			}
 		}
 		private function checkGameSessionParams(){
-			if(! isset($this->request ['gameid'], $_SESSION['gamequestions'.$this->gameid], $_SESSION['gamecounter'.$this->gameid])) redirectToErrorPage('err_not_authorized');
+			if(! isset($this->request ['gameid'], $_SESSION['gamequestions'.$this->request ['gameid']], $_SESSION['gamecounter'.$this->request ['gameid']])) redirectToErrorPage('err_not_authorized');
 		}
 
 		private function isGameOwner($owner_id){
