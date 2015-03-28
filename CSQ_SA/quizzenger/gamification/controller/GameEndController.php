@@ -29,9 +29,9 @@ namespace quizzenger\gamification\controller {
 			$this->request = array_merge ( $_GET, $_POST );
 			
 			$this->checkGameSessionParams();
-			$this->gameid = $_SESSION['gameid'];
-			$this->gamequestions = $_SESSION['gamequestions'];
-			$this->gamecounter = $_SESSION['gamecounter'];
+			$this->gameid = $this->request ['gameid'];
+			$this->gamequestions = $_SESSION['gamequestions'.$this->gameid];
+			$this->gamecounter = $_SESSION['gamecounter'.$this->gameid];
 			$this->gameinfo = $this->getGameInfo();
 			
 		}
@@ -81,7 +81,7 @@ namespace quizzenger\gamification\controller {
 			checkLogin();
 				
 			//check session-fields
-			if(! isset($_SESSION['gameid'], $_SESSION['gamequestions'], $_SESSION['gamecounter']) || $this->gamecounter < count($this->gamequestions)) redirectToErrorPage('err_not_authorized');
+			if($this->gamecounter < count($this->gamequestions)) redirectToErrorPage('err_not_authorized');
 		
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
 				
@@ -91,7 +91,7 @@ namespace quizzenger\gamification\controller {
 			}
 		}		
 		private function checkGameSessionParams(){
-			if(! isset($_SESSION['gameid'], $_SESSION['gamequestions'], $_SESSION['gamecounter'])) redirectToErrorPage('err_not_authorized');
+			if(! isset($this->request ['gameid'], $_SESSION['gamequestions'.$this->gameid], $_SESSION['gamecounter'.$this->gameid])) redirectToErrorPage('err_not_authorized');
 		}
 		
 		

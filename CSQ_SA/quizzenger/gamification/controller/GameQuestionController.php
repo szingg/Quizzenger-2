@@ -38,9 +38,9 @@ namespace quizzenger\gamification\controller {
 			$this->categoryModel = new \CategoryModel($this->sqlhelper, log::get());
 
 			$this->checkGameSessionParams();
-			$this->gameid = $_SESSION['gameid'];
-			$this->gamequestions = $_SESSION['gamequestions'];
-			$this->gamecounter = $_SESSION['gamecounter'];
+			$this->gameid = $this->request ['gameid'];
+			$this->gamequestions = $_SESSION['gamequestions'.$this->gameid];
+			$this->gamecounter = $_SESSION['gamecounter'.$this->gameid];
 			$this->gameinfo = $this->getGameInfo();
 		}
 		public function loadView(){
@@ -69,16 +69,16 @@ namespace quizzenger\gamification\controller {
 				
 			$answers = $this->answerModel->getAnswersByQuestionID ( $questionID );
 			$questionView->assign ( 'answers', $answers );
-			$linkToSolution = '?view=GameSolution&id='.$questionID;
+			$linkToSolution = '?view=GameSolution&gameid='.$this->gameid;
 			$questionView->assign ( 'linkToSolution', $linkToSolution );
 				
 			$alreadyReported= $this->reportModel->checkIfUserAlreadyDoneReport("question", $questionID , $_SESSION ['user_id']);
 			$questionView->assign ('alreadyreported',$alreadyReported);
 				
-			//setGameSession
-			$questionCount= count ( $_SESSION ['gamequestions'] );
+			//assign GameSession
+			$questionCount= count ( $_SESSION ['gamequestions'.$this->gameid] );
 			$questionView->assign ( 'questioncount', $questionCount );
-			$currentCounter= $_SESSION ['gamecounter'];
+			$currentCounter= $_SESSION ['gamecounter'.$this->gameid];
 			$questionView->assign ( 'currentcounter', $currentCounter );
 			$progress = round ( 100 * ($currentCounter / $questionCount) );
 			$questionView->assign ( 'progress', $progress );
@@ -122,7 +122,7 @@ namespace quizzenger\gamification\controller {
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
 				
 			if($isMember && ( $this->isFinished($this->gameinfo['is_finished']) || $this->gamecounter >= count($this->gamequestions)) ){
-				redirect('./index.php?view=GameEnd');
+				redirect('./index.php?view=GameEnd&gameid='.$this->gameid);
 			}
 			
 			//checkConditions
@@ -132,7 +132,7 @@ namespace quizzenger\gamification\controller {
 			}
 		}
 		private function checkGameSessionParams(){
-			if(! isset($_SESSION['gameid'], $_SESSION['gamequestions'], $_SESSION['gamecounter'])) redirectToErrorPage('err_not_authorized');
+			if(! isset($this->request ['gameid'], $_SESSION['gamequestions'.$this->gameid], $_SESSION['gamecounter'.$this->gameid])) redirectToErrorPage('err_not_authorized');
 		}
 
 		private function isGameOwner($owner_id){
@@ -145,18 +145,6 @@ namespace quizzenger\gamification\controller {
 			return isset($is_finished);
 		}
 
-		/*
-		private function checkLogin(){
-			if (! $GLOBALS ['loggedin']) {
-				header ( 'Location: ./index.php?view=login&pageBefore=' . $this->template );
-				die ();
-			}
-		}
-
-		private function redirectToErrorPage($errorCode = 'err_db_query_failed'){
-			header('Location: ./index.php?view=error&err='.$errorCode);
-			die ();
-		} */
 	} // class GameQuestionController
 } // namespace quizzenger\gamification\controller
 	

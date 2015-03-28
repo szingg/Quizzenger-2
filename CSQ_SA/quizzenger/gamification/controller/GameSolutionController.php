@@ -40,9 +40,9 @@ namespace quizzenger\gamification\controller {
 			//$this->userModel = new \UserModel($this->sqlhelper, log::get());
 
 			$this->checkGameSessionParams();
-			$this->gameid = $_SESSION['gameid'];
-			$this->gamequestions = $_SESSION['gamequestions'];
-			$this->gamecounter = $_SESSION['gamecounter'];
+			$this->gameid = $this->request ['gameid'];
+			$this->gamequestions = $_SESSION['gamequestions'.$this->gameid];
+			$this->gamecounter = $_SESSION['gamecounter'.$this->gameid];
 			$this->gameinfo = $this->getGameInfo();
 		}
 		public function loadView(){
@@ -74,7 +74,7 @@ namespace quizzenger\gamification\controller {
 			$selectedAnswer = $this->request ['answer'];
 			$solutionView->assign ( 'selectedAnswer', $selectedAnswer );
 			
-			$alreadyReported= $this->reportModel->checkIfUserAlreadyDoneReport("question", $this->request ['id'] , $_SESSION ['user_id']);
+			$alreadyReported= $this->reportModel->checkIfUserAlreadyDoneReport("question", $questionID , $_SESSION ['user_id']);
 			$solutionView->assign ('alreadyreported',$alreadyReported);
 
 			$correctAnswer = $this->answerModel->getCorrectAnswer ( $questionID );
@@ -94,8 +94,8 @@ namespace quizzenger\gamification\controller {
 				// Implement other Strategies if other question types are desired
 				$correct = ($correctAnswer == $selectedAnswer ? 100 : 0);
 				$this->questionModel->InsertQuestionPerformance ( $questionID, $_SESSION ['user_id'], $correct, null, $this->gameid );
-				$_SESSION['gamecounter'] =  $this->gamecounter + 1;
-				$this->gamecounter = $_SESSION['gamecounter'];
+				$_SESSION['gamecounter'.$this->gameid] =  $this->gamecounter + 1;
+				$this->gamecounter = $_SESSION['gamecounter'.$this->gameid];
 			}
 			//$_SESSION['gamecounter'] += $inc_counter;
 			
@@ -106,9 +106,9 @@ namespace quizzenger\gamification\controller {
 			$solutionView->assign ( 'progress', $progress );
 	
 			if ($questionCount > $this->gamecounter) {
-				$solutionView->assign ( 'nextQuestion', '?view=GameQuestion');
+				$solutionView->assign ( 'nextQuestion', '?view=GameQuestion&gameid='.$this->gameid);
 			} else {
-				$solutionView->assign ( 'nextQuestion', '?view=GameEnd');
+				$solutionView->assign ( 'nextQuestion', '?view=GameEnd&gameid='.$this->gameid);
 			}
 			
 			$solutionView->assign ( 'ratingView', '');
@@ -156,13 +156,12 @@ namespace quizzenger\gamification\controller {
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
 			
 			if($isMember && ( $this->isFinished($this->gameinfo['is_finished']) || $this->gamecounter >= count($this->gamequestions)) ){
-				redirect('./index.php?view=GameEnd');
+				redirect('./index.php?view=GameEnd&gameid='.$this->gameid);
 			}
 			
 			//checkConditions
 			if(isset($this->request ['answer'])==false 
-					|| $isMember==false 
-					|| $this->gamecounter < count($this->gamequestions)
+					|| $isMember==false
 					|| $this->isFinished($this->gameinfo['is_finished']) 
 					|| $this->hasStarted($this->gameinfo['has_started'])==false){
 				
@@ -170,9 +169,9 @@ namespace quizzenger\gamification\controller {
 			}
 		}
 		private function checkGameSessionParams(){
-			if(! isset($_SESSION['gameid'], $_SESSION['gamequestions']
-					, $_SESSION['gamecounter'], $this->request ['answer'])) {
-						
+			if(! isset($this->request ['gameid'], $_SESSION['gamequestions'.$this->gameid], 
+					$_SESSION['gamecounter'.$this->gameid], $this->request ['answer'])) {
+
 				redirectToErrorPage('err_not_authorized');
 			}
 		}
@@ -187,19 +186,6 @@ namespace quizzenger\gamification\controller {
 		private function isFinished($is_finished){
 			return isset($is_finished);
 		}
-
-		/*
-		private function checkLogin(){
-			if (! $GLOBALS ['loggedin']) {
-				header ( 'Location: ./index.php?view=login&pageBefore=' . $this->template );
-				die ();
-			}
-		}
-
-		private function redirectToErrorPage($errorCode = 'err_db_query_failed'){
-			header('Location: ./index.php?view=error&err='.$errorCode);
-			die ();
-		} */
 	} // class GameQuestionController
 } // namespace quizzenger\gamification\controller
 	

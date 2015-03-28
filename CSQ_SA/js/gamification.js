@@ -126,8 +126,8 @@ function Gamification(){
 	}
 
 	this.gameStartTimer = function(){
-		if(! self.contains(document.URL, 'view=GameStart')) return;
 		var gameId = $("#gameId").text();
+		if(! self.contains(document.URL, 'view=GameStart&gameid='+gameId)) return;
 
 		window.setInterval(function(){
 			$.ajax({

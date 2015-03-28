@@ -54,26 +54,10 @@ namespace quizzenger\gamification\controller {
 			$members = $this->gameModel->getGameMembersByGameId($this->gameid);
 			$this->view->assign ( 'members', $members );
 			
-			/*
-			 if (count ( $_SESSION ['questions'. $session_id] ) > 0) {
-			 $firstUrl = "?view=question&id=" . $_SESSION ['questions'. $session_id] [0] . "&gameid=". $this->gameid;
-			 } else {
-			 $firstUrl = "?view=quizend";
-			 }
-			 	
-			 $quizinfo = array (
-			 'quizid' => $this->request ['quizid'],
-			 'quizname' => $this->quizModel->getQuizName ( $this->request ['quizid'] ),
-			 'firstUrl' => $firstUrl
-			 );
-			 	
-			 $this->view->assign ( 'quizinfo', $quizinfo );
-			 */
 		}
 		private function setGameSession(){
-			$_SESSION ['gameid'] = $this->gameid;
-			$_SESSION ['gamequestions'] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
-			$_SESSION ['gamecounter'] = 0;
+			$_SESSION ['gamequestions'.$this->gameid] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
+			$_SESSION ['gamecounter'.$this->gameid] = 0;
 			
 		}
 		private function loadAdminView(){
@@ -101,24 +85,11 @@ namespace quizzenger\gamification\controller {
 			return $owner_id == $_SESSION['user_id'];
 		}
 
-		/*
-		private function checkLogin(){
-			if (! $GLOBALS ['loggedin']) {
-				header ( 'Location: ./index.php?view=login&pageBefore=' . $this->template );
-				die ();
-			}
-		}	*/
-		
 		private function checkGameStarted($has_started){
 			if ( isset($has_started)) {
 				redirectToErrorPage('err_game_has_started');
 			}
 		}
-/*
-		private function redirectToErrorPage($errorCode = 'err_db_query_failed'){
-			header('Location: ./index.php?view=error&err='.$errorCode);
-			die ();
-		} */
 	} // class GameController
 } // namespace quizzenger\gamification\controller
 
