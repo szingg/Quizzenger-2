@@ -52,7 +52,7 @@
 								<td class="hidden-xs"><?php echo (isset($game['members'])?$game['members']:'0').' Teilnehmer'; ?> </td>
 								<td class="hidden-xs"><?php echo htmlspecialchars($game['username']); ?></td>
 								<td class="hidden-xs">
-									<a href="<?php echo '?view=gamestart&gameid=' . $game['id']; ?>" >
+									<a href="<?php echo '?view=GameStart&gameid=' . $game['id']; ?>" >
 										<span class="glyphicon glyphicon-ok-sign"></span>
 									</a>
 								</td>
@@ -117,7 +117,7 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
 							<!-- <input id="saveNewGame" type="button" class="btn btn-primary" value="Speichern"></input> -->
-							<button id="saveNewGame" type="submit" class="btn btn-primary" formaction="./index.php?view=gamenew">Speichern</button>
+							<button id="saveNewGame" type="submit" class="btn btn-primary" formaction="./index.php?view=GameNew">Speichern</button>
 						</div>
 					</form>
 				</div>

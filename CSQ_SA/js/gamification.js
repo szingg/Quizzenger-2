@@ -126,7 +126,7 @@ function Gamification(){
 	}
 
 	this.gameStartTimer = function(){
-		if(! self.contains(document.URL, 'view=gamestart')) return;
+		if(! self.contains(document.URL, 'view=GameStart')) return;
 		var gameId = $("#gameId").text();
 
 		window.setInterval(function(){
@@ -142,7 +142,7 @@ function Gamification(){
 
 					//startGame
 					if(resp.gameinfo.has_started != null){
-						window.location.href = "index.php?view=gamequestion&gameid=" + resp.gameinfo.game_id;
+						window.location.href = "index.php?view=GameQuestion&gameid=" + resp.gameinfo.game_id;
 					}
 
 					//updateMembers

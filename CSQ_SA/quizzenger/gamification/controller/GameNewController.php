@@ -52,7 +52,7 @@ namespace quizzenger\gamification\controller {
 				redirectToErrorPage('err_db_query_failed');
 			}
 			else{
-				redirect('./index.php?view=gamestart&gameid=' . $gameid);
+				redirect('./index.php?view=GameStart&gameid=' . $gameid);
 			}
 		}
 	} // class GameController

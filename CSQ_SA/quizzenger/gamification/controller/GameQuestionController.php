@@ -69,7 +69,7 @@ namespace quizzenger\gamification\controller {
 				
 			$answers = $this->answerModel->getAnswersByQuestionID ( $questionID );
 			$questionView->assign ( 'answers', $answers );
-			$linkToSolution = '?view=gamesolution&id='.$questionID;
+			$linkToSolution = '?view=GameSolution&id='.$questionID;
 			$questionView->assign ( 'linkToSolution', $linkToSolution );
 				
 			$alreadyReported= $this->reportModel->checkIfUserAlreadyDoneReport("question", $questionID , $_SESSION ['user_id']);
@@ -122,7 +122,7 @@ namespace quizzenger\gamification\controller {
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
 				
 			if($isMember && ( $this->isFinished($this->gameinfo['is_finished']) || $this->gamecounter >= count($this->gamequestions)) ){
-				redirect('./index.php?view=gameend');
+				redirect('./index.php?view=GameEnd');
 			}
 			
 			//checkConditions

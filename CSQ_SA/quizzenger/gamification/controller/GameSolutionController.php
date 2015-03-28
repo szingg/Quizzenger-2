@@ -51,45 +51,10 @@ namespace quizzenger\gamification\controller {
 			$this->view->setTemplate( 'gamesolution' );
 
 			$this->loadSolutionView();
-			//$this->loadQuestionView();
 
 			$this->loadAdminView();
 
 			return $this->view;
-		}
-		
-		private function LoadQuestionView(){
-			$questionView = new \View();
-			$questionView->setTemplate ( 'question' );
-			
-			$questionView->assign ( 'session_id', '' );
-				
-			$questionID= $this->gamequestions[$this->gamecounter];
-			$questionView->assign ( 'questionID', $questionID );
-			$question = $this->questionModel->getQuestion ( $questionID );
-			$questionView->assign ( 'question', $question );
-			$categoryName = $this->categoryModel->getNameByID ( $question ['category_id'] );
-			$questionView->assign ( 'category', $categoryName );
-				
-			$answers = $this->answerModel->getAnswersByQuestionID ( $questionID );
-			$questionView->assign ( 'answers', $answers );
-			$linkToSolution = '?view=gamesolution&id='.$questionID;
-			$questionView->assign ( 'linkToSolution', $linkToSolution );
-				
-			$alreadyReported= $this->reportModel->checkIfUserAlreadyDoneReport("question", $questionID , $_SESSION ['user_id']);
-			$questionView->assign ('alreadyreported',$alreadyReported);
-				
-			//setGameSession
-			$questionCount= count ( $_SESSION ['gamequestions'] );
-			$questionView->assign ( 'questioncount', $questionCount );
-			$currentCounter= $_SESSION ['gamecounter'];
-			$questionView->assign ( 'currentcounter', $currentCounter );
-			$progress = round ( 100 * ($currentCounter / $questionCount) );
-			$questionView->assign ( 'progress', $progress );
-			$weight= $this->quizModel->getWeightOfQuestionInQuiz($questionID, $this->gameinfo['quiz_id']);
-			$questionView->assign ( 'weight', $weight);
-				
-			$this->view->assign ( 'questionView', $questionView->loadTemplate() );
 		}
 		
 		private function loadSolutionView(){
@@ -141,9 +106,9 @@ namespace quizzenger\gamification\controller {
 			$solutionView->assign ( 'progress', $progress );
 	
 			if ($questionCount > $this->gamecounter) {
-				$solutionView->assign ( 'nextQuestion', '?view=gamequestion');
+				$solutionView->assign ( 'nextQuestion', '?view=GameQuestion');
 			} else {
-				$solutionView->assign ( 'nextQuestion', '?view=gameend');
+				$solutionView->assign ( 'nextQuestion', '?view=GameEnd');
 			}
 			
 			$solutionView->assign ( 'ratingView', '');
@@ -191,7 +156,7 @@ namespace quizzenger\gamification\controller {
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
 			
 			if($isMember && ( $this->isFinished($this->gameinfo['is_finished']) || $this->gamecounter >= count($this->gamequestions)) ){
-				redirect('./index.php?view=gameend');
+				redirect('./index.php?view=GameEnd');
 			}
 			
 			//checkConditions
