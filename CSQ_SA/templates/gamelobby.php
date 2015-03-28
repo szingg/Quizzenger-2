@@ -2,7 +2,7 @@
 	<script id="dot-openGameRow" type="text/x-dot-template">
 		<tr>
 			<td>
-				<a href="?view=gamestart&gameid={{=it.id}}">
+				<a href="?view=GameStart&gameid={{=it.id}}">
 					{{=it.name}}
 				</a>
 			</td>
@@ -11,7 +11,7 @@
 			{{?it.members!=null}}{{=it.members}} {{?}}Teilnehmer</td>
 			<td class="hidden-xs">{{=it.username}}</td>
 			<td class="hidden-xs">
-				<a href="?view=gamestart&gameid={{=it.id}}">
+				<a href="?view=GameStart&gameid={{=it.id}}">
 					<span class="glyphicon glyphicon-ok-sign"></span>
 				</a>
 			</td>
@@ -45,7 +45,7 @@
 						<?php foreach ( $this->_ ['openGames'] as $game ) { ?>
 							<tr>
 								<td>
-									<a href="<?php echo '?view=gamestart&gameid=' . $game['id']; ?>">
+									<a href="<?php echo '?view=GameStart&gameid=' . $game['id']; ?>">
 										<?php echo htmlspecialchars($game['name']); ?>
 									</a>
 								</td>
