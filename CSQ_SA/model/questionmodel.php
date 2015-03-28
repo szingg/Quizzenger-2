@@ -53,7 +53,7 @@ class QuestionModel{
 // 	}
 
 
-	function InsertQuestionPerformance($question_id, $user_id, $questionCorrect, $session, $gamesession_id){
+	function InsertQuestionPerformance($question_id, $user_id, $questionCorrect, $session = NULL, $gamesession_id = NULL){
 		$difficultyResult =$this->mysqli->s_query("SELECT difficulty,difficultycount FROM question WHERE id=? ",array('i'),array($question_id));
 		$difficultyResult = $this->mysqli->getSingleResult($difficultyResult);
 		$difficulty= $difficultyResult['difficulty'];
