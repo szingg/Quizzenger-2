@@ -125,9 +125,13 @@ namespace quizzenger\gamification\controller {
 				redirect('./index.php?view=GameEnd&gameid='.$this->gameid);
 			}
 			
+			if($isMember==false && $this->hasStarted($this->gameinfo['has_started'])){
+				redirectToErrorPage('err_game_has_started');
+			}
+			
 			//checkConditions
-			if($isMember==false || $this->isFinished($this->gameinfo['is_finished']) 
-					|| $this->hasStarted($this->gameinfo['has_started'])==false){
+			if($isMember==false || $this->isFinished($this->gameinfo['is_finished'])
+					|| $this->hasStarted($this->gameinfo['has_started'])==false ){
 				redirectToErrorPage('err_not_authorized');
 			}
 		}

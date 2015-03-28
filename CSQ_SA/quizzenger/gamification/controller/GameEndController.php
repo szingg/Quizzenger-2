@@ -79,10 +79,7 @@ namespace quizzenger\gamification\controller {
 		 */
 		private function checkPreconditions(){
 			checkLogin();
-				
-			//check session-fields
-			if($this->gamecounter < count($this->gamequestions)) redirectToErrorPage('err_not_authorized');
-		
+
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
 				
 			//checkConditions

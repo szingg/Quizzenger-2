@@ -8,14 +8,15 @@
 		<div class="panel-body">
 			<h4>TODO:</h4>
 			<div class="btn-group">
-				<div <?= (isset($this->_['has_started']) ?'hidden="true"':'') ?>>
+				<?php $hasStarted = isset($this->_['gameinfo']['has_started']) ?>
+				<div <?php echo ($hasStarted ? 'hidden="true"' : '' ); ?>>
 					<input id="startGame" class="btn btn-primary pull-left" type="button" value="Game starten" />
 				</div>
-				<div <?= (isset($this->_['has_started']) ?'':'hidden="true"') ?>>
+				<div <?php echo (! $hasStarted ? 'hidden="true"' : '' ); ?>>
 					<input id="stopGame" class="btn btn-primary pull-left" type="button" value="Game beenden" />
 				</div>
 			</div>
-			<h4> view mit status teilnehmer</h4>
+			<h4> view mit status teilnehmer</h4>				
 		</div>
 	</div>
 </div>

@@ -43,7 +43,7 @@ function Gamification(){
 
 	this.joinGameEvent = function(){
 		$("#joinGame").click(function(){
-			var gameId = $("#gameId").text();
+			var gameId = self.getUrlParameter('gameid');
 
 			$.ajax({
 				url: "index.php?view=joinGame&type=ajax&gameid="+gameId,
@@ -66,7 +66,7 @@ function Gamification(){
 
 	this.leaveGameEvent = function(){
 		$("#leaveGame").click(function(){
-			var gameId = $("#gameId").text();
+			var gameId = self.getUrlParameter('gameid');
 
 			$.ajax({
 				url: "index.php?view=leaveGame&type=ajax&gameid="+gameId,
@@ -84,7 +84,7 @@ function Gamification(){
 
 	this.startGameEvent = function(){
 		$("#startGame").click(function(){
-			var gameId = $("#gameId").text();
+			var gameId = self.getUrlParameter('gameid');
 
 			$.ajax({
 				url: "index.php?view=startGame&type=ajax&gameid="+gameId,
@@ -101,7 +101,7 @@ function Gamification(){
 
 	this.stopGameEvent = function(){
 		$("#stopGame").click(function(){
-			var gameId = $("#gameId").text();
+			var gameId = self.getUrlParameter('gameid');
 
 			$.ajax({
 				url: "index.php?view=stopGame&type=ajax&gameid="+gameId,
@@ -126,7 +126,7 @@ function Gamification(){
 	}
 
 	this.gameStartTimer = function(){
-		var gameId = $("#gameId").text();
+		var gameId = self.getUrlParameter('gameid');
 		if(! self.contains(document.URL, 'view=GameStart&gameid='+gameId)) return;
 
 		window.setInterval(function(){
@@ -227,6 +227,19 @@ function Gamification(){
 	this.contains = function(obj1, obj2){
 		return obj1.indexOf(obj2) > -1;
 	};
+
+	this.getUrlParameter = function(sParam){
+	    var sPageURL = window.location.search.substring(1);
+	    var sURLVariables = sPageURL.split('&');
+	    for (var i = 0; i < sURLVariables.length; i++)
+	    {
+	        var sParameterName = sURLVariables[i].split('=');
+	        if (sParameterName[0] == sParam)
+	        {
+	            return sParameterName[1];
+	        }
+	    }
+	}
 
 
 }
