@@ -129,8 +129,9 @@ class QuestionModel{
 					}
 					$answerModel->newAnswer($correctnessOfAnswer,$_POST ['opquestion_form_answer'.$i],$_POST['opquestion_form_answerexplanation'.$i], $questionID);
 				}
-			}elseif ($operation=="edit"){	
-				$questionID=$this->editQuestion($type,$_POST['opquestion_form_questionText'],$_SESSION['user_id'],$_POST['opquestion_form_question_id'], $_POST ['opquestion_form_attachment'],$_POST ['opquestion_form_attachmentLocal']);
+			}elseif ($operation=="edit"){
+				$questionID = $_POST['opquestion_form_question_id']; 	
+				$result=$this->editQuestion($type,$_POST['opquestion_form_questionText'],$_SESSION['user_id'],$_POST['opquestion_form_question_id'], $_POST ['opquestion_form_attachment'],$_POST ['opquestion_form_attachmentLocal']);
 				//moveTempFile
 				if($_POST ['opquestion_form_attachmentLocal'] =='1' && $_POST ['opquestion_form_attachmentTempFileName'] != $_POST ['opquestion_form_attachmentOld']){
 					$this->removeAttachment($questionID.'.'.$_POST ['opquestion_form_attachmentOld']);
@@ -303,6 +304,9 @@ class QuestionModel{
 		}
 	}
 
+	/*
+	 * @return Returns 0 on success
+	 */
 	public function editQuestion($type, $questiontext, $userID, $question_id, $attachment, $attachment_local){
 		if($this->userIDhasPermissionOnQuestionID($question_id,$_SESSION ['user_id'])){
 			$this->logger->log ( "Editing Question with ID :".$question_id, Logger::INFO );
