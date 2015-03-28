@@ -48,7 +48,7 @@
 			$session_id = $this->request ['session_id'];
 			$inc_counter=0;
 			if ($questionModel->answerExists ( $session_id, $this->request ['id'], $_SESSION['user_id'] ) == 0) { // Normal Quiz
-				$questionModel->InsertQuestionPerformance ( $this->request ['id'], $_SESSION ['user_id'], $correct, $session_id );
+				$questionModel->InsertQuestionPerformance ( $this->request ['id'], $_SESSION ['user_id'], $correct, $session_id, NULL);
 				$inc_counter=1;
 			}
 			$_SESSION ['counter'. $session_id] += $inc_counter;
@@ -68,7 +68,7 @@
 		}
 		else { // not in quiz context
 			if(!$pageWasRefreshed){
-				$questionModel->InsertQuestionPerformance ( $this->request ['id'], $_SESSION ['user_id'], $correct, NULL);
+				$questionModel->InsertQuestionPerformance ( $this->request ['id'], $_SESSION ['user_id'], $correct, NULL, NULL);
 			}
 		}
 	}
