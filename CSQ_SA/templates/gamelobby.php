@@ -111,8 +111,8 @@
 							<?php } else{ ?>
 							<div class="form-group">
 								Games werden aus Quizzes erstellt. Bitte zuerst ein <a class="text-primary" href="?view=mycontent#myquizzes">Quiz erstellen</a>
-							<?php } ?>
 							</div>
+							<?php } ?>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
