@@ -1,6 +1,6 @@
 <?php
 
-namespace quizzenger\scoring {
+namespace quizzenger\dispatching {
 	use \mysqli as mysqli;
 	use \quizzenger\dispatching\UserEvent as UserEvent;
 

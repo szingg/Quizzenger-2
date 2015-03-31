@@ -9,7 +9,7 @@ namespace quizzenger\controlling {
 		private static $dispatcher;
 
 		public static function setup(mysqli $mysqli) {
-			self::$dispatcher = new \EventDispatcher($mysqli);
+			self::$dispatcher = new EventDispatcher($mysqli);
 		}
 
 		public static function fire($name, $userId, array $arguments = []) {
