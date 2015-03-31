@@ -1,8 +1,6 @@
 <?php
 
 namespace quizzenger\dispatching {
-	use \stdClass as stdClass;
-	use \SplEnum as SplEnum;
 	use \mysqli as mysqli;
 	use \quizzenger\dispatching\UserEvent as UserEvent;
 	use \quizzenger\dispatching\ScoreDispatcher as ScoreDispatcher;
