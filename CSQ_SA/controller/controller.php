@@ -1,5 +1,7 @@
 <?php
-use quizzenger\gamification\model\GameModel;
+use \quizzenger\controlling\EventController as EventController;
+use \quizzenger\gamification\model\GameModel as GameModel;
+
 class Controller {
 	private $request = null;
 	private $template = '';
@@ -13,6 +15,8 @@ class Controller {
 		$this->request = $request;
 		$this->template = ! empty ( $request ['view'] ) ? $request ['view'] : 'default';
 		$this->mysqli = new sqlhelper ( $this->logger );
+
+		EventController::setup($this->mysqli->database());
 	}
 
 	public function display() {
