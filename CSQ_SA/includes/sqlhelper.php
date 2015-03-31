@@ -1,10 +1,10 @@
 <?php
 
 class SqlHelper {
-	var $mysqli;
-	var $logger;
+	private $mysqli;
+	private $logger;
 
-	function __construct($logP) {
+	public function __construct($logP) {
 		$this->logger = $logP;
 
 		$this->mysqli = new mysqli ( dbhost, dbuser, dbpassword, db, dbport );
@@ -21,14 +21,20 @@ class SqlHelper {
 		}
 
 	}
-	function error(){
+
+	public function database() {
+		return $this->mysqli;
+	}
+
+	public function error(){
 		return $this->mysqli->error;
 	}
 
-	function prepare($query){
+	public function prepare($query){
 		return $this->mysqli->prepare($query);
 	}
-	function __destruct(){
+
+	public function __destruct(){
 		mysqli_close($this->mysqli);
 	}
 
@@ -37,13 +43,15 @@ class SqlHelper {
 	// a_param_type "ssii"
 	// a_bind_params {$datatypes, $type, $questiontext,$userID,$categoryID}
 
-	function s_query($statement,$a_param_type, $a_bind_params,$rowCheck=false){
+	public function s_query($statement,$a_param_type, $a_bind_params,$rowCheck=false){
 		return $this->doStatement($statement,$a_param_type, $a_bind_params,$rowCheck,"query");
 	}
-	function s_insert($statement,$a_param_type, $a_bind_params){
+
+	public function s_insert($statement,$a_param_type, $a_bind_params){
 		return $this->doStatement($statement,$a_param_type, $a_bind_params,false,"insert");
 	}
-	function doStatement($statement,$a_param_type, $a_bind_params,$rowCheck=false,$type){
+
+	public function doStatement($statement,$a_param_type, $a_bind_params,$rowCheck=false,$type){
 
 		if ($stmt = $this->mysqli->prepare ($statement)) {
 
@@ -97,7 +105,7 @@ class SqlHelper {
 
 	}
 
-	function query($query,$rowCheck=false) {
+	public function query($query,$rowCheck=false) {
 		$queryResult = $this->mysqli->query ( $query );
 		if(!$queryResult || ($rowCheck && $queryResult->num_rows == 0)){
 			$callers=debug_backtrace();
@@ -115,15 +123,16 @@ class SqlHelper {
 		return $queryResult;
 	}
 
-	function getCaller($depth){
+	public function getCaller($depth){
 		$callers=debug_backtrace();
 		return $callers[$depth]['class']."/".$callers[$depth]['function']." on line ".$callers[$depth]['line'];
 	}
 
-	function getSingleResult($result){
+	public function getSingleResult($result){
 		return $result->fetch_assoc();
 	}
-	function getQueryResultArray($result) {
+
+	public function getQueryResultArray($result) {
 		$resultArray = array ();
 		while ( $row = $result->fetch_assoc () ) {
 			array_push ( $resultArray, $row );
@@ -131,7 +140,7 @@ class SqlHelper {
 		return $resultArray;
 	}
 
-	function sqlValueBuilder() {
+	public function sqlValueBuilder() {
 		$returnString = "(`";
 		$returnString = implode ( "`,`", func_get_args () );
 		$returnString = "`)";
