@@ -14,6 +14,8 @@ namespace quizzenger\dispatching {
 
 		private function dispatchScore(UserEvent $event, $producerScore, $consumerScore) {
 			// TODO: Implement proper dispatching via plugins.
+			// - question-answered-correct
+			// - question-created
 			$eventName = $event->name();
 			if($event->name() !== 'question-answered-correct') {
 				Log::warning("Score for event '$eventName' cannot be dispatched.");

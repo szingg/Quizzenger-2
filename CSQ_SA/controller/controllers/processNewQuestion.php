@@ -1,4 +1,6 @@
 <?php
+	use \quizzenger\controlling\EventController as EventController;
+
 	$viewInner->setTemplate ( 'blankContent' );
 
 	if(isset($_POST['opquestion_form_chosenCategory'],$_POST['opquestion_form_chosenCategoryName'],$_POST['opquestion_form_chosenCategory_parent_id']) && $GLOBALS ['loggedin']){
@@ -10,8 +12,9 @@
 		$addedQuestion = $questionModel->opQuestionWithAnswers ( $answerModel,$categoryModel, $tagModel, "new", $chosenCategory);
 		if($addedQuestion > 0)
 		{
-			$this->logger->log("addScoreToCategory", Logger::INFO);
-			$userscoreModel->addScoreToCategory($_SESSION['user_id'], $chosenCategory, QUESTION_CREATED_SCORE, $moderationModel);
+			EventController::fire('question-created', $_SESSION['user_id'], [
+				'category' => $chosenCategory
+			]);
 			header ( 'Location: ./index.php?view=myquestions&id='.$addedQuestion );
 		}
 	}else{
