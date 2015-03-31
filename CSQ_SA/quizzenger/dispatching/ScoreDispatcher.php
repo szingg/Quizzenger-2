@@ -2,7 +2,7 @@
 
 namespace quizzenger\scoring {
 	use \mysqli as mysqli;
-	use \quizzenger\data\UserEvent as UserEvent;
+	use \quizzenger\dispatching\UserEvent as UserEvent;
 
 	class ScoreDispatcher {
 		private $mysqli;
@@ -33,6 +33,6 @@ namespace quizzenger\scoring {
 			}
 		}
 	} // class ScoreDispatcher
-} // namespace quizzenger\scoring
+} // namespace quizzenger\dispatching
 
 ?>

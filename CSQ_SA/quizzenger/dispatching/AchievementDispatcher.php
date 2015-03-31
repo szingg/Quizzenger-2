@@ -1,9 +1,9 @@
 <?php
 
-namespace quizzenger\achievements {
+namespace quizzenger\dispatching {
 	use \mysqli as mysqli;
 	use \quizzenger\logging\Log as Log;
-	use \quizzenger\data\UserEvent as UserEvent;
+	use \quizzenger\dispatching\UserEvent as UserEvent;
 	use \quizzenger\achievements\IAchievement as IAchievement;
 
 	class AchievementDispatcher {
@@ -71,6 +71,6 @@ namespace quizzenger\achievements {
 			}
 		}
 	} // class AchievementDispatcher
-} // namespace quizzenger\achievements
+} // namespace quizzenger\dispatching
 
 ?>

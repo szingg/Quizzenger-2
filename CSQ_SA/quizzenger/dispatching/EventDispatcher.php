@@ -1,14 +1,14 @@
 <?php
 
-namespace quizzenger\controllers {
+namespace quizzenger\dispatching {
 	use \stdClass as stdClass;
 	use \SplEnum as SplEnum;
 	use \mysqli as mysqli;
-	use \quizzenger\data\UserEvent as UserEvent;
-	use \quizzenger\scoring\ScoreDispatcher as ScoreDispatcher;
-	use \quizzenger\achievements\AchievementDispatcher as AchievementDispatcher;
+	use \quizzenger\dispatching\UserEvent as UserEvent;
+	use \quizzenger\dispatching\ScoreDispatcher as ScoreDispatcher;
+	use \quizzenger\dispatching\AchievementDispatcher as AchievementDispatcher;
 
-	class EventController {
+	class EventDispatcher {
 		private $mysqli;
 		private $scoreDispatcher;
 		private $achievementDispatcher;
@@ -32,7 +32,7 @@ namespace quizzenger\controllers {
 			$this->dispatch($event);
 			$this->fireAlways($event);
 		}
-	} // class EventController
-} // namespace quizzenger\controllers
+	} // class EventDispatcher
+} // namespace quizzenger\dispatching
 
 ?>
