@@ -1,4 +1,6 @@
 <?php
+	use \quizzenger\controlling\EventController as EventController;
+
 	if (isset ( $this->request ['id'] ) && isset ( $this->request ['answer'] )) {
 		$viewInner->setTemplate ( 'solution' );
 
@@ -19,9 +21,9 @@
 
 
 		if($GLOBALS['loggedin'] && $correctAnswer == $selectedAnswer){
-			if(!$userscoreModel->hasUserScoredQuestion( $this->request ['id'],$_SESSION['user_id'])){ // no multiple scoring for question
-				$userscoreModel->addScoreToCategory($_SESSION['user_id'], $question ['category_id'],QUESTION_ANSWERED_SCORE, $moderationModel);
-				$viewInner->assign ( 'pointsearned', QUESTION_ANSWERED_SCORE );
+			if(!$userscoreModel->hasUserScoredQuestion($this->request ['id'],$_SESSION['user_id'])){ // no multiple scoring for question.
+				EventController::fire('question-answered-correct', $_SESSION['user_id']);
+				$viewInner->assign ('pointsearned', QUESTION_ANSWERED_SCORE);
 			}
 		}
 
