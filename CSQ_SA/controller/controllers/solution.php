@@ -22,7 +22,9 @@
 
 		if($GLOBALS['loggedin'] && $correctAnswer == $selectedAnswer){
 			if(!$userscoreModel->hasUserScoredQuestion($this->request ['id'],$_SESSION['user_id'])){ // no multiple scoring for question.
-				EventController::fire('question-answered-correct', $_SESSION['user_id']);
+				EventController::fire('question-answered-correct', $_SESSION['user_id'], [
+					'category' => $question['category_id']
+				]);
 				$viewInner->assign ('pointsearned', QUESTION_ANSWERED_SCORE);
 			}
 		}

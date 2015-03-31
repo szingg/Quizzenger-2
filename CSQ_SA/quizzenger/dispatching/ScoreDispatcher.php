@@ -2,6 +2,7 @@
 
 namespace quizzenger\dispatching {
 	use \mysqli as mysqli;
+	use \quizzenger\logging\Log as Log;
 	use \quizzenger\dispatching\UserEvent as UserEvent;
 
 	class ScoreDispatcher {
@@ -11,8 +12,27 @@ namespace quizzenger\dispatching {
 			$this->mysqli = $mysqli;
 		}
 
-		private function dispatchScore($userId, $producerScore, $consumerScore) {
-			//
+		private function dispatchScore(UserEvent $event, $producerScore, $consumerScore) {
+			// TODO: Implement proper dispatching via plugins.
+			$eventName = $event->name();
+			if($event->name() !== 'question-answered-correct') {
+				Log::warning("Score for event '$eventName' cannot be dispatched.");
+				return;
+			}
+
+			$statement = $this->mysqli->prepare('INSERT INTO userscore (user_id, category_id, producer_score, consumer_score)'
+				. ' VALUES(?, ?, ?, ?) ON DUPLICATE KEY UPDATE'
+				. ' producer_score=producer_score+VALUES(producer_score), consumer_score=consumer_score+VALUES(consumer_score)');
+
+			$userId = $event->user();
+			$categoryId = $event->get('category');
+			$statement->bind_param('iiii', $userId, $categoryId,
+				$producerScore, $consumerScore);
+
+			if($statement->execute())
+				Log::info("Added score ($producerScore, $consumerScore) to user $userId.");
+			else
+				Log::error('Could not update score.');
 		}
 
 		public function dispatch(UserEvent $event) {
@@ -24,7 +44,7 @@ namespace quizzenger\dispatching {
 
 			if($statement->execute() && $result = $statement->get_result()) {
 				if($fetched = $result->fetch_object())
-					$this->dispatchScore($event->user(), $fetched->producer_score, $fetched->consumer_score);
+					$this->dispatchScore($event, $fetched->producer_score, $fetched->consumer_score);
 				else
 					Log::error('Could not fetch trigger information.');
 			}
