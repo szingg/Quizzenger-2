@@ -2,7 +2,7 @@
 
 namespace quizzenger\achievements {
 	use \mysqli as mysqli;
-	use \quizzenger\data\UserEvent as UserEvent;
+	use \quizzenger\dispatching\UserEvent as UserEvent;
 
 	/**
 	 * Defines the plugin interface for individual achievements.

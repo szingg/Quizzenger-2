@@ -1,6 +1,6 @@
 <?php
 
-namespace quizzenger\data {
+namespace quizzenger\dispatching {
 	use \InvalidArgumentException as InvalidArgumentException;
 
 	class UserEvent {
@@ -33,6 +33,6 @@ namespace quizzenger\data {
 			$this->arguments[$name] = $value;
 		}
 	} // class UserEvent
-} // namespace quizzenger\data
+} // namespace quizzenger\dispatching
 
 ?>

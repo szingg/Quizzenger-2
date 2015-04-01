@@ -1,9 +1,9 @@
 <?php
 
-namespace quizzenger\achievements {
+namespace quizzenger\dispatching {
 	use \mysqli as mysqli;
 	use \quizzenger\logging\Log as Log;
-	use \quizzenger\data\UserEvent as UserEvent;
+	use \quizzenger\dispatching\UserEvent as UserEvent;
 	use \quizzenger\achievements\IAchievement as IAchievement;
 
 	class AchievementDispatcher {
@@ -26,21 +26,41 @@ namespace quizzenger\achievements {
 
 			$userId = $event->user();
 			$statement->bind_param('ii', $id, $userId);
-			$statement->execute();
+			if(!$statement->execute()) {
+				Log::error('Achievement could not be granted.');
+				return false;
+			}
+
+			return true;
 		}
 
-		public function dispatchSingle($id, $type, UserEvent $event) {
+		public function grantBonusScore($userId, $bonusScore) {
+			$statement = $this->mysqli->prepare('UPDATE `user`'
+				. ' SET bonus_score=bonus_score+? WHERE id=?;');
+
+			$statement->bind_param('ii', $bonusScore, $userId);
+			if(!$statement->execute()) {
+				Log::error('Bonus score could not be granted.');
+				return false;
+			}
+
+			return true;
+		}
+
+		public function dispatchSingle($id, $type, $bonusScore, UserEvent $event) {
 			$achievement = self::createAchievementInstance($type);
 			if($achievement->grant($this->mysqli, $event)) {
-				$this->grantAchievement($id, $event);
+				return $this->grantAchievement($id, $event)
+					&& $this->grantBonusScore($event->user(), $bonusScore);
 			}
+			return false;
 		}
 
 		public function dispatch(UserEvent $event) {
 			// Select all non-granted achievements triggered by the current event.
-			$statement = $this->mysqli->prepare('SELECT id, type, arguments FROM `achievement`'
-				. ' WHERE id NOT IN (SELECT achievement_id FROM `userachievement` WHERE user_id = ?)'
-				. ' AND id IN (SELECT achievement_id FROM `achievementtrigger` WHERE name = ?);');
+			$statement = $this->mysqli->prepare('SELECT id, type, arguments, bonus_score FROM `achievement`'
+				. ' WHERE achievement.id NOT IN (SELECT userachievement.achievement_id FROM `userachievement` WHERE userachievement.user_id = ?)'
+				. ' AND achievement.id IN (SELECT achievementtrigger.achievement_id FROM `achievementtrigger` WHERE achievementtrigger.name = ?);');
 
 			$userId = $event->user();
 			$eventName = $event->name();
@@ -52,6 +72,7 @@ namespace quizzenger\achievements {
 				while($current = $result->fetch_object()) {
 					$id = $current->id;
 					$type = $current->type;
+					$bonusScore = $current->bonus_score;
 					$args = json_decode($current->arguments, true);
 					if($args === null || json_last_error() !== JSON_ERROR_NONE) {
 						$args = [];
@@ -62,7 +83,7 @@ namespace quizzenger\achievements {
 						$currentEvent->set($name, $value);
 					}
 
-					$this->dispatchSingle($id, $type, $currentEvent);
+					$this->dispatchSingle($id, $type, $bonusScore, $currentEvent);
 				}
 				$result->close();
 			}
@@ -71,6 +92,6 @@ namespace quizzenger\achievements {
 			}
 		}
 	} // class AchievementDispatcher
-} // namespace quizzenger\achievements
+} // namespace quizzenger\dispatching
 
 ?>
