@@ -93,7 +93,6 @@
 				<div id="collapseChangePassword" class="panel-collapse collapse">
 					<div class="panel-body">
 						<strong>Email:</strong> <?php echo htmlspecialchars($user['email']);?><br>
-						<strong>ID:</strong> <?php echo htmlspecialchars($user['id']);?><br>
 						<br>
 						<form class="change_password_form" action="./index.php?view=processChangepassword"  method="post" id="change_password_form" name="change_password_form">
 			          		<div class="form-group">
