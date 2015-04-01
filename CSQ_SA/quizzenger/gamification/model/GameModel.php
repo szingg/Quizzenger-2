@@ -3,10 +3,8 @@
 namespace quizzenger\gamification\model {
 	use \stdClass as stdClass;
 	use \SplEnum as SplEnum;
-	use \mysqli as mysqli;
 	use \quizzenger\logging\Log as Log;
 	use \SqlHelper as SqlHelper;
-	use \QuizModel as QuizModel;
 
 	/*	@author Simon Zingg
 	 *	The GameModel provides data which is used for games.
@@ -14,37 +12,57 @@ namespace quizzenger\gamification\model {
 	 */
 	class GameModel {
 		private $mysqli;
-		private $quizModel;
 
-		public function __construct(SqlHelper $mysqli, QuizModel $quizModel) {
+		public function __construct(SqlHelper $mysqli) {
 			$this->mysqli = $mysqli;
-			$this->quizModel = $quizModel;
 		}
 
 		/*
 		 * Adds a new game to a given quiz.
-		 * Checks if current user has permission to generate a game for this quiz.
+		 * @precondition Please check if current user has permission to generate a game for this quiz.
 		 * @param $quiz_id
 		 * @return Returns new gamesession_id if successful, else null 
 		*/
 		public function getNewGameSessionId($quiz_id, $name){
-			if(isset($quiz_id, $name) && $this->quizModel->userIDhasPermissionOnQuizId($quiz_id,$_SESSION ['user_id'])){
+			if(isset($quiz_id, $name)){
 				log::info('Getting New Game Session for Quiz-ID :'.$quiz_id);
 				return $this->mysqli->s_insert("INSERT INTO gamesession (name, quiz_id) VALUES (?, ?)",array('s','i'),array($name, $quiz_id));
 			}
 			else{
-				log::warning('Unauthorized try to add new Gamesession for Quiz-ID :'.$question_id);
 				return null;
 			}
 		}
 
+		/*
+		 * Starts the Game
+		 * Method checks Permission
+		 * @param $game_id
+		 * @return if false return null
+		 */
 		public function startGame($game_id){
-			if(isset($game_id) && $this->quizModel->userIDhasPermissionOnQuizId($quiz_id,$_SESSION ['user_id'])){
+			if(isset($game_id) && $this->userIDhasPermissionOnGameId($_SESSION ['user_id'], $game_id)){
 				log::info('Start Game with ID :'.$game_id);
 				$this->mysqli->s_query("UPDATE gamesession SET has_started=CURRENT_TIMESTAMP WHERE id=?",array('i'),array($game_id));
 			}
 			else{
-				log::warning('Unauthorized try to add new Gamesession for Quiz-ID :'.$question_id);
+				log::warning('Unauthorized try to start game id :'.game_id);
+				return null;
+			}
+		}
+		
+		/*
+		 * Stops the Game
+		 * Method checks Permission
+		 * @param $game_id
+		 * @return if false return null
+		 */
+		public function stopGame($game_id){
+			if(isset($game_id) && $this->userIDhasPermissionOnGameId($_SESSION ['user_id'], $game_id)){
+				log::info('Stop Game with ID :'.$game_id);
+				$this->mysqli->s_query("UPDATE gamesession SET is_finished=CURRENT_TIMESTAMP WHERE id=?",array('i'),array($game_id));
+			}
+			else{
+				log::warning('Unauthorized try to stop game id :'.game_id);
 				return null;
 			}
 		}
@@ -78,7 +96,7 @@ namespace quizzenger\gamification\model {
 		 * Gets game info. For more information about the columns consult the query
 		 */
 		public function getGameInfoByGameId($game_id){
-			$result = $this->mysqli->s_query("SELECT g.id as game_id, g.name as gamename, created_on, has_started, quiz_id, ".
+			$result = $this->mysqli->s_query("SELECT g.id as game_id, g.name as gamename, created_on, has_started, is_finished, quiz_id, ".
 					"user_id as owner_id, q.name as quizname, created as quiz_created_on FROM gamesession g, quiz q ".
 					"WHERE g.id = ? AND g.quiz_id = q.id",['i'],[$game_id]);
 			return $this->mysqli->getQueryResultArray($result);
@@ -116,6 +134,19 @@ namespace quizzenger\gamification\model {
 			log::info('User leaves game ID:'.$game_id);
 			return $this->mysqli->s_query("DELETE FROM gamemember WHERE gamesession_id=? AND user_id=?",array('i','i'),array($game_id, $user_id));
 		}
+		
+		/*
+		 * @return Returns true when has started, otherwise false
+		 */
+		public function gameHasStarted($game_id){
+			$result = $this->mysqli->s_query("SELECT has_started FROM gamesession WHERE id=?",['i'],[$game_id]);
+			$resultArray = $this->mysqli->getQueryResultArray($result);
+			if($result->num_rows > 0){
+				return isset($resultArray[0]['has_started']);
+			}
+			else return false;
+		}
+		
 		/*
 		 * Checks if user is permitted to modify the given game
 		 * @return Returns true if permitted, else false

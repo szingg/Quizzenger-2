@@ -52,13 +52,11 @@ class Controller {
 			case 'default' :
 				include("controllers/".$this->template.".php");
 				break;
-			case 'gamestart' :
-				$gameStartController = new \quizzenger\gamification\controller\GameStartController($viewInner);
-				$viewInner = $gameStartController->loadView();
-				break;
-			case 'gamenew' :
-				$gameNewController = new \quizzenger\gamification\controller\GameNewController($viewInner);
-				$viewInner = $gameNewController->loadView();
+			case 'GameNew' : case 'GameStart' : case 'GameEnd' : 
+			case 'GameQuestion' : case 'GameSolution' :
+				$className = '\\quizzenger\\gamification\\controller\\'.$this->template.'Controller';
+				$controller = new $className($viewInner);
+				$viewInner = $controller->loadView();
 				break;
 			default:
 				include("controllers/default.php");

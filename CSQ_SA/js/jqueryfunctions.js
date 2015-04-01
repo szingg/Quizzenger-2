@@ -151,9 +151,6 @@ $(function(){
 			{"width" : "50%", "targets" : [1]}
 		],
 	});
-    $('#tableOpenGames').DataTable({
-        "responsive": true
-    });
 });
 // ================================================================================
 // VALIDATORS

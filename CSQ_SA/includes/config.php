@@ -15,7 +15,6 @@ define ( "dbport", "3306" );
 
 // Quizzenger Settings
 define ("APP_PATH","https://quizzenger.ch");
-
 //Attachment Settings
 define ("ATTACHMENT_PATH","content/attachments");
 define ("MAX_ATTACHMENT_SIZE_KByte",1024);
@@ -90,6 +89,9 @@ define ( "err_db_query_failed", "Oops, es wurde eine ungültige Datenbank abfrag
 define ( "err_missing_input", "Bitte füllen Sie alle benötigten Felder aus" );
 define ( "err_not_authorized_questionedit", "Sie sind nicht berechtigt diese Frage zu bearbeiten" );
 define ( "err_not_authorized_quizdetail", "Sie sind nicht berechtigt dieses Quiz anzuschauen" );
+define ( 'err_not_authorized', 'Sie sind nicht berechtigt, diese Aktion durchzuführen');
+define ( 'err_game_has_started', 'Das Game wurde bereits gestartet. Sie können nicht mehr teilnehmen');
+define ( 'err_game_if_finished', 'Das Game wurde bereits beendet. Sie können keine Fragen mehr beantworten');
 define ( "err_unkown", "Oops, es ist ein unbekannter Fehler aufgetreten!" );
 
 
@@ -102,5 +104,6 @@ define ( "mes_login_already", "Sie sind bereits angemeldet" );
 define ( "mes_passwordchange_success", "Ihr Passwort wurde erfolgreich geändert<br>Bitte melden Sie sich erneut an" );
 define ( "mes_sent_report", "Die Meldung wurde erfasst und wird von den Moderatoren angeschaut.");
 define ( "mes_no_results", "<b>Ihr gesetzter Filter ergab leider keine Ergebnisse</b>" );
+define ( 'mes_add_questions_to_quiz', 'Fragen können über den Fragepool zum Quiz hinzugefügt werden.');
 
 ?>

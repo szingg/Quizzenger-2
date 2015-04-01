@@ -20,6 +20,16 @@ class QuestionModel{
 		$result=  $this->mysqli->getSingleResult($result);
 		return $result ["COUNT(*)"];
 	}
+	
+	/*
+	 * Checks if an answer for a specific game already exists. 
+	 * @return Returns true if exists, else false
+	 */
+	function gameAnswerExists($gamesession, $question_id, $user_id){
+		$result = $this->mysqli->s_query("SELECT COUNT(*) as count FROM questionperformance WHERE gamesession_id=? AND question_id=? AND user_id=?",array('i','i','i'),array($gamesession,$question_id,$user_id));
+		$result = $this->mysqli->getSingleResult($result);
+		return $result["count"]>0;
+	}
 
 	function setWeight($id, $weight){
 		$this->logger->log ( "Editing Weigth(".$weight.") for QuizToQuestion ID: ".$id, Logger::INFO );
@@ -43,7 +53,7 @@ class QuestionModel{
 // 	}
 
 
-	function InsertQuestionPerformance($question_id, $user_id, $questionCorrect, $session){
+	function InsertQuestionPerformance($question_id, $user_id, $questionCorrect, $session = NULL, $gamesession_id = NULL){
 		$difficultyResult =$this->mysqli->s_query("SELECT difficulty,difficultycount FROM question WHERE id=? ",array('i'),array($question_id));
 		$difficultyResult = $this->mysqli->getSingleResult($difficultyResult);
 		$difficulty= $difficultyResult['difficulty'];
@@ -54,7 +64,7 @@ class QuestionModel{
 		$this->mysqli->s_query("UPDATE question SET difficulty=?, difficultycount=? WHERE id=? ",array('d','i','i'),array($new_difficulty,$new_difficulty_count,$question_id));
 
 		$this->logger->log ( "Adding new QuestionPerformance for Question ID:".$question_id, Logger::INFO );
-		return $this->mysqli->s_insert("INSERT INTO questionperformance (question_id, user_id, questionCorrect, session_id) VALUES (?, ?, ?, ?)",array('i','i','i','i'),array($question_id, $user_id, $questionCorrect, $session));
+		return $this->mysqli->s_insert("INSERT INTO questionperformance (question_id, user_id, questionCorrect, session_id, gamesession_id) VALUES (?, ?, ?, ?, ?)",array('i','i','i','i','i'),array($question_id, $user_id, $questionCorrect, $session, $gamesession_id));
 	}
 
 
@@ -119,8 +129,9 @@ class QuestionModel{
 					}
 					$answerModel->newAnswer($correctnessOfAnswer,$_POST ['opquestion_form_answer'.$i],$_POST['opquestion_form_answerexplanation'.$i], $questionID);
 				}
-			}elseif ($operation=="edit"){	
-				$questionID=$this->editQuestion($type,$_POST['opquestion_form_questionText'],$_SESSION['user_id'],$_POST['opquestion_form_question_id'], $_POST ['opquestion_form_attachment'],$_POST ['opquestion_form_attachmentLocal']);
+			}elseif ($operation=="edit"){
+				$questionID = $_POST['opquestion_form_question_id']; 	
+				$result=$this->editQuestion($type,$_POST['opquestion_form_questionText'],$_SESSION['user_id'],$_POST['opquestion_form_question_id'], $_POST ['opquestion_form_attachment'],$_POST ['opquestion_form_attachmentLocal']);
 				//moveTempFile
 				if($_POST ['opquestion_form_attachmentLocal'] =='1' && $_POST ['opquestion_form_attachmentTempFileName'] != $_POST ['opquestion_form_attachmentOld']){
 					$this->removeAttachment($questionID.'.'.$_POST ['opquestion_form_attachmentOld']);
@@ -293,6 +304,9 @@ class QuestionModel{
 		}
 	}
 
+	/*
+	 * @return Returns 0 on success
+	 */
 	public function editQuestion($type, $questiontext, $userID, $question_id, $attachment, $attachment_local){
 		if($this->userIDhasPermissionOnQuestionID($question_id,$_SESSION ['user_id'])){
 			$this->logger->log ( "Editing Question with ID :".$question_id, Logger::INFO );

@@ -39,11 +39,11 @@ if(isset($this->_['progress'])){ ?>
 					$paths = array();
 					$paths[] = ATTACHMENT_PATH;
 					$paths[] = $question['id'].'.'.$question['attachment'];
-						
+
 					$link = preg_replace('#/+#','/',join('/', $paths));
 					break;
 			}
-			echo $link 
+			echo $link
 			?>"><?php echo htmlspecialchars($this->_ ['question']['questiontext']); ?></div>
 		<script>
 			$("#question-content").html(quizzenger.markdown.generate($("#question-content").text(),
@@ -56,7 +56,8 @@ if(isset($this->_['progress'])){ ?>
 	<?php
 	shuffle($this->_ ['answers']); //randomize answers
 	foreach ( $this->_ ['answers'] as $answer ) { ?>
-		<a href="?view=solution&amp;id=<?= ($this->_['questionID']); ?>&amp;answer=<?php echo $answer['id']; echo $this->_['session_id']; ?>">
+		<!-- <a href="?view=solution&amp;id=<?= ($this->_['questionID']); ?>&amp;answer=<?php echo $answer['id']; echo $this->_['session_id']; ?>">  -->
+		<a href="<?php echo $this->_['linkToSolution'] ;?>&amp;answer=<?php echo $answer['id'];?>">
 			<li class="list-group-item list-group-item-info">
 				<?= htmlspecialchars($answer['text']);?>
 			</li>
@@ -64,41 +65,9 @@ if(isset($this->_['progress'])){ ?>
 	} ?>
 	</ul>
 </div>
-<div class="row">
-  <div class="col-md-6">
-  	<div class="panel panel-default" id="panelInfo">
-  		<div class="panel-heading">
-			<h4 class="panel-title">Infos</h4>
-		</div>
-  	  	<div style="padding-left:10px;">
-  	  		<b>Autor:</b> <a target="_blank" href="<?php echo htmlspecialchars(APP_PATH . '/index.php?view=user&id=' . $this->_ ['user_id']); ?>"><?= htmlspecialchars($this->_ ['author'])?></a><br>
-			<?php
-			echo ("<b>Tags:</b> ");
-			foreach ( $this->_ ['tags'] as $tag ) {
-				echo ('<span class="badge">' . htmlspecialchars($tag['tag']) . "</span> ");
-			}
-			?><br>
-			<b>Erstellt:</b> <?= $this->_ ['question']['created']; ?><br>
-			<b>Geändert:</b> <?= $this->_ ['question']['lastModified']; ?>
-		</div>
-	</div>
-  </div>
-  <div class="col-md-6">
-  	<div class="panel panel-default" id="panelQuestionHistory" >
-		<a data-toggle="collapse" data-target="#collapseQuestionHistory"
-			href="#collapseQuestionHistory" class="collapsed">
-			<div class="panel-heading" style="background-image: linear-gradient(to bottom, #F5F5F5 0px, #E8E8E8 100%);">
-				<h4 class="panel-title">Änderungsgeschichte <span class="caret"></span></h4>
-			</div>
-		</a>
-		<div id="collapseQuestionHistory" class="panel-collapse collapse">
-			<div class="panel-body">
-				<?php include("questionhistory.php"); ?>
-			</div>
-		</div>
-	</div>
-  </div>
-</div>
+<?php if(isset($this->_['questioninfo'])){
+	echo $this->_['questioninfo'];
+}?>
 <form role="form" method="post">
 	<input type="hidden" name="questionReport" value="1">
 	<div class="modal fade" id="newQuestionReportDialog" tabindex="-1" role="dialog"

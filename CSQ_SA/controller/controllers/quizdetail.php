@@ -1,5 +1,5 @@
 <?php
-	if ($GLOBALS ['loggedin']) {
+		checkLogin();
 		$qid = $this->request ['quizid'];
 
 		$quizModel->checkIfQuizIDExists($qid);  // if not exists -> redirect db_query_failed
@@ -21,9 +21,4 @@
 		$viewInner->assign ( 'performances', $performances );
 		$viewInner->assign ( 'questions', $questions );
 		$viewInner->assign ( 'quizinfo', $quizinfo );
-
-	} else {
-		header ( 'Location: ./index.php?view=login&pageBefore=' . $this->template );
-		die ();
-	}
 ?>

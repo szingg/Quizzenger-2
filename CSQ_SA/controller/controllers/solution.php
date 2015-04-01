@@ -3,9 +3,9 @@
 		$viewInner->setTemplate ( 'solution' );
 
 		$question = $questionModel->getQuestion ( $this->request ['id'] );
+		
 		$author = $userModel->getUsernameByID ( $question ['user_id'] );
-		$userIsModHere =$userModel-> userIsModeratorOfCategory($_SESSION['user_id'], $question ['category_id']);
-
+		
 		$categoryName = $categoryModel->getNameByID ( $question ['category_id'] );
 
 		$answers = $answerModel->getAnswersByQuestionID ( $this->request ['id'] );
@@ -37,8 +37,6 @@
 		$viewInner->assign ( 'userismodhere', $userIsModHere );
 		$viewInner->assign ( 'question', $question );
 
-
-
 		// Implement other Strategies if other question types are desired
 		$correct = ($correctAnswer == $selectedAnswer ? 100 : 0);
 
@@ -50,7 +48,7 @@
 			$session_id = $this->request ['session_id'];
 			$inc_counter=0;
 			if ($questionModel->answerExists ( $session_id, $this->request ['id'], $_SESSION['user_id'] ) == 0) { // Normal Quiz
-				$questionModel->InsertQuestionPerformance ( $this->request ['id'], $_SESSION ['user_id'], $correct, $session_id );
+				$questionModel->InsertQuestionPerformance ( $this->request ['id'], $_SESSION ['user_id'], $correct, $session_id, NULL);
 				$inc_counter=1;
 			}
 			$_SESSION ['counter'. $session_id] += $inc_counter;
@@ -70,7 +68,7 @@
 		}
 		else { // not in quiz context
 			if(!$pageWasRefreshed){
-				$questionModel->InsertQuestionPerformance ( $this->request ['id'], $_SESSION ['user_id'], $correct, NULL);
+				$questionModel->InsertQuestionPerformance ( $this->request ['id'], $_SESSION ['user_id'], $correct, NULL, NULL);
 			}
 		}
 	}

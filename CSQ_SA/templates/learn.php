@@ -7,7 +7,7 @@
 			</a>
 		</li>
 		<li role="presentation" class="">
-			<a href="#gameLobby" aria-controls="gameLobby" role="tab" data-toggle="tab">
+			<a href="#gameLobby" id="gameLobbyEvent" aria-controls="gameLobby" role="tab" data-toggle="tab">
 				<b>Game-Lobby</b>
 			</a>
 		</li>

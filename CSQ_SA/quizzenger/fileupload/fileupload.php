@@ -55,7 +55,8 @@ class FileUpload{
 		
 		$sourcePath = $this->files['file']['tmp_name']; // Storing source path of the file in a variable
 		$path = getcwd();
-		$targetDir = $this->join_paths($path, "/../../", ATTACHMENT_PATH, 'temp');
+		//$targetDir = $this->join_paths($path, "/../../", ATTACHMENT_PATH, 'temp');
+		$targetDir = $this->join_paths($path, ATTACHMENT_PATH, 'temp');
 		$targetPath = $this->join_paths($targetDir, $this->files["file"]["name"]); // Target path where file is to be stored
 		$fileExists = file_exists($targetPath);
 		//check file exists

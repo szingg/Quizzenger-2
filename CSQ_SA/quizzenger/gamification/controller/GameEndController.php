@@ -3,20 +3,22 @@
 namespace quizzenger\gamification\controller {
 	use \stdClass as stdClass;
 	use \SplEnum as SplEnum;
-	use \mysqli as mysqli;
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
 	use \quizzenger\gamification\model\GameModel as GameModel;
 
 
-	class GameStartController{
-		private $mysqli;
+	class GameEndController{
 		private $view;
-		private $gameModel;
 		private $sqlhelper;
 		private $request;
+		
 		private $quizModel;
+		private $gameModel;
+		
 		private $gameid;
+		private $gamequestions;
+		private $gamecounter;
 		private $gameinfo;
 
 		public function __construct($view) {
@@ -26,40 +28,36 @@ namespace quizzenger\gamification\controller {
 			$this->gameModel = new GameModel($this->sqlhelper);
 			$this->request = array_merge ( $_GET, $_POST );
 			
+			$this->checkGameSessionParams();
 			$this->gameid = $this->request ['gameid'];
+			$this->gamequestions = $_SESSION['gamequestions'.$this->gameid];
+			$this->gamecounter = $_SESSION['gamecounter'.$this->gameid];
 			$this->gameinfo = $this->getGameInfo();
 			
 		}
 		public function loadView(){
-			checkLogin();
+			$this->checkPreconditions();
 			
-			$this->loadGameStartView();
+			$this->loadGameEndView();
 			
 			$this->loadAdminView();
-			
-			$this->setGameSession();
 			
 			return $this->view;
 		}
 		
-		private function loadGameStartView(){
-			$this->view->setTemplate ( 'gamestart' );
+		private function loadGameEndView(){
+			$this->view->setTemplate ( 'gameend' );
+
+			$score = $this->quizModel->getSingleChoiceScoreByGameId ( $this->gameinfo['game_id'], $this->gameinfo['quiz_id'] );
+			$maxScore = $this->quizModel->getMaxSingleChoiceScore ( $this->gameinfo['quiz_id'] );
+
+			$this->view->assign ( 'score', $score );
+			$this->view->assign ( 'maxScore', $maxScore );
 			
-			$this->checkGameStarted($this->gameinfo['has_started']);
 			$this->view->assign ( 'gameinfo', $this->gameinfo );
-			
-			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
-			$this->view->assign ( 'isMember', $isMember );
-			
-			$members = $this->gameModel->getGameMembersByGameId($this->gameid);
-			$this->view->assign ( 'members', $members );
-			
+
 		}
-		private function setGameSession(){
-			$_SESSION ['gamequestions'.$this->gameid] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
-			$_SESSION ['gamecounter'.$this->gameid] = 0;
-			
-		}
+
 		private function loadAdminView(){
 			$adminView = "";
 			if($this->isGameOwner($this->gameinfo['owner_id'])){
@@ -73,6 +71,29 @@ namespace quizzenger\gamification\controller {
 		}
 		
 		/*
+		 * Redirects if at leaste one condition fails
+		 * @Precondition User is logged in
+		 * @Precondition Setted SESSION and request params
+		 * @Precondition User is game member
+		 * @Precondition Game has started
+		 */
+		private function checkPreconditions(){
+			checkLogin();
+
+			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
+				
+			//checkConditions
+			if($isMember==false || $this->hasStarted($this->gameinfo['has_started'])==false){
+				redirectToErrorPage('err_not_authorized');
+			}
+		}		
+		private function checkGameSessionParams(){
+			if(! isset($this->request ['gameid'], $_SESSION['gamequestions'.$this->request ['gameid']], $_SESSION['gamecounter'.$this->request ['gameid']])) redirectToErrorPage('err_not_authorized');
+		}
+		
+		
+		
+		/*
 		 * Gets the Gameinfo. Redirects to errorpage when no result returned.
 		 */
 		private function getGameInfo(){
@@ -80,16 +101,16 @@ namespace quizzenger\gamification\controller {
 			if(count($gameinfo) <= 0) redirectToErrorPage('err_db_query_failed');
 			else return $gameinfo[0];
 		}
-
 		private function isGameOwner($owner_id){
 			return $owner_id == $_SESSION['user_id'];
 		}
-
-		private function checkGameStarted($has_started){
-			if ( isset($has_started)) {
-				redirectToErrorPage('err_game_has_started');
-			}
+		private function hasStarted($has_started){
+			return isset($has_started);
 		}
+		private function isFinished($is_finished){
+			return isset($is_finished);
+		}
+
 	} // class GameController
 } // namespace quizzenger\gamification\controller
 

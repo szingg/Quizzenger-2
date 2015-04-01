@@ -22,6 +22,7 @@ class SessionModel {
 			if ($loginResult == 1) {
 				$this->logger->log ( "User logged in sucessfully ", Logger::INFO );
 				$pageBefore = filter_input(INPUT_GET, 'pageBefore', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
+				$pageBefore =  str_replace('||', '&', $pageBefore); //case pageBefore contained multiple parameters
 				if (is_null($pageBefore)){
 					$pageBefore='default';
 				}

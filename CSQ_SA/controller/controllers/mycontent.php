@@ -7,6 +7,5 @@
 	include("myquestions.php");
 	include("myquizzes.php");
 
-
 	$viewInner->setTemplate ( 'mycontent' );
 ?>

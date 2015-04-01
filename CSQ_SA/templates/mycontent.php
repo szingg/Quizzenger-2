@@ -7,8 +7,13 @@
 			</a>
 		</li>
 		<li role="presentation">
-			<a href="#myquizzes" aria-controls="myquizzes" role="tab" data-toggle="tab">
+			<a href="#myquizzes" id="myQuizzesEvent" aria-controls="myquizzes" role="tab" data-toggle="tab">
 				<b>Meine Quizzes</b>
+			</a>
+		</li>
+		<li role="presentation">
+			<a href="#mygames" id="myGamesEvent" aria-controls="mygames" role="tab" data-toggle="tab">
+				<b>Meine Games</b>
 			</a>
 		</li>
 	</ul>
@@ -20,6 +25,9 @@
 		</div>
 		<div role="tabpanel" class="tab-pane" id="myquizzes">
 			<?php include("quizlist.php"); ?>
+		</div>
+		<div role="tabpanel" class="tab-pane" id="mygames">
+			<h4>TODO</h4>
 		</div>
 	</div>
 </div>

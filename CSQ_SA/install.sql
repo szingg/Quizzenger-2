@@ -41,8 +41,11 @@ CREATE TABLE IF NOT EXISTS `category` (
 --
 
 CREATE TABLE IF NOT EXISTS `login_attempts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `time` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ip` int(10) UNSIGNED DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -252,8 +255,10 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `password` char(128) COLLATE utf8_unicode_ci NOT NULL,
   `salt` char(128) COLLATE utf8_unicode_ci NOT NULL,
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `inactive` tinyint(1) DEFAULT NULL,
   `superuser` tinyint(1) NOT NULL DEFAULT '0',
+  `bonus_score` int(11);
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
@@ -300,11 +305,12 @@ CREATE TABLE IF NOT EXISTS `userachievement` (
 
 CREATE TABLE IF NOT EXISTS `achievement` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `description` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `type` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `image` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `arguments` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `sort_order` int(11) NOT NULL
+  `type` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `image` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `arguments` text COLLATE utf8_unicode_ci NOT NULL,
   `bonus_score` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
@@ -316,9 +322,22 @@ CREATE TABLE IF NOT EXISTS `achievement` (
 --
 CREATE TABLE IF NOT EXISTS `achievementtrigger` (
   `achievement_id` int(11) NOT NULL,
-  `name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY(`achievement_id`, `name`),
-  KEY `fk_achievement_achievementtrigger` (`achievement_id`)
+  `eventtrigger_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY(`achievement_id`, `triggername`),
+  KEY `fk_achievement_achievementtrigger` (`achievement_id`),
+  KEY `fk_eventtrigger_achievementtrigger` (`eventtrigger_name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `eventtrigger`
+--
+CREATE TABLE IF NOT EXISTS `eventtrigger` (
+  `name` varchar(64) NOT NULL,
+  `producer_score` int(11),
+  `consumer_score` int(11),
+  PRIMARY KEY(`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
 
 -- --------------------------------------------------------
@@ -347,6 +366,7 @@ CREATE TABLE IF NOT EXISTS `gamesession` (
   `quiz_id` int(11) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `has_started` timestamp NULL DEFAULT NULL,
+  `is_finished` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_quizgamesession` (`quiz_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ;
@@ -455,7 +475,9 @@ ALTER TABLE `userscore`
 -- Constraints for table `achievementtrigger`
 --
 ALTER TABLE `achievementtrigger`
-  ADD CONSTRAINT `fk_achievement_achievementtrigger` FOREIGN KEY (`achievement_id`) REFERENCES `achievement` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_achievement_achievementtrigger` FOREIGN KEY (`achievement_id`) REFERENCES `achievement` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_eventtrigger_achievementtrigger` FOREIGN KEY (`triggername`) REFERENCES `eventtrigger` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  KEY `fk_eventtrigger_achievementtrigger` (`triggername`);
 
 --
 -- Constraints for table `userachievement`

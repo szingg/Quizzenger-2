@@ -14,16 +14,13 @@ function Quizzenger() {
 		var gamification = new Gamification();
 		gamification.initialize(e);
 
-		$(".rank").click(function(){
-			self.showTooltip("rank", this);
-		});
-		$(".rank").mouseenter(function(){
-			$(this).addClass("achievement-tooltip");
-		});
-		$(".rank").mouseleave(function(){
-			$(this).removeClass("achievement-tooltip");
-		});
+		self.initAchievements();
+		self.initRanks();
+		self.loadTabPage();
 
+	};
+
+	this.initAchievements = function(){
 		$(".point-achievement").click(function(){
 			self.showTooltip("point-achievement", this);
 		});
@@ -33,13 +30,47 @@ function Quizzenger() {
 		$(".point-achievement").mouseleave(function(){
 			$(this).removeClass("achievement-tooltip");
 		});
-	};
+	}
+
+	this.initRanks = function(){
+		$(".rank").click(function(){
+			self.showTooltip("rank", this);
+		});
+		$(".rank").mouseenter(function(){
+			$(this).addClass("achievement-tooltip");
+		});
+		$(".rank").mouseleave(function(){
+			$(this).removeClass("achievement-tooltip");
+		});
+	}
 
 	this.showTooltip= function(cssClass, showElement){
 		//hide all
 		$("."+cssClass).removeClass("achievement-tooltip");
 		//show this tooltip
 		$(showElement).addClass("achievement-tooltip");
+	}
+
+	this.loadTabPage = function(){
+		if(self.contains(document.URL, 'view=learn')
+			 && self.contains(document.URL, '#gamelobby')){
+			$('#gameLobbyEvent').trigger('click');
+		}
+		if(self.contains(document.URL, 'view=mycontent')){
+			if( self.contains(document.URL, '#myquizzes')){
+				$('#myQuizzesEvent').trigger('click');
+			}
+			if( self.contains(document.URL, '#mygames')){
+				$('#myGamesEvent').trigger('click');
+			}
+		}
+	}
+	/*
+	* Checks if obj1 contains obj2
+	* @return Returns true if contains, else false
+	*/
+	this.contains = function(obj1, obj2){
+		return obj1.indexOf(obj2) > -1;
 	}
 }
 
