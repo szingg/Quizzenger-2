@@ -1,17 +1,19 @@
 <?php
-function checkActiveTab($openedView){
-	$pageBefore = filter_input(INPUT_GET, 'pageBefore', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
-	if (!is_null($pageBefore) && $openedView===$pageBefore) {
-		return "active";
-	}
+	use \quizzenger\dispatching\MessageQueue as MessageQueue;
 
-	if($openedView == $_SESSION['current_view']){
-		return "active";
+	function checkActiveTab($openedView){
+		$pageBefore = filter_input(INPUT_GET, 'pageBefore', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
+		if (!is_null($pageBefore) && $openedView===$pageBefore) {
+			return "active";
+		}
+
+		if($openedView == $_SESSION['current_view']){
+			return "active";
+		}
+		else{
+			return "";
+		}
 	}
-	else{
-		return "";
-	}
-}
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -114,6 +116,14 @@ function checkActiveTab($openedView){
 		</div>
 		<div class="container">
 			<?php
+				while($message = MessageQueue::pop()) {
+					echo '<div class="alert alert-' . $message->type . '" role="alert">';
+					echo '<a href="#" class="close" data-dismiss="alert">&times;</a>';
+					echo htmlspecialchars($message->content);
+					echo '</div>';
+				}
+
+				// TODO: Remove the old message system.
 				$message = filter_input(INPUT_GET, 'info', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
 				if(!is_null($message) && defined($message)){
 					$message = constant($message);
