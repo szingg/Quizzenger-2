@@ -64,8 +64,7 @@ function checkActiveTab($openedView){
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
 						<li class="<?=  checkActiveTab("default");?>"><a href="index.php">
-							<!--  <span class="hidden-lg hidden-sm hidden-md"> -->
-							<span class="hidden-lg">
+							<span class="hidden-lg hidden-sm hidden-md">
 								<span class="glyphicon glyphicon-home"></span> Home
 							</span>
 							<span class="hidden-xs">
