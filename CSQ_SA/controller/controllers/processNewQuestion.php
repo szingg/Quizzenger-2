@@ -12,7 +12,8 @@
 		{
 			$this->logger->log("addScoreToCategory", Logger::INFO);
 			$userscoreModel->addScoreToCategory($_SESSION['user_id'], $chosenCategory, QUESTION_CREATED_SCORE, $moderationModel);
-			header ( 'Location: ./index.php?view=myquestions&id='.$addedQuestion );
+			//header ( 'Location: ./index.php?view=myquestions&id='.$addedQuestion );
+			header ( 'Location: ./index.php?view=mycontent&id='.$addedQuestion );
 		}
 	}else{
 		$this->logger->log ( "Invalid POST request made (processNewQuestion)", Logger::WARNING );
