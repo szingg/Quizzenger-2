@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<quizzenger version="2.0">
+	<eventtriggers>
+		<eventtrigger>
+			<name>always</name>
+			<producer_score>0</producer_score>
+			<consumer_score>0</consumer_score>
+		</eventtrigger>
+		<eventtrigger>
+			<name>game-question-answered-correct</name>
+			<producer_score>0</producer_score>
+			<consumer_score>20</consumer_score>
+		</eventtrigger>
+		<eventtrigger>
+			<name>question-answered-correct</name>
+			<producer_score>0</producer_score>
+			<consumer_score>10</consumer_score>
+		</eventtrigger>
+		<eventtrigger>
+			<name>question-created</name>
+			<producer_score>30</producer_score>
+			<consumer_score>0</consumer_score>
+		</eventtrigger>
+	</eventtriggers>
+	<achievements>
+		<achievement type="QuestionAnsweredCorrect">
+			<name>Erste Frage!</name>
+			<description>Du hast deine erste Frage korrekt beantwortet.</description>
+			<image>achievement-question-answered-1</image>
+			<arguments>
+				<argument name="question-count" value="1" />
+			</arguments>
+			<bonus_score>10</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionAnsweredCorrect">
+			<name>10 Fragen!</name>
+			<description>Du hast 10 Fragen korrekt beantwortet.</description>
+			<image>achievement-question-answered-10</image>
+			<arguments>
+				<argument name="question-count" value="10" />
+			</arguments>
+			<bonus_score>50</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionAnsweredCorrect">
+			<name>50 Fragen!</name>
+			<description>Du hast 50 Fragen korrekt beantwortet.</description>
+			<image>achievement-question-answered-50</image>
+			<arguments>
+				<argument name="question-count" value="50" />
+			</arguments>
+			<bonus_score>200</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionAnsweredCorrect">
+			<name>100 Fragen!</name>
+			<description>Du hast 100 Fragen korrekt beantwortet.</description>
+			<image>achievement-question-answered-100</image>
+			<arguments>
+				<argument name="question-count" value="100" />
+			</arguments>
+			<bonus_score>500</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionAnsweredCorrect">
+			<name>200 Fragen!</name>
+			<description>Du hast 200 Fragen korrekt beantwortet.</description>
+			<image>achievement-question-answered-200</image>
+			<arguments>
+				<argument name="question-count" value="200" />
+			</arguments>
+			<bonus_score>2000</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionAnsweredCorrect">
+			<name>500 Fragen!</name>
+			<description>Du hast 500 Fragen korrekt beantwortet.</description>
+			<image>achievement-question-answered-500</image>
+			<arguments>
+				<argument name="question-count" value="500" />
+			</arguments>
+			<bonus_score>5000</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionAnsweredCorrect">
+			<name>1000 Fragen!</name>
+			<description>Du hast 1000 Fragen korrekt beantwortet.</description>
+			<image>achievement-question-answered-1000</image>
+			<arguments>
+				<argument name="question-count" value="1000" />
+			</arguments>
+			<bonus_score>10000</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="Date">
+			<name>Weihnachtsmann</name>
+			<description>Du hast eine Frage an Weihnachten korrekt gelöst.</description>
+			<sort_order>0</sort_order>
+			<type> </type>
+			<image>date-christmas</image>
+			<arguments>
+				<argument name="date" value="*-12-24" />
+			</arguments>
+			<bonus_score>1000</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="always" />
+			</eventtriggers>
+		</achievement>
+	</achievements>
+	<ranks>
+		<rank name="Neuling" threshold="0" image="neuling" />
+		<rank name="Besucher" threshold="1000" image="besucher" />
+		<rank name="Einsteiger" threshold="2500" image="einsteiger" />
+		<rank name="Aufsteiger" threshold="5000" image="aufsteiger" />
+		<rank name="Fragekenner" threshold="8000" image="fragekenner" />
+		<rank name="Alleskönner" threshold="12000" image="alleskoenner" />
+		<rank name="Profi" threshold="18000" image="profi" />
+		<rank name="Veteran" threshold="26000" image="veteran" />
+		<rank name="Meister" threshold="34000" image="meister" />
+		<rank name="Baron" threshold="44000" image="baron" />
+		<rank name="Legende" threshold="60000" image="legende" />
+	</ranks>
+</quizzenger>
