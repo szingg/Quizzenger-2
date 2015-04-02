@@ -20,7 +20,7 @@ function throwSqlInsertException($link){
 	die();
 }
 
-include("includes/config.php");
+include("/../includes/config.php");
 if(isset($_POST['install'])){
 
 	echo("Connecting to DB...<br>");
@@ -47,16 +47,39 @@ if(isset($_POST['install'])){
 	if($xml['version'] != $version){
 		throwVersionException($version);
 	}
+	if(! isset($xml->eventtriggers, $xml->eventtriggers[0] , $xml->achievements, $xml->achievements, $xml->ranks, $xml->ranks[0])){
+		throwMalformedXMLException();
+	}
+
+	foreach($xml->eventtriggers[0] as $trigger){
+		if(! isset($trigger['name'], $trigger->producer_score, $trigger->consumer_score)){
+			throwMalformedXMLException();
+		}
+		$name = '"'.$link->real_escape_string($trigger['name']).'"';
+		$producer_score = '"'.$link->real_escape_string($trigger->producer_score).'"';
+		$consumer_score = '"'.$link->real_escape_string($trigger->consumer_score).'"';
+
+		$result = $link->query("INSERT INTO eventtrigger (name, producer_score, consumer_score) VALUES ($name, $producer_score, $consumer_score)"
+			." ON DUPLICATE KEY UPDATE producer_score=$producer_score, consumer_score=$consumer_score");
+		if($result){}
+		else{
+			throwSqlInsertException($link);
+		}
+	}
+
+	echo("<p style=\"color:green;\">Eventtriggers successfully installed!</p><br>");
+
 	foreach ($xml->achievements[0]->achievement as $ach){
-		if(! isset($ach['type'], $ach->name, $ach->order, $ach->description, $ach->image, $ach->arguments, $ach->bonusscore, $ach->triggers)){
+		if(! isset($ach['type'], $ach->name, $ach->description, $ach->sort_order, $ach->image, $ach->arguments, $ach->bonus_score, $ach->eventtriggers)){
 			throwMalformedXMLException();
 		}
 		$type = '"'.$link->real_escape_string($ach['type']).'"';
 		$name = '"'.$link->real_escape_string($ach->name).'"';
-		$order = '"'.$link->real_escape_string($ach->order).'"';
 		$description = '"'.$link->real_escape_string($ach->description).'"';
+		$sort_order = '"'.$link->real_escape_string($ach->sort_order).'"';
 		$image = '"'.$link->real_escape_string($ach->image).'"';
 
+		//name, description, sort_order, type, image, argument, bonus_score
 		$arguments = array();
 		foreach($ach->arguments->argument as $arg){
 			if(! isset($arg["name"], $arg["value"])){
@@ -65,16 +88,15 @@ if(isset($_POST['install'])){
 			$arguments[$link->real_escape_string($arg["name"])] = $link->real_escape_string($arg["value"]);
 		}
 		$arguments = '"'.$link->real_escape_string(json_encode($arguments)).'"'; //decode with json_decode($arguments, true);
-		$bonusscore = '"'.$link->real_escape_string($ach->bonusscore).'"';
-		$triggers = $ach->triggers;
+		$bonus_score = '"'.$link->real_escape_string($ach->bonus_score).'"';
+		$triggers = $ach->eventtriggers;
 
-		$result = $link->query("INSERT INTO achievement (name, description, type, image, arguments, bonus_score) VALUES ($name, $description, $type, $image, $arguments, $bonusscore)");
+		$result = $link->query("INSERT INTO achievement (name, description, sort_order, type, image, arguments, bonus_score) VALUES ($name, $description, $sort_order, $type, $image, $arguments, $bonus_score)");
 		if($result){
 			$achievementId = $link->insert_id;
-			foreach($triggers->trigger as $trigger){
+			foreach($triggers->eventtrigger as $trigger){
 				if(! isset($trigger['name'], $achievementId)){
-					echo('<p style=\"color:red;\">Parse Error: Malformed XML</p><br>');
-					die();
+					throwMalformedXMLException();
 				}
 				$triggerName = '"'.$link->real_escape_string($trigger['name']).'"';
 				$resultTrigger = $link->query("INSERT INTO achievementtrigger (achievement_id, name) VALUES ($achievementId, $triggerName)");
