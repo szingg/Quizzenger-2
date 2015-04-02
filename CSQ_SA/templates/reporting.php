@@ -1,4 +1,6 @@
 <?php
+	use \quizzenger\utilities\FormatUtility as FormatUtility;
+
 	$user = $this->_['user'];
 	$userList = $this->_['userlist'];
 	$questionList = $this->_['questionlist'];
@@ -110,11 +112,11 @@
 									$outputRow("{$current->created} ({$current->last_modified})");
 
 									if($current->ratingcount != 0)
-										$outputRow(number_format((float)$current->rating / (float)$current->ratingcount, 1, '.', ''));
+										$outputRow(FormatUtility::formatNumber((float)$current->rating / (float)$current->ratingcount, 1));
 									else
 										$outputRow('');
 
-									$outputRow(number_format($current->difficulty, 2, '.', ''));
+									$outputRow(FormatUtility::formatNumber($current->difficulty, 2));
 									$outputRow($current->solved_count);
 									echo '</tr>';
 								}
@@ -145,8 +147,8 @@
 
 									$outputRow($current->question_count);
 									$outputRow($current->rating_average == '' ? ''
-										: number_format($current->rating_average, 2, '.', ''));
-									$outputRow(number_format($current->difficulty_average, 2, '.', ''));
+										: FormatUtility::formatNumber($current->rating_average, 2));
+									$outputRow(FormatUtility::formatNumber($current->difficulty_average, 2, '.'));
 									echo '</tr>';
 								}
 							?>
@@ -159,8 +161,8 @@
 					<p><b>System Status</b></p>
 					<pre><code><?php
 						echo date('Y-m-d H:i:s') . "\n"
-							. "Attachment Memory Usage : " . number_format($systemStatus->attachment_usage / 1000000.0, 2, '.', '') . "M\n"
-							. "Database Memory Usage   : " . number_format($systemStatus->database_usage / 1000000.0, 2, '.', '') . "M\n"
+							. "Attachment Memory Usage : " . FormatUtility::formatNumber($systemStatus->attachment_usage / 1000000.0, 2) . "M\n"
+							. "Database Memory Usage   : " . FormatUtility::formatNumber($systemStatus->database_usage / 1000000.0, 2) . "M\n"
 							. "Login Attempts (24h)    : " . $systemStatus->login_attempts . "\n"
 					?></code></pre>
 					<p><b>Log Files</b></p>
