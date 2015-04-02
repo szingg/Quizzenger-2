@@ -89,7 +89,7 @@
 		$suString= ($rating['issuperuser'])?'<img alt="Sueruser" src="'.htmlspecialchars(APP_PATH).'/templates/img/superuser.png">':"" ;
 
 
-		$strng2=$rating['author'].'</a>'.$modString.$suString.' am '.$rating['created'];
+		$strng2=$rating['author'].'</a>'.$modString.$suString.' am '.htmlspecialchars($rating['created']);
 		if($userIsModHere){
 			$strng2=$strng2.'<button type="button" class="btn btn-link btn-xs" data-toggle="modal" data-target="#removeRatingDialog" onClick="setRemoveRating('.$rating['id'].')"><span class="glyphicon glyphicon-remove"></span></button>';
 		}
@@ -101,7 +101,7 @@
 				$strng2=$strng2.(createStarsString($rating['stars'])."<br>");
 		}
 		if($rating['comment']!=null){
-			$strng2=$strng2.$rating['comment']."<br>";
+			$strng2=$strng2.htmlspecialchars($rating['comment'])."<br>";
 		}
 		return $strng.$strng2."<br>";
 	}
