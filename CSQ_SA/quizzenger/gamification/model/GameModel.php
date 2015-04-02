@@ -21,7 +21,7 @@ namespace quizzenger\gamification\model {
 		 * Adds a new game to a given quiz.
 		 * @precondition Please check if current user has permission to generate a game for this quiz.
 		 * @param $quiz_id
-		 * @return Returns new gamesession_id if successful, else null 
+		 * @return Returns new gamesession_id if successful, else null
 		*/
 		public function getNewGameSessionId($quiz_id, $name){
 			if(isset($quiz_id, $name)){
@@ -49,7 +49,7 @@ namespace quizzenger\gamification\model {
 				return null;
 			}
 		}
-		
+
 		/*
 		 * Stops the Game
 		 * Method checks Permission
@@ -134,7 +134,7 @@ namespace quizzenger\gamification\model {
 			log::info('User leaves game ID:'.$game_id);
 			return $this->mysqli->s_query("DELETE FROM gamemember WHERE gamesession_id=? AND user_id=?",array('i','i'),array($game_id, $user_id));
 		}
-		
+
 		/*
 		 * @return Returns true when has started, otherwise false
 		 */
@@ -146,7 +146,7 @@ namespace quizzenger\gamification\model {
 			}
 			else return false;
 		}
-		
+
 		/*
 		 * Checks if user is permitted to modify the given game
 		 * @return Returns true if permitted, else false
@@ -155,6 +155,32 @@ namespace quizzenger\gamification\model {
 			$gameOwner = $this->getGameOwnerByGameId($game_id);
 			if($gameOwner == null) return null;
 			else return $gameOwner == $user_id;
+		}
+
+		/*
+		 * Gets the game report
+		 * @return array with columns questionAnswered, questionAnsweredCorrect, totalQuestion, totalTimeInSec, timePerQuestion, user_id, username
+		 */
+		public function getGameReport($game_id){
+			$result = $this->mysqli->query('SELECT COUNT(gamesession_id) AS questionAnswered,'
+					.' COUNT(CASE WHEN questionCorrect = 100 THEN 1 END) AS questionAnswerCorrect,'
+					.' total.totalQuestions, time.totalTimeInSec, time.totalTimeInSec/COUNT(gamesession_id) AS timePerQuestion,'
+					.' q.user_id, u.username FROM questionperformance q'
+					.' JOIN user u ON u.id = q.user_id'
+					.' JOIN ('
+						.' SELECT gamesession.id, COUNT(question_id) AS totalQuestions '
+						.' FROM gamesession, quiztoquestion'
+						.' WHERE gamesession.quiz_id = quiztoquestion.quiz_id AND gamesession.id = ?) AS total'
+					.' ON q.gamesession_id = total.id'
+					.' JOIN ('
+						.' SELECT user_id, MAX(timestamp)-g.has_started AS totalTimeInSec'
+						.' FROM questionperformance q, gamesession g'
+						.' WHERE q.gamesession_id = g.id AND q.gamesession_id = ?'
+						.' GROUP BY q.user_id) AS time'
+					.' ON time.user_id = q.user_id'
+					.' WHERE q.gamesession_id = ?'
+					.' GROUP BY q.user_id',['i','i','i'],[$game_id,$game_id,$game_id]);
+			return $this->mysqli->getQueryResultArray($result);
 		}
 
 	} // class GameModel
