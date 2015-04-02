@@ -63,11 +63,11 @@
 				</div> <!-- panel-body -->
 	    	</div> <!-- panel-collapse -->
 	    </div> <!-- panel -->
-	    <a class="panel btn btn-primary" data-toggle="modal" data-target="#newGame" href="javascript:void()">
+	    <a class="panel btn btn-primary hidden-xs" data-toggle="modal" data-target="#newGame" href="javascript:void()">
 	    Game erstellen
 	    </a>
 
-	    
+
 	    <div class="modal fade" id="newGame" tabindex="-1" role="dialog"
 			aria-labelledby="newGameModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -94,10 +94,10 @@
 									</thead>
 									<tbody>
 										<?php foreach ( $this->_ ['quizzes'] as $quiz ) { ?>
-										
+
 											<tr class="clickable">
 												<td>
-													<input class="css-checkbox css-checkbox-relative" type="radio" required="required" name="quizid" value="<?= $quiz['id']; ?>">													
+													<input class="css-checkbox css-checkbox-relative" type="radio" required="required" name="quizid" value="<?= $quiz['id']; ?>">
 														<?= htmlspecialchars($quiz['name']); ?>
 													</input>
 												</td>
@@ -123,7 +123,7 @@
 				</div>
 			</div>
 		</div>
-<?php /* 
+<?php /*
 	    <div class="panel panel-default no-margin">
 			<a data-toggle="collapse" data-target="#newGames" href="#newGames">
 				<div class="panel-heading bg-info text-info">

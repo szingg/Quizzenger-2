@@ -14,21 +14,21 @@
 
 		if(isset($this->request['copyquiz'])){ //COPYING QUIZ
 			$copiedQuizID=$quizModel->copyQuiz($_SESSION['user_id'], $this->request['copyquiz']);
-			redirect('?view=mycontent&quizid='.$copiedQuizID);
+			redirect('?view=mycontent&quizid='.$copiedQuizID.'#myquizzes');
 		}
 
 		if(isset($this->request['savegeneratedquiz'])){ // SAVING GENERATED QUIZ
 			$questions=$_SESSION ['questions'.$this->request['savegeneratedquiz']];
 			$copiedQuizID=$quizModel->saveGeneratedQuiz($_SESSION['user_id'], $questions);
-			redirect('?view=mycontent&quizid='.$copiedQuizID);
+			redirect('?view=mycontent&quizid='.$copiedQuizID.'#myquizzes');
 		}
 
 		if(isset($this->request['quizNameField'])){ //EDIT QUIZ NAME
 			$editedQuizId = $this->request['editQuizNameID'];
-			if(isset($this->request['editQuizNameID']) 
+			if(isset($this->request['editQuizNameID'])
 					&& $quizModel->userIDhasPermissionOnQuizID($editedQuizId, $_SESSION['user_id']) ){
 				$quizModel->setQuizName($this->request['editQuizNameID'],$this->request['quizNameField']);
-				redirect('?view=mycontent&quizid='.$editedQuizId);
+				redirect('?view=mycontent&quizid='.$editedQuizId.'#myquizzes');
 			}
 		}
 

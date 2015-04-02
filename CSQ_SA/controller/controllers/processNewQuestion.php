@@ -15,8 +15,7 @@
 			EventController::fire('question-created', $_SESSION['user_id'], [
 				'category' => $chosenCategory
 			]);
-			header ( 'Location: ./index.php?view=myquestions&id='.$addedQuestion );
-		}
+			header ( 'Location: ./index.php?view=mycontent&id='.$addedQuestion );		}
 	}else{
 		$this->logger->log ( "Invalid POST request made (processNewQuestion)", Logger::WARNING );
 		die ( 'Invalid Request. Please stop this' );
