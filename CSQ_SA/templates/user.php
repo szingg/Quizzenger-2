@@ -57,6 +57,9 @@
 				</div>
 			</div>
 			<div class="scrollable">
+				<div class="hidden-lg hidden-md">
+1
+				</div>
 				<div class="rankbar hidden-xs hidden-sm">
 					<?php while($current = $rankList->fetch_object()): ?>
 						<div class="rank" data-tooltip-title="<?php echo htmlspecialchars($current->name); ?>"

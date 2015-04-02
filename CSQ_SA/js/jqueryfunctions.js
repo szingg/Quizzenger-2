@@ -82,6 +82,9 @@ $(function(){
 	$('#tableQuizPerformances').DataTable( {
 		responsive: true
 	} );
+	$('#tableQuestionPerformances').DataTable( {
+		responsive: true
+	} );
 
 	$('#tableSubCats').DataTable( {
 		responsive: true,
@@ -101,9 +104,6 @@ $(function(){
 	$('#tableQuizList').DataTable( {
 		responsive: true
 	} );
-	$('#tableQuestionPerformances').DataTable( {
-		responsive: true
-	});
 	$('#tableReportedContents').DataTable( {
 		responsive: true,
 		"order": [[ 2, "desc" ]],
