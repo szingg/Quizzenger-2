@@ -8,7 +8,6 @@ function Gamification(){
 		self.joinGameEvent();
 		self.leaveGameEvent();
 		self.startGameEvent();
-		self.stopGameEvent();
 		self.gameStartTimer();
 		self.gameLobbyTimer();
 		self.initTableNewGames();
@@ -93,24 +92,7 @@ function Gamification(){
 				cache: false,
 				processData:false,
 				complete: function(data){
-					//nothing, because you will be redirected
-				}
-			});
-		});
-	}
-
-	this.stopGameEvent = function(){
-		$("#stopGame").click(function(){
-			var gameId = self.getUrlParameter('gameid');
-
-			$.ajax({
-				url: "index.php?view=stopGame&type=ajax&gameid="+gameId,
-				type: "GET",
-				contentType: false,
-				cache: false,
-				processData:false,
-				complete: function(data){
-					//nothing, because you will be redirected
+					$("#startGame").val("Game gestartet");
 				}
 			});
 		});
