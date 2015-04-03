@@ -47,6 +47,7 @@ input[type=radio].css-checkbox {
 }
 input[type=radio].css-checkbox-relative {
 	position: relative;
+	visibility: hidden;
 	left: 0px;
 }
 
@@ -309,4 +310,17 @@ div>a {
 #tableReportUserList img {
 	width: 32px;
 	height: 32px;
+}
+
+.game-report-row {
+	margin: 5px 5px;
+	padding: 10px 0;
+}
+
+.game-report-active {
+	background-color: #FAFAFA;
+}
+
+.game-report-progress {
+	margin: 0;
 }

@@ -162,25 +162,65 @@ namespace quizzenger\gamification\model {
 		 * @return array with columns questionAnswered, questionAnsweredCorrect, totalQuestion, totalTimeInSec, timePerQuestion, user_id, username
 		 */
 		public function getGameReport($game_id){
-			$result = $this->mysqli->query('SELECT COUNT(gamesession_id) AS questionAnswered,'
-					.' COUNT(CASE WHEN questionCorrect = 100 THEN 1 END) AS questionAnswerCorrect,'
-					.' total.totalQuestions, time.totalTimeInSec, time.totalTimeInSec/COUNT(gamesession_id) AS timePerQuestion,'
-					.' q.user_id, u.username FROM questionperformance q'
-					.' JOIN user u ON u.id = q.user_id'
-					.' JOIN ('
-						.' SELECT gamesession.id, COUNT(question_id) AS totalQuestions '
+			$result = $this->mysqli->query('SELECT @rank:=@rank+1 AS rank, SUM(weight) AS questionAnswered,'
+					.' SUM(CASE WHEN questionCorrect = 100 THEN weight ELSE 0 END) AS questionAnswerCorrect,'
+					.' total.totalQuestions, time.totalTimeInSec, time.totalTimeInSec/COUNT(q.gamesession_id) AS timePerQuestion,'
+					.' q.user_id, u.username FROM gamemember m'
+					.' LEFT JOIN questionperformance q ON q.gamesession_id = m.gamesession_id AND q.user_id = m.user_id'
+					.' LEFT JOIN user u ON u.id = m.user_id'
+					.' LEFT JOIN ('
+						.' SELECT @rank := 0, gamesession.id, SUM(weight) AS totalQuestions '
 						.' FROM gamesession, quiztoquestion'
 						.' WHERE gamesession.quiz_id = quiztoquestion.quiz_id AND gamesession.id = ?) AS total'
-					.' ON q.gamesession_id = total.id'
-					.' JOIN ('
+					.' ON total.id = m.gamesession_id'
+					.' LEFT JOIN quiztoquestion qq ON qq.quiz_id = total.quiz_id AND qq.question_id = q.question_id'
+					.' LEFT JOIN ('
 						.' SELECT user_id, MAX(timestamp)-g.has_started AS totalTimeInSec'
 						.' FROM questionperformance q, gamesession g'
 						.' WHERE q.gamesession_id = g.id AND q.gamesession_id = ?'
 						.' GROUP BY q.user_id) AS time'
-					.' ON time.user_id = q.user_id'
-					.' WHERE q.gamesession_id = ?'
-					.' GROUP BY q.user_id',['i','i','i'],[$game_id,$game_id,$game_id]);
+					.' ON time.user_id = m.user_id'
+					.' WHERE m.gamesession_id = ?'
+					.' GROUP BY m.user_id'
+					.' ORDER BY answerCorrect DESC',['i','i','i'],[$game_id,$game_id,$game_id]);
 			return $this->mysqli->getQueryResultArray($result);
+			/*
+			 jetzt mit gewichteten punkten
+
+			select SUM(weight) as answered, SUM(CASE WHEN questionCorrect = 100 THEN weight ELSE 0 END) as answerCorrect, total.totalQuestion, time.totalTimeInSec, time.totalTimeInSec/count(q.gamesession_id) as timePerQuestion, m.user_id, u.username from gamemember m
+			left join questionperformance q on q.gamesession_id = m.gamesession_id and q.user_id = m.user_id
+			left join user u on u.id = m.user_id
+			left join (select gamesession.id, gamesession.quiz_id, sum(weight) as totalQuestion from gamesession, quiztoquestion where gamesession.quiz_id = quiztoquestion.quiz_id and gamesession.id = 37) as total on m.gamesession_id = total.id
+			left join quiztoquestion qq on qq.quiz_id = total.quiz_id and qq.question_id = q.question_id
+			left join (select  user_id, max(timestamp)-g.has_started as totalTimeInSec from questionperformance q, gamesession g
+			where q.gamesession_id = g.id and q.gamesession_id = 37
+			group by  q.user_id) as time on time.user_id = m.user_id
+			where m.gamesession_id = 37
+			group by m.user_id
+
+
+			 neue abfrage
+			 select count(q.gamesession_id) as answered, count(CASE WHEN questionCorrect = 100 THEN 1 END) as answerCorrect, total.totalQuestion, time.totalTimeInSec, time.totalTimeInSec/count(q.gamesession_id) as timePerQuestion, m.user_id, u.username from gamemember m
+			left join questionperformance q on q.gamesession_id = m.gamesession_id
+			left join user u on u.id = m.user_id
+			left join (select gamesession.id, count(question_id) as totalQuestion from gamesession, quiztoquestion where gamesession.quiz_id = quiztoquestion.quiz_id and gamesession.id = 20) as total on m.gamesession_id = total.id
+			left join (select  user_id, max(timestamp)-g.has_started as totalTimeInSec from questionperformance q, gamesession g
+			where q.gamesession_id = g.id and q.gamesession_id = 20
+			group by  q.user_id) as time on time.user_id = m.user_id
+			where m.gamesession_id = 20
+			group by m.user_id
+
+			alte abfrage
+			select count(gamesession_id) as answered, count(CASE WHEN questionCorrect = 100 THEN 1 END) as answerCorrect, total.totalQuestion, time.totalTimeInSec, time.totalTimeInSec/count(gamesession_id) as timePerQuestion, q.user_id, u.username from questionperformance q
+			join user u on u.id = q.user_id
+			join (select gamesession.id, count(question_id)as totalQuestion from gamesession, quiztoquestion where gamesession.quiz_id = quiztoquestion.quiz_id and gamesession.id = 37) as total on q.gamesession_id = total.id
+			join (select  user_id, max(timestamp)-g.has_started as totalTimeInSec from questionperformance q, gamesession g
+			where q.gamesession_id = g.id and q.gamesession_id = 37
+			group by  q.user_id) as time on time.user_id = q.user_id
+			where q.gamesession_id = 37
+			group by q.user_id
+
+			 */
 		}
 
 	} // class GameModel
