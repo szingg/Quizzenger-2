@@ -324,3 +324,18 @@ div>a {
 .game-report-progress {
 	margin: 0;
 }
+
+.text-black {
+	color: black;
+	float: left;
+	text-align: center;
+	width: 0;
+	height: 100%;
+	font-size: 12px;
+	line-height: 20px;
+	overflow: hidden;
+}
+
+.progress-bar-white {
+	background-color: white
+}

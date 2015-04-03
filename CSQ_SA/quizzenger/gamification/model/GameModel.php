@@ -159,17 +159,17 @@ namespace quizzenger\gamification\model {
 
 		/*
 		 * Gets the game report
-		 * @return array with columns questionAnswered, questionAnsweredCorrect, totalQuestion, totalTimeInSec, timePerQuestion, user_id, username
+		 * @return array with columns questionAnswered, questionAnsweredCorrect, totalQuestions, totalTimeInSec, timePerQuestion, user_id, username
 		 */
 		public function getGameReport($game_id){
-			$result = $this->mysqli->query('SELECT @rank:=@rank+1 AS rank, SUM(weight) AS questionAnswered,'
+			$result = $this->mysqli->s_query('SELECT @rank:=@rank+1 AS rank, SUM(weight) AS questionAnswered,'
 					.' SUM(CASE WHEN questionCorrect = 100 THEN weight ELSE 0 END) AS questionAnswerCorrect,'
 					.' total.totalQuestions, time.totalTimeInSec, time.totalTimeInSec/COUNT(q.gamesession_id) AS timePerQuestion,'
 					.' q.user_id, u.username FROM gamemember m'
 					.' LEFT JOIN questionperformance q ON q.gamesession_id = m.gamesession_id AND q.user_id = m.user_id'
 					.' LEFT JOIN user u ON u.id = m.user_id'
 					.' LEFT JOIN ('
-						.' SELECT @rank := 0, gamesession.id, SUM(weight) AS totalQuestions '
+						.' SELECT @rank := 0, gamesession.id, gamesession.quiz_id, SUM(weight) AS totalQuestions '
 						.' FROM gamesession, quiztoquestion'
 						.' WHERE gamesession.quiz_id = quiztoquestion.quiz_id AND gamesession.id = ?) AS total'
 					.' ON total.id = m.gamesession_id'
@@ -182,7 +182,7 @@ namespace quizzenger\gamification\model {
 					.' ON time.user_id = m.user_id'
 					.' WHERE m.gamesession_id = ?'
 					.' GROUP BY m.user_id'
-					.' ORDER BY answerCorrect DESC',['i','i','i'],[$game_id,$game_id,$game_id]);
+					.' ORDER BY questionAnswerCorrect DESC',['i','i','i'],[$game_id,$game_id,$game_id]);
 			return $this->mysqli->getQueryResultArray($result);
 			/*
 			 jetzt mit gewichteten punkten

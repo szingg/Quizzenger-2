@@ -30,6 +30,18 @@ javascript:window.history.forward(1);
   		<div <?= ($this->_ ['isMember']?'hidden="true"':'') ?>>
 			<input id="joinGame" class="btn btn-primary btn-lg" role="button" value="Teilnehmen"></input>
 		</div>
+		<?php if($this->_['isOwner']){ ?>
+		<br>
+		<div class="btn-group">
+				<?php $hasStarted = isset($this->_['gameinfo']['has_started']) ?>
+				<div <?php echo ($hasStarted ? 'hidden="true"' : '' ); ?>>
+					<input id="startGame" class="btn btn-primary pull-left" type="button" value="Game starten" />
+				</div>
+				<div <?php echo (! $hasStarted ? 'hidden="true"' : '' ); ?>>
+					<input id="stopGame" class="btn btn-primary pull-left" type="button" value="Game beenden" />
+				</div>
+			</div>
+		<?php } ?>
 
 </div>
 <?php echo $this->_ ['adminView']; ?>
