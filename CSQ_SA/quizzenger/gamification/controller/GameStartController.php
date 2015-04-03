@@ -35,8 +35,6 @@ namespace quizzenger\gamification\controller {
 
 			$this->loadGameStartView();
 
-			$this->loadAdminView();
-
 			$this->setGameSession();
 
 			return $this->view;
@@ -59,23 +57,9 @@ namespace quizzenger\gamification\controller {
 
 		}
 		private function setGameSession(){
-			$_SESSION ['gamequestions'.$this->gameid] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
-			$_SESSION ['gamecounter'.$this->gameid] = 0;
+			$_SESSION ['game'][$this->gameid]['gamequestions'] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
+			$_SESSION ['game'][$this->gameid]['gamecounter'] = 0;
 
-		}
-		private function loadAdminView(){
-			/*$adminView = "";
-			if($this->isGameOwner($this->gameinfo['owner_id'])){*/
-			$adminView = new \View();
-			$adminView->setTemplate ( 'gameadmin' );
-			$adminView->assign('gameinfo', $this->gameinfo);
-			$gameReport = $this->gameModel->getGameReport($this->gameid);
-			$adminView->assign('gamereport', $gameReport);
-			//$adminView->assign('user_id', $_SESSION['user_id']);
-
-			$adminView = $adminView->loadTemplate();
-			//}
-			$this->view->assign ( 'adminView', $adminView );
 		}
 
 		/*

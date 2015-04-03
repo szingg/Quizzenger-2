@@ -12,10 +12,10 @@ namespace quizzenger\gamification\controller {
 		private $view;
 		private $sqlhelper;
 		private $request;
-		
+
 		private $quizModel;
 		private $gameModel;
-		
+
 		private $gameid;
 		private $gamequestions;
 		private $gamecounter;
@@ -27,24 +27,24 @@ namespace quizzenger\gamification\controller {
 			$this->quizModel = new \QuizModel($this->sqlhelper, log::get()); // Backslash means: from global Namespace
 			$this->gameModel = new GameModel($this->sqlhelper);
 			$this->request = array_merge ( $_GET, $_POST );
-			
+
 			$this->checkGameSessionParams();
 			$this->gameid = $this->request ['gameid'];
-			$this->gamequestions = $_SESSION['gamequestions'.$this->gameid];
-			$this->gamecounter = $_SESSION['gamecounter'.$this->gameid];
+			$this->gamequestions = $_SESSION ['game'][$this->gameid]['gamequestions'];
+			$this->gamecounter = $_SESSION ['game'][$this->gameid]['gamecounter'];
 			$this->gameinfo = $this->getGameInfo();
-			
+
 		}
 		public function loadView(){
 			$this->checkPreconditions();
-			
+
 			$this->loadGameEndView();
-			
-			$this->loadAdminView();
-			
+
+			$this->loadReportView();
+
 			return $this->view;
 		}
-		
+
 		private function loadGameEndView(){
 			$this->view->setTemplate ( 'gameend' );
 
@@ -53,23 +53,21 @@ namespace quizzenger\gamification\controller {
 
 			$this->view->assign ( 'score', $score );
 			$this->view->assign ( 'maxScore', $maxScore );
-			
+
 			$this->view->assign ( 'gameinfo', $this->gameinfo );
 
 		}
 
-		private function loadAdminView(){
-			$adminView = "";
-			if($this->isGameOwner($this->gameinfo['owner_id'])){
-				$adminView = new \View();
-				$adminView->setTemplate ( 'gameadmin' );
-				$adminView->assign('gameinfo', $this->gameinfo);
-					
-				$adminView = $adminView->loadTemplate();
-			}
-			$this->view->assign ( 'adminView', $adminView );
+		private function loadReportView(){
+			$reportView = new \View();
+			$reportView->setTemplate ( 'gamereport' );
+			$reportView->assign('gameinfo', $this->gameinfo);
+			$gameReport = $this->gameModel->getGameReport($this->gameid);
+			$reportView->assign('gamereport', $gameReport);
+
+			$this->view->assign ( 'reportView', $reportView->loadTemplate() );
 		}
-		
+
 		/*
 		 * Redirects if at leaste one condition fails
 		 * @Precondition User is logged in
@@ -81,18 +79,23 @@ namespace quizzenger\gamification\controller {
 			checkLogin();
 
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
-				
+
 			//checkConditions
 			if($isMember==false || $this->hasStarted($this->gameinfo['has_started'])==false){
 				redirectToErrorPage('err_not_authorized');
 			}
-		}		
-		private function checkGameSessionParams(){
-			if(! isset($this->request ['gameid'], $_SESSION['gamequestions'.$this->request ['gameid']], $_SESSION['gamecounter'.$this->request ['gameid']])) redirectToErrorPage('err_not_authorized');
 		}
-		
-		
-		
+		private function checkGameSessionParams(){
+			if(! isset($this->request ['gameid'],
+					$_SESSION ['game'][$this->request ['gameid']]['gamequestions'],
+					$_SESSION ['game'][$this->request ['gameid']]['gamecounter'])
+			){
+				redirectToErrorPage('err_not_authorized');
+			}
+		}
+
+
+
 		/*
 		 * Gets the Gameinfo. Redirects to errorpage when no result returned.
 		 */
