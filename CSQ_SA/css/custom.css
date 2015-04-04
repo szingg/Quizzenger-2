@@ -325,7 +325,7 @@ div>a {
 	margin: 0;
 }
 
-.text-black {
+.progress-bar-togo {
 	color: black;
 	float: left;
 	text-align: center;
@@ -338,4 +338,8 @@ div>a {
 
 .progress-bar-white {
 	background-color: white
+}
+
+.display-inline-block {
+	display: inline-block;
 }

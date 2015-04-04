@@ -20,7 +20,10 @@
 <div class="panel panel-default no-margin">
 	<a data-toggle="collapse" data-target="#gameAdmin" href="#gameAdmin">
 		<div class="panel-heading bg-info text-info">
-			<h4 class="panel-title">Game-Report</h4>
+			<div class="text-right">
+				<h4 class="panel-title pull-left">Game-Report</h4>
+				<div class="display-inline-block">uhr</div>
+			</div>
 		</div>
 	</a>
 	<div id="gameAdmin" class="panel-collapse collapse in">

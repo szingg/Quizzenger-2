@@ -81,9 +81,15 @@
 						</div>
 						<div class="modal-body">
 							<?php if( isset($this->_ ['quizzes']) && count($this->_ ['quizzes']) > 0 ){ ?>
-							<input type="text" autofocus="" required="required"
-								placeholder="Game Name" name="gamename" id="gameNameModal"
-								class="form-control" />
+							<div class="form-group">
+								<input type="text" autofocus="" required="required"
+									placeholder="Game Name" name="gamename" id="gameNameModal"
+									class="form-control" />
+							</div>
+							<div class="form-group">
+								<input type="number" required="required" placeholder="Dauer des Games (zwischen <?php echo MIN_GAME_DURATION_MINUTES.'-'.MAX_GAME_DURATION_MINUTES; ?> Minuten)"
+								name="gameduration" id="gameDurationModal" min=<?php echo MIN_GAME_DURATION_MINUTES; ?> max=<?php echo MAX_GAME_DURATION_MINUTES; ?> class="form-control"/>
+							</div>
 							<hr>
 								<h4>Bitte Quiz auswählen</h4>
 								<table class="table" id="tableNewGame">

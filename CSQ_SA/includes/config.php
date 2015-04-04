@@ -28,6 +28,9 @@ define ("RANK_IMAGE_EXTENSION","png");
 //Question Settings
 define ("SINGLECHOICE_ANSWER_COUNT","4");
 define ("SINGLECHOICE_TYPE","SingleChoice");
+//Game Settings
+define ('MIN_GAME_DURATION_MINUTES', '1');
+define ('MAX_GAME_DURATION_MINUTES', '10');
 //Layout Settings
 define ("QUESTION_INPUTFIELD_MAX_LENGTH","320");
 define ("QUESTION_INPUTFIELD_MAX_ROWCOUNT","3");

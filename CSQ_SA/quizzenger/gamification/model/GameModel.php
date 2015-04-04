@@ -20,13 +20,15 @@ namespace quizzenger\gamification\model {
 		/*
 		 * Adds a new game to a given quiz.
 		 * @precondition Please check if current user has permission to generate a game for this quiz.
-		 * @param $quiz_id
+		 * @param $quiz_id Quiz Id
+		 * @param $name Gamename
+		 * @param $duration Gameduration as string in Format HH:MM:SS
 		 * @return Returns new gamesession_id if successful, else null
 		*/
-		public function getNewGameSessionId($quiz_id, $name){
+		public function getNewGameSessionId($quiz_id, $name, $duration){
 			if(isset($quiz_id, $name)){
 				log::info('Getting New Game Session for Quiz-ID :'.$quiz_id);
-				return $this->mysqli->s_insert("INSERT INTO gamesession (name, quiz_id) VALUES (?, ?)",array('s','i'),array($name, $quiz_id));
+				return $this->mysqli->s_insert("INSERT INTO gamesession (name, quiz_id, duration) VALUES (?, ?, ?)",array('s','i','s'),array($name, $quiz_id, $duration));
 			}
 			else{
 				return null;

@@ -26,16 +26,26 @@ namespace quizzenger\gamification\controller {
 
 		public function loadView(){
 			checkLogin();
-			
+
 			$quiz_id = $this->request ['quizid'];
 			$gamename = $this->request ['gamename'];
-			
+			$gameduration = $this->request ['gameduration'];
+			$gameduration < MIN_GAME_DURATION_MINUTES ? $gameduration = MIN_GAME_DURATION_MINUTES : '';
+			$gameduration > MAX_GAME_DURATION_MINUTES ? $gameduration = MAX_GAME_DURATION_MINUTES : '';
+			$hours = (string)((int) ($gameduration / 60));
+			$minutes = (string) ($gameduration % 60);
+			$time = (string)$hours.':'.$minutes.':00';
+			//$time = strtotime("+1 week 2 days 4 hours 2 seconds");
+			$strtotime = strtotime($gameduration.' minutes')-strtotime("now");
+			$mysql_time = date('H:i:s',$gameduration*60);
+			//$time2 = DateTime::createFromFormat( 'H:i:s', $duration);
+
 			$this->checkPermission($quiz_id);
-			$gameid = $this->gameModel->getNewGameSessionId($quiz_id, $gamename);
+			$gameid = $this->gameModel->getNewGameSessionId($quiz_id, $gamename, $time);
 
 			$this->redirect($gameid);
 		}
-		
+
 		/*
 		 * Checks Permission for given quiz id. dies if not permitted
 		 */
