@@ -108,8 +108,8 @@ class AjaxController {
 				break;
 			case 'getGameReport' :
 				$gameid = $this->request['gameid'];
-				$gameReport = $this->gameModel->getGameReport($gameid);
-				$gameinfo = $gameModel->getGameInfoByGameId($game_id)[0];
+				$gameReport = $gameModel->getGameReport($gameid);
+				$gameinfo = $gameModel->getGameInfoByGameId($gameid)[0];
 
 				$now = date("Y-m-d H:i:s");
 				$durationSec = timeToSeconds($gameinfo['duration']);

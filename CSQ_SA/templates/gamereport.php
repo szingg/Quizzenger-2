@@ -4,24 +4,28 @@
 					<span class="col-md-6" >
 						<div class="progress game-report-progress" >
 					{{?it.report.questionAnsweredCorrect > 0}}
-						  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{it.correct}}"
-						  aria-valuemin="0" aria-valuemax="100" style="width:{{it.correct}}%">
+						  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{=it.correct}}"
+						  aria-valuemin="0" aria-valuemax="100" style="width:{{=it.correct}}%">
 							{{=it.report.questionAnsweredCorrect}}
 						  </div>
 					{{?}}
 					{{?it.wrongCount > 0}}
-						  <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{it.wrong}}"
-						  aria-valuemin="0" aria-valuemax="100" style="width:{{it.wrong}}%">
-							{{it.wrongCount}}
+						  <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{=it.wrong}}"
+						  aria-valuemin="0" aria-valuemax="100" style="width:{{=it.wrong}}%">
+							{{=it.wrongCount}}
 						  </div>
 					{{?}}
 					{{?it.togoCount > 0}}
-						  <div class="progress-bar-togo" style="width:{{it.togo}}%">{{it.togoCount}}</div>
+						  <div class="progress-bar-togo" style="width:{{=it.togo}}%">{{=it.togoCount}}</div>
 					{{?}}
 						</div>
 					</span>
-					<span class="col-md-2">{{=it.formatTimePerQuestion}}/Frage</span>
-					<span class="col-md-2">{{=it.formatTotalTimeInSec}}Total</span>
+					<span class="col-md-2">{{?it.formatTimePerQuestion}}
+						{{=it.formatTimePerQuestion}}/Frage
+					{{?}}</span>
+					<span class="col-md-2">{{?it.formatTotalTimeInSec}}
+						{{=it.formatTotalTimeInSec}} Total
+					{{?}}</span>
 				</div>
 </script>
 <script id="dot-gameReportCountdown" type="text/x-dot-template">

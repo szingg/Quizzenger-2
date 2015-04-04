@@ -215,7 +215,7 @@ function Gamification(){
 				processData:false,
 				complete: function(resp){
 					if(resp.responseJSON === undefined || resp.responseJSON.data == undefined) return;
-					var data = data.responseJSON.data;
+					var data = resp.responseJSON.data;
 					/*
 						'gameReport' => $gameReport,
 						'gameInfo' => $gameinfo,
@@ -235,13 +235,13 @@ function Gamification(){
 					else{
 						//redirect to GameEnd view if not already on this view
 						if(! self.contains(document.URL, 'view=GameEnd')){
-							window.location.href = "index.php?view=GameEnd&gameid=" + data.gameinfo.game_id;
+							window.location.href = "index.php?view=GameEnd&gameid=" + data.gameInfo.game_id;
 						}
 					}
 
 					$('#gameReport').html('');
 					//set GameReport
-					$(data).each(function(id, report){
+					$(data.gameReport).each(function(id, report){
 						var isCurrentUser = report.user_id == data.userId;
 
 						var correct = 100/report.totalQuestions * report.questionAnsweredCorrect;
@@ -252,7 +252,6 @@ function Gamification(){
 
 						var formatTimePerQuestion = self.formatSeconds(report.timePerQuestion);
 						var formatTotalTimeInSec = self.formatSeconds(report.totalTimeInSec);
-						formatSeconds($report['timePerQuestion']);
 						self.appendTemplateToContainer("dot-gameReportRow", {
 							'report' : report,
 							'isCurrentUser' : isCurrentUser,
@@ -260,7 +259,9 @@ function Gamification(){
 							'wrongCount' : wrongCount,
 							'wrong' : wrong,
 							'togo' : togo,
-							'togoCount' : togoCount
+							'togoCount' : togoCount,
+							'formatTimePerQuestion' : formatTimePerQuestion,
+							'formatTotalTimeInSec' : formatTotalTimeInSec
 						}, "gameReport");
 					});
 				}
@@ -272,9 +273,9 @@ function Gamification(){
 	* @param sec total seconds
 	*/
 	this.formatSeconds = function(sec){
-		var hours = (int) (sec / 3600);
+		var hours = parseInt(sec / 3600);
 		sec = sec % 3600;
-		var minutes = (int) (sec / 60);
+		var minutes = parseInt(sec / 60);
 		var seconds = sec % 60;
 		return (hours > 0?hours+' Std ':'')+(minutes > 0?minutes+' Min ':'')+(seconds > 0?seconds+' Sek':'');
 	}
