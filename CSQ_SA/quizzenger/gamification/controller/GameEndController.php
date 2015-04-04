@@ -65,6 +65,13 @@ namespace quizzenger\gamification\controller {
 			$gameReport = $this->gameModel->getGameReport($this->gameid);
 			$reportView->assign('gamereport', $gameReport);
 
+			$now = date("Y-m-d H:i:s");
+			$durationSec = timeToSeconds($this->gameinfo['duration']);
+			$timeToEnd = strtotime($this->gameinfo['gameend']) - strtotime($now);
+			$progressCountdown = (int) (100 / $durationSec * $timeToEnd);
+			$reportView->assign( 'timeToEnd', $timeToEnd);
+			$reportView->assign( 'progressCountdown', $progressCountdown);
+
 			$this->view->assign ( 'reportView', $reportView->loadTemplate() );
 		}
 
@@ -109,9 +116,6 @@ namespace quizzenger\gamification\controller {
 		}
 		private function hasStarted($has_started){
 			return isset($has_started);
-		}
-		private function isFinished($is_finished){
-			return isset($is_finished);
 		}
 
 	} // class GameController

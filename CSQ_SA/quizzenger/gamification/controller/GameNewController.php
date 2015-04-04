@@ -35,11 +35,13 @@ namespace quizzenger\gamification\controller {
 			$hours = (string)((int) ($gameduration / 60));
 			$minutes = (string) ($gameduration % 60);
 			$time = (string)$hours.':'.$minutes.':00';
+			/*
+			$timetry = ''.((int) ($gameduration / 60)).':'.($gameduration % 60).':00';
 			//$time = strtotime("+1 week 2 days 4 hours 2 seconds");
 			$strtotime = strtotime($gameduration.' minutes')-strtotime("now");
 			$mysql_time = date('H:i:s',$gameduration*60);
 			//$time2 = DateTime::createFromFormat( 'H:i:s', $duration);
-
+*/
 			$this->checkPermission($quiz_id);
 			$gameid = $this->gameModel->getNewGameSessionId($quiz_id, $gamename, $time);
 

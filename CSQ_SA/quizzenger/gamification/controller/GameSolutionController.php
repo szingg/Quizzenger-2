@@ -129,6 +129,13 @@ namespace quizzenger\gamification\controller {
 			$gameReport = $this->gameModel->getGameReport($this->gameid);
 			$reportView->assign('gamereport', $gameReport);
 
+			$now = date("Y-m-d H:i:s");
+			$durationSec = timeToSeconds($this->gameinfo['duration']);
+			$timeToEnd = strtotime($this->gameinfo['gameend']) - strtotime($now);
+			$progressCountdown = (int) (100 / $durationSec * $timeToEnd);
+			$reportView->assign( 'timeToEnd', $timeToEnd);
+			$reportView->assign( 'progressCountdown', $progressCountdown);
+
 			$this->view->assign ( 'reportView', $reportView->loadTemplate() );
 		}
 
@@ -153,14 +160,18 @@ namespace quizzenger\gamification\controller {
 
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
 
-			if($isMember && ( $this->isFinished($this->gameinfo['is_finished']) || $this->gamecounter >= count($this->gamequestions)) ){
+			$now = date("Y-m-d H:i:s");
+			$timeToEnd = strtotime($this->gameinfo['gameend']) - strtotime($now);
+			$finished = $timeToEnd <= 0;
+
+			if($isMember && ( $finished || $this->gamecounter >= count($this->gamequestions)) ){
 				redirect('./index.php?view=GameEnd&gameid='.$this->gameid);
 			}
 
 			//checkConditions
 			if(isset($this->request ['answer'])==false
 					|| $isMember==false
-					|| $this->isFinished($this->gameinfo['is_finished'])
+					|| $finished
 					|| $this->hasStarted($this->gameinfo['has_started'])==false){
 
 				redirectToErrorPage('err_not_authorized');

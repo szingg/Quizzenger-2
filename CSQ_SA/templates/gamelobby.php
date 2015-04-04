@@ -87,7 +87,7 @@
 									class="form-control" />
 							</div>
 							<div class="form-group">
-								<input type="number" required="required" placeholder="Dauer des Games (zwischen <?php echo MIN_GAME_DURATION_MINUTES.'-'.MAX_GAME_DURATION_MINUTES; ?> Minuten)"
+								<input type="number" pattern="[0-9]" required="required" placeholder="Dauer des Games (zwischen <?php echo MIN_GAME_DURATION_MINUTES.'-'.MAX_GAME_DURATION_MINUTES; ?> Minuten)"
 								name="gameduration" id="gameDurationModal" min=<?php echo MIN_GAME_DURATION_MINUTES; ?> max=<?php echo MAX_GAME_DURATION_MINUTES; ?> class="form-control"/>
 							</div>
 							<hr>

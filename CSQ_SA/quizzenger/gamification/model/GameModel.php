@@ -26,7 +26,7 @@ namespace quizzenger\gamification\model {
 		 * @return Returns new gamesession_id if successful, else null
 		*/
 		public function getNewGameSessionId($quiz_id, $name, $duration){
-			if(isset($quiz_id, $name)){
+			if(isset($quiz_id, $name, $duration)){
 				log::info('Getting New Game Session for Quiz-ID :'.$quiz_id);
 				return $this->mysqli->s_insert("INSERT INTO gamesession (name, quiz_id, duration) VALUES (?, ?, ?)",array('s','i','s'),array($name, $quiz_id, $duration));
 			}
@@ -98,9 +98,10 @@ namespace quizzenger\gamification\model {
 		 * Gets game info. For more information about the columns consult the query
 		 */
 		public function getGameInfoByGameId($game_id){
-			$result = $this->mysqli->s_query("SELECT g.id as game_id, g.name as gamename, created_on, has_started, is_finished, quiz_id, ".
-					"user_id as owner_id, q.name as quizname, created as quiz_created_on FROM gamesession g, quiz q ".
-					"WHERE g.id = ? AND g.quiz_id = q.id",['i'],[$game_id]);
+			$result = $this->mysqli->s_query("SELECT g.id as game_id, g.name as gamename, created_on, "
+					." has_started, is_finished, duration, ADDTIME(has_started, duration) as gameend, quiz_id, "
+					."user_id as owner_id, q.name as quizname, created as quiz_created_on FROM gamesession g, quiz q "
+					."WHERE g.id = ? AND g.quiz_id = q.id",['i'],[$game_id]);
 			return $this->mysqli->getQueryResultArray($result);
 		}
 
@@ -165,7 +166,7 @@ namespace quizzenger\gamification\model {
 		 */
 		public function getGameReport($game_id){
 			$result = $this->mysqli->s_query('SELECT @rank:=@rank+1 AS rank, SUM(weight) AS questionAnswered,'
-					.' SUM(CASE WHEN questionCorrect = 100 THEN weight ELSE 0 END) AS questionAnswerCorrect,'
+					.' SUM(CASE WHEN questionCorrect = 100 THEN weight ELSE 0 END) AS questionAnsweredCorrect,'
 					.' total.totalQuestions, time.totalTimeInSec, time.totalTimeInSec/COUNT(q.gamesession_id) AS timePerQuestion,'
 					.' q.user_id, u.username FROM gamemember m'
 					.' LEFT JOIN questionperformance q ON q.gamesession_id = m.gamesession_id AND q.user_id = m.user_id'
@@ -177,14 +178,14 @@ namespace quizzenger\gamification\model {
 					.' ON total.id = m.gamesession_id'
 					.' LEFT JOIN quiztoquestion qq ON qq.quiz_id = total.quiz_id AND qq.question_id = q.question_id'
 					.' LEFT JOIN ('
-						.' SELECT user_id, MAX(timestamp)-g.has_started AS totalTimeInSec'
+						.' SELECT user_id, TIMESTAMPDIFF(SECOND,g.has_started,MAX(timestamp)) AS totalTimeInSec'
 						.' FROM questionperformance q, gamesession g'
 						.' WHERE q.gamesession_id = g.id AND q.gamesession_id = ?'
 						.' GROUP BY q.user_id) AS time'
 					.' ON time.user_id = m.user_id'
 					.' WHERE m.gamesession_id = ?'
 					.' GROUP BY m.user_id'
-					.' ORDER BY questionAnswerCorrect DESC',['i','i','i'],[$game_id,$game_id,$game_id]);
+					.' ORDER BY questionAnsweredCorrect DESC',['i','i','i'],[$game_id,$game_id,$game_id]);
 			return $this->mysqli->getQueryResultArray($result);
 			/*
 			 jetzt mit gewichteten punkten
