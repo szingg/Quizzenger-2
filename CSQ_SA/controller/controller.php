@@ -56,8 +56,8 @@ class Controller {
 			case 'default' :
 				include("controllers/".$this->template.".php");
 				break;
-			case 'GameNew' : case 'GameStart' : case 'GameEnd' : 
-			case 'GameQuestion' : case 'GameSolution' :
+			case 'GameNew' : case 'GameStart' : case 'GameEnd' :
+			case 'GameQuestion' : case 'GameSolution' : case 'GameDetail' :
 				$className = '\\quizzenger\\gamification\\controller\\'.$this->template.'Controller';
 				$controller = new $className($viewInner);
 				$viewInner = $controller->loadView();

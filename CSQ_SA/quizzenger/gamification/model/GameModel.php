@@ -136,6 +136,57 @@ namespace quizzenger\gamification\model {
 		}
 
 		/*
+		 * Gets all question details for a game. Columns are questiontext, answeredTotal, answeredCorrect, answeredWrong, weight
+		 */
+		public function getQuestionDetailsByGame($game_id){
+			$result = $this->mysqli->s_query('SELECT q.questiontext, COUNT(qp.question_id) AS answeredTotal, '
+					.' SUM(CASE WHEN questionCorrect = 100 THEN 1 ELSE 0 END) AS answeredCorrect, '
+					.' SUM(CASE WHEN questionCorrect = 0 THEN 1 ELSE 0 END) answeredWrong, weight'
+					.' FROM questionperformance qp '
+					.' RIGHT JOIN ('
+						.' SELECT gamesession.id, weight, question_id'
+						.' FROM gamesession, quiztoquestion'
+						.' WHERE gamesession.quiz_id = quiztoquestion.quiz_id AND gamesession.id = ?) AS qtq'
+					.' ON qtq.question_id = qp.question_id AND qtq.id = qp.gamesession_id'
+					.' JOIN question q ON q.id = qtq.question_id'
+					.' WHERE qtq.id = ?'
+					.' GROUP BY qtq.question_id', ['i','i'], [$game_id, $game_id]);
+			return $this->mysqli->getQueryResultArray($result);
+
+			/*
+			 *
+			 * .' RIGHT JOIN ('
+						.' SELECT gamesession.id, gamesession.quiz_id, SUM(weight) AS totalQuestions '
+						.' FROM gamesession, quiztoquestion'
+						.' WHERE gamesession.quiz_id = quiztoquestion.quiz_id AND gamesession.id = ?) AS total'
+					.' ON total.id = qp.gamesession.id'
+
+
+			 * $result = $this->mysqli->s_query('SELECT @rank:=@rank+1 AS rank, SUM(weight) AS questionAnswered,'
+					.' SUM(CASE WHEN questionCorrect = 100 THEN weight ELSE 0 END) AS questionAnsweredCorrect,'
+					.' total.totalQuestions, time.totalTimeInSec, time.totalTimeInSec/COUNT(q.gamesession_id) AS timePerQuestion,'
+					.' q.user_id, u.username FROM gamemember m'
+					.' LEFT JOIN questionperformance q ON q.gamesession_id = m.gamesession_id AND q.user_id = m.user_id'
+					.' LEFT JOIN user u ON u.id = m.user_id'
+					.' LEFT JOIN ('
+						.' SELECT @rank := 0, gamesession.id, gamesession.quiz_id, SUM(weight) AS totalQuestions '
+						.' FROM gamesession, quiztoquestion'
+						.' WHERE gamesession.quiz_id = quiztoquestion.quiz_id AND gamesession.id = ?) AS total'
+					.' ON total.id = m.gamesession_id'
+					.' LEFT JOIN quiztoquestion qq ON qq.quiz_id = total.quiz_id AND qq.question_id = q.question_id'
+					.' LEFT JOIN ('
+						.' SELECT user_id, TIMESTAMPDIFF(SECOND,g.has_started,MAX(timestamp)) AS totalTimeInSec'
+						.' FROM questionperformance q, gamesession g'
+						.' WHERE q.gamesession_id = g.id AND q.gamesession_id = ?'
+						.' GROUP BY q.user_id) AS time'
+					.' ON time.user_id = m.user_id'
+					.' WHERE m.gamesession_id = ?'
+					.' GROUP BY m.user_id'
+					.' ORDER BY questionAnsweredCorrect DESC',['i','i','i'],[$game_id,$game_id,$game_id]);
+			 */
+		}
+
+		/*
 		 * Gets all open games.
 		 */
 		public function getOpenGames(){

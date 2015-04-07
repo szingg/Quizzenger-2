@@ -123,6 +123,15 @@ $(function(){
 	$('#tableNewGame').DataTable({
 		responsive: true
 	});
+	$('#tableGameDetailReport').DataTable({
+		responsive: true,
+		"autoWidth" : false,
+		"columnDefs" : [
+			{"width" : "50%", "targets" : [2]},
+			{"width" : "15%", "targets" : [1, 3, 4]},
+			{"width" : "5%", "targets" : [0]},
+		],
+	});
 	$('#tableOpenGames').DataTable({
 		responsive: true
 	});
