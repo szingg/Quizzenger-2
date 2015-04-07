@@ -1,8 +1,7 @@
 <?php
 class RegistrationModel {
-
-	var $mysqli;
-	var $logger;
+	private $mysqli;
+	private $logger;
 
 	function __construct($mysqliP, $logP) {
 		$this->mysqli = $mysqliP;

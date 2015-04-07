@@ -1,14 +1,12 @@
 <?php
 class SessionModel {
+	private $mysqli;
+	private $logger;
 
-	var $mysqli;
-	var $logger;
-
-	function __construct($mysqliP,$logP){
+	public function __construct($mysqliP,$logP) {
 		$this->mysqli = $mysqliP;
 		$this->logger = $logP;
 	}
-
 
 	public function processLogin($email,$password) {
 		if (isset ( $GLOBALS ['loggedin'] ) && $GLOBALS ['loggedin']) { // no manual / spoofed / replayed double logins
@@ -51,8 +49,7 @@ class SessionModel {
 		}
 	}
 
-	function login($email, $password, $mysqli) {
-
+	public function login($email, $password, $mysqli) {
 		if ($stmt = $mysqli->prepare ( "SELECT id, username, password, salt, inactive,superuser FROM user WHERE email = ? LIMIT 1" )) {
 			$stmt->bind_param ( 's', $email );
 			$stmt->execute ();
@@ -119,7 +116,7 @@ class SessionModel {
 			}
 		}
 	}
-	function checkbrute($user_id, $mysqli) {
+	public function checkbrute($user_id, $mysqli) {
 		if (!BRUTE_FORCE_CHECK){
 			return false;
 		}
@@ -143,7 +140,7 @@ class SessionModel {
 		}
 	}
 
-	function logout() {
+	public function logout() {
 		//Clean up properly in orde to destroy session for good
 		$_SESSION = array (); // Unset all session values
 
@@ -160,7 +157,7 @@ class SessionModel {
 
 
 	// Because session_start is rather unsecure
-	function sec_session_start() {
+	public function sec_session_start() {
 		$session_name = 'sec_session_id';
 		$secure = SECURE;
 		// This stops JavaScript being able to access the session id, no session hijacking please
@@ -185,8 +182,7 @@ class SessionModel {
 	}
 
 
-	function login_check($mysqli) {
-
+	public function login_check($mysqli) {
 		if (isset ( $_SESSION ['user_id'], $_SESSION ['username'], $_SESSION ['login_string'] )) {
 			$user_id = $_SESSION ['user_id'];
 			$login_string = $_SESSION ['login_string'];
@@ -218,9 +214,7 @@ class SessionModel {
 		}
 	}
 
-
-
-	function esc_url($url) {
+	public function esc_url($url) {
 		if ('' == $url) {
 			return $url;
 		}
