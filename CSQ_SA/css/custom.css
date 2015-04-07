@@ -206,7 +206,7 @@ div>a {
 .point {
 	vertical-align:top;
 	box-shadow: 0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
-	background: #cdcdcd;
+	background: #E0E0E0;
 	position:relative;
 	top:0px;
 }
@@ -224,6 +224,11 @@ div>a {
 	top: 50%;
 	margin-left: -24px;
 	margin-top: -24px;
+	opacity: 0.4;
+}
+
+.point-active img {
+	opacity: 1.0;
 }
 
 .point-rank {
