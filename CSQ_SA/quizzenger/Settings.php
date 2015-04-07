@@ -22,6 +22,11 @@ namespace quizzenger {
 			$this->mysqli = $mysqli;
 		}
 
+		/**
+		 * Gets the value of the specified setting.
+		 * @param string $name Name of the setting.
+		 * @return string Value of the setting.
+		**/
 		public function getSingle($name) {
 			$setting = $this->get([$name]);
 			if(empty($setting))
@@ -30,6 +35,11 @@ namespace quizzenger {
 			return $setting[0]->value;
 		}
 
+		/**
+		 * Gets the values of the specified settings.
+		 * @param array $settings Names of settings to query.
+		 * @return array Returns an array holding names and values.
+		**/
 		public function get(array $settings) {
 			if(empty($settings))
 				return [];
@@ -65,6 +75,12 @@ namespace quizzenger {
 			}
 		}
 
+		/**
+		 * Updates the value of the specified setting.
+		 * @param string $name Name of the setting to update.
+		 * @param string $value New value to be stored.
+		 * @return boolean Returns 'true' on success, 'false' otherwise.
+		**/
 		public function set($name, $value) {
 			$statement = $this->mysqli->prepare('INSERT INTO settings (name, value) VALUES (?, ?)'
 				. ' ON DUPLICATE KEY UPDATE value=VALUES(value)');
