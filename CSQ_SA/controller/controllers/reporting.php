@@ -12,16 +12,28 @@
 
 	$user = $userModel->getUserByID($userId);
 
-	if(!$user['superuser']) {
+	if(!$user['superuser'] && !$reportingModel->isAnyModerator($userId)) {
 		header('Location: ./index.php?view=login&pageBefore=' . $this->template);
 		die();
 	}
 
 	$categoryId = (isset($_GET['category']) ? ((int)$_GET['category']) : 0);
-	$userList = $reportingModel->getUserList($categoryId);
 	$questionList = $reportingModel->getQuestionList();
 	$authorList = $reportingModel->getAuthorList();
-	$categoryList = $reportingModel->getCategoryList();
+	$categoryList = $reportingModel->getCategoryList($userId, $user['superuser']);
+
+	// Check whether the user is allowed to view that category.
+	$allowed = false;
+	while($current = $categoryList->fetch_object()) {
+		if($current->id == $categoryId) {
+			$allowed = true;
+			break;
+		}
+	}
+	$categoryId = ($allowed ? $categoryId : '0');
+	$categoryList->data_seek(0);
+
+	$userList = $reportingModel->getUserList($categoryId);
 
 	$systemStatus = new \stdClass();
 	$systemStatus->attachment_usage = $reportingModel->getAttachmentMemoryUsage();
