@@ -6,7 +6,62 @@
 		</a>
 		<div id="collapseTwo" class="panel-collapse collapse">
 			<div class="panel-body">
-			bla
+				<table class="table" id="tableQuestionPerformances" data-link="row" >
+					<thead>
+						<tr>
+							<th>
+								Rang
+							</th>
+							<th>
+								Username
+							</th>
+							<th>
+								Antworten
+							</th>
+							<th>
+								Zeit / Frage
+							</th>
+							<th>
+								Zeit Total
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php  foreach($this->_['gamereport'] as $report){ ?>
+						<tr>
+							<td><?php echo $report['rank']; ?></td>
+							<td><?php echo $report['username']; ?></td>
+							<td>
+								<div class="progress game-report-progress" >
+									<?php $correct = 100/$report['totalQuestions']*$report['questionAnsweredCorrect'];
+										if($report['questionAnsweredCorrect']>0){ ?>
+						 			 <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $correct; ?>"
+						  				aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $correct; ?>%">
+						    				<?php echo $report['questionAnsweredCorrect']; ?>
+						  			</div>
+						  			<?php }
+								  		$wrongCount = $report['questionAnswered']-$report['questionAnsweredCorrect'];
+								  		$wrong = 100/$report['totalQuestions']*($wrongCount);
+						  				if($wrongCount>0){
+						  			?>
+									  <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="<?php echo $wrong; ?>"
+									  aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $wrong; ?>%">
+									    <?php echo $wrongCount; ?>
+									  </div>
+						  			<?php }
+						  				$goto = 100/$report['totalQuestions']*($report['totalQuestions']-$report['questionAnswered']);
+										$gotoCount = $report['totalQuestions']-$report['questionAnswered'];
+										if($gotoCount>0){
+									?>
+						  			<div class="progress-bar-togo" style="width:<?php echo $goto; ?>%"><?php echo $gotoCount; ?></div>
+						  			<?php } ?>
+								</div>
+							</td>
+							<td><?php echo formatSeconds($report['timePerQuestion']); ?></td>
+							<td><?php echo formatSeconds($report['totalTimeInSec']); ?></td>
+						</tr>
+					<?php } ?>
+					</tbody>
 			</div>
 		</div>
 </div>
@@ -45,9 +100,6 @@
 							</th>
 							<th>
 								Gewicht
-							</th>
-							<th>
-								L&ouml;schen
 							</th>
 						</tr>
 					</thead>
