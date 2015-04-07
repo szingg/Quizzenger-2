@@ -28,7 +28,7 @@ if(isset($this->_['progress'])){ ?>
 		<?php }  ?>
 	</div>
 	<div class="panel-body">
-		<div id="question-content" data-attachment="<?php 
+		<div id="question-content" data-attachment="<?php
 			$link = "";
 			$question = $this->_ ['question'];
 			switch($question['attachment_local']){
@@ -39,11 +39,11 @@ if(isset($this->_['progress'])){ ?>
 					$paths = array();
 					$paths[] = ATTACHMENT_PATH;
 					$paths[] = $question['id'].'.'.$question['attachment'];
-						
+
 					$link = preg_replace('#/+#','/',join('/', $paths));
 					break;
 			}
-			echo $link 
+			echo $link
 			?>"><?php echo htmlspecialchars($this->_ ['question']['questiontext']); ?>
 		</div>
 		<script>
@@ -80,7 +80,7 @@ if(isset($this->_['progress'])){ ?>
 	</div>
 <?php } ?>
 
-<a href="<?php
+<a style="margin-bottom: 20px;" href="<?php
 	if(isset($this->_ ['nextQuestion'])) {
 		echo($this->_ ['nextQuestion'].'" class="btn btn-primary">Nächste Frage</a>');
 	} else {

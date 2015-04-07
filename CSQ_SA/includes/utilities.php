@@ -28,6 +28,7 @@
 		 * @param $url specify the desired url. Default is './index.php'
 		 */
 		function redirect($url = './index.php'){
+			session_write_close();
 			header('Location: '.$url);
 			die ();
 		}
@@ -51,6 +52,19 @@
 			$sec = $sec % 3600;
 			$minutes = (int) ($sec / 60);
 			$seconds = $sec % 60;
+			return ($hours > 0?$hours.' Std ':'').($minutes > 0?$minutes.' Min ':'').($seconds > 0?$seconds.' Sek':'');
+		}
+
+		/*
+		 * Returns a string like '1 Std 6 Min 5 Sek'
+		 * @param $time mysql time. format like '10:00:43'
+		 */
+		function formatTime($time)
+		{
+			list($hours, $minutes, $seconds) = explode(':', $time);
+			$hours = (int) $hours;
+			$minutes = (int) $minutes;
+			$seconds = (int) $seconds;
 			return ($hours > 0?$hours.' Std ':'').($minutes > 0?$minutes.' Min ':'').($seconds > 0?$seconds.' Sek':'');
 		}
 

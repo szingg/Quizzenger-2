@@ -10,6 +10,7 @@
 			{{?it.members==null}}0 {{?}}
 			{{?it.members!=null}}{{=it.members}} {{?}}Teilnehmer</td>
 			<td class="hidden-xs">{{=it.username}}</td>
+			<td class="hidden-xs">{{=it.duration}}</td>
 			<td class="hidden-xs">
 				<a href="?view=GameStart&gameid={{=it.id}}">
 					<span class="glyphicon glyphicon-ok-sign"></span>
@@ -38,6 +39,7 @@
 								<th class="hidden-xs">
 									Ersteller
 								</th>
+								<th class="hidden-xs">Dauer</th>
 								<th class="hidden-xs">Beitreten</th>
 							</tr>
 						</thead>
@@ -51,6 +53,7 @@
 								</td>
 								<td class="hidden-xs"><?php echo (isset($game['members'])?$game['members']:'0').' Teilnehmer'; ?> </td>
 								<td class="hidden-xs"><?php echo htmlspecialchars($game['username']); ?></td>
+								<td class="hidden-xs"><?php echo htmlspecialchars(formatTime($game['duration'])); ?></td>
 								<td class="hidden-xs">
 									<a href="<?php echo '?view=GameStart&gameid=' . $game['id']; ?>" >
 										<span class="glyphicon glyphicon-ok-sign"></span>

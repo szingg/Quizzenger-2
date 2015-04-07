@@ -172,6 +172,8 @@ function Gamification(){
 					table.rows().remove();
 					var template = '#dot-openGameRow';
 					$(data.responseJSON.data).each(function(id, game){
+						game.duration = self.formatTime(game.duration);
+
 						var tempHtml = (doT.template($(template).text()))(game);
 						table.row.add($(tempHtml));
 						//self.appendTemplateToContainer("dot-openGameRow", game, "tableBodyOpenGames");
@@ -199,6 +201,8 @@ function Gamification(){
 			|| self.contains(document.URL, 'view=GameSolution&gameid='+gameId)
 			|| self.contains(document.URL, 'view=GameEnd&gameid='+gameId))) return;
 
+		self.updateGameReport();
+
 		window.setInterval(function(){
 			self.updateGameReport();
 		}, 1000);
@@ -216,14 +220,6 @@ function Gamification(){
 				complete: function(resp){
 					if(resp.responseJSON === undefined || resp.responseJSON.data == undefined) return;
 					var data = resp.responseJSON.data;
-					/*
-						'gameReport' => $gameReport,
-						'gameInfo' => $gameinfo,
-						'timeToEnd' => $timeToEnd,
-						'userId'
-						'durationSec' => $durationSec,
-						'progressCountdown' => $progressCountdown
-					*/
 					//set Countdown
 					if(data.timeToEnd > 0){
 						var formatTimeToEnd = self.formatSeconds(data.timeToEnd);
@@ -272,11 +268,25 @@ function Gamification(){
 	 * Returns a string like '1 Std 6 Min 5 Sek'
 	* @param sec total seconds
 	*/
+	this.formatTime = function(time){
+		var arr = time.split(':');
+		if(arr.length != 3) return '';
+
+		var hours = parseInt(arr[0]);
+		var minutes = parseInt(arr[1]);
+		var seconds = parseInt(arr[2]);
+		return (hours > 0?hours+' Std ':'')+(minutes > 0?minutes+' Min ':'')+(seconds > 0?seconds+' Sek':'');
+	}
+
+		/*
+	 * Returns a string like '1 Std 6 Min 5 Sek'
+	* @param time mysql time like '23:10:59'
+	*/
 	this.formatSeconds = function(sec){
 		var hours = parseInt(sec / 3600);
 		sec = sec % 3600;
 		var minutes = parseInt(sec / 60);
-		var seconds = sec % 60;
+		var seconds = Math.round((sec % 60) * 100) / 100; //round on 2 decimals
 		return (hours > 0?hours+' Std ':'')+(minutes > 0?minutes+' Min ':'')+(seconds > 0?seconds+' Sek':'');
 	}
 

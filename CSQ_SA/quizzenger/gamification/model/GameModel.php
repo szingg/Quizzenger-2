@@ -109,7 +109,7 @@ namespace quizzenger\gamification\model {
 		 * Gets all open games.
 		 */
 		public function getOpenGames(){
-			$result = $this->mysqli->query('SELECT g.id, g.name, u.username, session.members FROM gamesession g '.
+			$result = $this->mysqli->query('SELECT g.id, g.name, u.username, session.members, g.duration FROM gamesession g '.
 					'JOIN quiz q ON g.quiz_id = q.id '.
 					'JOIN user u ON q.user_id = u.id '.
 					'LEFT JOIN (SELECT gamesession_id, count(user_id) AS members FROM gamemember '.
@@ -188,6 +188,14 @@ namespace quizzenger\gamification\model {
 					.' ORDER BY questionAnsweredCorrect DESC',['i','i','i'],[$game_id,$game_id,$game_id]);
 			return $this->mysqli->getQueryResultArray($result);
 			/*
+			 * jetzt mit totalTime = gameFinished
+			 * TIMESTAMPDIFF(SECOND,g.has_started,(CASE WHEN g.is_finished IS NOT NULL THEN g.is_finished ELSE MAX(timestamp) END)) AS totalTimeInSec
+			 *
+			 * SELECT @rank:=@rank+1 AS rank, SUM(weight) AS questionAnswered, SUM(CASE WHEN questionCorrect = 100 THEN weight ELSE 0 END) AS questionAnsweredCorrect, total.totalQuestions, time.totalTimeInSec, time.totalTimeInSec/COUNT(q.gamesession_id) AS timePerQuestion, q.user_id, u.username FROM gamemember m LEFT JOIN questionperformance q ON q.gamesession_id = m.gamesession_id AND q.user_id = m.user_id LEFT JOIN user u ON u.id = m.user_id LEFT JOIN ( SELECT @rank := 0, gamesession.id, gamesession.quiz_id, SUM(weight) AS totalQuestions  FROM gamesession, quiztoquestion WHERE gamesession.quiz_id = quiztoquestion.quiz_id AND gamesession.id = 37)
+AS total ON total.id = m.gamesession_id LEFT JOIN quiztoquestion qq ON qq.quiz_id = total.quiz_id AND qq.question_id = q.question_id LEFT JOIN ( SELECT user_id, TIMESTAMPDIFF(SECOND,g.has_started,(CASE WHEN g.is_finished IS NOT NULL THEN g.is_finished ELSE MAX(timestamp) END)) AS totalTimeInSec FROM questionperformance q, gamesession g WHERE q.gamesession_id = g.id AND q.gamesession_id = 37
+GROUP BY q.user_id) AS time ON time.user_id = m.user_id WHERE m.gamesession_id = 37 GROUP BY m.user_id  ORDER BY questionAnsweredCorrect DESC
+
+			 ............................
 			 jetzt mit gewichteten punkten
 
 			select SUM(weight) as answered, SUM(CASE WHEN questionCorrect = 100 THEN weight ELSE 0 END) as answerCorrect, total.totalQuestion, time.totalTimeInSec, time.totalTimeInSec/count(q.gamesession_id) as timePerQuestion, m.user_id, u.username from gamemember m

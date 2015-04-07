@@ -59,7 +59,12 @@ namespace quizzenger\gamification\controller {
 		private function setGameSession(){
 			$_SESSION [$this->gameid.'gamequestions'] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
 			$_SESSION [$this->gameid.'gamecounter'] = 0;
+			//$_SESSION ['game'][$this->gameid]['gamequestions'] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
+			//$_SESSION ['game'][$this->gameid]['gamecounter'] = 0;
 			$_SESSION ['game'][$this->gameid]['gamequestions'] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
+			$_SESSION ['game'][$this->gameid]['gamecounter'] = 0;
+			$_SESSION ['game'][0]['gamecounter'] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
+			$_SESSION ['test']['test']['gamequestions'] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
 			$_SESSION ['game'][$this->gameid]['gamecounter'] = 0;
 
 		}
