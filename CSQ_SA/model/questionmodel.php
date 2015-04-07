@@ -1,37 +1,36 @@
 <?php
 
-class QuestionModel{
+class QuestionModel {
+	private $mysqli;
+	private $logger;
 
-	var $mysqli;
-	var $logger;
-	function __construct($mysqliP, $logP) {
+	public function __construct($mysqliP, $logP) {
 		$this->mysqli = $mysqliP;
 		$this->logger = $logP;
 	}
 
-	function getNewestQuestion(){
+	public function getNewestQuestion(){
 		$result = $this->mysqli->s_query("SELECT * FROM question ORDER BY id DESC LIMIT 0,1",array(),array(),true);
 		return $this->mysqli->getSingleResult($result);
 	}
 
-
-	function answerExists($session, $question_id, $user_id){
+	public function answerExists($session, $question_id, $user_id){
 		$result = $this->mysqli->s_query("SELECT COUNT(*) FROM questionperformance WHERE session_id=? AND question_id=? AND user_id=?",array('i','i','i'),array($session,$question_id,$user_id));
 		$result=  $this->mysqli->getSingleResult($result);
 		return $result ["COUNT(*)"];
 	}
-	
+
 	/*
-	 * Checks if an answer for a specific game already exists. 
+	 * Checks if an answer for a specific game already exists.
 	 * @return Returns true if exists, else false
 	 */
-	function gameAnswerExists($gamesession, $question_id, $user_id){
+	public function gameAnswerExists($gamesession, $question_id, $user_id){
 		$result = $this->mysqli->s_query("SELECT COUNT(*) as count FROM questionperformance WHERE gamesession_id=? AND question_id=? AND user_id=?",array('i','i','i'),array($gamesession,$question_id,$user_id));
 		$result = $this->mysqli->getSingleResult($result);
 		return $result["count"]>0;
 	}
 
-	function setWeight($id, $weight){
+	public function setWeight($id, $weight){
 		$this->logger->log ( "Editing Weigth(".$weight.") for QuizToQuestion ID: ".$id, Logger::INFO );
 		return $this->mysqli->s_query("UPDATE quiztoquestion SET weight=? WHERE id=?",array('i','i'),array($weight, $id));
 	}
@@ -41,19 +40,7 @@ class QuestionModel{
 		return $this->mysqli->getSingleResult($result);
 	}
 
-
-
-
-// 	public function getMeanDifficultyByQuestionID($question_id){
-// 		$difficultyResult =$this->mysqli->s_query("SELECT difficulty FROM question WHERE id=? ",array('i'),array($question_id));
-// 		$difficulty = $this->mysqli->getSingleResult($difficultyResult)['difficulty'];
-// 		$difficulty= number_format($rating, 1, ".", "." );
-// 		$difficulty = round($difficulty);
-// 		return $difficulty;
-// 	}
-
-
-	function InsertQuestionPerformance($question_id, $user_id, $questionCorrect, $session = NULL, $gamesession_id = NULL){
+	public function InsertQuestionPerformance($question_id, $user_id, $questionCorrect, $session = NULL, $gamesession_id = NULL){
 		$difficultyResult =$this->mysqli->s_query("SELECT difficulty,difficultycount FROM question WHERE id=? ",array('i'),array($question_id));
 		$difficultyResult = $this->mysqli->getSingleResult($difficultyResult);
 		$difficulty= $difficultyResult['difficulty'];
@@ -66,7 +53,6 @@ class QuestionModel{
 		$this->logger->log ( "Adding new QuestionPerformance for Question ID:".$question_id, Logger::INFO );
 		return $this->mysqli->s_insert("INSERT INTO questionperformance (question_id, user_id, questionCorrect, session_id, gamesession_id) VALUES (?, ?, ?, ?, ?)",array('i','i','i','i','i'),array($question_id, $user_id, $questionCorrect, $session, $gamesession_id));
 	}
-
 
 	private function checkForMissingParametersOpQwA($chosenCategory,$operation,$categoryModel){
 		$missingParam = false;
@@ -98,6 +84,7 @@ class QuestionModel{
 			die ();
 		}
 	}
+
 	public function opQuestionWithAnswers($answerModel,$categoryModel, $tagModel,$operation,$chosenCategory){
 		if (!isset ( $GLOBALS ['loggedin'] ) || !$GLOBALS ['loggedin']) {
 			header ( 'Location: ./index.php?view=login' );
@@ -130,7 +117,7 @@ class QuestionModel{
 					$answerModel->newAnswer($correctnessOfAnswer,$_POST ['opquestion_form_answer'.$i],$_POST['opquestion_form_answerexplanation'.$i], $questionID);
 				}
 			}elseif ($operation=="edit"){
-				$questionID = $_POST['opquestion_form_question_id']; 	
+				$questionID = $_POST['opquestion_form_question_id'];
 				$result=$this->editQuestion($type,$_POST['opquestion_form_questionText'],$_SESSION['user_id'],$_POST['opquestion_form_question_id'], $_POST ['opquestion_form_attachment'],$_POST ['opquestion_form_attachmentLocal']);
 				//moveTempFile
 				if($_POST ['opquestion_form_attachmentLocal'] =='1' && $_POST ['opquestion_form_attachmentTempFileName'] != $_POST ['opquestion_form_attachmentOld']){
@@ -186,22 +173,22 @@ class QuestionModel{
 		$sourceDir = $this->join_paths($targetDir, 'temp');
 		$targetFile = $this->join_paths($targetDir, $newFilename);
 		$sourceFile = realpath($this->join_paths($sourceDir, $oldFilename));
-		//check if sourceFile is in tempDir. This check prevents xss 
+		//check if sourceFile is in tempDir. This check prevents xss
 		if($sourceDir==false || dirname($sourceFile) !== realpath($sourceDir)) return false;
 		return rename($sourceFile, $targetFile);
 	}
-	
+
 	/**
 	 * Removes a specific files in the attachment directory
 	 * @param $file attachment/file to delete
-	 * @return bool Returns true on success or false on failure. 
+	 * @return bool Returns true on success or false on failure.
 	 */
 	private function removeAttachment($file){
 		$path = getcwd();
 		$targetPath = $this->join_paths($path, ATTACHMENT_PATH, $file);
 		return unlink($targetPath);
 	}
-	
+
 	/**
 	 * Removes all files in the temporary attachment directory
 	 * @return no return value
@@ -215,7 +202,7 @@ class QuestionModel{
 
 	/**
 	 * Joins multiple path-fragments to a single path
-	 * @param  Comma-separated list of directory- and file-fragments 
+	 * @param  Comma-separated list of directory- and file-fragments
 	 * @return Returns the joined path
 	*/
 	private function join_paths() {
@@ -265,12 +252,10 @@ class QuestionModel{
 		return ($isAuthor || $isModerator || $isSuperuser);
 	}
 
-
-	function isSuperuser($user_id){
+	public function isSuperuser($user_id){
 		$result = $this->mysqli->s_query("SELECT superuser FROM user WHERE id=?",array('i'),array($user_id));
 		return $this->mysqli->getSingleResult($result)['superuser']  ? true : false;
 	}
-
 
 	public function newQuestionHistory($question_id,$user_id,$action){
 		$this->logger->log ( "Creating new Questionhistory for Question ID: ".$question_id, Logger::INFO );
@@ -315,6 +300,5 @@ class QuestionModel{
 			$this->logger->log ( "Unauthorized try to edit of Question with ID :".$question_id, Logger::WARNING );
 		}
 	}
-
 }
 ?>

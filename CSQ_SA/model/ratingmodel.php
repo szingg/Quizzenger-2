@@ -1,8 +1,9 @@
 <?php
-class RatingModel{
-	var $mysqli;
-	var $logger;
-	function __construct($mysqliP, $logP) {
+class RatingModel {
+	private $mysqli;
+	private $logger;
+
+	public function __construct($mysqliP, $logP) {
 		$this->mysqli = $mysqliP;
 		$this->logger = $logP;
 	}
@@ -19,21 +20,6 @@ class RatingModel{
 		$result = $this->mysqli->s_query("SELECT * FROM rating WHERE question_id=? AND parent IS NOT NULL",array('i'),array($id));
 		return $result;
 	}
-
-// 	Should this ever be used again... now saved in question directly!
-//		public function calculateMeanRatingsByQuesionID($id){
-// 		$rating=0.0;
-// 		$result= $this->mysqli->s_query("SELECT * FROM rating WHERE question_id=? AND stars IS NOT NULL",array('i'),array($id));
-// 		$resultArray = $this->mysqli->getQueryResultArray($result);
-// 		foreach ($resultArray as $ratingValue  ) {
-// 			$rating+=$ratingValue['stars'];
-// 		}
-// 		$rating /= (sizeof($resultArray)!=0)?  sizeof($resultArray) : 1 ;
-// 		$rating = number_format($rating, 1, ",", "." );
-// 		return $rating;
-// 	}
-
-
 
 	public function newRating($question_id,$stars,$comment,$parent){
 

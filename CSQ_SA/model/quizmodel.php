@@ -1,22 +1,22 @@
 <?php
 class QuizModel {
-	var $entries;
-	var $mysqli;
-	var $logger;
-	var $questionCorrectValue;
+	private $entries;
+	private $mysqli;
+	private $logger;
+	private $questionCorrectValue;
 
-	function __construct($mysqliP, $logP) {
+	public function __construct($mysqliP, $logP) {
 		$this->mysqli = $mysqliP;
 		$this->logger = $logP;
 		$this->questionCorrectValue = 100;
 	}
 
-	function getNewSessionId($quiz_id){
+	public function getNewSessionId($quiz_id) {
 		$this->logger->log ( "Getting New Quiz Session for ID :".$quiz_id, Logger::INFO );
 		return $this->mysqli->s_insert("INSERT INTO quizsession (quiz_id) VALUES (?)",array('i'),array($quiz_id));
 	}
 
-	function copyQuiz($user_id, $quiz_id){
+	public function copyQuiz($user_id, $quiz_id) {
 		$this->logger->log ("User with ID ". $user_id ." copies Quiz with ID ". $quiz_id);
 
 		$questions = $this->getQuestionArray($quiz_id);
@@ -29,7 +29,7 @@ class QuizModel {
 		return $newQuizId;
 	}
 
-	function saveGeneratedQuiz($user_id, $questions){
+	public function saveGeneratedQuiz($user_id, $questions) {
 		$this->logger->log ( "User saving generated Quiz", Logger::INFO );
 		$quiz_id=$this->createQuiz("Generiertes Quiz - ".date('Y-m-d H:i:s'), $_SESSION ['user_id']);
 		foreach ($questions as $question){
@@ -38,7 +38,7 @@ class QuizModel {
 		return $quiz_id;
 	}
 
-	function generateQuiz($categoryModel, $limit,$searchMode,$categories_id,$difficultyArr){
+	public function generateQuiz($categoryModel, $limit,$searchMode,$categories_id,$difficultyArr) {
 		if($searchMode=="best"){
 			$orderBy = "ORDER BY rating DESC";
 		}elseif($searchMode=="most"){
@@ -103,7 +103,7 @@ class QuizModel {
 	}
 
 
-	function difficultyLookup($difficulty,$op){
+	public function difficultyLookup($difficulty,$op) {
 		if($difficulty==0){
 			return ($op=="from"?0:25);
 		}elseif($difficulty==1){
@@ -116,35 +116,40 @@ class QuizModel {
 		return null;
 	}
 
-	function getWeightOfQuestionInQuiz($question_id,$quiz_id){
+	public function getWeightOfQuestionInQuiz($question_id,$quiz_id) {
 		$weightRes = $this->mysqli->s_query("SELECT weight FROM quiztoquestion WHERE question_id = ? AND quiz_id=?",array('i','i'),array($question_id,$quiz_id));
 		return $this->mysqli->getSingleResult($weightRes)['weight'];
 	}
-	function removeQuiz($quiz_id){
+
+	public function removeQuiz($quiz_id) {
 		$this->logger->log ( "Removing Quiz with ID :".$quiz_id, Logger::INFO );
 		$result = $this->mysqli->s_query("DELETE FROM quiz WHERE id = ?",array('i'),array($quiz_id));
 		return $this->mysqli->getSingleResult($result);
 	}
-	function getQuizName($quiz_id){
+
+	public function getQuizName($quiz_id) {
 		$result = $this->mysqli->s_query("SELECT name FROM quiz WHERE `id` = ?",array('i'),array($quiz_id));
 		return $this->mysqli->getSingleResult($result)['name'];
 	}
-	function getNumberOfPerformances($quiz_id){
+
+	public function getNumberOfPerformances($quiz_id) {
 		$result = $this->mysqli->s_query("SELECT COUNT( DISTINCT questionperformance.session_id ) FROM questionperformance INNER JOIN quizsession ON questionperformance.session_id=quizsession.id WHERE quizsession.quiz_id =?",array('i'),array($quiz_id));
 		$result=  $this->mysqli->getSingleResult($result);
 		return $result ["COUNT( DISTINCT questionperformance.session_id )"];
 	}
-	function getNumberOfQuestions($quiz_id) {
+
+	public function getNumberOfQuestions($quiz_id) {
 		$result = $this->mysqli->s_query("SELECT COUNT(*) FROM quiztoquestion WHERE `quiz_id` = ?",array('i'),array($quiz_id));
 		$result=  $this->mysqli->getSingleResult($result);
 		return $result ["COUNT(*)"];
 	}
 
-	function getQuizSessions($quiz_id) {
+	public function getQuizSessions($quiz_id) {
 		$result = $this->mysqli->s_query("SELECT questionperformance.session_id, questionperformance.user_id FROM `questionperformance` INNER JOIN quizsession ON questionperformance.session_id=quizsession.id WHERE quizsession.quiz_id =  ? GROUP BY questionperformance.session_id, questionperformance.user_id",array('i'),array($quiz_id));
 		return $this->mysqli->getQueryResultArray ( $result );
 	}
-	function getSingleChoiceScore($session, $quiz_id) {
+
+	public function getSingleChoiceScore($session, $quiz_id) {
 		$correctQuestions = $this->mysqli->s_query("SELECT question_id from questionperformance WHERE `session_id` =  ?  AND `questionCorrect` = ". $this->questionCorrectValue,array('i'),array($session));
 		$score = 0;
 		foreach ( $correctQuestions as $question ) {
@@ -157,7 +162,8 @@ class QuizModel {
 		}
 		return $score;
 	}
-	function getSingleChoiceScoreByGameId($game_id, $quiz_id) {
+
+	public function getSingleChoiceScoreByGameId($game_id, $quiz_id) {
 		$correctQuestions = $this->mysqli->s_query("SELECT question_id from questionperformance WHERE `gamesession_id` =  ?  AND `questionCorrect` = ". $this->questionCorrectValue,array('i'),array($game_id));
 		$score = 0;
 		foreach ( $correctQuestions as $question ) {
@@ -170,33 +176,38 @@ class QuizModel {
 		}
 		return $score;
 	}
-	function getMaxSingleChoiceScore($quiz_id){
+
+	public function getMaxSingleChoiceScore($quiz_id) {
 		$result  = $this->mysqli->s_query("SELECT SUM(weight) AS maxScore FROM quiztoquestion WHERE `quiz_id` = ?",array('i'),array($quiz_id));
 		return $this->mysqli->getSingleResult($result)['maxScore'];
 	}
-	function getQuizStart($session) {
+
+	public function getQuizStart($session) {
 		$result  = $this->mysqli->s_query("SELECT timestamp, id FROM questionperformance WHERE session_id = ?   AND timestamp = (SELECT MIN(timestamp) FROM questionperformance WHERE session_id = ?)",array('i','i'),array($session,$session));
 		return $this->mysqli->getSingleResult ( $result )['timestamp'];
 	}
 
-	function getQuizEnd($session) {
+	public function getQuizEnd($session) {
 		$result  = $this->mysqli->s_query("SELECT timestamp, id FROM questionperformance WHERE session_id = ?   AND timestamp = (SELECT MAX(timestamp) FROM questionperformance WHERE session_id = ?) ",array('i','i'),array($session,$session));
 		return $this->mysqli->getSingleResult ( $result )['timestamp'];
 	}
 
-	function getAnsweredQuestions($quiz_id, $question_id){
+	public function getAnsweredQuestions($quiz_id, $question_id) {
 		$result  = $this->mysqli->s_query("SELECT questionperformance.id, questionperformance.questionCorrect, quizsession.quiz_id FROM questionperformance INNER JOIN quizsession ON questionperformance.session_id=quizsession.id WHERE quizsession.quiz_id = ? AND questionperformance.question_id = ?",array('i','i'),array($quiz_id,$question_id));
 		return $result->num_rows;
 	}
-	function getCorrectAnsweredQuestions($quiz_id, $question_id){
+
+	public function getCorrectAnsweredQuestions($quiz_id, $question_id) {
 		$result  = $this->mysqli->s_query("SELECT questionperformance.id, questionperformance.questionCorrect, quizsession.quiz_id FROM questionperformance INNER JOIN quizsession ON questionperformance.session_id=quizsession.id WHERE quizsession.quiz_id = ? AND questionperformance.question_id = ? AND questionCorrect = ". $this->questionCorrectValue,array('i','i'),array($quiz_id,$question_id));
 		return $result->num_rows;
 	}
-	function removeQuestionFromQuiz($quiz_id, $question_id){
+
+	public function removeQuestionFromQuiz($quiz_id, $question_id) {
 		$this->logger->log ( "Removing quiztoquestion links for Quiz ID:".$quiz_id." and Question ID:".$question_id, Logger::INFO );
 		return $this->mysqli->s_query("DELETE FROM quiztoquestion WHERE quiz_id =  ? AND question_id = ? ",array('i','i'),array($quiz_id,$question_id));
 	}
-	function getQuestionArray($quiz_id){
+
+	public function getQuestionArray($quiz_id) {
 		$result = $this->mysqli->s_query("SELECT id, question_id FROM quiztoquestion WHERE `quiz_id` = ? ",array('i'),array($quiz_id));
 		$questions = $this->mysqli->getQueryResultArray ( $result );
 		$questionArray = array();
@@ -205,7 +216,8 @@ class QuizModel {
 		}
 		return $questionArray;
 	}
-	function getPerformances($quiz_id,$userModel) {
+
+	public function getPerformances($quiz_id,$userModel) {
 		$sessions = $this->getQuizSessions ( $quiz_id );
 		$entries = array ();
 		foreach ( $sessions as $key => $session ) {
@@ -222,10 +234,12 @@ class QuizModel {
 		}
 		return $entries;
 	}
-	function checkIfQuizIDExists($quiz_id){
+
+	public function checkIfQuizIDExists($quiz_id) {
 		$result = $this->mysqli->s_query("SELECT * FROM quiz WHERE `id` = ? ",array('i'),array($quiz_id),true);
 	}
-	function getQuestionsByQuizID($quiz_id) {
+
+	public function getQuestionsByQuizID($quiz_id) {
 		$result = $this->mysqli->s_query("SELECT * FROM quiztoquestion WHERE `quiz_id` = ? ",array('i'),array($quiz_id));
 		$questions = $this->mysqli->getQueryResultArray ( $result );
 
@@ -242,29 +256,28 @@ class QuizModel {
 		return $entries;
 	}
 
-	function getQuestionText($question_id){
+	public function getQuestionText($question_id) {
 		$result = $this->mysqli->s_query("SELECT questiontext FROM question WHERE `id` = ?",array('i'),array($question_id));
 		return $this->mysqli->getSingleResult($result)['questiontext'];
 	}
 
-	function createQuiz($quizname, $user){
+	public function createQuiz($quizname, $user) {
 		$this->logger->log ( "Creating Quiz with name: ".$quizname, Logger::INFO );
 		return $this->mysqli->s_insert("INSERT INTO quiz (name, user_id) VALUES ( ?, ?)",array('s','i'),array($quizname,$user));
 	}
 
-	function setQuizName($quiz_id,$name){
+	public function setQuizName($quiz_id,$name) {
 		$this->logger->log ( "Changing Quiz ID Namem, ".$quiz_id." - ".$name, Logger::INFO );
 		return $this->mysqli->s_query("UPDATE quiz SET name = ? WHERE id= ?",array('s','i'),array($name,$quiz_id));
 	}
 
-
-	function addQuestionToQuiz($quiz_id, $question_id){
+	public function addQuestionToQuiz($quiz_id, $question_id) {
 		$weigth =1;
 		$this->logger->log ( "Adding Question to Quiz, Quiz ID: ".$quiz_id." and Question ID: ".$question_id, Logger::INFO );
 		return $this->mysqli->s_insert("INSERT INTO quiztoquestion (question_id, quiz_id, weight) VALUES ( ?, ?, ?)",array('i','i','i'),array($question_id,$quiz_id,$weigth));
 	}
 
-	public function userIDhasPermissionOnQuizID($quiz_id,$user_id){
+	public function userIDhasPermissionOnQuizID($quiz_id,$user_id) {
 		$result = $this->mysqli->s_query("SELECT EXISTS ( SELECT 1 FROM quiz WHERE id=? AND user_id=?)",array('i','i'),array($quiz_id,$user_id));
 		$result= array_values($this->mysqli->getSingleResult($result));
 		if($result[0]=="1"){
@@ -273,7 +286,5 @@ class QuizModel {
 			return false;
 		}
 	}
-
-
 }
 ?>

@@ -3,8 +3,8 @@ class AjaxController {
 	private $request = null;
 	private $template = '';
 	private $viewOuter = null;
-	var $mysqli;
-	var $logger;
+	private $mysqli;
+	private $logger;
 
 	public function __construct($request,$pLog) {
 		$this->logger = $pLog;
@@ -15,10 +15,8 @@ class AjaxController {
 	}
 
 	public function display() {
-
 		$viewInner = new View ();
 		$viewInner->setTemplate('defaultajax');
-
 
 		$ratingModel = new RatingModel($this->mysqli,$this->logger);
 		$categoryListModel = new CategoryModel($this->mysqli,$this->logger);
@@ -172,7 +170,7 @@ class AjaxController {
 	 * @param $message send an optional message
 	 * @param $data optional data
 	 */
-	private function sendJSONResponse($result, $message, $data){
+	private function sendJSONResponse($result, $message, $data) {
 		header('Content-Type: application/json');
 		echo json_encode(array('result' => $result, 'message' => $message, 'data' => $data));
 	}

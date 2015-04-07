@@ -1,3 +1,6 @@
+<?php
+	use \quizzenger\utilities\FormatUtility as FormatUtility;
+?>
 <?php if(isset($this->_['addedQuestion'])){?>
 	<script>
 		$(document).ready(function() {
@@ -56,7 +59,7 @@
 								if(is_null($question['rating'])){
 									echo("<span style='font-size:0;'>0</span>Keine Bewertung vorhanden");
 								}else{
-									echo(number_format(($question['rating']), 1, ".", "." )." ".createStarsString($question['rating']));
+									echo(FormatUtility::formatNumber(($question['rating']), 1)." ".createStarsString($question['rating']));
 								}
 							?>
 						</td>
