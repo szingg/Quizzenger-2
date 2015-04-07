@@ -295,6 +295,9 @@ div>a {
 	box-shadow: 0 0 3px #888;
 }
 
+.rank.achievement-tooltip:before {
+	margin-left: -28px;
+}
 .rank.achievement-tooltip:after {
 	width: 120px;
 }
