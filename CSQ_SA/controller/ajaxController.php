@@ -1,5 +1,5 @@
 <?php
-class AjaxController {	
+class AjaxController {
 	private $request = null;
 	private $template = '';
 	private $viewOuter = null;
@@ -104,15 +104,34 @@ class AjaxController {
 			case 'stopGame' :
 				$result = $gameModel->stopGame($this->request['gameid']);
 				break;
-			case 'getGameMembers': 
+			case 'getGameReport' :
+				$gameid = $this->request['gameid'];
+				$gameReport = $gameModel->getGameReport($gameid);
+				$gameinfo = $gameModel->getGameInfoByGameId($gameid)[0];
+
+				$now = date("Y-m-d H:i:s");
+				$durationSec = timeToSeconds($gameinfo['duration']);
+				$timeToEnd = strtotime($gameinfo['gameend']) - strtotime($now);
+				$progressCountdown = (int) (100 / $durationSec * $timeToEnd);
+
+				$data = [
+						'gameReport' => $gameReport,
+						'gameInfo' => $gameinfo,
+						'timeToEnd' => $timeToEnd,
+						'durationSec' => $durationSec,
+						'userId' => $_SESSION['user_id'],
+						'progressCountdown' => $progressCountdown
+				];
+				return $this->sendJSONResponse('', '', $data);
+			case 'getGameMembers':
 				$data = $gameModel->getGameMembersByGameId($this->request['gameid']);
 				return $this->sendJSONResponse('', '', $data);
-			case 'getGameStartInfo' : 
+			case 'getGameStartInfo' :
 				$game_id = $this->request['gameid'];
 				$gameinfo = $gameModel->getGameInfoByGameId($game_id)[0];
 				$isMember = $gameModel->isGameMember($_SESSION['user_id'], $game_id);
 				$members = $gameModel->getGameMembersByGameId($game_id);
-				
+
 				$data = [
 						'gameinfo' => $gameinfo,
 						'isMember' => $isMember,
@@ -122,6 +141,19 @@ class AjaxController {
 			case 'getOpenGames' :
 				$data = $gameModel->getOpenGames();
 				return $this->sendJSONResponse('', '', $data);
+			case 'remove_game' :
+				$gameid = $this->request['gameid'];
+				if($gameModel->userIDhasPermissionOnGameId($_SESSION['user_id'], $gameid)){
+					if($gameModel->removeGame($gameid)){
+						return $this->sendJSONResponse('success', '', '');
+					}
+					else{
+						return $this->sendJSONResponse('error', 'failed to remove game id: '.$gameid, '');
+					}
+				}
+				return $this->sendJSONResponse('error', 'no permission on game id: '.$gameid, '');
+
+				break;
 			case 'default' :
 			default :
 				break;
@@ -131,7 +163,7 @@ class AjaxController {
 		$this->viewOuter->assign ( 'content', $viewInner->loadTemplate () );
 		return $this->viewOuter->loadTemplate ();
 	}
-	
+
 	/*
 	 * Sends a json response.
 	 * @param $result e.g. success or error

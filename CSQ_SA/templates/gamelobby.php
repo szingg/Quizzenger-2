@@ -2,14 +2,15 @@
 	<script id="dot-openGameRow" type="text/x-dot-template">
 		<tr>
 			<td>
-				<a href="?view=GameStart&gameid={{=it.id}}">
+				<a href="?view=GameStart&gameid={{=htmlspecialchars(it.id)}}">
 					{{=it.name}}
 				</a>
 			</td>
 			<td class="hidden-xs">
 			{{?it.members==null}}0 {{?}}
-			{{?it.members!=null}}{{=it.members}} {{?}}Teilnehmer</td>
-			<td class="hidden-xs">{{=it.username}}</td>
+			{{?it.members!=null}}{{=htmlspecialchars(it.members)}} {{?}}Teilnehmer</td>
+			<td class="hidden-xs">{{=htmlspecialchars(it.username)}}</td>
+			<td class="hidden-xs">{{=htmlspecialchars(it.duration)}}</td>
 			<td class="hidden-xs">
 				<a href="?view=GameStart&gameid={{=it.id}}">
 					<span class="glyphicon glyphicon-ok-sign"></span>
@@ -38,6 +39,7 @@
 								<th class="hidden-xs">
 									Ersteller
 								</th>
+								<th class="hidden-xs">Dauer</th>
 								<th class="hidden-xs">Beitreten</th>
 							</tr>
 						</thead>
@@ -51,6 +53,7 @@
 								</td>
 								<td class="hidden-xs"><?php echo (isset($game['members'])?$game['members']:'0').' Teilnehmer'; ?> </td>
 								<td class="hidden-xs"><?php echo htmlspecialchars($game['username']); ?></td>
+								<td class="hidden-xs"><?php echo htmlspecialchars(formatTime($game['duration'])); ?></td>
 								<td class="hidden-xs">
 									<a href="<?php echo '?view=GameStart&gameid=' . $game['id']; ?>" >
 										<span class="glyphicon glyphicon-ok-sign"></span>
@@ -81,9 +84,15 @@
 						</div>
 						<div class="modal-body">
 							<?php if( isset($this->_ ['quizzes']) && count($this->_ ['quizzes']) > 0 ){ ?>
-							<input type="text" autofocus="" required="required"
-								placeholder="Game Name" name="gamename" id="gameNameModal"
-								class="form-control" />
+							<div class="form-group">
+								<input type="text" autofocus="" required="required"
+									placeholder="Game Name" name="gamename" id="gameNameModal"
+									class="form-control" />
+							</div>
+							<div class="form-group">
+								<input type="number" pattern="[0-9]" required="required" placeholder="Dauer des Games (zwischen <?php echo MIN_GAME_DURATION_MINUTES.'-'.MAX_GAME_DURATION_MINUTES; ?> Minuten)"
+								name="gameduration" id="gameDurationModal" min=<?php echo MIN_GAME_DURATION_MINUTES; ?> max=<?php echo MAX_GAME_DURATION_MINUTES; ?> class="form-control"/>
+							</div>
 							<hr>
 								<h4>Bitte Quiz auswählen</h4>
 								<table class="table" id="tableNewGame">

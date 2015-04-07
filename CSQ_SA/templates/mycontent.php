@@ -27,7 +27,7 @@
 			<?php include("quizlist.php"); ?>
 		</div>
 		<div role="tabpanel" class="tab-pane" id="mygames">
-			<h4>TODO</h4>
+			<?php echo $this->_['gamelist']; ?>
 		</div>
 	</div>
 </div>

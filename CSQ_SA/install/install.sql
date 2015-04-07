@@ -417,7 +417,7 @@ ALTER TABLE `question`
 --
 ALTER TABLE `questionperformance`
   ADD CONSTRAINT `fk_sessionquestionperformance` FOREIGN KEY (`session_id`) REFERENCES `quizsession` (`id`),
-  ADD CONSTRAINT `fk_gamesessionquestionperformance` FOREIGN KEY (`gamesession_id`) REFERENCES `gamesession` (`id`),
+  ADD CONSTRAINT `fk_gamesessionquestionperformance` FOREIGN KEY (`gamesession_id`) REFERENCES `gamesession` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_questionquestionperformance` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_userquestionperformance` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
