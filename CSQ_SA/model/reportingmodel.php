@@ -23,6 +23,7 @@ class ReportingModel {
 				. ' SUM(userscore.consumer_score) AS consumer_score'
 				. ' FROM user'
 				. ' LEFT JOIN (userscore) ON (user.id=userscore.user_id)'
+				. ' WHERE user.id<>1 AND user.id<>2' // Ignore Superuser and Guest.
 				. ' GROUP BY user.id'
 				. ' ORDER BY user.id ASC',
 				['d'], [$producer_multiplier], false);
