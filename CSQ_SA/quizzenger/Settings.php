@@ -22,6 +22,14 @@ namespace quizzenger {
 			$this->mysqli = $mysqli;
 		}
 
+		public function getSingle($name) {
+			$setting = $this->get([$name]);
+			if(empty($setting))
+				return null;
+
+			return $setting[0]->value;
+		}
+
 		public function get(array $settings) {
 			if(empty($settings))
 				return [];

@@ -1,7 +1,7 @@
 <?php
 
+use \quizzenger\Settings as Settings;
 class ReportingModel {
-
 	private $mysqli;
 	private $logger;
 
@@ -12,9 +12,10 @@ class ReportingModel {
 
 	public function getUserList($categoryId) {
 		if($categoryId == "" || $categoryId == 0) {
+			$producer_multiplier = (new Settings($this->mysqli->database()))->getSingle('q.scoring.producer-multiplier');
+
 			return $this->mysqli->s_query('SELECT user.id, user.username, user.created_on,'
-				. ' (SELECT settings.value FROM settings WHERE settings.name="q.scoring.producer-multiplier" LIMIT 1) as producer_multiplier,'
-				. ' (SELECT rank.name FROM rank WHERE rank.threshold<=(producer_score+consumer_score)*producer_multiplier OR rank.threshold=0'
+				. ' (SELECT rank.name FROM rank WHERE rank.threshold<=(producer_score+consumer_score)*? OR rank.threshold=0'
 				. '     ORDER BY rank.threshold DESC LIMIT 1) AS rank,'
 				. ' (SELECT rank.image FROM rank WHERE rank.name=rank) AS rank_image,'
 				. ' (SELECT rank.threshold FROM rank WHERE rank.name=rank) AS rank_threshold,'
@@ -24,11 +25,10 @@ class ReportingModel {
 				. ' LEFT JOIN (userscore) ON (user.id=userscore.user_id)'
 				. ' GROUP BY user.id'
 				. ' ORDER BY user.id ASC',
-				[], [], false);
+				['d'], [$producer_multiplier], false);
 		}
 		else {
 			return $this->mysqli->s_query('SELECT user.id, user.username, DATE(user.created_on) AS created_on,'
-				. ' (SELECT settings.value FROM settings WHERE settings.name="q.scoring.producer-multiplier" LIMIT 1) as producer_multiplier,'
 				. ' "" AS rank,'
 				. ' "" AS rank_image,'
 				. ' (SELECT rank.threshold FROM rank WHERE rank.name=rank) AS rank_threshold,'
