@@ -143,6 +143,19 @@ class AjaxController {
 			case 'getOpenGames' :
 				$data = $gameModel->getOpenGames();
 				return $this->sendJSONResponse('', '', $data);
+			case 'remove_game' :
+				$gameid = $this->request['gameid'];
+				if($gameModel->userIDhasPermissionOnGameId($_SESSION['user_id'], $gameid)){
+					if($gameModel->removeGame($gameid)){
+						return $this->sendJSONResponse('success', '', '');
+					}
+					else{
+						return $this->sendJSONResponse('error', 'failed to remove game id: '.$gameid, '');
+					}
+				}
+				return $this->sendJSONResponse('error', 'no permission on game id: '.$gameid, '');
+
+				break;
 			case 'default' :
 			default :
 				break;

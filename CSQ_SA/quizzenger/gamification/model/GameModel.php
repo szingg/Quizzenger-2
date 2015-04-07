@@ -36,6 +36,24 @@ namespace quizzenger\gamification\model {
 		}
 
 		/*
+		 * Removes a game
+		 * @precondition Please check if current user has permission to remove this game.
+		 * @param $game_id Game Id
+		 * @return Returns true if successful, else null
+		 */
+		public function removeGame($game_id){
+			if(isset($game_id)){
+				log::info('Removing Game with ID :'.$game_id);
+				$result = $this->mysqli->s_query('DELETE FROM gamesession WHERE id = ?',['i'], [$game_id]); //result of query is always false. But if no error occured it worked.
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+
+
+		/*
 		 * Starts the Game
 		 * Method checks Permission
 		 * @param $game_id
@@ -106,13 +124,25 @@ namespace quizzenger\gamification\model {
 		}
 
 		/*
+		 * Gets all games of a user
+		 */
+		public function getGamesByUser($user_id){
+			$result = $this->mysqli->s_query('SELECT g.id, g.name, session.members, g.has_started, g.duration FROM gamesession g '.
+					'JOIN quiz q ON g.quiz_id = q.id '.
+					'LEFT JOIN (SELECT gamesession_id, COUNT(user_id) AS members FROM gamemember '.
+					'GROUP BY gamesession_id) AS session ON g.id = session.gamesession_id '.
+					'WHERE q.user_id = ?',['i'],[$user_id]);
+			return $this->mysqli->getQueryResultArray($result);
+		}
+
+		/*
 		 * Gets all open games.
 		 */
 		public function getOpenGames(){
 			$result = $this->mysqli->query('SELECT g.id, g.name, u.username, session.members, g.duration FROM gamesession g '.
 					'JOIN quiz q ON g.quiz_id = q.id '.
 					'JOIN user u ON q.user_id = u.id '.
-					'LEFT JOIN (SELECT gamesession_id, count(user_id) AS members FROM gamemember '.
+					'LEFT JOIN (SELECT gamesession_id, COUNT(user_id) AS members FROM gamemember '.
 					'GROUP BY gamesession_id) AS session ON g.id = session.gamesession_id '.
 					'WHERE g.has_started IS NULL');
 			return $this->mysqli->getQueryResultArray($result);
@@ -135,7 +165,7 @@ namespace quizzenger\gamification\model {
 		public function userLeaveGame($user_id, $game_id){
 			if(! isset($user_id, $game_id)) return false;
 			log::info('User leaves game ID:'.$game_id);
-			return $this->mysqli->s_query("DELETE FROM gamemember WHERE gamesession_id=? AND user_id=?",array('i','i'),array($game_id, $user_id));
+			return $this->mysqli->s_query("DELETE FROM gamemember WHERE gamesession_id=? AND user_id=?",['i','i'],[$game_id, $user_id]);
 		}
 
 		/*

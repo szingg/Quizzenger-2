@@ -2,15 +2,15 @@
 	<script id="dot-openGameRow" type="text/x-dot-template">
 		<tr>
 			<td>
-				<a href="?view=GameStart&gameid={{=it.id}}">
+				<a href="?view=GameStart&gameid={{=htmlspecialchars(it.id)}}">
 					{{=it.name}}
 				</a>
 			</td>
 			<td class="hidden-xs">
 			{{?it.members==null}}0 {{?}}
-			{{?it.members!=null}}{{=it.members}} {{?}}Teilnehmer</td>
-			<td class="hidden-xs">{{=it.username}}</td>
-			<td class="hidden-xs">{{=it.duration}}</td>
+			{{?it.members!=null}}{{=htmlspecialchars(it.members)}} {{?}}Teilnehmer</td>
+			<td class="hidden-xs">{{=htmlspecialchars(it.username)}}</td>
+			<td class="hidden-xs">{{=htmlspecialchars(it.duration)}}</td>
 			<td class="hidden-xs">
 				<a href="?view=GameStart&gameid={{=it.id}}">
 					<span class="glyphicon glyphicon-ok-sign"></span>

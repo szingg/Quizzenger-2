@@ -23,6 +23,8 @@ $(function(){
 		var type = element.data('type');
 		var message = 'Sind Sie sicher?';
 		switch(type) {
+			case 'game' :
+				message = 'Wollen Sie dieses Game wirklich löschen?'
 			case 'question':
 				message = 'Wollen Sie diese Frage wirklich löschen?';
 				break;
@@ -50,7 +52,9 @@ $(function(){
 
 		bootbox.confirm( message, function(result) {
 			if(result){
-				if(type == 'question'){
+				if(type = 'game'){
+					deleteGame(id);
+				} else if(type == 'question'){
 					deleteQuestion(id);
 				} else if(type == 'quiz'){
 					deleteQuiz(id);
