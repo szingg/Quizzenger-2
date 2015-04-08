@@ -27,6 +27,6 @@
 				if(! isset($userScore, $hostScore)) return false;
 				else return $userScore > $hostScore;
 			}
-		} // class GameWinAchievement
+		} // class GameDefeatAchievement
 	} // namespace quizzenger\plugins\achievements
 ?>
