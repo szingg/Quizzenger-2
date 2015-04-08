@@ -16,7 +16,7 @@ class Controller {
 		$this->template = ! empty ( $request ['view'] ) ? $request ['view'] : 'default';
 		$this->mysqli = new sqlhelper ( $this->logger );
 
-		EventController::setup($this->mysqli->database());
+		EventController::setup($this->mysqli);
 	}
 
 	public function display() {

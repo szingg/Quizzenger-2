@@ -1,12 +1,13 @@
 <?php
 	namespace quizzenger\plugins\achievements {
-		use \mysqli as mysqli;
+		use \SqlHelper as SqlHelper;
 		use \quizzenger\logging\Log as Log;
 		use \quizzenger\dispatching\UserEvent as UserEvent;
 		use \quizzenger\achievements\IAchievement as IAchievement;
 
 		class InvolvedCategoriesAchievement implements IAchievement {
-			public function grant(mysqli $database, UserEvent $event) {
+			public function grant(SqlHelper $database, UserEvent $event) {
+				$database = $database->database();
 				$userId = $event->user();
 				$categoryCount = $event->get('category-count');
 

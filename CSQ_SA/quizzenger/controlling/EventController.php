@@ -1,7 +1,7 @@
 <?php
 
 namespace quizzenger\controlling {
-	use \mysqli as mysqli;
+	use \SqlHelper as SqlHelper;
 	use \quizzenger\dispatching\UserEvent as UserEvent;
 	use \quizzenger\dispatching\EventDispatcher as EventDispatcher;
 
@@ -16,9 +16,9 @@ namespace quizzenger\controlling {
 
 		/**
 		 * Sets up the controller by passing a database connection.
-		 * @param mysqli $mysqli Represents an active connection to the database.
+		 * @param SqlHelper $mysqli Represents an active connection to the database.
 		**/
-		public static function setup(mysqli $mysqli) {
+		public static function setup(SqlHelper $mysqli) {
 			self::$dispatcher = new EventDispatcher($mysqli);
 		}
 

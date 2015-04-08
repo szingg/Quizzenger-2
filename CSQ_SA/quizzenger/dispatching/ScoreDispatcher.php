@@ -1,7 +1,7 @@
 <?php
 
 namespace quizzenger\dispatching {
-	use \mysqli as mysqli;
+	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
 	use \quizzenger\dispatching\UserEvent as UserEvent;
 
@@ -19,7 +19,7 @@ namespace quizzenger\dispatching {
 		 * Creates the object based on an existing database connection.
 		 * @param mysqli $mysqli Existing database connection.
 		**/
-		public function __construct(mysqli $mysqli) {
+		public function __construct(SqlHelper $mysqli) {
 			$this->mysqli = $mysqli;
 		}
 

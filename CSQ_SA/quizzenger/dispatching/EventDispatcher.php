@@ -1,7 +1,7 @@
 <?php
 
 namespace quizzenger\dispatching {
-	use \mysqli as mysqli;
+	use \SqlHelper as SqlHelper;
 	use \quizzenger\dispatching\UserEvent as UserEvent;
 	use \quizzenger\dispatching\ScoreDispatcher as ScoreDispatcher;
 	use \quizzenger\dispatching\AchievementDispatcher as AchievementDispatcher;
@@ -31,7 +31,7 @@ namespace quizzenger\dispatching {
 		 * Creates the object based on an existing database connection.
 		 * @param Database $mysqli connection to be used for dispatching.
 		**/
-		public function __construct(mysqli $mysqli) {
+		public function __construct(SqlHelper $mysqli) {
 			$this->mysqli = $mysqli;
 			$this->scoreDispatcher = new ScoreDispatcher($this->mysqli);
 			$this->achievementDispatcher = new AchievementDispatcher($this->mysqli);

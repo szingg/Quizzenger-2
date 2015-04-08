@@ -1,6 +1,6 @@
 <?php
 	namespace quizzenger\plugins\achievements {
-		use \mysqli as mysqli;
+		use \SqlHelper as SqlHelper;
 		use \quizzenger\logging\Log as Log;
 		use \quizzenger\dispatching\UserEvent as UserEvent;
 		use \quizzenger\achievements\IAchievement as IAchievement;
@@ -52,7 +52,7 @@
 				return false;
 			}
 
-			public function grant(mysqli $database, UserEvent $event) {
+			public function grant(SqlHelper $database, UserEvent $event) {
 				$dateTime = $event->get('date-time');
 				$matches = self::match($dateTime);
 
