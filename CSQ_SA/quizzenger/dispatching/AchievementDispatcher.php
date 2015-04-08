@@ -1,7 +1,7 @@
 <?php
 
 namespace quizzenger\dispatching {
-	use \mysqli as mysqli;
+	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
 	use \quizzenger\dispatching\UserEvent as UserEvent;
 	use \quizzenger\achievements\IAchievement as IAchievement;
@@ -19,7 +19,7 @@ namespace quizzenger\dispatching {
 		 * Creates the object based on an existing database connection.
 		 * @param mysqli $mysqli Existing database connection.
 		**/
-		public function __construct(mysqli $mysqli) {
+		public function __construct(SqlHelper $mysqli) {
 			$this->mysqli = $mysqli;
 		}
 
@@ -42,7 +42,7 @@ namespace quizzenger\dispatching {
 		**/
 		private function grantAchievement($id, UserEvent $event) {
 			// Grant the specified achievement to the current user.
-			$statement = $this->mysqli->prepare('INSERT INTO `userachievement`'
+			$statement = $this->mysqli->database()->prepare('INSERT INTO `userachievement`'
 				. ' (achievement_id, user_id) VALUES (?, ?);');
 
 			$userId = $event->user();
@@ -62,7 +62,7 @@ namespace quizzenger\dispatching {
 		 * @return boolean Returns 'true' on success, 'false' otherwise.
 		**/
 		public function grantBonusScore($userId, $bonusScore) {
-			$statement = $this->mysqli->prepare('UPDATE `user`'
+			$statement = $this->mysqli->database()->prepare('UPDATE `user`'
 				. ' SET bonus_score=bonus_score+? WHERE id=?;');
 
 			$statement->bind_param('ii', $bonusScore, $userId);
@@ -97,7 +97,7 @@ namespace quizzenger\dispatching {
 		**/
 		public function dispatch(UserEvent $event) {
 			// Select all non-granted achievements triggered by the current event.
-			$statement = $this->mysqli->prepare('SELECT id, type, arguments, bonus_score FROM `achievement`'
+			$statement = $this->mysqli->database()->prepare('SELECT id, type, arguments, bonus_score FROM `achievement`'
 				. ' WHERE achievement.id NOT IN (SELECT userachievement.achievement_id FROM `userachievement` WHERE userachievement.user_id = ?)'
 				. ' AND achievement.id IN (SELECT achievementtrigger.achievement_id FROM `achievementtrigger` WHERE achievementtrigger.name = ?);');
 
