@@ -10,6 +10,16 @@ class ReportingModel {
 		$this->logger = $log;
 	}
 
+	public function isAnyModerator($userId) {
+		$statement = $this->mysqli->s_query('SELECT ? IN (SELECT  user_id FROM moderation) AS moderator',
+			['i'], [$userId], false);
+
+		if($statement->fetch_object()->moderator)
+			return true;
+
+		return false;
+	}
+
 	public function getUserList($categoryId) {
 		if($categoryId == "" || $categoryId == 0) {
 			$producer_multiplier = (new Settings($this->mysqli->database()))->getSingle('q.scoring.producer-multiplier');
@@ -23,6 +33,7 @@ class ReportingModel {
 				. ' SUM(userscore.consumer_score) AS consumer_score'
 				. ' FROM user'
 				. ' LEFT JOIN (userscore) ON (user.id=userscore.user_id)'
+				. ' WHERE user.id NOT IN (0, 1, 2)' // Ignore Superuser and Guest.
 				. ' GROUP BY user.id'
 				. ' ORDER BY user.id ASC',
 				['d'], [$producer_multiplier], false);
@@ -37,6 +48,7 @@ class ReportingModel {
 				. ' FROM user'
 				. ' LEFT JOIN (userscore) ON (user.id=userscore.user_id)'
 				. ' WHERE userscore.category_id=?'
+				. '   AND user.id NOT IN (0, 1, 2)' // Ignore Superuser and Guest.
 				. ' GROUP BY user.id'
 				. ' ORDER BY user.id ASC',
 				['s'], [$categoryId], false);
@@ -70,12 +82,13 @@ class ReportingModel {
 			[], [], false);
 	}
 
-	public function getCategoryList() {
+	public function getCategoryList($userId, $isSuperUser) {
 		return $this->mysqli->s_query('SELECT DISTINCT userscore.category_id AS id, category.name'
 			. ' FROM userscore'
 			. ' JOIN category ON (category.id=userscore.category_id)'
+			. ' WHERE ? OR category.id IN (SELECT moderation.category_id FROM moderation WHERE moderation.user_id=?)'
 			. ' ORDER BY category.name ASC',
-			[], [], false);
+			['i', 'i'], [$isSuperUser, $userId], false);
 	}
 
 	public function getAttachmentMemoryUsage() {

@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `category` (
 CREATE TABLE IF NOT EXISTS `login_attempts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ip` int(10) UNSIGNED DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -258,7 +258,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `inactive` tinyint(1) DEFAULT NULL,
   `superuser` tinyint(1) NOT NULL DEFAULT '0',
-  `bonus_score` int(11);
+  `bonus_score` int(11) DEFAULT 0 NOT NULL;
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
@@ -278,6 +278,7 @@ CREATE TABLE IF NOT EXISTS `userscore` (
   `producer_score` int(11),
   `consumer_score` int(11),
   PRIMARY KEY (`id`),
+  UNIQUE KEY (`user_id`,`category_id`),
   KEY `fk_useruserscore` (`user_id`),
   KEY `fk_categoryuserscore` (`category_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;

@@ -90,7 +90,7 @@
 							<a href="?view=user"><span class="glyphicon glyphicon-user"></span> Mein Profil</a>
 						</li>
 
-						<?php if($this->_['superuser']): ?>
+						<?php if($this->_['superuser'] || $this->_['anymoderator']): ?>
 						<li class="<?= checkActiveTab('reporting'); ?>">
 							<a href="?view=reporting"><span class="glyphicon glyphicon-stats"></span> Reporting</a>
 						</li>
