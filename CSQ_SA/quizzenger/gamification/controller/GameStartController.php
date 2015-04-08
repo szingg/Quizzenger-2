@@ -43,7 +43,7 @@ namespace quizzenger\gamification\controller {
 		private function loadGameStartView(){
 			$this->view->setTemplate ( 'gamestart' );
 
-			$this->checkGameStarted($this->gameinfo['has_started']);
+			$this->checkGameStarted($this->gameinfo['starttime']);
 			$this->view->assign ( 'gameinfo', $this->gameinfo );
 
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);

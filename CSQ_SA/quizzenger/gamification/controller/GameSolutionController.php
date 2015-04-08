@@ -131,7 +131,7 @@ namespace quizzenger\gamification\controller {
 
 			$now = date("Y-m-d H:i:s");
 			$durationSec = timeToSeconds($this->gameinfo['duration']);
-			$timeToEnd = strtotime($this->gameinfo['gameend']) - strtotime($now);
+			$timeToEnd = strtotime($this->gameinfo['calcEndtime']) - strtotime($now);
 			$progressCountdown = (int) (100 / $durationSec * $timeToEnd);
 			$reportView->assign( 'timeToEnd', $timeToEnd);
 			$reportView->assign( 'progressCountdown', $progressCountdown);
@@ -161,8 +161,8 @@ namespace quizzenger\gamification\controller {
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
 
 			$now = date("Y-m-d H:i:s");
-			$timeToEnd = strtotime($this->gameinfo['gameend']) - strtotime($now);
-			$finished = $timeToEnd <= 0;
+			$timeToEnd = strtotime($this->gameinfo['calcEndtime']) - strtotime($now);
+			$finished = $timeToEnd <= 0 || isset($this->gameinfo['endtime']);
 
 			if($isMember && ( $finished || $this->gamecounter >= count($this->gamequestions)) ){
 				redirect('./index.php?view=GameEnd&gameid='.$this->gameid);
@@ -172,7 +172,7 @@ namespace quizzenger\gamification\controller {
 			if(isset($this->request ['answer'])==false
 					|| $isMember==false
 					|| $finished
-					|| $this->hasStarted($this->gameinfo['has_started'])==false){
+					|| $this->hasStarted($this->gameinfo['starttime'])==false){
 
 				redirectToErrorPage('err_not_authorized');
 			}
@@ -193,9 +193,6 @@ namespace quizzenger\gamification\controller {
 		}
 		private function hasStarted($has_started){
 			return isset($has_started);
-		}
-		private function isFinished($is_finished){
-			return isset($is_finished);
 		}
 	} // class GameQuestionController
 } // namespace quizzenger\gamification\controller

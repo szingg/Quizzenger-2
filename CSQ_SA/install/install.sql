@@ -366,8 +366,9 @@ CREATE TABLE IF NOT EXISTS `gamesession` (
   `name` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
   `quiz_id` int(11) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `has_started` timestamp NULL DEFAULT NULL,
-  `is_finished` timestamp NULL DEFAULT NULL,
+  `starttime` timestamp NULL DEFAULT NULL,
+  `endtime` timestamp NULL DEFAULT NULL,
+  `duration` time NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_quizgamesession` (`quiz_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ;

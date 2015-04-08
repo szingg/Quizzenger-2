@@ -72,7 +72,7 @@ namespace quizzenger\gamification\controller {
 			$reportView->assign( 'timeToEnd', $timeToEnd);
 			$reportView->assign( 'progressCountdown', $progressCountdown);
 
-			$this->view->assign ( 'reportView', $reportView->loadTemplate() );
+			$this->view->assign ( 'reportView', $reportView->loadTemplate());
 		}
 
 		/*
@@ -88,7 +88,7 @@ namespace quizzenger\gamification\controller {
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
 
 			//checkConditions
-			if($isMember==false || $this->hasStarted($this->gameinfo['has_started'])==false){
+			if($isMember==false || $this->hasStarted($this->gameinfo['starttime'])==false){
 				redirectToErrorPage('err_not_authorized');
 			}
 		}

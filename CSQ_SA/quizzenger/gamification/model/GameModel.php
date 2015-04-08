@@ -62,7 +62,7 @@ namespace quizzenger\gamification\model {
 		public function startGame($game_id){
 			if(isset($game_id) && $this->userIDhasPermissionOnGameId($_SESSION ['user_id'], $game_id)){
 				log::info('Start Game with ID :'.$game_id);
-				$this->mysqli->s_query("UPDATE gamesession SET has_started=CURRENT_TIMESTAMP WHERE id=?",array('i'),array($game_id));
+				$this->mysqli->s_query("UPDATE gamesession SET starttime = CURRENT_TIMESTAMP WHERE id=?",array('i'),array($game_id));
 			}
 			else{
 				log::warning('Unauthorized try to start game id :'.game_id);
@@ -79,7 +79,7 @@ namespace quizzenger\gamification\model {
 		public function stopGame($game_id){
 			if(isset($game_id) && $this->userIDhasPermissionOnGameId($_SESSION ['user_id'], $game_id)){
 				log::info('Stop Game with ID :'.$game_id);
-				$this->mysqli->s_query("UPDATE gamesession SET is_finished=CURRENT_TIMESTAMP WHERE id=?",array('i'),array($game_id));
+				$this->mysqli->s_query("UPDATE gamesession SET endtime = CURRENT_TIMESTAMP WHERE id=?",array('i'),array($game_id));
 			}
 			else{
 				log::warning('Unauthorized try to stop game id :'.game_id);
@@ -117,7 +117,7 @@ namespace quizzenger\gamification\model {
 		 */
 		public function getGameInfoByGameId($game_id){
 			$result = $this->mysqli->s_query("SELECT g.id as game_id, g.name as gamename, created_on, "
-					." has_started, is_finished, duration, ADDTIME(has_started, duration) as gameend, quiz_id, "
+					." starttime, endtime, duration, ADDTIME(starttime, duration) as calcEndtime, quiz_id, "
 					."user_id as owner_id, q.name as quizname, created as quiz_created_on FROM gamesession g, quiz q "
 					."WHERE g.id = ? AND g.quiz_id = q.id",['i'],[$game_id]);
 			return $this->mysqli->getQueryResultArray($result);
@@ -127,7 +127,7 @@ namespace quizzenger\gamification\model {
 		 * Gets all games of a user
 		 */
 		public function getGamesByUser($user_id){
-			$result = $this->mysqli->s_query('SELECT g.id, g.name, session.members, g.has_started, g.duration FROM gamesession g '.
+			$result = $this->mysqli->s_query('SELECT g.id, g.name, session.members, g.starttime, g.duration FROM gamesession g '.
 					'JOIN quiz q ON g.quiz_id = q.id '.
 					'LEFT JOIN (SELECT gamesession_id, COUNT(user_id) AS members FROM gamemember '.
 					'GROUP BY gamesession_id) AS session ON g.id = session.gamesession_id '.
@@ -195,19 +195,18 @@ namespace quizzenger\gamification\model {
 					'JOIN user u ON q.user_id = u.id '.
 					'LEFT JOIN (SELECT gamesession_id, COUNT(user_id) AS members FROM gamemember '.
 					'GROUP BY gamesession_id) AS session ON g.id = session.gamesession_id '.
-					'WHERE g.has_started IS NULL');
+					'WHERE g.starttime IS NULL');
 			return $this->mysqli->getQueryResultArray($result);
 		}
 
 		/*
 		 * User join a game.
-		 *   //TODO:
-		 * @return Returns 0 if successful else you will be redirected to the error page because entry already exists. Returns null when no input parameters are passed.
+		 * @return Returns 0 if successful. Returns null when no input parameters are passed.
 		 */
 		public function userJoinGame($user_id, $game_id){
 			if(! isset($user_id, $game_id)) return null;
 			log::info('User joins game ID:'.$game_id);
-			return $this->mysqli->s_insert("INSERT INTO gamemember (gamesession_id, user_id) VALUES (?, ?)",array('i','i'),array($game_id, $user_id));
+			return $this->mysqli->s_insert('INSERT IGNORE INTO gamemember (gamesession_id, user_id) VALUES (?, ?)',['i','i'],[$game_id, $user_id]);
 		}
 
 		/*
@@ -220,13 +219,13 @@ namespace quizzenger\gamification\model {
 		}
 
 		/*
-		 * @return Returns true when has started, otherwise false
+		 * @return Returns true when starttime, otherwise false
 		 */
 		public function gameHasStarted($game_id){
-			$result = $this->mysqli->s_query("SELECT has_started FROM gamesession WHERE id=?",['i'],[$game_id]);
+			$result = $this->mysqli->s_query("SELECT starttime FROM gamesession WHERE id=?",['i'],[$game_id]);
 			$resultArray = $this->mysqli->getQueryResultArray($result);
 			if($result->num_rows > 0){
-				return isset($resultArray[0]['has_started']);
+				return isset($resultArray[0]['starttime']);
 			}
 			else return false;
 		}
@@ -259,7 +258,8 @@ namespace quizzenger\gamification\model {
 					.' ON total.id = m.gamesession_id'
 					.' LEFT JOIN quiztoquestion qq ON qq.quiz_id = total.quiz_id AND qq.question_id = q.question_id'
 					.' LEFT JOIN ('
-						.' SELECT user_id, TIMESTAMPDIFF(SECOND,g.has_started,MAX(timestamp)) AS totalTimeInSec'
+						.' SELECT user_id, TIMESTAMPDIFF(SECOND,g.starttime,(CASE WHEN g.endtime IS NOT NULL '
+						.' THEN g.endtime ELSE MAX(timestamp) END)) AS totalTimeInSec'
 						.' FROM questionperformance q, gamesession g'
 						.' WHERE q.gamesession_id = g.id AND q.gamesession_id = ?'
 						.' GROUP BY q.user_id) AS time'
