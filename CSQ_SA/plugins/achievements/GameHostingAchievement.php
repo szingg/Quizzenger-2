@@ -6,22 +6,19 @@
 		use \quizzenger\achievements\IAchievement as IAchievement;
 		use \quizzenger\gamification\model\GameModel as GameModel;
 
-		class GameWinAchievement implements IAchievement {
+		class GameHostingAchievement implements IAchievement {
 
 			public function grant(mysqli $database, UserEvent $event) {
 				//Setup
-				$memberCount = $event->get('member-count');
+				$memberCountCond = $event->get('member-count');
 				$user = $event->user();
 				$sqlhelper = new \sqlhelper ( log::get() );
 				$gameModel = new GameModel($sqlhelper);
 
-				$gamereport = $gameModel->getGameReport($event->get('gameid'));
+				$memberCount = count($gameModel->getGameMembersByGameId($event->get('gameid')) );
 
-				//getWinner
-				$winner = $gamereport[0];
-
-				return $winner['user_id'] == $user && count($gamereport) >= $memberCount;
+				return $memberCount >= $memberCountCond;
 			}
-		} // class GameWinAchievement
+		} // class GameHostingAchievement
 	} // namespace quizzenger\plugins\achievements
 ?>

@@ -21,56 +21,60 @@
 			<producer_score>0</producer_score>
 			<consumer_score>0</consumer_score>
 		</eventtrigger>
+		<eventtrigger name="game-start">
+			<producer_score>0</producer_score>
+			<consumer_score>0</consumer_score>
+		</eventtrigger>
 	</eventtriggers>
 	<achievements>
-		<achievement type="GameWin">
-			<name>Game gewinnen</name>
-			<description>Gewinne ein Game mit 2 Teilnehmern</description>
+		<achievement type="GameWinFastest">
+			<name>Game am schnellsten gewinnen</name>
+			<description>Gewinne ein Game mit 2 Teilnehmern am schnellsten</description>
 			<sort_order>2</sort_order>
-			<image>achievement-game-win-2</image>
+			<image>achievement-game-win-fastest-2</image>
 			<arguments>
 				<argument name="member-count" value="2" />
 			</arguments>
-			<bonus_score>20</bonus_score>
+			<bonus_score>40</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="game-end" />
 			</eventtriggers>
 		</achievement>
-		<achievement type="GameWin">
-			<name>Game gewinnen</name>
-			<description>Gewinne ein Game mit 5 Teilnehmern</description>
+		<achievement type="GameWinFastest">
+			<name>Game am schnellsten gewinnen</name>
+			<description>Gewinne ein Game mit 5 Teilnehmern am schnellsten</description>
 			<sort_order>5</sort_order>
-			<image>achievement-game-win-5</image>
+			<image>achievement-game-win-fastest-5</image>
 			<arguments>
 				<argument name="member-count" value="5" />
 			</arguments>
-			<bonus_score>100</bonus_score>
+			<bonus_score>200</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="game-end" />
 			</eventtriggers>
 		</achievement>
-		<achievement type="GameWin">
-			<name>Game gewinnen</name>
-			<description>Gewinne ein Game mit 10 Teilnehmern</description>
+		<achievement type="GameWinFastest">
+			<name>Game am schnellsten gewinnen</name>
+			<description>Gewinne ein Game mit 10 Teilnehmern am schnellsten</description>
 			<sort_order>10</sort_order>
-			<image>achievement-game-win-10</image>
+			<image>achievement-game-win-fastest-10</image>
 			<arguments>
 				<argument name="member-count" value="10" />
 			</arguments>
-			<bonus_score>250</bonus_score>
+			<bonus_score>500</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="game-end" />
 			</eventtriggers>
 		</achievement>
-		<achievement type="GameWin">
-			<name>Game gewinnen</name>
-			<description>Gewinne ein Game mit 20 Teilnehmern</description>
+		<achievement type="GameWinFastest">
+			<name>Game am schnellsten gewinnen</name>
+			<description>Gewinne ein Game mit 20 Teilnehmern am schnellsten</description>
 			<sort_order>20</sort_order>
-			<image>achievement-game-win-20</image>
+			<image>achievement-game-win-fastest-20</image>
 			<arguments>
 				<argument name="member-count" value="20" />
 			</arguments>
-			<bonus_score>500</bonus_score>
+			<bonus_score>1000</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="game-end" />
 			</eventtriggers>

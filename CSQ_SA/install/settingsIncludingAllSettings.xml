@@ -127,7 +127,7 @@
 			<sort_order>0</sort_order>
 			<image>date-christmas</image>
 			<arguments>
-				<argument name="date-time" value="*-12-24" />
+				<argument name="date-time" value="*-12-24-*-*-*" />
 			</arguments>
 			<bonus_score>1000</bonus_score>
 			<eventtriggers>
@@ -184,6 +184,97 @@
 			<bonus_score>500</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="game-end" />
+			</eventtriggers>
+		</achievement>
+				<achievement type="GameWinFastest">
+			<name>Game am schnellsten gewinnen</name>
+			<description>Gewinne ein Game mit 2 Teilnehmern am schnellsten</description>
+			<sort_order>2</sort_order>
+			<image>achievement-game-win-fastest-2</image>
+			<arguments>
+				<argument name="member-count" value="2" />
+			</arguments>
+			<bonus_score>40</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-end" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameWinFastest">
+			<name>Game am schnellsten gewinnen</name>
+			<description>Gewinne ein Game mit 5 Teilnehmern am schnellsten</description>
+			<sort_order>5</sort_order>
+			<image>achievement-game-win-fastest-5</image>
+			<arguments>
+				<argument name="member-count" value="5" />
+			</arguments>
+			<bonus_score>200</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-end" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameWinFastest">
+			<name>Game am schnellsten gewinnen</name>
+			<description>Gewinne ein Game mit 10 Teilnehmern am schnellsten</description>
+			<sort_order>10</sort_order>
+			<image>achievement-game-win-fastest-10</image>
+			<arguments>
+				<argument name="member-count" value="10" />
+			</arguments>
+			<bonus_score>500</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-end" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameWinFastest">
+			<name>Game am schnellsten gewinnen</name>
+			<description>Gewinne ein Game mit 20 Teilnehmern am schnellsten</description>
+			<sort_order>20</sort_order>
+			<image>achievement-game-win-fastest-20</image>
+			<arguments>
+				<argument name="member-count" value="20" />
+			</arguments>
+			<bonus_score>1000</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-end" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameHosting">
+			<name>Game hosten</name>
+			<description>Ein Game mit mindestens 5 Teilnehmern hosten</description>
+			<sort_order>5</sort_order>
+			<image>achievement-game-hosting-5</image>
+			<arguments>
+				<argument name="member-count" value="5" />
+			</arguments>
+			<bonus_score>50</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-start" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameHosting">
+			<name>Game hosten</name>
+			<description>Ein Game mit mindestens 10 Teilnehmern hosten</description>
+			<sort_order>10</sort_order>
+			<image>achievement-game-hosting-10</image>
+			<arguments>
+				<argument name="member-count" value="10" />
+			</arguments>
+			<bonus_score>200</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-start" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameHosting">
+			<name>Game hosten</name>
+			<description>Ein Game mit mindestens 20 Teilnehmern hosten</description>
+			<sort_order>20</sort_order>
+			<image>achievement-game-hosting-20</image>
+			<arguments>
+				<argument name="member-count" value="20" />
+			</arguments>
+			<bonus_score>500</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-start" />
 			</eventtriggers>
 		</achievement>
 	</achievements>

@@ -8,6 +8,12 @@
 
 		class GameWinAchievement implements IAchievement {
 
+			private function cmp($a, $b)
+			{
+				return ($a['totalTimeInSec'] < $b['totalTimeInSec']) ? -1 : (($a['totalTimeInSec'] > $b['totalTimeInSec']) ? 1 : 0);
+				//return $a->totalTimeInSec < $b->totalTimeInSec;
+			}
+
 			public function grant(mysqli $database, UserEvent $event) {
 				//Setup
 				$memberCount = $event->get('member-count');
@@ -17,10 +23,13 @@
 
 				$gamereport = $gameModel->getGameReport($event->get('gameid'));
 
-				//getWinner
+				//getWinners
 				$winner = $gamereport[0];
 
-				return $winner['user_id'] == $user && count($gamereport) >= $memberCount;
+				usort($gamereport, "cmp");
+				$timeWinner = $gamereport[0];
+
+				return $winner['user_id'] == $user && count($gamereport) >= $memberCount && $timeWinner['user_id'] == $user;
 			}
 		} // class GameWinAchievement
 	} // namespace quizzenger\plugins\achievements

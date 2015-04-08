@@ -242,7 +242,7 @@ namespace quizzenger\gamification\model {
 		}
 
 		/*
-		 * Gets the game report
+		 * Gets the game report sorted by rank.
 		 * @return array with columns questionAnswered, questionAnsweredCorrect, totalQuestions, totalTimeInSec, timePerQuestion, user_id, username
 		 */
 		public function getGameReport($game_id){
