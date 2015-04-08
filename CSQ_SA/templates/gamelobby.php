@@ -64,7 +64,7 @@
 							</tr>
 						</thead>
 						<tbody id="tableBodyOpenGames">
-						<?php foreach ( $this->_ ['openGames'] as $game ) { ?>
+						<?php /* foreach ( $this->_ ['openGames'] as $game ) { ?>
 							<tr>
 								<td>
 									<a href="<?php echo '?view=GameStart&gameid=' . $game['id']; ?>">
@@ -80,7 +80,7 @@
 									</a>
 								</td>
 							</tr>
-						<?php }  ?>
+						<?php } */ ?>
 						</tbody>
 					</table>
 				</div> <!-- panel-body -->
@@ -114,7 +114,7 @@
 							</tr>
 						</thead>
 						<tbody id="tableBodyOpenGames">
-						<?php foreach ( $this->_ ['activeGames'] as $game ) { ?>
+						<?php /* foreach ( $this->_ ['activeGames'] as $game ) { ?>
 							<tr>
 								<td>
 									<a href="<?php echo '?view=GameQuestion&gameid=' . $game['id']; ?>">
@@ -131,7 +131,7 @@
 									</a>
 								</td>
 							</tr>
-						<?php }  ?>
+						<?php } */  ?>
 						</tbody>
 					</table>
 				</div> <!-- panel-body -->

@@ -148,6 +148,7 @@ function Gamification(){
 				clearInterval(gameLobbyTimer);
 			}
 			if(e.currentTarget.hash == "#gameLobby"){
+				self.updateGameLobbyData();
 				//setTimer
 				gameLobbyTimer = window.setInterval(function(){
 					self.updateGameLobbyData();
