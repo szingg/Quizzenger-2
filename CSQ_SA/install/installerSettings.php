@@ -47,7 +47,7 @@ if(isset($_POST['install'])){
 	if($xml['version'] != $version){
 		throwVersionException($version);
 	}
-	if(! isset($xml->eventtriggers, $xml->eventtriggers[0] , $xml->achievements, $xml->achievements, $xml->ranks, $xml->ranks[0])){
+	if(! isset($xml->eventtriggers, $xml->eventtriggers[0])){
 		throwMalformedXMLException();
 	}
 
@@ -68,6 +68,10 @@ if(isset($_POST['install'])){
 	}
 
 	echo("<p style=\"color:green;\">Eventtriggers successfully installed!</p><br>");
+
+	if(! isset($xml->achievements, $xml->achievements[0])){
+		throwMalformedXMLException();
+	}
 
 	foreach ($xml->achievements[0]->achievement as $ach){
 		if(! isset($ach['type'], $ach->name, $ach->description, $ach->sort_order, $ach->image, $ach->arguments, $ach->bonus_score, $ach->eventtriggers)){
@@ -111,6 +115,10 @@ if(isset($_POST['install'])){
 		}
 	}
 	echo("<p style=\"color:green;\">Achievements successfully installed!</p><br>");
+
+	if(! isset($xml->ranks, $xml->ranks[0])){
+		throwMalformedXMLException();
+	}
 
 	foreach ($xml->ranks[0]->rank as $rank){
 		if(! isset($rank['name'], $rank['threshold'],$rank['image'])){

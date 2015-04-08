@@ -30,6 +30,15 @@ namespace quizzenger\logging {
 		}
 
 		/**
+		 * Gets the legacy logger.
+		 **/
+		public static function get() {
+			return self::$legacy;
+		}
+
+
+
+		/**
 		 * Writes an information entry into the log file.
 		 * @param string $message Message to be written.
 		**/

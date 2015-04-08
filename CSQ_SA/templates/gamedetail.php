@@ -1,18 +1,78 @@
-<div class="panel panel-default" id="panel1">
+<h3>Gamedetail für <?php echo $this->_['gameinfo']['gamename']; ?></h3>
+<br>
+
+<div class="panel-group" id="accordion">
+	<div class="panel panel-default" id="panel1">
 		<a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne" class="collapsed">
 			<div class="panel-heading">
 				<h4 class="panel-title">Report</h4>
 			</div>
 		</a>
-		<div id="collapseTwo" class="panel-collapse collapse">
+		<div id="collapseOne" class="panel-collapse collapse in">
 			<div class="panel-body">
-			bla
+				<table class="table" id="tableGameDetailReport" data-link="row" >
+					<thead>
+						<tr>
+							<th>
+								Rang
+							</th>
+							<th>
+								Username
+							</th>
+							<th>
+								Antworten
+							</th>
+							<th>
+								Zeit / Frage
+							</th>
+							<th>
+								Zeit Total
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php  foreach($this->_['gamereport'] as $report){ ?>
+						<tr>
+							<td><?php echo $report['rank']; ?></td>
+							<td><?php echo $report['username']; ?></td>
+							<td>
+								<div class="progress game-report-progress" >
+									<?php $correct = 100/$report['totalQuestions']*$report['questionAnsweredCorrect'];
+										if($report['questionAnsweredCorrect']>0){ ?>
+						 			 <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $correct; ?>"
+						  				aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $correct; ?>%">
+						    				<?php echo $report['questionAnsweredCorrect']; ?>
+						  			</div>
+						  			<?php }
+								  		$wrongCount = $report['questionAnswered']-$report['questionAnsweredCorrect'];
+								  		$wrong = 100/$report['totalQuestions']*($wrongCount);
+						  				if($wrongCount>0){
+						  			?>
+									  <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="<?php echo $wrong; ?>"
+									  aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $wrong; ?>%">
+									    <?php echo $wrongCount; ?>
+									  </div>
+						  			<?php }
+						  				$goto = 100/$report['totalQuestions']*($report['totalQuestions']-$report['questionAnswered']);
+										$gotoCount = $report['totalQuestions']-$report['questionAnswered'];
+										if($gotoCount>0){
+									?>
+						  			<div class="progress-bar-togo" style="width:<?php echo $goto; ?>%"><?php echo $gotoCount; ?></div>
+						  			<?php } ?>
+								</div>
+							</td>
+							<td><?php echo formatSeconds($report['timePerQuestion']); ?></td>
+							<td><?php echo formatSeconds($report['totalTimeInSec']); ?></td>
+						</tr>
+					<?php } ?>
+					</tbody>
+				</table>
 			</div>
 		</div>
-</div>
+	</div>
 
 
-<div class="panel panel-default" id="panel2">
+	<div class="panel panel-default" id="panel2">
 		<a data-toggle="collapse" data-target="#collapseTwo" href="#collapseTwo" class="collapsed">
 			<div class="panel-heading">
 				<h4 class="panel-title">Fragen</h4>
@@ -46,9 +106,6 @@
 							<th>
 								Gewicht
 							</th>
-							<th>
-								L&ouml;schen
-							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -57,50 +114,32 @@
 							<tr>
 								<td>
 									<div id="questionTextSpan">
-										<?= $out = strlen($q['question']) > QUESTIONTEXT_CUTOFF_LENGTH ? htmlspecialchars(substr($q['question'],0,QUESTIONTEXT_CUTOFF_LENGTH))." . . ." : htmlspecialchars($q['question']); ?>
-										<?php if(strlen($q['question']) > QUESTIONTEXT_CUTOFF_LENGTH){?>
+										<?= $out = strlen($q['questiontext']) > QUESTIONTEXT_CUTOFF_LENGTH ? htmlspecialchars(substr($q['questiontext'],0,QUESTIONTEXT_CUTOFF_LENGTH))." . . ." : htmlspecialchars($q['questiontext']); ?>
+										<?php if(strlen($q['questiontext']) > QUESTIONTEXT_CUTOFF_LENGTH){?>
 											<span id="questionTextAddition" class="hidden-xs">
-												<?=htmlspecialchars($q['question'])?>
+												<?=htmlspecialchars($q['questiontext'])?>
 											</span>
 										<?php }?>
 									</div>
 								</td>
 								<td>
-									<?=  htmlspecialchars($q['answered']); ?>
+									<?=  htmlspecialchars($q['answeredTotal']); ?>
 								</td>
 								<td>
-									<?=  htmlspecialchars($q['correct']); ?>
+									<?=  htmlspecialchars($q['answeredCorrect']); ?>
 								</td>
 								<td>
-									<?=  htmlspecialchars($q['wrong']); ?>
+									<?=  htmlspecialchars($q['answeredWrong']); ?>
 								</td>
 								<td>
-									<div class="dropdown">
-										<button class="btn btn-default dropdown-toggle" type="button" id="dropdownWeight<?=  $q['id']; ?>" data-toggle="dropdown">
-												<?=  $q['weight']; ?> <span class="caret"></span>
-										</button>
-										<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-										<?php
-											for($i = 1; $i <= DIFFERENT_QUESTION_WEIGHTS; $i ++) { ?>
-												<li role="presentation">
-													<a	onclick="setWeight(<?=  $i; ?>, <?=  $q['id']; ?>)" role="menuitem" tabindex="-1" href="javascript:void()">
-														<?=  $i; ?>
-													</a>
-												</li>
-										<?php } ?>
-										</ul>
-									</div>
-								</td>
-								<td>
-									<a class="remove-row" href="javascript:void()" onclick="deleteQuestionFromQuiz(<?=  $this->_ ['quizinfo']['quizid']; ?>, <?=  $q['question_id']; ?>)">
-										<span class="glyphicon glyphicon-remove"></span>
-									</a>
+									<?= htmlspecialchars($q['weight']); ?>
 								</td>
 							</tr>
 						<?php } ?>
 						</tbody>
 					</table>
-					</div> </div>
 				</div>
 			</div>
 		</div>
+	</div>
+</div>
