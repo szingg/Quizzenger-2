@@ -43,13 +43,14 @@
 	//Game View
 	$viewGame = new View();
 	$viewGame->setTemplate ( 'gamelobby' );
-	$GameModel = new \quizzenger\gamification\model\GameModel($this->mysqli, $quizModel);
+	/*$GameModel = new \quizzenger\gamification\model\GameModel($this->mysqli, $quizModel);
 	$openGames = $GameModel->getOpenGames();
 	$viewGame->assign ( 'openGames', $openGames );
 	$activeGames = $GameModel->getActiveGamesByUser($_SESSION ['user_id']);
 	$viewGame->assign ( 'activeGames', $activeGames ); //if(count($activeGames) > 0)
 	$quizzes = $quizListModel->getUserQuizzesByUserID ( $_SESSION ['user_id'] );
-	$viewGame->assign ( 'quizzes', $quizzes );
+	//$viewGame->assign ( 'quizzes', $quizzes );
+	 */
 
 	$viewInner->assign( 'game_tab' , $viewGame->loadTemplate());
 
