@@ -27,54 +27,14 @@
 		</eventtrigger>
 	</eventtriggers>
 	<achievements>
-		<achievement type="GameWinFastest">
-			<name>Game am schnellsten gewinnen</name>
-			<description>Gewinne ein Game mit 2 Teilnehmern am schnellsten</description>
-			<sort_order>2</sort_order>
-			<image>achievement-game-win-fastest-2</image>
+		<achievement type="GameDefeatHost">
+			<name>Game-Host schlagen</name>
+			<description>Sei besser als der Game-Host</description>
+			<sort_order>0</sort_order>
+			<image>achievement-game-defeat-host</image>
 			<arguments>
-				<argument name="member-count" value="2" />
 			</arguments>
-			<bonus_score>40</bonus_score>
-			<eventtriggers>
-				<eventtrigger name="game-end" />
-			</eventtriggers>
-		</achievement>
-		<achievement type="GameWinFastest">
-			<name>Game am schnellsten gewinnen</name>
-			<description>Gewinne ein Game mit 5 Teilnehmern am schnellsten</description>
-			<sort_order>5</sort_order>
-			<image>achievement-game-win-fastest-5</image>
-			<arguments>
-				<argument name="member-count" value="5" />
-			</arguments>
-			<bonus_score>200</bonus_score>
-			<eventtriggers>
-				<eventtrigger name="game-end" />
-			</eventtriggers>
-		</achievement>
-		<achievement type="GameWinFastest">
-			<name>Game am schnellsten gewinnen</name>
-			<description>Gewinne ein Game mit 10 Teilnehmern am schnellsten</description>
-			<sort_order>10</sort_order>
-			<image>achievement-game-win-fastest-10</image>
-			<arguments>
-				<argument name="member-count" value="10" />
-			</arguments>
-			<bonus_score>500</bonus_score>
-			<eventtriggers>
-				<eventtrigger name="game-end" />
-			</eventtriggers>
-		</achievement>
-		<achievement type="GameWinFastest">
-			<name>Game am schnellsten gewinnen</name>
-			<description>Gewinne ein Game mit 20 Teilnehmern am schnellsten</description>
-			<sort_order>20</sort_order>
-			<image>achievement-game-win-fastest-20</image>
-			<arguments>
-				<argument name="member-count" value="20" />
-			</arguments>
-			<bonus_score>1000</bonus_score>
+			<bonus_score>50</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="game-end" />
 			</eventtriggers>
