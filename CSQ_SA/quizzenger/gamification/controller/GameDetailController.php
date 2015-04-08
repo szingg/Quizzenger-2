@@ -18,7 +18,7 @@ namespace quizzenger\gamification\controller {
 
 		public function __construct($view) {
 			$this->view = $view;
-			$this->sqlhelper = new SqlHelper(log::get());
+			$this->sqlhelper = new SqlHelper(Log::get());
 			$this->gameModel = new GameModel($this->sqlhelper);
 			$this->request = array_merge ( $_GET, $_POST );
 
