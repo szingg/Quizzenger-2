@@ -1,21 +1,20 @@
 <?php
 
-class TagModel{
+class TagModel {
+	private $mysqli;
+	private $logger;
 
-	var $mysqli;
-	var $logger;
 	function __construct($mysqliP, $logP) {
 		$this->mysqli = $mysqliP;
 		$this->logger = $logP;
 	}
 
-
-	public function getAllTagsByQuestionID($questionID){
+	public function getAllTagsByQuestionID($questionID) {
 		$result = $this->mysqli->s_query("SELECT t.tag FROM tagtoquestion ttq LEFT JOIN tag t ON (ttq.tag_id = t.id) WHERE question_id=?",array('i'),array($questionID));
 		return $this->mysqli->getQueryResultArray($result);
 	}
 
-	public function newTag($tag,$questionID){
+	public function newTag($tag,$questionID) {
 		if($tag!=""){
 			$tagAlreadyThere = $this->mysqli->s_query("SELECT * FROM tag WHERE tag=?",array('s'),array($tag));
 			$tagAlreadyThere = $this->mysqli->getSingleResult($tagAlreadyThere);
@@ -30,7 +29,7 @@ class TagModel{
 		}
 	}
 
-	public function removeAllTagsOfQuestionById($questionID){
+	public function removeAllTagsOfQuestionById($questionID) {
 		$this->logger->log ( "Removing all Tags of Question:".$questionID, Logger::INFO );
 		return $this->mysqli->s_insert("DELETE FROM tagtoquestion WHERE question_id=?",array('i'),array($questionID));
 	}

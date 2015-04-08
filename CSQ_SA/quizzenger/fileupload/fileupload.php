@@ -2,13 +2,14 @@
 /*	@author Simon Zingg
  *	This script uploads attachment to the defined path and checks for extensions, size and if already exists.
 */
-class FileUpload{
-	var $files;
-	function __construct($filesParam){
+class FileUpload {
+	private $files;
+
+	public function __construct($filesParam) {
 		$this->files = $filesParam;
 	}
 	
-	public function processFileUpload(){
+	public function processFileUpload() {
 		require_once("/../../includes/config.php");
 		
 		//check file uploaded

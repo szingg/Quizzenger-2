@@ -5,13 +5,30 @@ namespace quizzenger\dispatching {
 	use \quizzenger\logging\Log as Log;
 	use \quizzenger\dispatching\UserEvent as UserEvent;
 
+	/**
+	 * This class accumulates the scores for individual users based on events
+	 * that have been fired. The scores are automatically updated in the Database.
+	**/
 	class ScoreDispatcher {
+		/**
+		 * Holds an instance to the database connection.
+		**/
 		private $mysqli;
 
+		/**
+		 * Creates the object based on an existing database connection.
+		 * @param mysqli $mysqli Existing database connection.
+		**/
 		public function __construct(mysqli $mysqli) {
 			$this->mysqli = $mysqli;
 		}
 
+		/**
+		 * Dispatches the scores of the associated user.
+		 * @param UserEvent $event The event that is to be dispatched.
+		 * @param $producerScore Producer score to be accounted.
+		 * @param $consumerScore Consumer score to be accounted.
+		**/
 		private function dispatchScore(UserEvent $event, $producerScore, $consumerScore) {
 			// TODO: Implement proper dispatching via plugins.
 			// - question-answered-correct
@@ -37,6 +54,10 @@ namespace quizzenger\dispatching {
 				Log::error('Could not update score.');
 		}
 
+		/**
+		 * Dispatches the specified event and initiates score accumulation.
+		 * @param UserEvent $event The event that has been fired and is now to be dispatched.
+		**/
 		public function dispatch(UserEvent $event) {
 			$statement = $this->mysqli->prepare('SELECT producer_score, consumer_score'
 				. ' FROM eventtrigger WHERE name=? LIMIT 1');

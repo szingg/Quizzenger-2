@@ -23,7 +23,6 @@
 	endwhile;
 	$userRankIndex = max(array_keys($activeRanks));
 	$userRank = $activeRanks[$userRankIndex];
-	?>
 ?>
 <div class="panel panel-default">
 	<div class="panel-heading"><strong><?php echo htmlspecialchars($user['username']);?></strong>

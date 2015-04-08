@@ -1,5 +1,6 @@
-
 <?php
+	use \quizzenger\utilities\FormatUtility as FormatUtility;
+
 	$ratings = $this->_ ['ratings'];
 	$comments = $this->_ ['comments'];
 	$meanRating = $this->_ ['meanRating'];
@@ -10,7 +11,7 @@
 	if(empty($ratings)){
 		echo("Es wurden noch keine Kommentare oder Bewertungen abgegeben<br><br>");
 	} else {
-		echo("Durchschnittliche Bewertung: [".number_format(($meanRating), 1, ".", "." )."] ".createStarsString($meanRating)."<br><hr>");
+		echo("Durchschnittliche Bewertung: [".FormatUtility::formatNumber($meanRating, 1)."] ".createStarsString($meanRating)."<br><hr>");
 		?><ul class="list-group"><?php
 		foreach ($ratings as $rating){
 			?>

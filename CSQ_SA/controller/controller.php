@@ -6,8 +6,8 @@ class Controller {
 	private $request = null;
 	private $template = '';
 	private $viewOuter = null;
-	var $mysqli;
-	var $logger;
+	private $mysqli;
+	private $logger;
 
 	public function __construct($request, $pLog) {
 		$this->logger = $pLog;
