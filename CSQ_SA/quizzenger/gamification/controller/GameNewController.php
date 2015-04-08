@@ -19,7 +19,7 @@ namespace quizzenger\gamification\controller {
 			$this->view = $view;
 			$this->sqlhelper = new SqlHelper(log::get());
 			$this->quizModel = new \QuizModel($this->sqlhelper, log::get()); // Backslash means: from global Namespace
-			$this->gameModel = new GameModel($this->sqlhelper, $this->quizModel);
+			$this->gameModel = new GameModel($this->sqlhelper);
 			$this->request = array_merge ( $_GET, $_POST );
 
 		}
