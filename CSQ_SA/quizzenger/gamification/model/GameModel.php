@@ -200,6 +200,20 @@ namespace quizzenger\gamification\model {
 		}
 
 		/*
+		 * Gets all active games by user id
+		 */
+		public function getActiveGamesByUser($user_id){
+			$result = $this->mysqli->s_query('SELECT g.id, g.name, u.username, session.members, g.duration, g.starttime FROM gamesession g '.
+					'JOIN quiz q ON g.quiz_id = q.id '.
+					'JOIN user u ON q.user_id = u.id '.
+					'JOIN gamemember m ON g.id = m.gamesession_id '.
+					'LEFT JOIN (SELECT gamesession_id, COUNT(user_id) AS members FROM gamemember '.
+					'GROUP BY gamesession_id) AS session ON g.id = session.gamesession_id '.
+					'WHERE m.user_id = ? AND g.starttime IS NOT NULL AND g.endtime IS NULL',['i'],[$user_id]);
+			return $this->mysqli->getQueryResultArray($result);
+		}
+
+		/*
 		 * User join a game.
 		 * @return Returns 0 if successful. Returns null when no input parameters are passed.
 		 */

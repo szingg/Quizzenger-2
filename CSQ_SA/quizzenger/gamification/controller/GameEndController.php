@@ -67,7 +67,7 @@ namespace quizzenger\gamification\controller {
 
 			$now = date("Y-m-d H:i:s");
 			$durationSec = timeToSeconds($this->gameinfo['duration']);
-			$timeToEnd = strtotime($this->gameinfo['gameend']) - strtotime($now);
+			$timeToEnd = strtotime($this->gameinfo['calcEndtime']) - strtotime($now);
 			$progressCountdown = (int) (100 / $durationSec * $timeToEnd);
 			$reportView->assign( 'timeToEnd', $timeToEnd);
 			$reportView->assign( 'progressCountdown', $progressCountdown);

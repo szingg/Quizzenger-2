@@ -135,6 +135,9 @@ $(function(){
 	$('#tableOpenGames').DataTable({
 		responsive: true
 	});
+	$('#tableActiveGames').DataTable({
+		responsive: true
+	});
 	$('#tableReportUserList').DataTable({
 		"responsive" : true,
 		"autoWidth" : false,

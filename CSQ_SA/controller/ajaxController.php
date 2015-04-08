@@ -111,7 +111,7 @@ class AjaxController {
 
 				$now = date("Y-m-d H:i:s");
 				$durationSec = timeToSeconds($gameinfo['duration']);
-				$timeToEnd = strtotime($gameinfo['gameend']) - strtotime($now);
+				$timeToEnd = strtotime($gameinfo['calcEndtime']) - strtotime($now);
 				$progressCountdown = (int) (100 / $durationSec * $timeToEnd);
 
 				$data = [
@@ -136,6 +136,14 @@ class AjaxController {
 						'gameinfo' => $gameinfo,
 						'isMember' => $isMember,
 						'members' => $members
+				];
+				return $this->sendJSONResponse('', '', $data);
+			case 'getGameLobbyData' :
+				$openGames = $gameModel->getOpenGames();
+				$activeGames = $gameModel->getActiveGamesByUser($_SESSION['user_id']);
+				$data = [
+						'openGames' => $openGames,
+						'activeGames' => $activeGames
 				];
 				return $this->sendJSONResponse('', '', $data);
 			case 'getOpenGames' :
