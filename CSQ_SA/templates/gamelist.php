@@ -25,7 +25,7 @@
 						</a>
 					</td>
 					<td class="hidden-xs"><?php echo (isset($game['members'])?$game['members']:'0').' Teilnehmer'; ?> </td>
-					<td class="hidden-xs"><?php echo (isset($game['has_started'])?htmlspecialchars($game['has_started']):'Game nicht gestartet'); ?></td>
+					<td class="hidden-xs"><?php echo (isset($game['starttime'])?htmlspecialchars($game['starttime']):'Game nicht gestartet'); ?></td>
 					<td class="hidden-xs"><?php echo htmlspecialchars(formatTime($game['duration'])); ?></td>
 					<td class="hidden-xs">
 						<a class="remove-row" href="javascript:void()" data-qid="<?php echo $game['id']; ?>" data-type="game">
