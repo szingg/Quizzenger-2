@@ -1,10 +1,13 @@
 <?php
+use \quizzenger\controlling\EventController as EventController;
+
 class AjaxController {
 	private $request = null;
 	private $template = '';
 	private $viewOuter = null;
 	private $mysqli;
 	private $logger;
+	private $gameModel;
 
 	public function __construct($request,$pLog) {
 		$this->logger = $pLog;
@@ -12,6 +15,9 @@ class AjaxController {
 		$this->request = $request;
 		$this->template = ! empty ( $request ['view'] ) ? $request ['view'] : 'defaultajax';
 		$this->mysqli = new sqlhelper ($this->logger);
+		$this->gameModel = new \quizzenger\gamification\model\GameModel($this->mysqli);
+
+		EventController::setup($this->mysqli);
 	}
 
 	public function display() {
@@ -26,7 +32,7 @@ class AjaxController {
 		$reportModel = new ReportModel( $this->mysqli, $this->logger );
 		$questionModel = new QuestionModel($this->mysqli, $this->logger);
 		$userModel = new UserModel( $this->mysqli, $this->logger );
-		$gameModel = new \quizzenger\gamification\model\GameModel($this->mysqli, $quizModel);
+		$gameModel = $this->gameModel;
 
 		$sessionModel->sec_session_start();
 
@@ -99,10 +105,12 @@ class AjaxController {
 				$gameModel->userLeaveGame($_SESSION['user_id'], $this->request['gameid']);
 				break;
 			case 'startGame' :
-				$result = $gameModel->startGame($this->request['gameid']);
-				break;
-			case 'stopGame' :
-				$result = $gameModel->stopGame($this->request['gameid']);
+				$oldValue = $gameModel->startGame($this->request['gameid']);
+				if($oldValue == null){ //first time gameend was set
+					EventController::fire('game-start', $_SESSION['user_id'], [
+					'gameid' => $this->request['gameid']
+					]);
+				}
 				break;
 			case 'getGameReport' :
 				$gameid = $this->request['gameid'];
@@ -113,6 +121,10 @@ class AjaxController {
 				$durationSec = timeToSeconds($gameinfo['duration']);
 				$timeToEnd = strtotime($gameinfo['calcEndtime']) - strtotime($now);
 				$progressCountdown = (int) (100 / $durationSec * $timeToEnd);
+
+				if($gameinfo['endtime']==null && $this->isGameFinished($gameReport, $timeToEnd)){
+					$this->setGameend($this->request['gameid']);
+				}
 
 				$data = [
 						'gameReport' => $gameReport,
@@ -141,6 +153,9 @@ class AjaxController {
 			case 'getGameLobbyData' :
 				$openGames = $gameModel->getOpenGames();
 				$activeGames = $gameModel->getActiveGamesByUser($_SESSION['user_id']);
+
+				$this->checkActiveGamesAreFinished($activeGames);
+
 				$data = [
 						'openGames' => $openGames,
 						'activeGames' => $activeGames
@@ -181,6 +196,47 @@ class AjaxController {
 	private function sendJSONResponse($result, $message, $data) {
 		header('Content-Type: application/json');
 		echo json_encode(array('result' => $result, 'message' => $message, 'data' => $data));
+	}
+
+	private function setGameend($gameid){
+		$oldValue = $this->gameModel->setGameend($gameid);
+		if($oldValue == null){ //first time gameend was set
+			EventController::fire('game-end', $_SESSION['user_id'], [
+			'gameid' => $gameid
+			]);
+		}
+	}
+
+	/*
+	 * Checks if game is finished
+	 * @param $gameReport must include columns totalQuestions and questionAnswered
+	 * @param $timeToEnd contains the remaining time until the end of the game. Dimension: Seconds
+	 * @return Returns true if game is finished, else false
+	 */
+	private function isGameFinished($gameReport, $timeToEnd){
+		if($timeToEnd <= 0 ) return true;
+
+		$allFinished = true;
+		foreach($gameReport as $report){
+			if($report['totalQuestions'] != $report['questionAnswered']){
+				$allFinished = false;
+			}
+		}
+		return $allFinished;
+	}
+	/*
+	 * Checks if active games is finished
+	 *
+	 * @param $activeGames must include columns calcEndtime and id
+	 */
+	private function checkActiveGamesAreFinished($activeGames){
+		$now = date("Y-m-d H:i:s");
+		foreach($activeGames as $game){
+			$timeToEnd = strtotime($game['calcEndtime']) - strtotime($now);
+			if($timeToEnd <= 0){
+				$this->setGameend($game['id']);
+			}
+		}
 	}
 }
 ?>

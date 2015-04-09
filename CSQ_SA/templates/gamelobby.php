@@ -87,7 +87,6 @@
 	    	</div> <!-- panel-collapse -->
 	    </div> <!-- panel -->
 
-
 	    <div class="panel panel-default no-margin" id="activeGamesPanel" hidden="true" <?php /* if( count( $this->_ ['activeGames'] ) == 0) { echo 'hidden="true"'; } */ ?>>
 			<a data-toggle="collapse" data-target="#activeGames" href="#activeGames">
 				<div class="panel-heading bg-info text-info">

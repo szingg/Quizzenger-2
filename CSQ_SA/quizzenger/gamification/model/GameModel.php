@@ -55,35 +55,100 @@ namespace quizzenger\gamification\model {
 
 		/*
 		 * Starts the Game
-		 * Method checks Permission
+		 * This method checks if user has permission on this game
+		 * The starttime can only once be set
 		 * @param $game_id
-		 * @return if false return null
+		 * @return Returns old value of starttime on success, else returns false if user is unauthorized
 		 */
 		public function startGame($game_id){
 			if(isset($game_id) && $this->userIDhasPermissionOnGameId($_SESSION ['user_id'], $game_id)){
 				log::info('Start Game with ID :'.$game_id);
-				$this->mysqli->s_query("UPDATE gamesession SET starttime = CURRENT_TIMESTAMP WHERE id=?",array('i'),array($game_id));
+				$oldValue = $this->mysqli->s_query('SELECT starttime FROM gamesession WHERE id = ?',['i'],[$game_id]);
+				$update = $this->mysqli->s_query('UPDATE gamesession SET starttime = '
+						.' CASE WHEN starttime IS NULL THEN CURRENT_TIMESTAMP ELSE starttime END'
+						.' WHERE id = ?',['i'],[$game_id]);
+
+				return $this->mysqli->getSingleResult($oldValue)['starttime'];
 			}
 			else{
-				log::warning('Unauthorized try to start game id :'.game_id);
-				return null;
+				log::warning('Unauthorized try to start game id :'.$game_id);
+				return false;
 			}
+
+/*
+				if ($result) {
+					do {
+						if ($result = $mysqli->store_result()) {
+							$obj = $result->fetch_object();
+							//while ($row = $result->fetch_row()) {
+							//	$bla = $row[0]; //printf("%s\n", $row[0]);
+							//}
+							//$result->free();
+							$x = 1;
+						}
+						if ($mysqli->more_results()) {
+							//printf("-----------------\n");
+						}
+					} while ($mysqli->next_result());
+				} */
+
+				//$result = $this->mysqli->s_query(' UPDATE gamesession SET starttime = CURRENT_TIMESTAMP WHERE id=? ; '
+				//		.' SELECT starttime FROM gamesession; ',['i','i'],[$game_id, $game_id]);
+				/*
+				 *
+				 * $result = $this->mysqli->s_query('SET @oldValue := 0;'
+						.' SELECT @oldValue := starttime FROM gamesession WHERE id=? ;'
+						.' UPDATE gamesession SET starttime = CURRENT_TIMESTAMP WHERE id=? ; '
+						.' SELECT @oldValue AS starttime; ',['i','i'],[$game_id, $game_id]);
+
+
+			funktioniert:
+
+				 * SET @oldValue := 0;
+ SELECT @oldValue := starttime FROM gamesession WHERE id = 88;
+ UPDATE gamesession SET starttime = CURRENT_TIMESTAMP WHERE id = 88;
+ SELECT @oldValue AS starttime;
+
+ stored function - return value ist falsch.
+
+ DELIMITER |
+DROP FUNCTION IF EXISTS setGameend;
+CREATE FUNCTION setGameend(gameid int)
+  RETURNS TIMESTAMP
+  DETERMINISTIC
+BEGIN
+  DECLARE oldValue TIMESTAMP DEFAULT NULL;
+
+	SELECT old.endtime INTO oldValue FROM gamesession old WHERE old.id = gameid
+	UPDATE gamesession g
+	SET g.endtime =
+	 CASE WHEN g.endtime IS NULL THEN CURRENT_TIMESTAMP ELSE 	g.endtime END
+	WHERE  id = gameid;
+
+  RETURN oldValue;
+END | */
 		}
 
 		/*
-		 * Stops the Game
-		 * Method checks Permission
+		 * Sets the endtime of a game
+		 * This method checks if user has permission on this game
+		 * The endtime can only once be set
 		 * @param $game_id
-		 * @return if false return null
+		 * @return Returns old value of endtime on success, else returns false
 		 */
-		public function stopGame($game_id){
+		public function setGameend($game_id){
 			if(isset($game_id) && $this->userIDhasPermissionOnGameId($_SESSION ['user_id'], $game_id)){
 				log::info('Stop Game with ID :'.$game_id);
-				$this->mysqli->s_query("UPDATE gamesession SET endtime = CURRENT_TIMESTAMP WHERE id=?",array('i'),array($game_id));
+				$oldValue = $this->mysqli->s_query('SELECT endtime FROM gamesession WHERE id = ?',['i'],[$game_id]);
+				$update = $this->mysqli->s_query('UPDATE gamesession SET endtime = '
+						.' CASE WHEN endtime IS NULL THEN CURRENT_TIMESTAMP ELSE endtime END'
+						.' WHERE id = ?',['i'],[$game_id]);
+
+				return $this->mysqli->getSingleResult($oldValue)['endtime'];
 			}
 			else{
-				log::warning('Unauthorized try to stop game id :'.game_id);
-				return null;
+				log::warning('Unauthorized try to setGameend id :'.game_id);
+				return false;
 			}
 		}
 
@@ -203,7 +268,8 @@ namespace quizzenger\gamification\model {
 		 * Gets all active games by user id
 		 */
 		public function getActiveGamesByUser($user_id){
-			$result = $this->mysqli->s_query('SELECT g.id, g.name, u.username, session.members, g.duration, g.starttime FROM gamesession g '.
+			$result = $this->mysqli->s_query('SELECT g.id, g.name, u.username, session.members, '.
+					'g.duration, g.starttime, ADDTIME(g.starttime, g.duration) as calcEndtime FROM gamesession g '.
 					'JOIN quiz q ON g.quiz_id = q.id '.
 					'JOIN user u ON q.user_id = u.id '.
 					'JOIN gamemember m ON g.id = m.gamesession_id '.
