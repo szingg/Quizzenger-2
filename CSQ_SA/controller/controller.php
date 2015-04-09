@@ -1,4 +1,5 @@
 <?php
+use \quizzenger\dispatching\MessageQueue as MessageQueue;
 use \quizzenger\controlling\EventController as EventController;
 use \quizzenger\gamification\model\GameModel as GameModel;
 
@@ -16,6 +17,7 @@ class Controller {
 		$this->template = ! empty ( $request ['view'] ) ? $request ['view'] : 'default';
 		$this->mysqli = new sqlhelper ( $this->logger );
 
+		MessageQueue::setup($this->mysqli->database());
 		EventController::setup($this->mysqli);
 	}
 
@@ -69,11 +71,12 @@ class Controller {
 
 		// loads the head, css etc.
 		$this->viewOuter->setTemplate ( 'skeleton' );
+		$this->viewOuter->assign('userid', $_SESSION['user_id']);
 		$this->viewOuter->assign('username', $userModel->getUsernameByID($_SESSION['user_id']));
 		$this->viewOuter->assign('superuser', $userModel->isSuperuser($_SESSION['user_id']));
 		$this->viewOuter->assign('anymoderator', $reportingModel->isAnyModerator($_SESSION['user_id']));
-		$this->viewOuter->assign ( 'csq_footer', 'Die Wissensplattform' );
-		$this->viewOuter->assign ( 'csq_content', $viewInner->loadTemplate () );
+		$this->viewOuter->assign( 'csq_footer', 'Die Wissensplattform');
+		$this->viewOuter->assign( 'csq_content', $viewInner->loadTemplate());
 		// Return the whole page now
 		return $this->viewOuter->loadTemplate ();
 	}
