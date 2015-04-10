@@ -396,10 +396,11 @@ CREATE TABLE IF NOT EXISTS `message` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `type` varchar(32) NOT NULL,
+  `message_name` varchar(128) NOT NULL,
   `arguments` text,
   PRIMARY KEY (`id`),
-  KEY `fk_message_user` (`user_id`)
+  KEY `fk_message_user` (`user_id`),
+  KEY `fk_message_translation` (`message_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -536,6 +537,8 @@ ALTER TABLE `gamemember`
 ALTER TABLE `message`
   ADD CONSTRAINT `fk_message_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+ALTER TABLE `message`
+  ADD CONSTRAINT `fk_message_translation` FOREIGN KEY (`message_name`) `translation` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
