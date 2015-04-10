@@ -398,11 +398,25 @@ CREATE TABLE IF NOT EXISTS `message` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `type` varchar(32) NOT NULL,
   `arguments` text,
-  PRIMARY KEY ('id'),
+  PRIMARY KEY (`id`),
   KEY `fk_message_user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
+
+--
+-- Table structure for table `translation`
+--
+
+CREATE TABLE IF NOT EXISTS `translation` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`name` varchar(128) NOT NULL,
+	`text` text NOT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+- --------------------------------------------------------
 
 --
 -- Constraints for dumped tables
