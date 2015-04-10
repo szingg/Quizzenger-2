@@ -1,5 +1,5 @@
 <?php
-use \quizzenger\dispatching\MessageQueue as MessageQueue;
+use \quizzenger\messages\MessageQueue as MessageQueue;
 use \quizzenger\controlling\EventController as EventController;
 use \quizzenger\gamification\model\GameModel as GameModel;
 

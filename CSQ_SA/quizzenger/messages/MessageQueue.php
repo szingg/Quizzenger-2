@@ -1,6 +1,6 @@
 <?php
 
-namespace quizzenger\dispatching {
+namespace quizzenger\messages {
 	use \stdClass as stdClass;
 	use \mysqli as mysqli;
 	use \quizzenger\logging\Log as Log;
@@ -125,6 +125,6 @@ namespace quizzenger\dispatching {
 			return $combinedMessages;
 		}
 	} // class MessageQueue
-} // namespace quizzenger\dispatching
+} // namespace quizzenger\messages
 
 ?>

@@ -1,5 +1,5 @@
 <?php
-	use \quizzenger\dispatching\MessageQueue as MessageQueue;
+	use \quizzenger\messages\MessageQueue as MessageQueue;
 
 	function checkActiveTab($openedView){
 		$pageBefore = filter_input(INPUT_GET, 'pageBefore', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
