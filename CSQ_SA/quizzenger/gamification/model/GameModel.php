@@ -359,6 +359,32 @@ END | */
 					.' ORDER BY questionAnsweredCorrect DESC, timePerQuestion ASC',['i','i','i'],[$game_id,$game_id,$game_id]);
 			return $this->mysqli->getQueryResultArray($result);
 			/*
+					in der aktuellen Version wurde angepasst: rank korrigiert, user_id, totalTimeInSec, timePerQuestion funktioniert jetzt auch ohne questionperformance
+					alte Version:
+				$result = $this->mysqli->s_query('SELECT @rank:=@rank+1 AS rank, SUM(CASE WHEN weight IS NOT NULL THEN weight ELSE 0 END) AS questionAnswered,'
+					.' SUM(CASE WHEN questionCorrect = 100 THEN weight ELSE 0 END) AS questionAnsweredCorrect,'
+					.' total.totalQuestions, time.totalTimeInSec, time.totalTimeInSec/COUNT(q.gamesession_id) AS timePerQuestion,'
+					.' u.user_id, u.username FROM gamemember m'
+					.' LEFT JOIN questionperformance q ON q.gamesession_id = m.gamesession_id AND q.user_id = m.user_id'
+					.' LEFT JOIN user u ON u.id = m.user_id'
+					.' LEFT JOIN ('
+						.' SELECT @rank := 0, gamesession.id, gamesession.quiz_id, SUM(weight) AS totalQuestions '
+						.' FROM gamesession, quiztoquestion'
+						.' WHERE gamesession.quiz_id = quiztoquestion.quiz_id AND gamesession.id = ?) AS total'
+					.' ON total.id = m.gamesession_id'
+					.' LEFT JOIN quiztoquestion qq ON qq.quiz_id = total.quiz_id AND qq.question_id = q.question_id'
+					.' LEFT JOIN ('
+						.' SELECT user_id, TIMESTAMPDIFF(SECOND,g.starttime,(CASE WHEN g.endtime IS NOT NULL '
+						.' THEN g.endtime ELSE MAX(timestamp) END)) AS totalTimeInSec'
+						.' FROM questionperformance q, gamesession g'
+						.' WHERE q.gamesession_id = g.id AND q.gamesession_id = ?'
+						.' GROUP BY q.user_id) AS time'
+					.' ON time.user_id = m.user_id'
+					.' WHERE m.gamesession_id = ?'
+					.' GROUP BY m.user_id'
+					.' ORDER BY questionAnsweredCorrect DESC',['i','i','i'],[$game_id,$game_id,$game_id]);
+			return $this->mysqli->getQueryResultArray($result);
+
 			 * jetzt mit totalTime = gameFinished
 			 * TIMESTAMPDIFF(SECOND,g.has_started,(CASE WHEN g.is_finished IS NOT NULL THEN g.is_finished ELSE MAX(timestamp) END)) AS totalTimeInSec
 			 *
