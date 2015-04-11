@@ -138,6 +138,8 @@
 						<?php } ?>
 						</tbody>
 					</table>
+					<br>
+					<a class="text-primary" href="?view=quizdetail&quizid=<?php echo $this->_['gameinfo']['quiz_id']; ?>" >zum Quiz...</a>
 				</div>
 			</div>
 		</div>
