@@ -106,7 +106,7 @@ class AjaxController {
 				break;
 			case 'startGame' :
 				$oldValue = $gameModel->startGame($this->request['gameid']);
-				if($oldValue == null){ //first time gameend was set
+				if(! isset($oldValue)){ //first time gameend was set
 					EventController::fire('game-start', $_SESSION['user_id'], [
 					'gameid' => $this->request['gameid']
 					]);
@@ -200,7 +200,7 @@ class AjaxController {
 
 	private function setGameend($gameid){
 		$oldValue = $this->gameModel->setGameend($gameid);
-		if($oldValue == null){ //first time gameend was set
+		if(! isset($oldValue)){ //first time gameend was set
 			EventController::fire('game-end', $_SESSION['user_id'], [
 			'gameid' => $gameid
 			]);

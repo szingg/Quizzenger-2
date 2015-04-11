@@ -19,7 +19,7 @@
 				//getWinner
 				$winner = $gamereport[0]['user_id'];
 
-				return $winner['user_id'] == $user && count($gamereport) >= $memberCount;
+				return $winner == $user && count($gamereport) >= $memberCount;
 			}
 		} // class GameWinAchievement
 	} // namespace quizzenger\plugins\achievements

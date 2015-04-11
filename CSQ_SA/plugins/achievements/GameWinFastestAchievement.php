@@ -8,7 +8,7 @@
 
 		class GameWinFastestAchievement implements IAchievement {
 
-			private function cmp($a, $b)
+			private static function cmp($a, $b)
 			{
 				return ($a['totalTimeInSec'] < $b['totalTimeInSec']) ? -1 : (($a['totalTimeInSec'] > $b['totalTimeInSec']) ? 1 : 0);
 				//return $a->totalTimeInSec < $b->totalTimeInSec;
@@ -25,10 +25,10 @@
 				//getWinners
 				$winner = $gamereport[0]['user_id'];
 
-				usort($gamereport, "cmp");
+				usort($gamereport, ['quizzenger\plugins\achievements\GameWinFastestAchievement', 'cmp']);
 				$timeWinner = $gamereport[0]['user_id'];
 
-				return $winner['user_id'] == $user && count($gamereport) >= $memberCount && $timeWinner['user_id'] == $user;
+				return $winner == $user && count($gamereport) >= $memberCount && $timeWinner == $user;
 			}
 		} // class GameWinAchievement
 	} // namespace quizzenger\plugins\achievements
