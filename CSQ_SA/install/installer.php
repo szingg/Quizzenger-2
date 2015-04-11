@@ -1,5 +1,5 @@
 <?php
-include("includes/config.php");
+include("/../includes/config.php");
 if(isset($_POST['install'])){
 
 	echo("Connecting to DB<br>");
