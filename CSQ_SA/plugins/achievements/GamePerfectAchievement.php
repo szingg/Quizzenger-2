@@ -1,6 +1,6 @@
 <?php
 	namespace quizzenger\plugins\achievements {
-		use \mysqli as mysqli;
+		use \SqlHelper as SqlHelper;
 		use \quizzenger\logging\Log as Log;
 		use \quizzenger\dispatching\UserEvent as UserEvent;
 		use \quizzenger\achievements\IAchievement as IAchievement;
@@ -8,11 +8,11 @@
 
 		class GamePerfectAchievement implements IAchievement {
 
-			public function grant(mysqli $database, UserEvent $event) {
+			public function grant(SqlHelper $database, UserEvent $event) {
 				$userid = $event->user();
 				$gameid = $event->get('gameid');
 
-				$statement = $database->prepare('SELECT SUM(CASE WHEN questionCorrect = 100 THEN 1 ELSE 0 END) AS correct,'
+				$statement = $database->database()->prepare('SELECT SUM(CASE WHEN questionCorrect = 100 THEN 1 ELSE 0 END) AS correct,'
 						.' tot.total FROM questionperformance q'
 						.' JOIN ('
 							.' SELECT gamesession.id, COUNT(weight) AS total '
