@@ -4,6 +4,7 @@
 	$quizCount = $this->_ ['quizcount'];
 	$userScore = $this->_ ['userscore'];
 	$categoryscores = $this->_ ['categoryscores'];
+	$leadingTrailingUsers = $this->_['leadingtrailingusers'];
 	$moderatedCategories = $this->_ ['moderatedcategories'];
 	$absolvedCount = $this->_ ['absolvedcount'];
 	$achievementList = $this->_['achievementlist'];
@@ -97,6 +98,15 @@
 						</div>
 					<?php } ?>
 				</div>
+			</div>
+			<div>
+				<ul>
+					<?php
+						foreach($leadingTrailingUsers as $current) {
+							echo "<li>{$current['username']}</li>";
+						}
+					?>
+				</ul>
 			</div>
 			<hr>
 			<!--  -->

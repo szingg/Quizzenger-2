@@ -15,6 +15,7 @@
 	$questionCount = $questionListModel->getQuestionsByUserIDCount ( $userID );
 	$userscore = $userscoreModel->getUserScore($userID);
 	$categoryscores = $userscoreModel->getUserScoreAllCategories($userID);
+	$leadingTrailingUsers = $userscoreModel->getLeadingTrailingUsers($userID);
 	$moderatedCategories = $moderationModel->getModeratedCategoryNames($userID);
 	$absolvedCount=$userModel->getQuestionAbsolvedCount($userID);
 
@@ -32,13 +33,14 @@
 	$rankList = $userModel->getRankList($userID);
 
 	$viewInner->assign('alreadyreported',$alreadyReported);
-	$viewInner->assign('user', $user );
-	$viewInner->assign('quizcount', $quizCount );
-	$viewInner->assign('questioncount', $questionCount );
-	$viewInner->assign('userscore', $userscore );
-	$viewInner->assign('categoryscores', $categoryscores );
-	$viewInner->assign('moderatedcategories', $moderatedCategories );
-	$viewInner->assign('absolvedcount', $absolvedCount );
+	$viewInner->assign('user', $user);
+	$viewInner->assign('quizcount', $quizCount);
+	$viewInner->assign('questioncount', $questionCount);
+	$viewInner->assign('userscore', $userscore);
+	$viewInner->assign('categoryscores', $categoryscores);
+	$viewInner->assign('leadingtrailingusers', $leadingTrailingUsers);
+	$viewInner->assign('moderatedcategories', $moderatedCategories);
+	$viewInner->assign('absolvedcount', $absolvedCount);
 	$viewInner->assign('achievementlist', $achievementList);
 	$viewInner->assign('ranklist', $rankList);
 ?>
