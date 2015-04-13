@@ -173,7 +173,7 @@
 						<?php
 							foreach($systemStatus->log_files as $log) {
 								$log = htmlspecialchars($log);
-								$filename = htmlspecialchars(APP_PATH) . '/log/' . $log;
+								$filename = htmlspecialchars(APP_PATH . '/index.php?view=syslog&logfile=' . $log);
 								echo "<li><a href=\"$filename\">$log</a></li>";
 							}
 						?>

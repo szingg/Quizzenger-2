@@ -2,6 +2,7 @@
 use \quizzenger\messages\MessageQueue as MessageQueue;
 use \quizzenger\controlling\EventController as EventController;
 use \quizzenger\gamification\model\GameModel as GameModel;
+use \quizzenger\logging\LogViewer as LogViewer;
 
 class Controller {
 	private $request = null;
@@ -19,6 +20,8 @@ class Controller {
 
 		MessageQueue::setup($this->mysqli->database());
 		EventController::setup($this->mysqli);
+
+		\quizzenger\logging\Log::error('test');
 	}
 
 	public function display() {
@@ -63,6 +66,18 @@ class Controller {
 				$className = '\\quizzenger\\gamification\\controller\\'.$this->template.'Controller';
 				$controller = new $className($viewInner);
 				$viewInner = $controller->loadView();
+				break;
+			case 'syslog':
+				if(!$userModel->isSuperuser($_SESSION['user_id'])
+					|| !isset($_GET['logfile']))
+				{
+					header('Location: ./index.php');
+					die();
+				}
+				else {
+					(new LogViewer())->render($_GET['logfile']);
+					die();
+				}
 				break;
 			default:
 				include("controllers/default.php");
