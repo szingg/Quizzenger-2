@@ -37,10 +37,18 @@
   				<div class="col-md-6">
 					<h4><img alt="ribbon" src="<?=APP_PATH?>/templates/img/ribbon.png"> Punkte pro Kategorie</h4>
 					<table style="width:100%">
+						<tr>
+							<th>Kategorie</th>
+							<th>Punktzahl</th>
+							<th>Rang</th>
+						</tr>
 						<?php
 							foreach($categoryscores as $catScore){
-								echo('<tr><td width="180px">'.htmlspecialchars($catScore['name'])."</td>");
-								echo("<td>".'<span class="badge alert-success">'.htmlspecialchars($catScore['score'])."</span></td></tr>");
+								echo '<tr>';
+								echo '<td>' . htmlspecialchars($catScore['name']) . '</td>';
+								echo '<td><span class="badge alert-success">' . htmlspecialchars($catScore['score']) . '</span></td>';
+								echo '<td><span class="badge alert-info">' . '&#9733;&nbsp;' . htmlspecialchars($catScore['rank']) . '</span></td>';
+								echo '</tr>';
 							}
 						?>
 					</table>

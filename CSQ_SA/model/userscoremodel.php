@@ -53,8 +53,11 @@ class UserScoreModel{
 	}
 
 	public function getUserScoreAllCategories($user_id) {
-		$result = $this->mysqli->s_query('SELECT category.name, category.id,userscore.score FROM userscore'
-			. ' LEFT JOIN category ON userscore.category_id=category.id WHERE user_id=?'
+		$result = $this->mysqli->s_query('SELECT category.name, category.id, userscore.score,'
+			. ' (SELECT COUNT(*) FROM userscore AS current WHERE current.score >= userscore.score) AS rank'
+			. ' FROM userscore'
+			. ' LEFT JOIN category ON userscore.category_id=category.id'
+			. ' WHERE user_id=? AND userscore.score>0'
 			. ' ORDER BY category.name',
 			['i'], [$user_id]);
 
