@@ -79,6 +79,13 @@
 									echo "</tr>";
 								}
 							?>
+							<?php if($categoryId != 0): ?>
+								<script>
+									(function() {
+										$('#tableReportUserList').DataTable().column(3).visible(false);
+									})();
+								</script>
+							<?php endif; ?>
 						</tbody>
 					</table>
 				</div>

@@ -141,6 +141,7 @@ $(function(){
 	$('#tableReportUserList').DataTable({
 		"responsive" : true,
 		"autoWidth" : false,
+		"bRetrieve" : true,
 		"columnDefs" : [
 			{"className" : "dt-right", "targets": [0, 4, 5]},
 			{"width" : "45%", "targets" : [1]},
