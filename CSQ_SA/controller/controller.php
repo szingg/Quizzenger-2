@@ -20,8 +20,6 @@ class Controller {
 
 		MessageQueue::setup($this->mysqli->database());
 		EventController::setup($this->mysqli);
-
-		\quizzenger\logging\Log::error('test');
 	}
 
 	public function display() {
