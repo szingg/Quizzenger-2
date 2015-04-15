@@ -1,5 +1,7 @@
 <?php
 use \quizzenger\messages\MessageQueue as MessageQueue;
+use \quizzenger\messages\MessageFormatter as MessageFormatter;
+use \quizzenger\messages\TextTranslator as TextTranslator;
 use \quizzenger\controlling\EventController as EventController;
 use \quizzenger\gamification\model\GameModel as GameModel;
 use \quizzenger\logging\LogViewer as LogViewer;
@@ -19,6 +21,7 @@ class Controller {
 		$this->mysqli = new sqlhelper ( $this->logger );
 
 		MessageQueue::setup($this->mysqli->database());
+		TextTranslator::setup($this->mysqli->database(), new MessageFormatter());
 		EventController::setup($this->mysqli);
 	}
 

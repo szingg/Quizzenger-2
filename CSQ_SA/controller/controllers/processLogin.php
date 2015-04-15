@@ -13,4 +13,6 @@
 	}
 
 	$sessionModel->processLogin ($email,$password);
+	$messages = MessageQueue::popAll($_SESSION['user_id']);
+	$bla = 1;
 ?>

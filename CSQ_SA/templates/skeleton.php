@@ -1,5 +1,6 @@
 <?php
 	use \quizzenger\messages\MessageQueue as MessageQueue;
+	use \quizzenger\messages\TextTranslator as TextTranslator;
 
 	function checkActiveTab($openedView){
 		$pageBefore = filter_input(INPUT_GET, 'pageBefore', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
@@ -120,7 +121,8 @@
 				foreach($messages as $current) {
 					echo '<div class="alert alert-info" role="alert">';
 					echo '<a href="#" class="close" data-dismiss="alert">&times;</a>';
-					echo 'temporary: ' . htmlspecialchars($current->type) . '(' . (int)$current->static . ') ' . htmlspecialchars(json_encode($current->arguments));
+					/*echo 'temporary: ' . htmlspecialchars($current->type) . '(' . (int)$current->static . ') ' . htmlspecialchars(json_encode($current->arguments)); */
+					echo TextTranslator::translate(htmlspecialchars($current->type), json_decode(htmlspecialchars(json_encode($current->arguments))));
 					echo '</div>';
 				}
 

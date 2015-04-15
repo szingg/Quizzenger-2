@@ -24,10 +24,10 @@ class SessionModel {
 				$this->logger->log ( "User logged in sucessfully ", Logger::INFO );
 				$pageBefore = filter_input(INPUT_GET, 'pageBefore', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
 				$pageBefore =  str_replace('||', '&', $pageBefore); //case pageBefore contained multiple parameters
-				if (is_null($pageBefore)){
+				if (! isset($pageBefore) || empty($pageBefore)){
 					$pageBefore='default';
 				}
-				MessageQueue::pushStatic('mes_login_success');
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'mes_login_success');
 				NavigationUtility::redirect('./index.php?view='.$pageBefore);
 				//header ( 'Location: ./index.php?view='.$pageBefore.'&info=mes_login_success' );
 				//die ();
