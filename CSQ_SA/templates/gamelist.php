@@ -1,3 +1,4 @@
+<?php use \quizzenger\utilities\FormatUtility as FormatUtility; ?>
 <div class="panel panel-default">
 	<div class="panel-body">
 		<table class="table" id="tableOpenGames">
@@ -26,7 +27,7 @@
 					</td>
 					<td class="hidden-xs"><?php echo (isset($game['members'])?$game['members']:'0').' Teilnehmer'; ?> </td>
 					<td class="hidden-xs"><?php echo (isset($game['starttime'])?htmlspecialchars($game['starttime']):'Game nicht gestartet'); ?></td>
-					<td class="hidden-xs"><?php echo htmlspecialchars(formatTime($game['duration'])); ?></td>
+					<td class="hidden-xs"><?php echo htmlspecialchars(FormatUtility::formatTime($game['duration'])); ?></td>
 					<td class="hidden-xs">
 						<a class="remove-row" href="javascript:void()" data-qid="<?php echo $game['id']; ?>" data-type="game">
 							<span class="glyphicon glyphicon-remove"></span> </a>

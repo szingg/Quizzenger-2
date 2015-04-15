@@ -1,5 +1,6 @@
 <?php
 use \quizzenger\controlling\EventController as EventController;
+use \quizzenger\utilities\FormatUtility as FormatUtility;
 
 class AjaxController {
 	private $request = null;
@@ -118,7 +119,7 @@ class AjaxController {
 				$gameinfo = $gameModel->getGameInfoByGameId($gameid)[0];
 
 				$now = date("Y-m-d H:i:s");
-				$durationSec = timeToSeconds($gameinfo['duration']);
+				$durationSec = FormatUtility::timeToSeconds($gameinfo['duration']);
 				$timeToEnd = strtotime($gameinfo['calcEndtime']) - strtotime($now);
 				$progressCountdown = (int) (100 / $durationSec * $timeToEnd);
 

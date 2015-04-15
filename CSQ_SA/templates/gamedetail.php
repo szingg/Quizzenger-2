@@ -1,3 +1,4 @@
+<?php use \quizzenger\utilities\FormatUtility as FormatUtility; ?>
 <h3>Gamedetail für <?php echo $this->_['gameinfo']['gamename']; ?></h3>
 <br>
 
@@ -61,8 +62,8 @@
 						  			<?php } ?>
 								</div>
 							</td>
-							<td><?php echo formatSeconds($report['timePerQuestion']); ?></td>
-							<td><?php echo formatSeconds($report['totalTimeInSec']); ?></td>
+							<td><?php echo FormatUtility::formatSeconds($report['timePerQuestion']); ?></td>
+							<td><?php echo FormatUtility::formatSeconds($report['totalTimeInSec']); ?></td>
 						</tr>
 					<?php } ?>
 					</tbody>

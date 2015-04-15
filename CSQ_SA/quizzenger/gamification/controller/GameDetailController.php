@@ -5,6 +5,9 @@ namespace quizzenger\gamification\controller {
 	use \SplEnum as SplEnum;
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+	use \quizzenger\utilities\PermissionUtility as PermissionUtility;
+	use \quizzenger\utilities\FormatUtility as FormatUtility;
 	use \quizzenger\gamification\model\GameModel as GameModel;
 
 
@@ -27,7 +30,6 @@ namespace quizzenger\gamification\controller {
 
 		}
 		public function loadView(){
-			checkLogin();
 			$this->checkPermission();
 
 			$this->loadGameDetailView();
@@ -51,16 +53,17 @@ namespace quizzenger\gamification\controller {
 		 */
 		private function getGameInfo(){
 			$gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
-			if(count($gameinfo) <= 0) redirectToErrorPage('err_db_query_failed');
+			if(count($gameinfo) <= 0) NavigationUtility::redirectToErrorPage('err_db_query_failed');
 			else return $gameinfo[0];
 		}
 
 		/*
-		 * Checks permission for the given game. Dies if not permitted.
+		 * Checks if user is logged in and his permission on this game. Dies if not permitted.
 		 */
 		private function checkPermission(){
+			PermissionUtility::checkLogin();
 			if($this->isGameOwner($this->gameinfo['owner_id']) == false){
-				redirectToErrorPage('err_not_authorized');
+				NavigationUtility::redirectToErrorPage('err_not_authorized');
 			}
 		}
 

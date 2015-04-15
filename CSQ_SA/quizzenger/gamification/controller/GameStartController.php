@@ -6,6 +6,8 @@ namespace quizzenger\gamification\controller {
 	use \mysqli as mysqli;
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+	use \quizzenger\utilities\PermissionUtility as PermissionUtility;
 	use \quizzenger\gamification\model\GameModel as GameModel;
 
 
@@ -31,7 +33,7 @@ namespace quizzenger\gamification\controller {
 
 		}
 		public function loadView(){
-			checkLogin();
+			PermissionUtility::checkLogin();
 
 			$this->loadGameStartView();
 
@@ -74,7 +76,7 @@ namespace quizzenger\gamification\controller {
 		 */
 		private function getGameInfo(){
 			$gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
-			if(count($gameinfo) <= 0) redirectToErrorPage('err_db_query_failed');
+			if(count($gameinfo) <= 0) NavigationUtility::redirectToErrorPage('err_db_query_failed');
 			else return $gameinfo[0];
 		}
 
@@ -84,7 +86,7 @@ namespace quizzenger\gamification\controller {
 
 		private function checkGameStarted($has_started){
 			if ( isset($has_started)) {
-				redirectToErrorPage('err_game_has_started');
+				NavigationUtility::redirectToErrorPage('err_game_has_started');
 			}
 		}
 	} // class GameController

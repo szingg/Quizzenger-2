@@ -5,6 +5,8 @@ namespace quizzenger\gamification\controller {
 	use \SplEnum as SplEnum;
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+	use \quizzenger\utilities\PermissionUtility as PermissionUtility;
 	use \quizzenger\gamification\model\GameModel as GameModel;
 
 
@@ -61,6 +63,7 @@ namespace quizzenger\gamification\controller {
 		private function loadReportView(){
 			$reportView = new \View();
 			$reportView->setTemplate ( 'gamereport' );
+			/*
 			$reportView->assign('gameinfo', $this->gameinfo);
 			$gameReport = $this->gameModel->getGameReport($this->gameid);
 			$reportView->assign('gamereport', $gameReport);
@@ -71,6 +74,7 @@ namespace quizzenger\gamification\controller {
 			$progressCountdown = (int) (100 / $durationSec * $timeToEnd);
 			$reportView->assign( 'timeToEnd', $timeToEnd);
 			$reportView->assign( 'progressCountdown', $progressCountdown);
+			*/
 
 			$this->view->assign ( 'reportView', $reportView->loadTemplate());
 		}
@@ -83,13 +87,13 @@ namespace quizzenger\gamification\controller {
 		 * @Precondition Game has started
 		 */
 		private function checkPreconditions(){
-			checkLogin();
+			PermissionUtility::checkLogin();
 
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
 
 			//checkConditions
 			if($isMember==false || $this->hasStarted($this->gameinfo['starttime'])==false){
-				redirectToErrorPage('err_not_authorized');
+				NavigationUtility::redirectToErrorPage('err_not_authorized');
 			}
 		}
 		private function checkGameSessionParams(){
@@ -97,7 +101,7 @@ namespace quizzenger\gamification\controller {
 					$_SESSION ['game'][$this->request ['gameid']]['gamequestions'],
 					$_SESSION ['game'][$this->request ['gameid']]['gamecounter'])
 			){
-				redirectToErrorPage('err_not_authorized');
+				NavigationUtility::redirectToErrorPage('err_not_authorized');
 			}
 		}
 
@@ -108,7 +112,7 @@ namespace quizzenger\gamification\controller {
 		 */
 		private function getGameInfo(){
 			$gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
-			if(count($gameinfo) <= 0) redirectToErrorPage('err_db_query_failed');
+			if(count($gameinfo) <= 0) NavigationUtility::redirectToErrorPage('err_db_query_failed');
 			else return $gameinfo[0];
 		}
 		private function isGameOwner($owner_id){
