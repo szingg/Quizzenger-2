@@ -45,5 +45,7 @@
 		</achievement>
 	</achievements>
 	<ranks>
+		<rank name="Neul你好！ing" threshold="0" image="neuling" />
+		<rank name="Alleskönner" threshold="12000" image="alleskoenner" />
 	</ranks>
 </quizzenger>

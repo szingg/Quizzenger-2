@@ -20,7 +20,7 @@ function throwSqlInsertException($link){
 	die();
 }
 
-include("/../includes/config.php");
+include("../includes/config.php");
 if(isset($_POST['install'])){
 
 	echo("Connecting to DB...<br>");
@@ -103,7 +103,7 @@ if(isset($_POST['install'])){
 					throwMalformedXMLException();
 				}
 				$triggerName = '"'.$link->real_escape_string($trigger['name']).'"';
-				$resultTrigger = $link->query("INSERT INTO achievementtrigger (achievement_id, name) VALUES ($achievementId, $triggerName)");
+				$resultTrigger = $link->query("INSERT INTO achievementtrigger (achievement_id, eventtrigger_name) VALUES ($achievementId, $triggerName)");
 				if($resultTrigger){}
 				else{
 					throwSqlInsertException($link);

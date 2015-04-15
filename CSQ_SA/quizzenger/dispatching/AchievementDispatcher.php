@@ -99,7 +99,7 @@ namespace quizzenger\dispatching {
 			// Select all non-granted achievements triggered by the current event.
 			$statement = $this->mysqli->database()->prepare('SELECT id, type, arguments, bonus_score FROM `achievement`'
 				. ' WHERE achievement.id NOT IN (SELECT userachievement.achievement_id FROM `userachievement` WHERE userachievement.user_id = ?)'
-				. ' AND achievement.id IN (SELECT achievementtrigger.achievement_id FROM `achievementtrigger` WHERE achievementtrigger.name = ?);');
+				. ' AND achievement.id IN (SELECT achievementtrigger.achievement_id FROM `achievementtrigger` WHERE achievementtrigger.eventtrigger_name = ?);');
 
 			$userId = $event->user();
 			$eventName = $event->name();

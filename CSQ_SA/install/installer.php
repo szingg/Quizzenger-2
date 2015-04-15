@@ -1,5 +1,5 @@
 <?php
-include("/../includes/config.php");
+include("../includes/config.php");
 if(isset($_POST['install'])){
 
 	echo("Connecting to DB<br>");
@@ -28,6 +28,7 @@ if(isset($_POST['install'])){
 	foreach ($sqlArray as $stmt) {
 		if (strlen($stmt)>3 && substr(ltrim($stmt),0,2)!='/*') {
 			$result = mysqli_query($link,$stmt);
+			echo '<p>' . mysqli_error($link) . $stmt . '</p>';
 			if (!$result) {
 				$sqlErrorCode = mysql_errno();
 				$sqlErrorText = mysql_error();

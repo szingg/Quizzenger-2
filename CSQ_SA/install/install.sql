@@ -14,8 +14,8 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `answer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `correctness` tinyint(1) NOT NULL,
-  `text` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `explanation` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `text` varchar(200) NOT NULL,
+  `explanation` varchar(1000) DEFAULT NULL,
   `question_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_questionanswer` (`question_id`)
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `answer` (
 
 CREATE TABLE IF NOT EXISTS `category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(80) NOT NULL,
   `parent_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `category` (
 CREATE TABLE IF NOT EXISTS `login_attempts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ip` int(10) UNSIGNED DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -73,8 +73,8 @@ CREATE TABLE IF NOT EXISTS `moderation` (
 
 CREATE TABLE IF NOT EXISTS `question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `questiontext` varchar(320) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(50) NOT NULL,
+  `questiontext` varchar(320) NOT NULL,
   `user_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
   `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -83,8 +83,8 @@ CREATE TABLE IF NOT EXISTS `question` (
   `difficultycount` int(11) DEFAULT NULL,
   `rating` double DEFAULT NULL,
   `ratingcount` int(11) DEFAULT NULL,
-  `attachment` varchar(300) DEFAULT NULL;
-  `attachment_local` tinyint(1) DEFAULT NULL;
+  `attachment` varchar(300) DEFAULT NULL,
+  `attachment_local` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_userquestion` (`user_id`),
   KEY `fk_categoryquestion` (`category_id`)
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `questionhistory` (
   `question_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `action` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `action` varchar(500) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `questionhistory` (
 
 CREATE TABLE IF NOT EXISTS `questionperformance` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question_id` int(11) NOT NULL,
+  `question_id` int(11) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
   `questionCorrect` int(11) NOT NULL,
   `session_id` int(11) DEFAULT NULL,
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `questionperformance` (
   KEY `fk_userquestionperformance` (`user_id`),
   KEY `fk_questionquestionperformance` (`question_id`),
   KEY `fk_sessionquestionperformance` (`session_id`),
-  KEY `fk_gamesessionquestionperformance` (`gamesession_id`),
+  KEY `fk_gamesessionquestionperformance` (`gamesession_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 -- --------------------------------------------------------
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `questionperformance` (
 
 CREATE TABLE IF NOT EXISTS `quiz` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(80) NOT NULL,
   `user_id` int(11) NOT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `quizsession` (
   `quiz_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_quizsession` (`quiz_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 -- --------------------------------------------------------
 
@@ -251,14 +251,14 @@ CREATE TABLE IF NOT EXISTS `tagtoquestion` (
 
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(35) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
-  `password` char(128) COLLATE utf8_unicode_ci NOT NULL,
-  `salt` char(128) COLLATE utf8_unicode_ci NOT NULL,
+  `username` varchar(35) NOT NULL,
+  `email` varchar(60) NOT NULL,
+  `password` char(128) NOT NULL,
+  `salt` char(128) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `inactive` tinyint(1) DEFAULT NULL,
   `superuser` tinyint(1) NOT NULL DEFAULT '0',
-  `bonus_score` int(11) DEFAULT 0 NOT NULL;
+  `bonus_score` int(11) DEFAULT 0 NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
@@ -306,12 +306,12 @@ CREATE TABLE IF NOT EXISTS `userachievement` (
 
 CREATE TABLE IF NOT EXISTS `achievement` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `sort_order` int(11) NOT NULL
-  `type` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `image` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `arguments` text COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `description` varchar(100) NOT NULL,
+  `sort_order` int(11) NOT NULL,
+  `type` varchar(50) NOT NULL,
+  `image` varchar(64) NOT NULL,
+  `arguments` text NULL,
   `bonus_score` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
@@ -323,8 +323,8 @@ CREATE TABLE IF NOT EXISTS `achievement` (
 --
 CREATE TABLE IF NOT EXISTS `achievementtrigger` (
   `achievement_id` int(11) NOT NULL,
-  `eventtrigger_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY(`achievement_id`, `triggername`),
+  `eventtrigger_name` varchar(50) NULL,
+  PRIMARY KEY(`achievement_id`, `eventtrigger_name`),
   KEY `fk_achievement_achievementtrigger` (`achievement_id`),
   KEY `fk_eventtrigger_achievementtrigger` (`eventtrigger_name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
@@ -348,9 +348,9 @@ CREATE TABLE IF NOT EXISTS `eventtrigger` (
 --
 CREATE TABLE IF NOT EXISTS `rank` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
   `threshold` int(11) NOT NULL,
-  `image` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `image` varchar(64) DEFAULT NULL,
   PRIMARY KEY(`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -363,7 +363,7 @@ CREATE TABLE IF NOT EXISTS `rank` (
 
 CREATE TABLE IF NOT EXISTS `gamesession` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(80) NOT NULL,
   `quiz_id` int(11) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `starttime` timestamp NULL DEFAULT NULL,
@@ -396,11 +396,11 @@ CREATE TABLE IF NOT EXISTS `message` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `message_name` varchar(128) NOT NULL,
+  `type` varchar(128) NOT NULL,
   `arguments` text,
   PRIMARY KEY (`id`),
   KEY `fk_message_user` (`user_id`),
-  KEY `fk_message_translation` (`message_name`)
+  KEY `fk_message_translation` (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -414,10 +414,10 @@ CREATE TABLE IF NOT EXISTS `translation` (
 	`type` varchar(128) NOT NULL,
 	`text` text NOT NULL,
 	PRIMARY KEY (`id`),
-	UNIQUE (`name`)
+	UNIQUE (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-- --------------------------------------------------------
+-- --------------------------------------------------------
 
 --
 -- Constraints for dumped tables
@@ -446,8 +446,8 @@ ALTER TABLE `question`
 --
 -- Constraints for table `questionperformance`
 --
-ALTER TABLE `questionperformance`
-  ADD CONSTRAINT `fk_sessionquestionperformance` FOREIGN KEY (`session_id`) REFERENCES `quizsession` (`id`),
+ ALTER TABLE `questionperformance`
+  ADD CONSTRAINT `fk_sessionquestionperformance` FOREIGN KEY (`session_id`) REFERENCES `quizsession` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_gamesessionquestionperformance` FOREIGN KEY (`gamesession_id`) REFERENCES `gamesession` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_questionquestionperformance` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_userquestionperformance` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -508,8 +508,7 @@ ALTER TABLE `userscore`
 --
 ALTER TABLE `achievementtrigger`
   ADD CONSTRAINT `fk_achievement_achievementtrigger` FOREIGN KEY (`achievement_id`) REFERENCES `achievement` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_eventtrigger_achievementtrigger` FOREIGN KEY (`triggername`) REFERENCES `eventtrigger` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  KEY `fk_eventtrigger_achievementtrigger` (`triggername`);
+  ADD CONSTRAINT `fk_eventtrigger_achievementtrigger` FOREIGN KEY (`eventtrigger_name`) REFERENCES `eventtrigger` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `userachievement`
@@ -535,10 +534,8 @@ ALTER TABLE `gamemember`
 -- Constraints for table `message`
 --
 ALTER TABLE `message`
-  ADD CONSTRAINT `fk_message_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE `message`
-  ADD CONSTRAINT `fk_message_translation` FOREIGN KEY (`message_name`) REFERENCES `translation` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_message_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_message_translation` FOREIGN KEY (`type`) REFERENCES `translation` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
