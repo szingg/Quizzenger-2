@@ -91,7 +91,7 @@ if(isset($_POST['install'])){
 			}
 			$arguments[$link->real_escape_string($arg["name"])] = $link->real_escape_string($arg["value"]);
 		}
-		$arguments = '"'.$link->real_escape_string(json_encode($arguments)).'"'; //decode with json_decode($arguments, true);
+		$arguments = (count($arguments)==0?'""':'"'.$link->real_escape_string(json_encode($arguments)).'"'); //decode with json_decode($arguments, true);
 		$bonus_score = '"'.$link->real_escape_string($ach->bonus_score).'"';
 		$triggers = $ach->eventtriggers;
 

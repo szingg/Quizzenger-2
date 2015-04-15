@@ -1,5 +1,5 @@
 <?php
-	use \quizzenger\dispatching\MessageQueue as MessageQueue;
+	use \quizzenger\messages\MessageQueue as MessageQueue;
 
 	function checkActiveTab($openedView){
 		$pageBefore = filter_input(INPUT_GET, 'pageBefore', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
@@ -116,10 +116,11 @@
 		</div>
 		<div class="container">
 			<?php
-				while($message = MessageQueue::pop()) {
-					echo '<div class="alert alert-' . $message->type . '" role="alert">';
+				$messages = MessageQueue::popAll($this->_['userid']);
+				foreach($messages as $current) {
+					echo '<div class="alert alert-info" role="alert">';
 					echo '<a href="#" class="close" data-dismiss="alert">&times;</a>';
-					echo htmlspecialchars($message->content);
+					echo 'temporary: ' . htmlspecialchars($current->type) . '(' . (int)$current->static . ') ' . htmlspecialchars(json_encode($current->arguments));
 					echo '</div>';
 				}
 

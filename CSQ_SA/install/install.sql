@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `quizsession` (
   `quiz_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_quizsession` (`quiz_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci1 ;
 
 -- --------------------------------------------------------
 
@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `report` (
   `category_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `by_user_id` int(11) NOT NULL,
-  `message` varchar(500) CHARACTER SET latin1 DEFAULT NULL,
+  `message` varchar(500) DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `doneon` timestamp NULL DEFAULT NULL,
   `doneby` int(11) DEFAULT NULL,
@@ -371,7 +371,7 @@ CREATE TABLE IF NOT EXISTS `gamesession` (
   `duration` time NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_quizgamesession` (`quiz_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 -- --------------------------------------------------------
 
@@ -388,6 +388,36 @@ CREATE TABLE IF NOT EXISTS `gamemember` (
 
 -- --------------------------------------------------------
 
+--
+-- Table structure for table `message`
+--
+
+CREATE TABLE IF NOT EXISTS `message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `message_name` varchar(128) NOT NULL,
+  `arguments` text,
+  PRIMARY KEY (`id`),
+  KEY `fk_message_user` (`user_id`),
+  KEY `fk_message_translation` (`message_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `translation`
+--
+
+CREATE TABLE IF NOT EXISTS `translation` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`name` varchar(128) NOT NULL,
+	`text` text NOT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+- --------------------------------------------------------
 
 --
 -- Constraints for dumped tables
@@ -501,6 +531,14 @@ ALTER TABLE `gamemember`
   ADD CONSTRAINT `fk_gamesession_gamemember` FOREIGN KEY (`gamesession_id`) REFERENCES `gamesession` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_user_gamemember` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+--
+-- Constraints for table `message`
+--
+ALTER TABLE `message`
+  ADD CONSTRAINT `fk_message_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `message`
+  ADD CONSTRAINT `fk_message_translation` FOREIGN KEY (`message_name`) `translation` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

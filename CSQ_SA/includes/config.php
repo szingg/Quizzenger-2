@@ -56,7 +56,7 @@ define ("DIFFERENT_QUESTION_WEIGHTS", "5");
 
 // Log Settings
 define ("LOGGING_ACTIVE",true);
-define ("LOGPATH","log/");
+define ("LOGPATH","/var/log/quizzenger");
 
 
 // Security Login / Register

@@ -43,18 +43,6 @@
 				<eventtrigger name="game-end" />
 			</eventtriggers>
 		</achievement>
-		<achievement type="QuizPerfect">
-			<name>Perfektes Quiz</name>
-			<description>Beantworte alle Fragen eines Quizzes korrekt</description>
-			<sort_order>0</sort_order>
-			<image>achievement-quiz-perfect</image>
-			<arguments>
-			</arguments>
-			<bonus_score>100</bonus_score>
-			<eventtriggers>
-				<eventtrigger name="quiz-end" />
-			</eventtriggers>
-		</achievement>
 	</achievements>
 	<ranks>
 	</ranks>
