@@ -1,4 +1,7 @@
 <?php
+use quizzenger\messages\MessageQueue as MessageQueue;
+use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+
 class SessionModel {
 	private $mysqli;
 	private $logger;
@@ -24,8 +27,10 @@ class SessionModel {
 				if (is_null($pageBefore)){
 					$pageBefore='default';
 				}
-				header ( 'Location: ./index.php?view='.$pageBefore.'&info=mes_login_success' );
-				die ();
+				MessageQueue::pushStatic('mes_login_success');
+				NavigationUtility::redirect('./index.php?view='.$pageBefore);
+				//header ( 'Location: ./index.php?view='.$pageBefore.'&info=mes_login_success' );
+				//die ();
 			} elseif ($loginResult == - 1) {
 				$this->logger->log ( "User tried to log in with bad credentials, email: ".$email, Logger::WARNING );
 				header ( 'Location: ./index.php?view=error&err=err_login_bad_credentials' );

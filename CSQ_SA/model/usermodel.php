@@ -1,4 +1,5 @@
 <?php
+use quizzenger\messages\MessageQueue as MessageQueue;
 
 class UserModel {
 
