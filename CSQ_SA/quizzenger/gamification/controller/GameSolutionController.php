@@ -6,6 +6,8 @@ namespace quizzenger\gamification\controller {
 	use \mysqli as mysqli;
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+	use \quizzenger\utilities\PermissionUtility as PermissionUtility;
 	use \quizzenger\gamification\model\GameModel as GameModel;
 
 	class GameSolutionController{
@@ -124,17 +126,19 @@ namespace quizzenger\gamification\controller {
 
 		private function loadReportView(){
 			$reportView = new \View();
-			$reportView->setTemplate ( 'gamereport' );
+			$reportView->setTemplate ( 'gamereport' ); 
+			/*
 			$reportView->assign('gameinfo', $this->gameinfo);
 			$gameReport = $this->gameModel->getGameReport($this->gameid);
 			$reportView->assign('gamereport', $gameReport);
 
 			$now = date("Y-m-d H:i:s");
-			$durationSec = timeToSeconds($this->gameinfo['duration']);
+			$durationSec = FormatUtility::timeToSeconds($this->gameinfo['duration']);
 			$timeToEnd = strtotime($this->gameinfo['calcEndtime']) - strtotime($now);
 			$progressCountdown = (int) (100 / $durationSec * $timeToEnd);
 			$reportView->assign( 'timeToEnd', $timeToEnd);
 			$reportView->assign( 'progressCountdown', $progressCountdown);
+			*/
 
 			$this->view->assign ( 'reportView', $reportView->loadTemplate() );
 		}
@@ -144,7 +148,7 @@ namespace quizzenger\gamification\controller {
 		 */
 		private function getGameInfo(){
 			$gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
-			if(count($gameinfo) <= 0) redirectToErrorPage('err_db_query_failed');
+			if(count($gameinfo) <= 0) NavigationUtility::redirectToErrorPage('err_db_query_failed');
 			else return $gameinfo[0];
 		}
 
@@ -156,7 +160,7 @@ namespace quizzenger\gamification\controller {
 		 * @Precondition Game is not finished
 		 */
 		private function checkPreconditions(){
-			checkLogin();
+			PermissionUtility::checkLogin();
 
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
 
@@ -165,7 +169,7 @@ namespace quizzenger\gamification\controller {
 			$finished = $timeToEnd <= 0 || isset($this->gameinfo['endtime']);
 
 			if($isMember && ( $finished || $this->gamecounter >= count($this->gamequestions)) ){
-				redirect('./index.php?view=GameEnd&gameid='.$this->gameid);
+				NavigationUtility::redirect('./index.php?view=GameEnd&gameid='.$this->gameid);
 			}
 
 			//checkConditions
@@ -174,7 +178,7 @@ namespace quizzenger\gamification\controller {
 					|| $finished
 					|| $this->hasStarted($this->gameinfo['starttime'])==false){
 
-				redirectToErrorPage('err_not_authorized');
+				NavigationUtility::redirectToErrorPage('err_not_authorized');
 			}
 		}
 		private function checkGameSessionParams(){
@@ -183,7 +187,7 @@ namespace quizzenger\gamification\controller {
 					$_SESSION ['game'][$this->request ['gameid']]['gamecounter'],
 					$this->request ['answer'] )
 			){
-				redirectToErrorPage('err_not_authorized');
+				NavigationUtility::redirectToErrorPage('err_not_authorized');
 			}
 		}
 
