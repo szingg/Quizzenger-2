@@ -132,7 +132,7 @@ END | */
 		/*
 		 * Sets the endtime of a game
 		 * This method checks if user has permission on this game
-		 * The endtime can only once be set
+		 * The endtime can only be set once and is not bigger than the calculated endtime (starttime+duration)
 		 * @param $game_id
 		 * @return Returns old value of endtime on success, else returns false
 		 */
@@ -141,7 +141,7 @@ END | */
 				log::info('Stop Game with ID :'.$game_id);
 				$oldValue = $this->mysqli->s_query('SELECT endtime FROM gamesession WHERE id = ?',['i'],[$game_id]);
 				$update = $this->mysqli->s_query('UPDATE gamesession SET endtime = '
-						.' CASE WHEN endtime IS NULL THEN CURRENT_TIMESTAMP ELSE endtime END'
+						.' CASE WHEN endtime IS NULL THEN LEAST(CURRENT_TIMESTAMP, ADDTIME(starttime, duration)) ELSE endtime END'
 						.' WHERE id = ?',['i'],[$game_id]);
 
 				return $this->mysqli->getSingleResult($oldValue)['endtime'];
