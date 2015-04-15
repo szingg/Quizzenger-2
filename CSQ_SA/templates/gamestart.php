@@ -33,8 +33,8 @@ javascript:window.history.forward(1);
 					<input id="joinGame" class="btn btn-primary btn-lg" role="button" value="Teilnehmen"></input>
 				</div>
 			</div>
+			<?php if($this->_['isOwner']){ ?>
 			<div class="well col-md-6">
-				<?php if($this->_['isOwner']){ ?>
 				<p>Game-Admin</p>
 				<br>
 				<div class="btn-group">
@@ -42,7 +42,7 @@ javascript:window.history.forward(1);
 						<input id="startGame" class="btn btn-primary btn-lg" type="button" value="Game starten" />
 					</div>
 				</div>
-				<?php } ?>
 			</div>
+			<?php } ?>
 		</div>
 </div>

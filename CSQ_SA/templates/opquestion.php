@@ -82,7 +82,7 @@
 									$paths = array();
 									$paths[] = ATTACHMENT_PATH;
 									$paths[] = $question['id'].'.'.htmlspecialchars($question['attachment']);
-									
+
 									$link = preg_replace('#/+#','/',join('/', $paths));
 									echo '<b><a class="text-success" href="'.$link.'">Anhang</a></b> eingebettet.';
 									break;

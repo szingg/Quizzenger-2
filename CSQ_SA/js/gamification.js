@@ -230,7 +230,7 @@ function Gamification(){
 					if(resp.responseJSON === undefined || resp.responseJSON.data == undefined) return;
 					var data = resp.responseJSON.data;
 					//set Countdown
-					if(data.timeToEnd > 0){
+					if(data.timeToEnd > 0 && data.gameInfo.endtime==null){
 						var formatTimeToEnd = self.formatSeconds(data.timeToEnd);
 						self.applyTemplate("dot-gameReportCountdown", {
 							'progressCountdown' : data.progressCountdown,
@@ -238,6 +238,7 @@ function Gamification(){
 						}, "gameCountdown");
 					}
 					else{
+						$('#gameCountdown').html('');
 						//redirect to GameEnd view if not already on this view
 						if(! self.contains(document.URL, 'view=GameEnd')){
 							window.location.href = "index.php?view=GameEnd&gameid=" + data.gameInfo.game_id;
