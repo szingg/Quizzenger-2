@@ -39,14 +39,14 @@ namespace quizzenger\messages {
 
 		/**
 		 * Retrieves the specified translation from the database and formats the text accordingly.
-		 * @param string $name Name of the translation to retrieve.
+		 * @param string $type Type of the translation to retrieve.
 		 * @param array $arguments Arguments required by the translation.
 		 * @return string Returns the correctly formatted translation text.
 		**/
-		public static function translate($name, array $arguments = []) {
-			$statement = self::$database->prepare('SELECT text FROM translation WHERE name=? LIMIT 1');
+		public static function translate($type, array $arguments = []) {
+			$statement = self::$database->prepare('SELECT text FROM translation WHERE type=? LIMIT 1');
 
-			$statement->bind_param('s', $name);
+			$statement->bind_param('s', $type);
 			if(!$statement->execute()) {
 				Log::error('Could not retrieve translation');
 				return null;

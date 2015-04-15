@@ -411,7 +411,7 @@ CREATE TABLE IF NOT EXISTS `message` (
 
 CREATE TABLE IF NOT EXISTS `translation` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
-	`name` varchar(128) NOT NULL,
+	`type` varchar(128) NOT NULL,
 	`text` text NOT NULL,
 	PRIMARY KEY (`id`),
 	UNIQUE (`name`)
@@ -538,7 +538,7 @@ ALTER TABLE `message`
   ADD CONSTRAINT `fk_message_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `message`
-  ADD CONSTRAINT `fk_message_translation` FOREIGN KEY (`message_name`) `translation` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_message_translation` FOREIGN KEY (`message_name`) REFERENCES `translation` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
