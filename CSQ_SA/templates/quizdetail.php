@@ -128,7 +128,8 @@
 									</div>
 								</td>
 								<td>
-									<a class="remove-row" href="javascript:void()" onclick="deleteQuestionFromQuiz(<?=  $this->_ ['quizinfo']['quizid']; ?>, <?=  $q['question_id']; ?>)">
+									<a class="remove-row" href="javascript:void()" data-qid="<?php echo $this->_ ['quizinfo']['quizid']; ?>"
+									 data-questionid="<?php echo $q['question_id']; ?>" data-type="questionFromQuiz">
 										<span class="glyphicon glyphicon-remove"></span>
 									</a>
 								</td>

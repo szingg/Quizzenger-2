@@ -1,12 +1,14 @@
 <?php
-		checkLogin();
+		use \quizzenger\utilities\PermissionUtility as PermissionUtility;
+		use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+
+		PermissionUtility::checkLogin();
 		$qid = $this->request ['quizid'];
 
 		$quizModel->checkIfQuizIDExists($qid);  // if not exists -> redirect db_query_failed
 
 		if (! $quizModel->userIDhasPermissionOnQuizID ( $qid , $_SESSION ['user_id'] )) {
-			header ( 'Location: ./index.php?view=error&err=err_not_authorized_quizdetail' );
-			die ();
+			NavigationUtility::redirect('?view=error&err=err_not_authorized_quizdetail');
 		}
 
 		$viewInner->setTemplate ( 'quizdetail' );

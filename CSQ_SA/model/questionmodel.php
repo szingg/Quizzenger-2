@@ -277,15 +277,22 @@ class QuestionModel {
 		return $this->mysqli->s_insert("INSERT INTO question (type, questiontext, user_id, category_id,created,attachment,attachment_local) VALUES (?, ?, ?, ?, ?, ?, ?)",array('s', 's','i','i','s','s','i'),array($type,$questiontext,$userID,$categoryID,null,$attachment,$attachment_local));
 	}
 
+	/*
+	 * Removes a question. Checks if user has permission on question
+	 * @return Returns true on success, else false
+	 *
+	*/
 	public function removeQuestion($question_id){
 		if($this->userIDhasPermissionOnQuestionID($question_id,$_SESSION ['user_id'])){
 			$this->logger->log ( "Removing Question with ID :".$question_id, Logger::INFO );
 			$question = $this->getQuestion($question_id);
 			$this->logger->log ( "Decrement userscore (5) in category ". $question['category_id'] ." and user_id ". $question['user_id'] , Logger::INFO );
 			$this->mysqli->s_query("UPDATE userscore SET score=score-". QUESTION_CREATED_SCORE ." WHERE user_id=? AND category_id=?", array('i', 'i'), array($question['user_id'], $question['category_id']));
-			return $this->mysqli->s_query("DELETE FROM question WHERE id=?",array('i'),array($question_id));
+			$this->mysqli->s_query("DELETE FROM question WHERE id=?",array('i'),array($question_id));
+			return true;
 		} else {
 			$this->logger->log ( "Unauthorized try to remove of Question with ID :".$question_id, Logger::WARNING );
+			return false;
 		}
 	}
 

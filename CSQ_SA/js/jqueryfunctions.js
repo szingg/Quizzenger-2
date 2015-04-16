@@ -52,32 +52,38 @@ $(function(){
 
 		bootbox.confirm( message, function(result) {
 			if(result){
-				if(type = 'game'){
-					deleteGame(id);
+				if(type == 'game'){
+					deleteGame(id, function(){ removeRowCallback(element, this); });
 				} else if(type == 'question'){
-					deleteQuestion(id);
+					deleteQuestion(id, function(){ removeRowCallback(element, this); });
 				} else if(type == 'quiz'){
-					deleteQuiz(id);
+					deleteQuiz(id, function(){ removeRowCallback(element, this); });
+				} else if(type == 'questionFromQuiz'){
+					var questionId = element.data('questionid');
+					deleteQuestionFromQuiz(id, questionId, function(){ removeRowCallback(element, this); });
 				} else if(type == 'questionreports'){
-					deleteReports(id, 'question')
+					deleteReports(id, 'question', function(){ removeRowCallback(element, this); })
 				} else if(type == 'ratingreports'){
-					deleteReports(id, 'rating')
+					deleteReports(id, 'rating', function(){ removeRowCallback(element, this); })
 				} else if(type == 'user'){
-					inactiveUser(id);
+					inactiveUser(id, function(){ removeRowCallback(element, this); });
 				} else if(type == 'subcat'){
-					removeSubCat(id);
+					removeSubCat(id, function(){ removeRowCallback(element, this); });
 				} else if(type == 'userreports'){
-					deleteReports(id,'user')
+					deleteReports(id,'user', function(){ removeRowCallback(element, this); })
 				}
-				element.closest('tr')
+			}
+		});
+	});
+
+	function removeRowCallback(remove_btn, bootbox){
+		$(remove_btn).closest('tr')
 				.children('td')
 				.animate({ padding: 0 })
 				.wrapInner('<div />')
 				.children()
-				.slideUp(function() { $(this).closest('tr').remove(); });
-			}
-		});
-	});
+				.slideUp(function() { $(bootbox).closest('tr').remove(); });
+	}
 
 
 	// ================================================================================

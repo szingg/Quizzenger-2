@@ -40,7 +40,14 @@ class AjaxController {
 		switch ($this->template) {
 			// -------------------------------------------------------
 			case 'addrating_ajax':
-				$ret = $ratingModel->newRating($this->request['question_id'],$this->request['stars'],$this->request['comment'],$this->request['parent']);
+				//check Permissions
+				if(! $this->isLoggedin()) return;
+				$parent = $this->request['parent'];
+				$alreadyRated= $ratingModel->userHasAlreadyRated($this->request['question_id'] , $_SESSION ['user_id']);
+				if((!isset($parent) || !is_numeric($parent)) && $alreadyRated) return;
+
+				//make new rating
+				$ret = $ratingModel->newRating($this->request['question_id'], $this->request['stars'],$this->request['comment'],$parent);
 				break;
 			// -------------------------------------------------------
 			case 'categorylist_ajax':
@@ -55,16 +62,16 @@ class AjaxController {
 				break;
 			// -------------------------------------------------------
 			case 'remove_quizquestion':
-				$quizModel->removeQuestionFromQuiz($this->request['quiz'], $this->request['question']);
-				break;
+				$result = $quizModel->removeQuestionFromQuiz($this->request['quiz'], $this->request['question']);
+				return $this->sendJSONResponse(($result? 'success' : 'error'), '', '');
 			// -------------------------------------------------------
 			case 'remove_question':
-				$questionModel->removeQuestion($this->request['question']);
-				break;
+				$result = $questionModel->removeQuestion($this->request['question']);
+				return $this->sendJSONResponse(($result? 'success' : 'error'), '', '');
 			// -------------------------------------------------------
 			case 'remove_quiz':
-				$quizModel->removeQuiz($this->request['quiz']);
-				break;
+				$result = $quizModel->removeQuiz($this->request['quiz']);
+				return $this->sendJSONResponse(($result? 'success' : 'error'), '', '');
 			// -------------------------------------------------------
 			case 'remove_sub_cat':
 				$quizModel->removeQuiz($this->request['id']);
@@ -100,8 +107,7 @@ class AjaxController {
 				return $fileupload->processFileUpload();
 			case 'joinGame' :
 				$result = $gameModel->userJoinGame($_SESSION['user_id'], $this->request['gameid']);
-				$result == 0? $result = 'success' : 'error';
-				return $this->sendJSONResponse($result, '', '');
+				return $this->sendJSONResponse(($result == 0? 'success' : 'error'), '', '');
 			case 'leaveGame' :
 				$gameModel->userLeaveGame($_SESSION['user_id'], $this->request['gameid']);
 				break;
@@ -194,7 +200,7 @@ class AjaxController {
 	 * @param $message send an optional message
 	 * @param $data optional data
 	 */
-	private function sendJSONResponse($result, $message, $data) {
+	private function sendJSONResponse($result='', $message='', $data=''){
 		header('Content-Type: application/json');
 		echo json_encode(array('result' => $result, 'message' => $message, 'data' => $data));
 	}
@@ -238,6 +244,14 @@ class AjaxController {
 				$this->setGameend($game['id']);
 			}
 		}
+	}
+
+	/*
+	 * Checks if user is logged in.
+	 * @return Returns true if User is logged in, else false;
+	 */
+	public static function isLoggedin(){
+		return $GLOBALS ['loggedin'];
 	}
 }
 ?>
