@@ -12,6 +12,7 @@ namespace quizzenger\dispatching {
 	class ScoreDispatcher {
 		/**
 		 * Holds an instance to the database connection.
+		 * @var SqlHelper
 		**/
 		private $mysqli;
 

@@ -13,17 +13,20 @@ namespace quizzenger\dispatching {
 	class EventDispatcher {
 		/**
 		 * Holds an instance of the database connection.
+		 * @var SqlHelper
 		**/
 		private $mysqli;
 
 		/**
 		 * The score dispatcher used to accumulate scores.
+		 * @var ScoreDispatcher
 		**/
 		private $scoreDispatcher;
 
 		/**
 		 * The achievement dispatcher that iterates through all non-granted achievements
 		 * of the specific type of the event.
+		 * @var AchievementDispatcher
 		**/
 		private $achievementDispatcher;
 
