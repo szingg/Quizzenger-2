@@ -119,9 +119,11 @@ class AjaxController {
 				$fileupload = new FileUpload($_FILES);
 				return $fileupload->processFileUpload();
 			case 'joinGame' :
+				if(! $this->isLoggedin()) return;
 				$result = $gameModel->userJoinGame($_SESSION['user_id'], $this->request['gameid']);
 				return $this->sendJSONResponse(($result == 0? 'success' : 'error'), '', '');
 			case 'leaveGame' :
+				if(! $this->isLoggedin()) return;
 				$gameModel->userLeaveGame($_SESSION['user_id'], $this->request['gameid']);
 				break;
 			case 'startGame' :
@@ -134,6 +136,9 @@ class AjaxController {
 				break;
 			case 'getGameReport' :
 				$gameid = $this->request['gameid'];
+				//checkPermission
+				if(! $gameModel->isGameMember($_SESSION['user_id'], $gameid)) return;
+
 				$gameReport = $gameModel->getGameReport($gameid);
 				$gameinfo = $gameModel->getGameInfoByGameId($gameid)[0];
 
@@ -185,18 +190,8 @@ class AjaxController {
 				$data = $gameModel->getOpenGames();
 				return $this->sendJSONResponse('', '', $data);
 			case 'remove_game' :
-				$gameid = $this->request['gameid'];
-				if($gameModel->userIDhasPermissionOnGameId($_SESSION['user_id'], $gameid)){
-					if($gameModel->removeGame($gameid)){
-						return $this->sendJSONResponse('success', '', '');
-					}
-					else{
-						return $this->sendJSONResponse('error', 'failed to remove game id: '.$gameid, '');
-					}
-				}
-				return $this->sendJSONResponse('error', 'no permission on game id: '.$gameid, '');
-
-				break;
+				$result = $gameModel->removeGame($this->request['gameid']);
+				return $this->sendJSONResponse(($result? 'success' : 'error'));
 			case 'default' :
 			default :
 				break;

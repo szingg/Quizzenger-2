@@ -127,20 +127,20 @@ function ajaxGET(url){
 
 function ajaxGetJson(url, onSuccess, onError){
 	$.ajax({
-				url: url,
-				type: "GET",
-				contentType: false,
-				cache: false,
-				processData:false,
-				complete: function(response){
-					if(response.responseJSON === undefined || response.responseJSON.data === undefined
-						|| response.responseJSON.result != 'success'){
-						if(onError !== undefined) onError();
-						return;
-					}
-					if(onSuccess !== undefined) onSuccess();
-				}
-			});
+		url: url,
+		type: "GET",
+		contentType: false,
+		cache: false,
+		processData:false,
+		complete: function(response){
+			if(response.responseJSON === undefined || response.responseJSON.data === undefined
+				|| response.responseJSON.result != 'success'){
+				if(onError !== undefined) onError();
+				return;
+			}
+			if(onSuccess !== undefined) onSuccess();
+		}
+	});
 }
 
 function removeSubCat(id, onSuccess, onError){

@@ -42,12 +42,13 @@ namespace quizzenger\gamification\model {
 		 * @return Returns true if successful, else null
 		 */
 		public function removeGame($game_id){
-			if(isset($game_id)){
+			if(isset($game_id) && $this->userIDhasPermissionOnGameId($_SESSION['user_id'], $game_id)){
 				log::info('Removing Game with ID :'.$game_id);
-				$result = $this->mysqli->s_query('DELETE FROM gamesession WHERE id = ?',['i'], [$game_id]); //result of query is always false. But if no error occured it worked.
+				$this->mysqli->s_query('DELETE FROM gamesession WHERE id = ?',['i'], [$game_id]);	
 				return true;
 			}
 			else{
+				log::warning('Unauthorized try to remove game id :'.$game_id);
 				return false;
 			}
 		}
