@@ -1,6 +1,7 @@
 <?php
 use \quizzenger\controlling\EventController as EventController;
 use \quizzenger\utilities\FormatUtility as FormatUtility;
+use \quizzenger\logging\Log as Log;
 
 class AjaxController {
 	private $request = null;
@@ -26,7 +27,7 @@ class AjaxController {
 		$viewInner->setTemplate('defaultajax');
 
 		$ratingModel = new RatingModel($this->mysqli,$this->logger);
-		$categoryListModel = new CategoryModel($this->mysqli,$this->logger);
+		$categoryModel = new CategoryModel($this->mysqli,$this->logger);
 		$quizModel = new QuizModel($this->mysqli,$this->logger);
 		$questionModel = new QuestionModel($this->mysqli, $this->logger);
 		$sessionModel = new SessionModel ( $this->mysqli, $this->logger );
@@ -52,8 +53,8 @@ class AjaxController {
 			// -------------------------------------------------------
 			case 'categorylist_ajax':
 				$viewInner->setTemplate('categorylist_ajax');
-				$categories = $categoryListModel->getChildren($this->request['id']);
-				$categories = $categoryListModel->fillCategoryListWithQuestionCount($categories);
+				$categories = $categoryModel->getChildren($this->request['id']);
+				$categories = $categoryModel->fillCategoryListWithQuestionCount($categories);
 				if(isset($this->request['mode'])){
 					$viewInner->assign('mode', $this->request['mode']);
 				}
@@ -63,19 +64,26 @@ class AjaxController {
 			// -------------------------------------------------------
 			case 'remove_quizquestion':
 				$result = $quizModel->removeQuestionFromQuiz($this->request['quiz'], $this->request['question']);
-				return $this->sendJSONResponse(($result? 'success' : 'error'), '', '');
+				return $this->sendJSONResponse(($result? 'success' : 'error'));
 			// -------------------------------------------------------
 			case 'remove_question':
 				$result = $questionModel->removeQuestion($this->request['question']);
-				return $this->sendJSONResponse(($result? 'success' : 'error'), '', '');
+				return $this->sendJSONResponse(($result? 'success' : 'error'));
 			// -------------------------------------------------------
 			case 'remove_quiz':
 				$result = $quizModel->removeQuiz($this->request['quiz']);
-				return $this->sendJSONResponse(($result? 'success' : 'error'), '', '');
+				return $this->sendJSONResponse(($result? 'success' : 'error'));
 			// -------------------------------------------------------
 			case 'remove_sub_cat':
-				$quizModel->removeQuiz($this->request['id']);
-				break;
+				$cateogryId = $this->request['id'];
+				$trueChild = $categoryModel->isTrueChild($cateogryId);
+				if($trueChild){
+					$result = $categoryModel->removeCategory($cateogryId);
+				}
+				else{
+					$result = false;
+				}
+				return $this->sendJSONResponse(($result? 'success' : 'error'));
 			// -------------------------------------------------------
 			case 'inactive_user':
 				$retVal=$userModel->setUserInactiveByID($this->request['id']);

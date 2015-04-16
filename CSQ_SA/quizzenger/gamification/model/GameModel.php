@@ -3,7 +3,7 @@
 namespace quizzenger\gamification\model {
 	use \stdClass as stdClass;
 	use \SplEnum as SplEnum;
-	use \quizzenger\logging\Log as Log;
+	use \quizzenger\logging\Log as log;
 	use \SqlHelper as SqlHelper;
 
 	/*	@author Simon Zingg

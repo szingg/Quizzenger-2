@@ -143,12 +143,12 @@ function ajaxGetJson(url, onSuccess, onError){
 			});
 }
 
-function removeSubCat(id){
-	ajaxGET("index.php?view=remove_sub_cat&type=ajax&id=" + id);
+function removeSubCat(id, onSuccess, onError){
+	ajaxGetJson("index.php?view=remove_sub_cat&type=ajax&id=" + id, onSuccess, onError);
 }
 
-function inactiveUser(id){
-	ajaxGET("index.php?view=inactive_user&type=ajax&id=" + id);
+function inactiveUser(id, onSuccess, onError){
+	ajaxGetJson("index.php?view=inactive_user&type=ajax&id=" + id, onSuccess, onError);
 }
 
 function deleteReports(id, type, onSuccess, onError){
