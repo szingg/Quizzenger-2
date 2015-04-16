@@ -155,8 +155,8 @@ function deleteReports(id, type, onSuccess, onError){
 	ajaxGetJson("index.php?view=remove_reports&type=ajax&id=" + id +"&reporttype=" + type, onSuccess, onError);
 }
 function setWeight(weight, id){
-	ajaxGET("index.php?view=set_weight&type=ajax&id=" + id + "&weight=" + weight +"");
-	document.getElementById('dropdownWeight' + id).innerHTML = weight + " <span class=\"caret\"></span>";
+	ajaxGetJson("index.php?view=set_weight&type=ajax&id=" + id + "&weight=" + weight +"",
+		function(){ document.getElementById('dropdownWeight' + id).innerHTML = weight + " <span class=\"caret\"></span>"; });
 }
 
 function getReports(object_id, type){

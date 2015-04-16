@@ -1,3 +1,5 @@
+<h3>Quizdetail für <?php echo $this->_ ['quizinfo']['quizname']; ?></h3>
+<br>
 <div class="panel-group" id="accordion">
 	<div class="panel panel-default" id="panel1">
 		<a data-toggle="collapse" data-target="#collapseOne"

@@ -30,9 +30,29 @@ class QuestionModel {
 		return $result["count"]>0;
 	}
 
+	/*
+	 * Sets weight of a question in the quiztoquestion table.
+	 * @Precondition Please check if user has permission on the quiz
+	*/
 	public function setWeight($id, $weight){
-		$this->logger->log ( "Editing Weigth(".$weight.") for QuizToQuestion ID: ".$id, Logger::INFO );
-		return $this->mysqli->s_query("UPDATE quiztoquestion SET weight=? WHERE id=?",array('i','i'),array($weight, $id));
+		if($this->userIDhasPermissionOnQuizToQuestionID($id, $_SESSION['user_id'])){
+			$this->logger->log ( "Editing Weigth(".$weight.") for QuizToQuestion ID: ".$id, Logger::INFO );
+			$this->mysqli->s_query("UPDATE quiztoquestion SET weight=? WHERE id=?",array('i','i'),array($weight, $id));	
+			return true;
+		}
+		else{
+			$this->logger->log ( "Unauthorized try to edit weight for QuizToQuestion ID :".$id, Logger::WARNING );
+			return false;
+		}
+	}
+
+	public function userIDhasPermissionOnQuizToQuestionID($id,$user_id) {
+		$result = $this->mysqli->s_query('SELECT q.user_id AS owner FROM quiztoquestion qtq, quiz q WHERE q.id = qtq.quiz_id AND qtq.id =?',['i'],[$id]);
+		if($result){
+			$result = $this->mysqli->getSingleResult($result);
+			return $result['owner'] == $user_id;
+		}
+		return false;
 	}
 
 	public function getQuestion($id){

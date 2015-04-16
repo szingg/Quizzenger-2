@@ -89,18 +89,23 @@ class AjaxController {
 				$retVal=$userModel->setUserInactiveByID($this->request['id']);
 				if($retVal!=1){ // if not authorized -> dont remove reports
 					$reportModel->removeReportsByObject($this->request['id'], 'user', $_SESSION['user_id']);
+					$result = 'success';
 				}
-				break;
+				else{
+					$result = 'error';
+				}
+				return $this->sendJSONResponse($result);
 			// -------------------------------------------------------
 			case 'remove_reports':
+				//TODO: Berechtigung überprüfen: was darf Moderator, was darf Superuser?
 				if(isset($this->request['id'], $this->request['reporttype'])){
 					$reportModel->removeReportsByObject($this->request['id'], $this->request['reporttype'], $_SESSION['user_id']);
 				}
 				break;
 			// -------------------------------------------------------
 			case 'set_weight':
-				$questionModel->setWeight($this->request['id'], $this->request['weight']);
-				break;
+				$result = $questionModel->setWeight($this->request['id'], $this->request['weight']);
+				return $this->sendJSONResponse(($result? 'success' : 'error'));
 			// -------------------------------------------------------
 			case 'report_list':
 				if(isset($this->request['id'], $this->request['reporttype'])){
