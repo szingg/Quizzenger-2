@@ -47,6 +47,7 @@ input[type=radio].css-checkbox {
 }
 input[type=radio].css-checkbox-relative {
 	position: relative;
+	visibility: hidden;
 	left: 0px;
 }
 
@@ -197,10 +198,15 @@ div>a {
 	top:0px;
 }
 
+.rank-position-neutral{
+    margin-top: 0px;
+}
+
+
 .point {
 	vertical-align:top;
 	box-shadow: 0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
-	background: #cdcdcd;
+	background: #E0E0E0;
 	position:relative;
 	top:0px;
 }
@@ -218,6 +224,11 @@ div>a {
 	top: 50%;
 	margin-left: -24px;
 	margin-top: -24px;
+	opacity: 0.4;
+}
+
+.point-active img {
+	opacity: 1.0;
 }
 
 .point-rank {
@@ -289,6 +300,9 @@ div>a {
 	box-shadow: 0 0 3px #888;
 }
 
+.rank.achievement-tooltip:before {
+	margin-left: -28px;
+}
 .rank.achievement-tooltip:after {
 	width: 120px;
 }
@@ -304,4 +318,64 @@ div>a {
 #tableReportUserList img {
 	width: 32px;
 	height: 32px;
+}
+
+.game-report-row {
+	margin: 5px 5px;
+	padding: 10px 0;
+}
+
+.game-report-active {
+	background-color: #FAFAFA;
+}
+
+.game-report-progress {
+	margin: 0;
+}
+
+.width-3 {
+	width: 25%;
+}
+
+.pos-relative {
+	position: relative;
+}
+
+.pos-absolute {
+	position: absolute;
+}
+
+.countdown-title {
+	color: black;
+	margin-right: 5px;
+}
+
+.progress-bar-title {
+	color: black;
+	text-align: center;
+	width: 100%;
+	height: 100%;
+	font-size: 12px;
+	line-height: 20px;
+	overflow: hidden;
+	text-shadow: 1px 1px 1px #FFFFFF;
+}
+
+.progress-bar-togo {
+	color: black;
+	float: left;
+	text-align: center;
+	width: 0;
+	height: 100%;
+	font-size: 12px;
+	line-height: 20px;
+	overflow: hidden;
+}
+
+.progress-bar-white {
+	background-color: white
+}
+
+.display-inline-block {
+	display: inline-block;
 }

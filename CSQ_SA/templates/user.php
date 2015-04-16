@@ -12,6 +12,17 @@
 	if (isset($this->_['message'])){
 		echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($this->_['message']).'</div>';
 	}
+
+	$ranks = [];
+	$activeRanks = [];
+	while($current = $rankList->fetch_object()):
+		$ranks[] = $current;
+		if($userScore >= $current->threshold){
+			$activeRanks[$current->threshold] = $current;
+		}
+	endwhile;
+	$userRankIndex = max(array_keys($activeRanks));
+	$userRank = $activeRanks[$userRankIndex];
 ?>
 <div class="panel panel-default">
 	<div class="panel-heading"><strong><?php echo htmlspecialchars($user['username']);?></strong>
@@ -26,15 +37,32 @@
   				<div class="col-md-6">
 					<h4><img alt="ribbon" src="<?=APP_PATH?>/templates/img/ribbon.png"> Punkte pro Kategorie</h4>
 					<table style="width:100%">
+						<tr>
+							<th>Kategorie</th>
+							<th>Punktzahl</th>
+							<th>Rang</th>
+						</tr>
 						<?php
 							foreach($categoryscores as $catScore){
-								echo('<tr><td width="180px">'.htmlspecialchars($catScore['name'])."</td>");
-								echo("<td>".'<span class="badge alert-success">'.htmlspecialchars($catScore['score'])."</span></td></tr>");
+								echo '<tr>';
+								echo '<td>' . htmlspecialchars($catScore['name']) . '</td>';
+								echo '<td><span class="badge alert-success">' . htmlspecialchars($catScore['score']) . '</span></td>';
+								echo '<td><span class="badge alert-info">' . '&#9733;&nbsp;' . htmlspecialchars("{$catScore['rank']} / {$catScore['user_count']}") . '</span></td>';
+								echo '</tr>';
 							}
 						?>
 					</table>
-					<br><h4>Gesamtpunktezahl <?= ' <span class="badge alert-success">'.htmlspecialchars($userScore).'</span>'?></h4><br>
-
+					<br><h4>Gesamtpunktezahl <?= ' <span class="badge alert-success">'.htmlspecialchars($userScore).'</span>'?></h4>
+					<div class="btn-group hidden-lg hidden-md" >
+						<h4 class="pull-left">Rang </h4>
+						<div class="rank rank-position-neutral"  data-tooltip-title="<?php echo htmlspecialchars($userRank->name); ?>"
+							data-tooltip-text="<?php echo htmlspecialchars("{$userRank->threshold} Punkte"); ?>">
+							<div class="point point-rank clickable point-active">
+								<img src="<?php echo RANK_PATH . "/{$userRank->image}." . RANK_IMAGE_EXTENSION; ?>"></img>
+							</div>
+						</div>
+						<br>
+					</div>
 				</div>
   				<div class="col-md-6">
 					<?php
@@ -58,14 +86,16 @@
 			</div>
 			<div class="scrollable">
 				<div class="rankbar hidden-xs hidden-sm">
-					<?php while($current = $rankList->fetch_object()): ?>
+					<?php
+					foreach($ranks as $current){
+					?>
 						<div class="rank" data-tooltip-title="<?php echo htmlspecialchars($current->name); ?>"
 							data-tooltip-text="<?php echo htmlspecialchars("{$current->threshold} Punkte"); ?>">
 							<div class="point point-rank clickable <?php echo $userScore >= $current->threshold ? 'point-active' : ''; ?>">
 								<img src="<?php echo RANK_PATH . "/{$current->image}." . RANK_IMAGE_EXTENSION; ?>"></img>
 							</div>
 						</div>
-					<?php endwhile; ?>
+					<?php } ?>
 				</div>
 			</div>
 			<hr>
@@ -93,7 +123,6 @@
 				<div id="collapseChangePassword" class="panel-collapse collapse">
 					<div class="panel-body">
 						<strong>Email:</strong> <?php echo htmlspecialchars($user['email']);?><br>
-						<strong>ID:</strong> <?php echo htmlspecialchars($user['id']);?><br>
 						<br>
 						<form class="change_password_form" action="./index.php?view=processChangepassword"  method="post" id="change_password_form" name="change_password_form">
 			          		<div class="form-group">

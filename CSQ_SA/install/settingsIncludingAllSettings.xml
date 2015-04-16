@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<quizzenger version="2.0">
+	<eventtriggers>
+		<eventtrigger name="always">
+			<producer_score>0</producer_score>
+			<consumer_score>0</consumer_score>
+		</eventtrigger>
+		<eventtrigger name="game-question-answered-correct">
+			<producer_score>0</producer_score>
+			<consumer_score>20</consumer_score>
+		</eventtrigger>
+		<eventtrigger name="question-answered-correct">
+			<producer_score>0</producer_score>
+			<consumer_score>10</consumer_score>
+		</eventtrigger>
+		<eventtrigger name="question-created">
+			<producer_score>30</producer_score>
+			<consumer_score>0</consumer_score>
+		</eventtrigger>
+		<eventtrigger name="quiz-end">
+			<producer_score>0</producer_score>
+			<consumer_score>0</consumer_score>
+		</eventtrigger>
+		<eventtrigger name="game-end">
+			<producer_score>0</producer_score>
+			<consumer_score>0</consumer_score>
+		</eventtrigger>
+		<eventtrigger name="game-start">
+			<producer_score>0</producer_score>
+			<consumer_score>0</consumer_score>
+		</eventtrigger>
+	</eventtriggers>
+	<achievements>
+		<achievement type="QuestionAnsweredCorrect">
+			<name>Erste Frage!</name>
+			<description>Du hast deine erste Frage korrekt beantwortet.</description>
+			<sort_order>1</sort_order>
+			<image>achievement-question-answered-1</image>
+			<arguments>
+				<argument name="question-count" value="1" />
+			</arguments>
+			<bonus_score>10</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionAnsweredCorrect">
+			<name>10 Fragen!</name>
+			<description>Du hast 10 Fragen korrekt beantwortet.</description>
+			<sort_order>10</sort_order>
+			<image>achievement-question-answered-10</image>
+			<arguments>
+				<argument name="question-count" value="10" />
+			</arguments>
+			<bonus_score>50</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionAnsweredCorrect">
+			<name>50 Fragen!</name>
+			<description>Du hast 50 Fragen korrekt beantwortet.</description>
+			<sort_order>50</sort_order>
+			<image>achievement-question-answered-50</image>
+			<arguments>
+				<argument name="question-count" value="50" />
+			</arguments>
+			<bonus_score>200</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionAnsweredCorrect">
+			<name>100 Fragen!</name>
+			<description>Du hast 100 Fragen korrekt beantwortet.</description>
+			<sort_order>100</sort_order>
+			<image>achievement-question-answered-100</image>
+			<arguments>
+				<argument name="question-count" value="100" />
+			</arguments>
+			<bonus_score>500</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionAnsweredCorrect">
+			<name>200 Fragen!</name>
+			<description>Du hast 200 Fragen korrekt beantwortet.</description>
+			<sort_order>200</sort_order>
+			<image>achievement-question-answered-200</image>
+			<arguments>
+				<argument name="question-count" value="200" />
+			</arguments>
+			<bonus_score>2000</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionAnsweredCorrect">
+			<name>500 Fragen!</name>
+			<description>Du hast 500 Fragen korrekt beantwortet.</description>
+			<sort_order>500</sort_order>
+			<image>achievement-question-answered-500</image>
+			<arguments>
+				<argument name="question-count" value="500" />
+			</arguments>
+			<bonus_score>5000</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionAnsweredCorrect">
+			<name>1000 Fragen!</name>
+			<description>Du hast 1000 Fragen korrekt beantwortet.</description>
+			<sort_order>1000</sort_order>
+			<image>achievement-question-answered-1000</image>
+			<arguments>
+				<argument name="question-count" value="1000" />
+			</arguments>
+			<bonus_score>10000</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="DateTime">
+			<name>Weihnachtsmann</name>
+			<description>Du hast eine Frage an Weihnachten korrekt gelöst.</description>
+			<sort_order>0</sort_order>
+			<image>date-christmas</image>
+			<arguments>
+				<argument name="date-time" value="*-12-24-*-*-*" />
+			</arguments>
+			<bonus_score>1000</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="always" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameWin">
+			<name>Game gewinnen</name>
+			<description>Gewinne ein Game mit 2 Teilnehmern</description>
+			<sort_order>2</sort_order>
+			<image>achievement-game-win-2</image>
+			<arguments>
+				<argument name="member-count" value="2" />
+			</arguments>
+			<bonus_score>20</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-end" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameWin">
+			<name>Game gewinnen</name>
+			<description>Gewinne ein Game mit 5 Teilnehmern</description>
+			<sort_order>5</sort_order>
+			<image>achievement-game-win-5</image>
+			<arguments>
+				<argument name="member-count" value="5" />
+			</arguments>
+			<bonus_score>100</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-end" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameWin">
+			<name>Game gewinnen</name>
+			<description>Gewinne ein Game mit 10 Teilnehmern</description>
+			<sort_order>10</sort_order>
+			<image>achievement-game-win-10</image>
+			<arguments>
+				<argument name="member-count" value="10" />
+			</arguments>
+			<bonus_score>250</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-end" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameWin">
+			<name>Game gewinnen</name>
+			<description>Gewinne ein Game mit 20 Teilnehmern</description>
+			<sort_order>20</sort_order>
+			<image>achievement-game-win-20</image>
+			<arguments>
+				<argument name="member-count" value="20" />
+			</arguments>
+			<bonus_score>500</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-end" />
+			</eventtriggers>
+		</achievement>
+				<achievement type="GameWinFastest">
+			<name>Game am schnellsten gewinnen</name>
+			<description>Gewinne ein Game mit 2 Teilnehmern am schnellsten</description>
+			<sort_order>2</sort_order>
+			<image>achievement-game-win-fastest-2</image>
+			<arguments>
+				<argument name="member-count" value="2" />
+			</arguments>
+			<bonus_score>40</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-end" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameWinFastest">
+			<name>Game am schnellsten gewinnen</name>
+			<description>Gewinne ein Game mit 5 Teilnehmern am schnellsten</description>
+			<sort_order>5</sort_order>
+			<image>achievement-game-win-fastest-5</image>
+			<arguments>
+				<argument name="member-count" value="5" />
+			</arguments>
+			<bonus_score>200</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-end" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameWinFastest">
+			<name>Game am schnellsten gewinnen</name>
+			<description>Gewinne ein Game mit 10 Teilnehmern am schnellsten</description>
+			<sort_order>10</sort_order>
+			<image>achievement-game-win-fastest-10</image>
+			<arguments>
+				<argument name="member-count" value="10" />
+			</arguments>
+			<bonus_score>500</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-end" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameWinFastest">
+			<name>Game am schnellsten gewinnen</name>
+			<description>Gewinne ein Game mit 20 Teilnehmern am schnellsten</description>
+			<sort_order>20</sort_order>
+			<image>achievement-game-win-fastest-20</image>
+			<arguments>
+				<argument name="member-count" value="20" />
+			</arguments>
+			<bonus_score>1000</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-end" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameHosting">
+			<name>Game hosten</name>
+			<description>Ein Game mit mindestens 5 Teilnehmern hosten</description>
+			<sort_order>5</sort_order>
+			<image>achievement-game-hosting-5</image>
+			<arguments>
+				<argument name="member-count" value="5" />
+			</arguments>
+			<bonus_score>50</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-start" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameHosting">
+			<name>Game hosten</name>
+			<description>Ein Game mit mindestens 10 Teilnehmern hosten</description>
+			<sort_order>10</sort_order>
+			<image>achievement-game-hosting-10</image>
+			<arguments>
+				<argument name="member-count" value="10" />
+			</arguments>
+			<bonus_score>200</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-start" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameHosting">
+			<name>Game hosten</name>
+			<description>Ein Game mit mindestens 20 Teilnehmern hosten</description>
+			<sort_order>20</sort_order>
+			<image>achievement-game-hosting-20</image>
+			<arguments>
+				<argument name="member-count" value="20" />
+			</arguments>
+			<bonus_score>500</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-start" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameDefeatHost">
+			<name>Game-Host schlagen</name>
+			<description>Sei besser als der Game-Host</description>
+			<sort_order>0</sort_order>
+			<image>achievement-game-defeat-host</image>
+			<arguments>
+			</arguments>
+			<bonus_score>50</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-end" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GamePerfect">
+			<name>Perfektes Spiel</name>
+			<description>Beantworte alle Fragen eines Games korrekt</description>
+			<sort_order>0</sort_order>
+			<image>achievement-game-perfect</image>
+			<arguments>
+			</arguments>
+			<bonus_score>100</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-end" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuizPerfect">
+			<name>Perfektes Quiz</name>
+			<description>Beantworte alle Fragen eines Quizzes korrekt</description>
+			<sort_order>0</sort_order>
+			<image>achievement-quiz-perfect</image>
+			<arguments>
+			</arguments>
+			<bonus_score>100</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="quiz-end" />
+			</eventtriggers>
+		</achievement>
+	</achievements>
+	<ranks>
+		<rank name="Neuling" threshold="0" image="newbie" />
+		<rank name="Besucher" threshold="1000" image="visitor" />
+		<rank name="Einsteiger" threshold="2500" image="beginner" />
+		<rank name="Aufsteiger" threshold="5000" image="climber" />
+		<rank name="Fragekenner" threshold="8000" image="adept" />
+		<rank name="Alleskönner" threshold="12000" image="all-rounder" />
+		<rank name="Profi" threshold="18000" image="pro" />
+		<rank name="Veteran" threshold="26000" image="veteran" />
+		<rank name="Meister" threshold="34000" image="master" />
+		<rank name="Baron" threshold="44000" image="baron" />
+		<rank name="Legende" threshold="60000" image="legend" />
+	</ranks>
+</quizzenger>

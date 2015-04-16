@@ -6,6 +6,8 @@ namespace quizzenger\gamification\controller {
 	use \mysqli as mysqli;
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+	use \quizzenger\utilities\PermissionUtility as PermissionUtility;
 	use \quizzenger\gamification\model\GameModel as GameModel;
 
 
@@ -25,59 +27,56 @@ namespace quizzenger\gamification\controller {
 			$this->quizModel = new \QuizModel($this->sqlhelper, log::get()); // Backslash means: from global Namespace
 			$this->gameModel = new GameModel($this->sqlhelper);
 			$this->request = array_merge ( $_GET, $_POST );
-			
+
 			$this->gameid = $this->request ['gameid'];
 			$this->gameinfo = $this->getGameInfo();
-			
+
 		}
 		public function loadView(){
-			checkLogin();
-			
+			PermissionUtility::checkLogin();
+
 			$this->loadGameStartView();
-			
-			$this->loadAdminView();
-			
+
 			$this->setGameSession();
-			
+
 			return $this->view;
 		}
-		
+
 		private function loadGameStartView(){
 			$this->view->setTemplate ( 'gamestart' );
-			
-			$this->checkGameStarted($this->gameinfo['has_started']);
+
+			$this->checkGameStarted($this->gameinfo['starttime']);
 			$this->view->assign ( 'gameinfo', $this->gameinfo );
-			
+
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
 			$this->view->assign ( 'isMember', $isMember );
-			
+
+			$isOwner = $this->isGameOwner($this->gameinfo['owner_id']);
+			$this->view->assign ( 'isOwner', $isOwner );
+
 			$members = $this->gameModel->getGameMembersByGameId($this->gameid);
 			$this->view->assign ( 'members', $members );
-			
+
 		}
 		private function setGameSession(){
-			$_SESSION ['gamequestions'.$this->gameid] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
-			$_SESSION ['gamecounter'.$this->gameid] = 0;
-			
+			$_SESSION [$this->gameid.'gamequestions'] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
+			$_SESSION [$this->gameid.'gamecounter'] = 0;
+			//$_SESSION ['game'][$this->gameid]['gamequestions'] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
+			//$_SESSION ['game'][$this->gameid]['gamecounter'] = 0;
+			$_SESSION ['game'][$this->gameid]['gamequestions'] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
+			$_SESSION ['game'][$this->gameid]['gamecounter'] = 0;
+			$_SESSION ['game'][0]['gamecounter'] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
+			$_SESSION ['test']['test']['gamequestions'] = $this->quizModel->getQuestionArray ( $this->gameinfo['quiz_id'] );
+			$_SESSION ['game'][$this->gameid]['gamecounter'] = 0;
+
 		}
-		private function loadAdminView(){
-			$adminView = "";
-			if($this->isGameOwner($this->gameinfo['owner_id'])){
-				$adminView = new \View();
-				$adminView->setTemplate ( 'gameadmin' );
-				$adminView->assign('gameinfo', $this->gameinfo);
-					
-				$adminView = $adminView->loadTemplate();
-			}
-			$this->view->assign ( 'adminView', $adminView );
-		}
-		
+
 		/*
 		 * Gets the Gameinfo. Redirects to errorpage when no result returned.
 		 */
 		private function getGameInfo(){
 			$gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
-			if(count($gameinfo) <= 0) redirectToErrorPage('err_db_query_failed');
+			if(count($gameinfo) <= 0) NavigationUtility::redirectToErrorPage('err_db_query_failed');
 			else return $gameinfo[0];
 		}
 
@@ -87,7 +86,7 @@ namespace quizzenger\gamification\controller {
 
 		private function checkGameStarted($has_started){
 			if ( isset($has_started)) {
-				redirectToErrorPage('err_game_has_started');
+				NavigationUtility::redirectToErrorPage('err_game_has_started');
 			}
 		}
 	} // class GameController

@@ -6,6 +6,8 @@ namespace quizzenger\gamification\controller {
 	use \mysqli as mysqli;
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+	use \quizzenger\utilities\PermissionUtility as PermissionUtility;
 	use \quizzenger\gamification\model\GameModel as GameModel;
 
 	class GameNewController{
@@ -19,23 +21,35 @@ namespace quizzenger\gamification\controller {
 			$this->view = $view;
 			$this->sqlhelper = new SqlHelper(log::get());
 			$this->quizModel = new \QuizModel($this->sqlhelper, log::get()); // Backslash means: from global Namespace
-			$this->gameModel = new GameModel($this->sqlhelper, $this->quizModel);
+			$this->gameModel = new GameModel($this->sqlhelper);
 			$this->request = array_merge ( $_GET, $_POST );
 
 		}
 
 		public function loadView(){
-			checkLogin();
-			
+			PermissionUtility::checkLogin();
+
 			$quiz_id = $this->request ['quizid'];
 			$gamename = $this->request ['gamename'];
-			
+			$gameduration = $this->request ['gameduration'];
+			$gameduration < MIN_GAME_DURATION_MINUTES ? $gameduration = MIN_GAME_DURATION_MINUTES : '';
+			$gameduration > MAX_GAME_DURATION_MINUTES ? $gameduration = MAX_GAME_DURATION_MINUTES : '';
+			$hours = (string)((int) ($gameduration / 60));
+			$minutes = (string) ($gameduration % 60);
+			$time = (string)$hours.':'.$minutes.':00';
+			/*
+			$timetry = ''.((int) ($gameduration / 60)).':'.($gameduration % 60).':00';
+			//$time = strtotime("+1 week 2 days 4 hours 2 seconds");
+			$strtotime = strtotime($gameduration.' minutes')-strtotime("now");
+			$mysql_time = date('H:i:s',$gameduration*60);
+			//$time2 = DateTime::createFromFormat( 'H:i:s', $duration);
+*/
 			$this->checkPermission($quiz_id);
-			$gameid = $this->gameModel->getNewGameSessionId($quiz_id, $gamename);
+			$gameid = $this->gameModel->getNewGameSessionId($quiz_id, $gamename, $time);
 
 			$this->redirect($gameid);
 		}
-		
+
 		/*
 		 * Checks Permission for given quiz id. dies if not permitted
 		 */
@@ -49,10 +63,10 @@ namespace quizzenger\gamification\controller {
 
 		private function redirect($gameid){
 			if($gameid == null){
-				redirectToErrorPage('err_db_query_failed');
+				NavigationUtility::redirectToErrorPage('err_db_query_failed');
 			}
 			else{
-				redirect('./index.php?view=GameStart&gameid=' . $gameid);
+				NavigationUtility::redirect('./index.php?view=GameStart&gameid=' . $gameid);
 			}
 		}
 	} // class GameController

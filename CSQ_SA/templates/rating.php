@@ -1,5 +1,6 @@
-
 <?php
+	use \quizzenger\utilities\FormatUtility as FormatUtility;
+
 	$ratings = $this->_ ['ratings'];
 	$comments = $this->_ ['comments'];
 	$meanRating = $this->_ ['meanRating'];
@@ -10,7 +11,7 @@
 	if(empty($ratings)){
 		echo("Es wurden noch keine Kommentare oder Bewertungen abgegeben<br><br>");
 	} else {
-		echo("Durchschnittliche Bewertung: [".number_format(($meanRating), 1, ".", "." )."] ".createStarsString($meanRating)."<br><hr>");
+		echo("Durchschnittliche Bewertung: [".FormatUtility::formatNumber($meanRating, 1)."] ".createStarsString($meanRating)."<br><hr>");
 		?><ul class="list-group"><?php
 		foreach ($ratings as $rating){
 			?>
@@ -89,7 +90,7 @@
 		$suString= ($rating['issuperuser'])?'<img alt="Sueruser" src="'.htmlspecialchars(APP_PATH).'/templates/img/superuser.png">':"" ;
 
 
-		$strng2=$rating['author'].'</a>'.$modString.$suString.' am '.$rating['created'];
+		$strng2=$rating['author'].'</a>'.$modString.$suString.' am '.htmlspecialchars($rating['created']);
 		if($userIsModHere){
 			$strng2=$strng2.'<button type="button" class="btn btn-link btn-xs" data-toggle="modal" data-target="#removeRatingDialog" onClick="setRemoveRating('.$rating['id'].')"><span class="glyphicon glyphicon-remove"></span></button>';
 		}
@@ -101,7 +102,7 @@
 				$strng2=$strng2.(createStarsString($rating['stars'])."<br>");
 		}
 		if($rating['comment']!=null){
-			$strng2=$strng2.$rating['comment']."<br>";
+			$strng2=$strng2.htmlspecialchars($rating['comment'])."<br>";
 		}
 		return $strng.$strng2."<br>";
 	}

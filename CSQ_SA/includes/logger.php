@@ -10,7 +10,7 @@ class Logger {
 	const FATAL = '[FATAL]';
 	public function __construct() {
 		$today = date("Y-m-d");
-		$filePath= LOGPATH.$today.".log";
+		$filePath= LOGPATH . DIRECTORY_SEPARATOR . $today . '.log';
 		if (is_null ( $this->fileHandle )) {
 			$this->openLogFile ($filePath);
 		}

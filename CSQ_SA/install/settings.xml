@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<quizzenger version="2.0">
+	<eventtriggers>
+		<eventtrigger name="always">
+			<producer_score>0</producer_score>
+			<consumer_score>0</consumer_score>
+		</eventtrigger>
+		<eventtrigger name="game-question-answered-correct">
+			<producer_score>0</producer_score>
+			<consumer_score>20</consumer_score>
+		</eventtrigger>
+		<eventtrigger name="question-answered-correct">
+			<producer_score>0</producer_score>
+			<consumer_score>10</consumer_score>
+		</eventtrigger>
+		<eventtrigger name="question-created">
+			<producer_score>30</producer_score>
+			<consumer_score>0</consumer_score>
+		</eventtrigger>
+		<eventtrigger name="quiz-end">
+			<producer_score>0</producer_score>
+			<consumer_score>0</consumer_score>
+		</eventtrigger>
+		<eventtrigger name="game-end">
+			<producer_score>0</producer_score>
+			<consumer_score>0</consumer_score>
+		</eventtrigger>
+		<eventtrigger name="game-start">
+			<producer_score>0</producer_score>
+			<consumer_score>0</consumer_score>
+		</eventtrigger>
+	</eventtriggers>
+	<achievements>
+		<achievement type="GamePerfect">
+			<name>Perfektes Spiel</name>
+			<description>Beantworte alle Fragen eines Games korrekt</description>
+			<sort_order>0</sort_order>
+			<image>achievement-game-perfect</image>
+			<arguments>
+			</arguments>
+			<bonus_score>100</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-end" />
+			</eventtriggers>
+		</achievement>
+	</achievements>
+	<ranks>
+	</ranks>
+</quizzenger>

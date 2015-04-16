@@ -1,4 +1,6 @@
 <?php
+	use \quizzenger\utilities\FormatUtility as FormatUtility;
+
 	$user = $this->_['user'];
 	$userList = $this->_['userlist'];
 	$questionList = $this->_['questionlist'];
@@ -27,7 +29,9 @@
 			<li role="presentation" class="active"><a href="#tab-user-report" role="tab" data-toggle="tab"><b>Benutzer</b></a></li>
 			<li role="presentation"><a href="#tab-question-report" role="tab" data-toggle="tab"><b>Fragen</b></a></li>
 			<li role="presentation"><a href="#tab-author-report" role="tab" data-toggle="tab"><b>Autoren</b></a></li>
+			<?php if($user['superuser']): ?>
 			<li role="presentation"><a href="#tab-system-report" role="tab" data-toggle="tab"><b>System</b></a></li>
+			<?php endif; ?>
 		</ul>
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active" id="tab-user-report">
@@ -75,6 +79,13 @@
 									echo "</tr>";
 								}
 							?>
+							<?php if($categoryId != 0): ?>
+								<script>
+									(function() {
+										$('#tableReportUserList').DataTable().column(3).visible(false);
+									})();
+								</script>
+							<?php endif; ?>
 						</tbody>
 					</table>
 				</div>
@@ -110,11 +121,11 @@
 									$outputRow("{$current->created} ({$current->last_modified})");
 
 									if($current->ratingcount != 0)
-										$outputRow(number_format((float)$current->rating / (float)$current->ratingcount, 1, '.', ''));
+										$outputRow(FormatUtility::formatNumber((float)$current->rating / (float)$current->ratingcount, 1));
 									else
 										$outputRow('');
 
-									$outputRow(number_format($current->difficulty, 2, '.', ''));
+									$outputRow(FormatUtility::formatNumber($current->difficulty, 2));
 									$outputRow($current->solved_count);
 									echo '</tr>';
 								}
@@ -145,8 +156,8 @@
 
 									$outputRow($current->question_count);
 									$outputRow($current->rating_average == '' ? ''
-										: number_format($current->rating_average, 2, '.', ''));
-									$outputRow(number_format($current->difficulty_average, 2, '.', ''));
+										: FormatUtility::formatNumber($current->rating_average, 2));
+									$outputRow(FormatUtility::formatNumber($current->difficulty_average, 2, '.'));
 									echo '</tr>';
 								}
 							?>
@@ -154,13 +165,14 @@
 					</table>
 				</div>
 			</div>
+			<?php if($user['superuser']): ?>
 			<div role="tabpanel" class="tab-pane" id="tab-system-report">
 				<div class="panel-body">
 					<p><b>System Status</b></p>
 					<pre><code><?php
 						echo date('Y-m-d H:i:s') . "\n"
-							. "Attachment Memory Usage : " . number_format($systemStatus->attachment_usage / 1000000.0, 2, '.', '') . "M\n"
-							. "Database Memory Usage   : " . number_format($systemStatus->database_usage / 1000000.0, 2, '.', '') . "M\n"
+							. "Attachment Memory Usage : " . FormatUtility::formatNumber($systemStatus->attachment_usage / 1000000.0, 2) . "M\n"
+							. "Database Memory Usage   : " . FormatUtility::formatNumber($systemStatus->database_usage / 1000000.0, 2) . "M\n"
 							. "Login Attempts (24h)    : " . $systemStatus->login_attempts . "\n"
 					?></code></pre>
 					<p><b>Log Files</b></p>
@@ -168,13 +180,14 @@
 						<?php
 							foreach($systemStatus->log_files as $log) {
 								$log = htmlspecialchars($log);
-								$filename = htmlspecialchars(APP_PATH) . '/log/' . $log;
+								$filename = htmlspecialchars(APP_PATH . '/index.php?view=syslog&logfile=' . $log);
 								echo "<li><a href=\"$filename\">$log</a></li>";
 							}
 						?>
 					</ul>
 				</div>
 			</div>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>

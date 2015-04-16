@@ -6,13 +6,15 @@ namespace quizzenger\gamification\controller {
 	use \mysqli as mysqli;
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+	use \quizzenger\utilities\PermissionUtility as PermissionUtility;
 	use \quizzenger\gamification\model\GameModel as GameModel;
 
 	class GameSolutionController{
 		private $view;
 		private $sqlhelper;
 		private $request;
-		
+
 		private $gameModel;
 		private $questionModel;
 		private $quizModel;
@@ -20,10 +22,10 @@ namespace quizzenger\gamification\controller {
 		private $reportModel;
 		private $categoryModel;
 		//private $userModel;
-		
+
 		private $gameid;
 		private $gamequestions;
-		private $gamecounter; 
+		private $gamecounter;
 		private $gameinfo;
 
 		public function __construct($view) {
@@ -41,8 +43,8 @@ namespace quizzenger\gamification\controller {
 
 			$this->checkGameSessionParams();
 			$this->gameid = $this->request ['gameid'];
-			$this->gamequestions = $_SESSION['gamequestions'.$this->gameid];
-			$this->gamecounter = $_SESSION['gamecounter'.$this->gameid];
+			$this->gamequestions = $_SESSION ['game'][$this->gameid]['gamequestions'];
+			$this->gamecounter = $_SESSION ['game'][$this->gameid]['gamecounter'];
 			$this->gameinfo = $this->getGameInfo();
 		}
 		public function loadView(){
@@ -52,28 +54,28 @@ namespace quizzenger\gamification\controller {
 
 			$this->loadSolutionView();
 
-			$this->loadAdminView();
+			$this->loadReportView();
 
 			return $this->view;
 		}
-		
+
 		private function loadSolutionView(){
 			$solutionView = new \View();
 			$solutionView->setTemplate ( 'solution' );
-			
+
 			$questionID = $this->gamequestions[$this->gamecounter];
 			$solutionView->assign ( 'questionID', $questionID );
 			$question = $this->questionModel->getQuestion ( $questionID );
 			$solutionView->assign ( 'question', $question );
-			
+
 			$categoryName = $this->categoryModel->getNameByID ( $question ['category_id'] );
 			$solutionView->assign ( 'category', $categoryName );
-			
+
 			$answers = $this->answerModel->getAnswersByQuestionID ( $questionID );
 			$solutionView->assign ( 'answers', $answers );
 			$selectedAnswer = $this->request ['answer'];
 			$solutionView->assign ( 'selectedAnswer', $selectedAnswer );
-			
+
 			$alreadyReported= $this->reportModel->checkIfUserAlreadyDoneReport("question", $questionID , $_SESSION ['user_id']);
 			$solutionView->assign ('alreadyreported',$alreadyReported);
 
@@ -94,23 +96,23 @@ namespace quizzenger\gamification\controller {
 				// Implement other Strategies if other question types are desired
 				$correct = ($correctAnswer == $selectedAnswer ? 100 : 0);
 				$this->questionModel->InsertQuestionPerformance ( $questionID, $_SESSION ['user_id'], $correct, null, $this->gameid );
-				$_SESSION['gamecounter'.$this->gameid] =  $this->gamecounter + 1;
-				$this->gamecounter = $_SESSION['gamecounter'.$this->gameid];
+				$_SESSION ['game'][$this->gameid]['gamecounter'] =  $this->gamecounter + 1;
+				$this->gamecounter = $_SESSION ['game'][$this->gameid]['gamecounter'];
 			}
 			//$_SESSION['gamecounter'] += $inc_counter;
-			
+
 			$questionCount = count ( $this->gamequestions );
 			$solutionView->assign ( 'questioncount', $questionCount );
 			$solutionView->assign ( 'currentcounter', $this->gamecounter );
 			$progress = round ( 100 * ($this->gamecounter / $questionCount) );
 			$solutionView->assign ( 'progress', $progress );
-	
+
 			if ($questionCount > $this->gamecounter) {
 				$solutionView->assign ( 'nextQuestion', '?view=GameQuestion&gameid='.$this->gameid);
 			} else {
 				$solutionView->assign ( 'nextQuestion', '?view=GameEnd&gameid='.$this->gameid);
 			}
-			
+
 			$solutionView->assign ( 'ratingView', '');
 			/* DELETE
 			//not in quiz context
@@ -118,64 +120,77 @@ namespace quizzenger\gamification\controller {
 			if(!$pageWasRefreshed){
 				$questionModel->InsertQuestionPerformance ( $this->request ['id'], $_SESSION ['user_id'], $correct, NULL);
 			}*/
-			
+
 			$this->view->assign ( 'solutionView', $solutionView->loadTemplate() );
 		}
-		
-		private function loadAdminView(){
-			$adminView = "";
-			if($this->isGameOwner($this->gameinfo['owner_id'])){
-				$adminView = new \View();
-				$adminView->setTemplate ( 'gameadmin' );
-				$adminView->assign('gameinfo', $this->gameinfo);
-					
-				$adminView = $adminView->loadTemplate();
-			}
-			$this->view->assign ( 'adminView', $adminView );
+
+		private function loadReportView(){
+			$reportView = new \View();
+			$reportView->setTemplate ( 'gamereport' ); 
+			/*
+			$reportView->assign('gameinfo', $this->gameinfo);
+			$gameReport = $this->gameModel->getGameReport($this->gameid);
+			$reportView->assign('gamereport', $gameReport);
+
+			$now = date("Y-m-d H:i:s");
+			$durationSec = FormatUtility::timeToSeconds($this->gameinfo['duration']);
+			$timeToEnd = strtotime($this->gameinfo['calcEndtime']) - strtotime($now);
+			$progressCountdown = (int) (100 / $durationSec * $timeToEnd);
+			$reportView->assign( 'timeToEnd', $timeToEnd);
+			$reportView->assign( 'progressCountdown', $progressCountdown);
+			*/
+
+			$this->view->assign ( 'reportView', $reportView->loadTemplate() );
 		}
-		
+
 		/*
 		 * Gets the Gameinfo. Redirects to errorpage when no result returned.
 		 */
 		private function getGameInfo(){
 			$gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
-			if(count($gameinfo) <= 0) redirectToErrorPage('err_db_query_failed');
+			if(count($gameinfo) <= 0) NavigationUtility::redirectToErrorPage('err_db_query_failed');
 			else return $gameinfo[0];
 		}
-		
+
 		/*
 		 * Redirects if at leaste one condition fails
 		 * @Precondition User is logged in
 		 * @Precondition User is game member
 		 * @Precondition Game has started
-		 * @Precondition Game is not finished 
+		 * @Precondition Game is not finished
 		 */
 		private function checkPreconditions(){
-			checkLogin();
-				
+			PermissionUtility::checkLogin();
+
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
-			
-			if($isMember && ( $this->isFinished($this->gameinfo['is_finished']) || $this->gamecounter >= count($this->gamequestions)) ){
-				redirect('./index.php?view=GameEnd&gameid='.$this->gameid);
+
+			$now = date("Y-m-d H:i:s");
+			$timeToEnd = strtotime($this->gameinfo['calcEndtime']) - strtotime($now);
+			$finished = $timeToEnd <= 0 || isset($this->gameinfo['endtime']);
+
+			if($isMember && ( $finished || $this->gamecounter >= count($this->gamequestions)) ){
+				NavigationUtility::redirect('./index.php?view=GameEnd&gameid='.$this->gameid);
 			}
-			
+
 			//checkConditions
-			if(isset($this->request ['answer'])==false 
+			if(isset($this->request ['answer'])==false
 					|| $isMember==false
-					|| $this->isFinished($this->gameinfo['is_finished']) 
-					|| $this->hasStarted($this->gameinfo['has_started'])==false){
-				
-				redirectToErrorPage('err_not_authorized');
+					|| $finished
+					|| $this->hasStarted($this->gameinfo['starttime'])==false){
+
+				NavigationUtility::redirectToErrorPage('err_not_authorized');
 			}
 		}
 		private function checkGameSessionParams(){
-			if(! isset($this->request ['gameid'], $_SESSION['gamequestions'.$this->request ['gameid']], 
-					$_SESSION['gamecounter'.$this->request ['gameid']], $this->request ['answer'])) {
-
-				redirectToErrorPage('err_not_authorized');
+			if(! isset($this->request ['gameid'],
+					$_SESSION ['game'][$this->request ['gameid']]['gamequestions'],
+					$_SESSION ['game'][$this->request ['gameid']]['gamecounter'],
+					$this->request ['answer'] )
+			){
+				NavigationUtility::redirectToErrorPage('err_not_authorized');
 			}
 		}
-		
+
 
 		private function isGameOwner($owner_id){
 			return $owner_id == $_SESSION['user_id'];
@@ -183,10 +198,7 @@ namespace quizzenger\gamification\controller {
 		private function hasStarted($has_started){
 			return isset($has_started);
 		}
-		private function isFinished($is_finished){
-			return isset($is_finished);
-		}
 	} // class GameQuestionController
 } // namespace quizzenger\gamification\controller
-	
+
 ?>

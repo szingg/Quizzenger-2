@@ -3,17 +3,19 @@ function Gamification(){
 	var gameLobbyTimer;
 
 	this.initialize = function(){
-		self.showModalNewGameEvent();
-		//self.saveNewGameEvent();
+		//GameLobby
+		//self.showModalNewGameEvent();
+		self.initTableNewGames();
+		self.gameLobbyTimer();
+		//GameStart
 		self.joinGameEvent();
 		self.leaveGameEvent();
 		self.startGameEvent();
-		self.stopGameEvent();
 		self.gameStartTimer();
-		self.gameLobbyTimer();
-		self.initTableNewGames();
+		//GameReport
+		self.gameReportTimer();
 	};
-
+/*
 	this.showModalNewGameEvent = function(){
 		$("#newGameDialog").on("show.bs.modal", function(e) {
 			//quizName
@@ -24,7 +26,7 @@ function Gamification(){
 		    var quizId = $(e.relatedTarget).data("quiz-id");
 		    $("#quizIdModal").val(quizId);
 		});
-	}
+	} */
 
 	this.saveNewGameEvent = function(){
 		/*$('submitNewGame').submit(function() {
@@ -93,24 +95,7 @@ function Gamification(){
 				cache: false,
 				processData:false,
 				complete: function(data){
-					//nothing, because you will be redirected
-				}
-			});
-		});
-	}
-
-	this.stopGameEvent = function(){
-		$("#stopGame").click(function(){
-			var gameId = self.getUrlParameter('gameid');
-
-			$.ajax({
-				url: "index.php?view=stopGame&type=ajax&gameid="+gameId,
-				type: "GET",
-				contentType: false,
-				cache: false,
-				processData:false,
-				complete: function(data){
-					//nothing, because you will be redirected
+					$("#startGame").val("Game gestartet");
 				}
 			});
 		});
@@ -141,7 +126,7 @@ function Gamification(){
 					var resp = data.responseJSON.data;
 
 					//startGame
-					if(resp.gameinfo.has_started != null){
+					if(resp.gameinfo.starttime != null){
 						window.location.href = "index.php?view=GameQuestion&gameid=" + resp.gameinfo.game_id;
 					}
 
@@ -163,49 +148,156 @@ function Gamification(){
 				clearInterval(gameLobbyTimer);
 			}
 			if(e.currentTarget.hash == "#gameLobby"){
+				self.updateGameLobbyData();
 				//setTimer
 				gameLobbyTimer = window.setInterval(function(){
-					self.updateOpenGames();
+					self.updateGameLobbyData();
 				}, 2000);
 			}
 		});
 	}
 
-	this.updateOpenGames = function(){
+	this.updateGameLobbyData = function(){
 
 		$.ajax({
-				url: "index.php?view=getOpenGames&type=ajax",
+				url: "index.php?view=getGameLobbyData&type=ajax",
 				type: "GET",
 				contentType: false,
 				cache: false,
 				processData:false,
 				complete: function(data){
 					if(data.responseJSON === undefined) return;
-					//$("#tableBodyOpenGames").html("");
+
+					//openGames
 					var table = $('#tableOpenGames').DataTable();
-					//table.destroy();
 					table.rows().remove();
 					var template = '#dot-openGameRow';
-					$(data.responseJSON.data).each(function(id, game){
+					$(data.responseJSON.data.openGames).each(function(id, game){
+						game.duration = self.formatTime(game.duration);
+
 						var tempHtml = (doT.template($(template).text()))(game);
 						table.row.add($(tempHtml));
-						//self.appendTemplateToContainer("dot-openGameRow", game, "tableBodyOpenGames");
 					});
-				/*	$('#tableOpenGames').DataTable( {
-        				responsive: true
-    				} ); */
 					table.draw();
+
+					//activeGames
+					var table = $('#tableActiveGames').DataTable();
+					table.rows().remove();
+
+					if(data.responseJSON.data.activeGames.length > 0){
+						$('#activeGamesPanel').removeAttr('hidden');
+
+						var template = '#dot-activeGameRow';
+						$(data.responseJSON.data.activeGames).each(function(id, game){
+							game.duration = self.formatTime(game.duration);
+
+							var tempHtml = (doT.template($(template).text()))(game);
+							table.row.add($(tempHtml));
+						});
+						table.draw();
+					}
+					else{
+						$('#activeGamesPanel').attr('hidden', 'true');
+					}
+
 				}
 			});
+	}
+
+	this.gameReportTimer = function(){
+		var gameId = self.getUrlParameter('gameid');
+		if(! (self.contains(document.URL, 'view=GameQuestion&gameid='+gameId)
+			|| self.contains(document.URL, 'view=GameSolution&gameid='+gameId)
+			|| self.contains(document.URL, 'view=GameEnd&gameid='+gameId))) return;
+
+		self.updateGameReport();
+
+		window.setInterval(function(){
+			self.updateGameReport();
+		}, 1000);
+	}
+
+	this.updateGameReport = function(){
+		var gameId = self.getUrlParameter('gameid');
+
+		$.ajax({
+				url: "index.php?view=getGameReport&type=ajax&gameid="+gameId,
+				type: "GET",
+				contentType: false,
+				cache: false,
+				processData:false,
+				complete: function(resp){
+					if(resp.responseJSON === undefined || resp.responseJSON.data == undefined) return;
+					var data = resp.responseJSON.data;
+					//set Countdown
+					if(data.timeToEnd > 0 && data.gameInfo.endtime==null){
+						var formatTimeToEnd = self.formatSeconds(data.timeToEnd);
+						self.applyTemplate("dot-gameReportCountdown", {
+							'progressCountdown' : data.progressCountdown,
+							'formatTimeToEnd' : formatTimeToEnd
+						}, "gameCountdown");
+					}
+					else{
+						$('#gameCountdown').html('');
+						//redirect to GameEnd view if not already on this view
+						if(! self.contains(document.URL, 'view=GameEnd')){
+							window.location.href = "index.php?view=GameEnd&gameid=" + data.gameInfo.game_id;
+						}
+					}
+
+					$('#gameReport').html('');
+					//set GameReport
+					$(data.gameReport).each(function(id, report){
+						var isCurrentUser = report.user_id == data.userId;
+
+						var correct = 100/report.totalQuestions * report.questionAnsweredCorrect;
+						var wrongCount = report.questionAnswered - report.questionAnsweredCorrect;
+						var wrong = 100 / report.totalQuestions * wrongCount;
+						var togo = 100 / report.totalQuestions * (report.totalQuestions - report.questionAnswered);
+						var togoCount = report.totalQuestions - report.questionAnswered;
+
+						var formatTimePerQuestion = self.formatSeconds(report.timePerQuestion);
+						var formatTotalTimeInSec = self.formatSeconds(report.totalTimeInSec);
+						self.appendTemplateToContainer("dot-gameReportRow", {
+							'report' : report,
+							'isCurrentUser' : isCurrentUser,
+							'correct' : correct,
+							'wrongCount' : wrongCount,
+							'wrong' : wrong,
+							'togo' : togo,
+							'togoCount' : togoCount,
+							'formatTimePerQuestion' : formatTimePerQuestion,
+							'formatTotalTimeInSec' : formatTotalTimeInSec
+						}, "gameReport");
+					});
+				}
+			});
+	}
+
+	/*
+	 * Returns a string like '1 Std 6 Min 5 Sek'
+	* @param sec total seconds
+	*/
+	this.formatTime = function(time){
+		var arr = time.split(':');
+		if(arr.length != 3) return '';
+
+		var hours = parseInt(arr[0]);
+		var minutes = parseInt(arr[1]);
+		var seconds = parseInt(arr[2]);
+		return (hours > 0?hours+' Std ':'')+(minutes > 0?minutes+' Min ':'')+(seconds > 0?seconds+' Sek':'');
+	}
 
 		/*
-		var table = $('#tableOpenGames');
-		var x = table.data();
-		var i = 1;
-		//table.ajax.url('index.php?view=getOpenGames&type=ajax');
-		/*table.ajax.reload( function(data, dt){
-			var x = 1;
-		}, false ); */
+	 * Returns a string like '1 Std 6 Min 5 Sek'
+	* @param time mysql time like '23:10:59'
+	*/
+	this.formatSeconds = function(sec){
+		var hours = parseInt(sec / 3600);
+		sec = sec % 3600;
+		var minutes = parseInt(sec / 60);
+		var seconds = Math.round((sec % 60) * 100) / 100; //round on 2 decimals
+		return (hours > 0?hours+' Std ':'')+(minutes > 0?minutes+' Min ':'')+(seconds > 0?seconds+' Sek':'');
 	}
 
 	this.applyTemplate = function(template, parameters, container) {

@@ -1,4 +1,4 @@
-<?php 
+<?php
 	echo $this->_['solutionView'];
-	echo $this->_['adminView'];
+	echo $this->_['reportView'];
 ?>

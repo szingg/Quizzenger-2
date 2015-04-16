@@ -1,13 +1,15 @@
 <?php
+use \quizzenger\messages\MessageQueue as MessageQueue;
 use \quizzenger\controlling\EventController as EventController;
 use \quizzenger\gamification\model\GameModel as GameModel;
+use \quizzenger\logging\LogViewer as LogViewer;
 
 class Controller {
 	private $request = null;
 	private $template = '';
 	private $viewOuter = null;
-	var $mysqli;
-	var $logger;
+	private $mysqli;
+	private $logger;
 
 	public function __construct($request, $pLog) {
 		$this->logger = $pLog;
@@ -16,7 +18,8 @@ class Controller {
 		$this->template = ! empty ( $request ['view'] ) ? $request ['view'] : 'default';
 		$this->mysqli = new sqlhelper ( $this->logger );
 
-		EventController::setup($this->mysqli->database());
+		MessageQueue::setup($this->mysqli->database());
+		EventController::setup($this->mysqli);
 	}
 
 	public function display() {
@@ -56,11 +59,23 @@ class Controller {
 			case 'default' :
 				include("controllers/".$this->template.".php");
 				break;
-			case 'GameNew' : case 'GameStart' : case 'GameEnd' : 
-			case 'GameQuestion' : case 'GameSolution' :
+			case 'GameNew' : case 'GameStart' : case 'GameEnd' :
+			case 'GameQuestion' : case 'GameSolution' : case 'GameDetail' :
 				$className = '\\quizzenger\\gamification\\controller\\'.$this->template.'Controller';
 				$controller = new $className($viewInner);
 				$viewInner = $controller->loadView();
+				break;
+			case 'syslog':
+				if(!$userModel->isSuperuser($_SESSION['user_id'])
+					|| !isset($_GET['logfile']))
+				{
+					header('Location: ./index.php');
+					die();
+				}
+				else {
+					(new LogViewer())->render($_GET['logfile']);
+					die();
+				}
 				break;
 			default:
 				include("controllers/default.php");
@@ -69,10 +84,12 @@ class Controller {
 
 		// loads the head, css etc.
 		$this->viewOuter->setTemplate ( 'skeleton' );
+		$this->viewOuter->assign('userid', $_SESSION['user_id']);
 		$this->viewOuter->assign('username', $userModel->getUsernameByID($_SESSION['user_id']));
 		$this->viewOuter->assign('superuser', $userModel->isSuperuser($_SESSION['user_id']));
-		$this->viewOuter->assign ( 'csq_footer', 'Die Wissensplattform' );
-		$this->viewOuter->assign ( 'csq_content', $viewInner->loadTemplate () );
+		$this->viewOuter->assign('anymoderator', $reportingModel->isAnyModerator($_SESSION['user_id']));
+		$this->viewOuter->assign( 'csq_footer', 'Die Wissensplattform');
+		$this->viewOuter->assign( 'csq_content', $viewInner->loadTemplate());
 		// Return the whole page now
 		return $this->viewOuter->loadTemplate ();
 	}

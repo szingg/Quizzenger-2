@@ -1,21 +1,25 @@
 <?php
 
 namespace quizzenger\dispatching {
-	use \mysqli as mysqli;
+	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
 	use \quizzenger\dispatching\UserEvent as UserEvent;
 
 	/**
-	 * This class is used to dispatch scores to individual users
-	 * based on user events that occured within the system.
+	 * This class accumulates the scores for individual users based on events
+	 * that have been fired. The scores are automatically updated in the Database.
 	**/
 	class ScoreDispatcher {
+		/**
+		 * Holds an instance to the database connection.
+		**/
 		private $mysqli;
 
 		/**
 		 * Creates the object based on an existing database connection.
+		 * @param mysqli $mysqli Existing database connection.
 		**/
-		public function __construct(mysqli $mysqli) {
+		public function __construct(SqlHelper $mysqli) {
 			$this->mysqli = $mysqli;
 		}
 
@@ -32,7 +36,7 @@ namespace quizzenger\dispatching {
 				return;
 			}
 
-			$statement = $this->mysqli->prepare('INSERT INTO userscore (user_id, category_id, producer_score, consumer_score)'
+			$statement = $this->mysqli->database()->prepare('INSERT INTO userscore (user_id, category_id, producer_score, consumer_score)'
 				. ' VALUES(?, ?, ?, ?) ON DUPLICATE KEY UPDATE'
 				. ' producer_score=producer_score+VALUES(producer_score), consumer_score=consumer_score+VALUES(consumer_score)');
 
@@ -48,11 +52,11 @@ namespace quizzenger\dispatching {
 		}
 
 		/**
-		 * Dispatches the scores for the specified event.
-		 * @param UserEvent $event Event that has triggered the dispatching.
+		 * Dispatches the specified event and initiates score accumulation.
+		 * @param UserEvent $event The event that has been fired and is now to be dispatched.
 		**/
 		public function dispatch(UserEvent $event) {
-			$statement = $this->mysqli->prepare('SELECT producer_score, consumer_score'
+			$statement = $this->mysqli->database()->prepare('SELECT producer_score, consumer_score'
 				. ' FROM eventtrigger WHERE name=? LIMIT 1');
 
 			$trigger = $event->name();

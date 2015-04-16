@@ -1,17 +1,19 @@
 <?php
-function checkActiveTab($openedView){
-	$pageBefore = filter_input(INPUT_GET, 'pageBefore', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
-	if (!is_null($pageBefore) && $openedView===$pageBefore) {
-		return "active";
-	}
+	use \quizzenger\messages\MessageQueue as MessageQueue;
 
-	if($openedView == $_SESSION['current_view']){
-		return "active";
+	function checkActiveTab($openedView){
+		$pageBefore = filter_input(INPUT_GET, 'pageBefore', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
+		if (!is_null($pageBefore) && $openedView===$pageBefore) {
+			return "active";
+		}
+
+		if($openedView == $_SESSION['current_view']){
+			return "active";
+		}
+		else{
+			return "";
+		}
 	}
-	else{
-		return "";
-	}
-}
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -30,9 +32,9 @@ function checkActiveTab($openedView){
 
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 	    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
-	    <link href="css/custom.css" rel="stylesheet">
 	    <link href="datatables/media/css/jquery.dataTables.min.css" rel="stylesheet">
 	    <link href="datatables/extensions/Responsive/css/dataTables.responsive.css" rel="stylesheet">
+	    <link href="css/custom.css" rel="stylesheet">
 	    <script type="text/javascript" src="js/ajax.js"></script>
 	    <script src="js/jquery-1.11.1.min.js"></script>
 	    <script type="text/javascript" src="js/markdown.min.js"></script>
@@ -88,7 +90,7 @@ function checkActiveTab($openedView){
 							<a href="?view=user"><span class="glyphicon glyphicon-user"></span> Mein Profil</a>
 						</li>
 
-						<?php if($this->_['superuser']): ?>
+						<?php if($this->_['superuser'] || $this->_['anymoderator']): ?>
 						<li class="<?= checkActiveTab('reporting'); ?>">
 							<a href="?view=reporting"><span class="glyphicon glyphicon-stats"></span> Reporting</a>
 						</li>
@@ -114,6 +116,15 @@ function checkActiveTab($openedView){
 		</div>
 		<div class="container">
 			<?php
+				$messages = MessageQueue::popAll($this->_['userid']);
+				foreach($messages as $current) {
+					echo '<div class="alert alert-info" role="alert">';
+					echo '<a href="#" class="close" data-dismiss="alert">&times;</a>';
+					echo 'temporary: ' . htmlspecialchars($current->type) . '(' . (int)$current->static . ') ' . htmlspecialchars(json_encode($current->arguments));
+					echo '</div>';
+				}
+
+				// TODO: Remove the old message system.
 				$message = filter_input(INPUT_GET, 'info', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
 				if(!is_null($message) && defined($message)){
 					$message = constant($message);

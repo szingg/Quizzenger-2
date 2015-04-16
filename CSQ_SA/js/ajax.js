@@ -106,6 +106,9 @@ function deleteQuestionFromQuiz(quiz, question){
 function deleteQuestion(question){
 	ajaxGET("index.php?view=remove_question&type=ajax&question=" + question+"");
 }
+function deleteGame(gameid){
+	ajaxGET("index.php?view=remove_game&type=ajax&gameid=" + gameid+"");
+}
 function deleteQuiz(quiz){
 	ajaxGET("index.php?view=remove_quiz&type=ajax&quiz=" + quiz +"");
 }
