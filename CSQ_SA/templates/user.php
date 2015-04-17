@@ -96,16 +96,14 @@
 			</div>
 			<div class="scrollable">
 				<div class="rankbar hidden-xs hidden-sm">
-					<?php
-					foreach($ranks as $current){
-					?>
+					<?php foreach($ranks as $current): ?>
 						<div class="rank" data-tooltip-title="<?php echo htmlspecialchars($current->name); ?>"
 							data-tooltip-text="<?php echo htmlspecialchars("{$current->threshold} Punkte"); ?>">
-							<div class="point point-rank clickable <?php echo $userScore >= $current->threshold ? 'point-active' : ''; ?>">
+							<div class="point point-rank clickable <?php echo ($userScore['total_score'] >= $current->threshold ? 'point-active' : ''); ?>">
 								<img src="<?php echo RANK_PATH . "/{$current->image}." . RANK_IMAGE_EXTENSION; ?>"></img>
 							</div>
 						</div>
-					<?php } ?>
+					<?php endforeach; ?>
 				</div>
 			</div>
 			<div>
