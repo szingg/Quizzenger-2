@@ -275,8 +275,8 @@ CREATE TABLE IF NOT EXISTS `userscore` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
-  `producer_score` int(11),
-  `consumer_score` int(11),
+  `producer_score` int(11) DEFAULT 0 NOT NULL,
+  `consumer_score` int(11) DEFAULT 0 NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY (`user_id`,`category_id`),
   KEY `fk_useruserscore` (`user_id`),
@@ -312,7 +312,7 @@ CREATE TABLE IF NOT EXISTS `achievement` (
   `type` varchar(50) NOT NULL,
   `image` varchar(64) NOT NULL,
   `arguments` text NULL,
-  `bonus_score` int(11) NOT NULL,
+  `bonus_score` int(11) DEFAULT 0 NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
 
@@ -336,8 +336,8 @@ CREATE TABLE IF NOT EXISTS `achievementtrigger` (
 --
 CREATE TABLE IF NOT EXISTS `eventtrigger` (
   `name` varchar(64) NOT NULL,
-  `producer_score` int(11),
-  `consumer_score` int(11),
+  `producer_score` int(11) DEFAULT 0 NOT NULL,
+  `consumer_score` int(11) DEFAULT 0 NOT NULL,
   PRIMARY KEY(`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
 
@@ -536,6 +536,35 @@ ALTER TABLE `gamemember`
 ALTER TABLE `message`
   ADD CONSTRAINT `fk_message_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_message_translation` FOREIGN KEY (`type`) REFERENCES `translation` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+--
+-- Views
+--
+CREATE OR REPLACE VIEW userscoreaggregateview AS
+	SELECT user.id, user.username, user.created_on,
+		SUM(userscore.producer_score) AS producer_score,
+		SUM(userscore.consumer_score) AS consumer_score,
+		user.bonus_score,
+		(SELECT value FROM settings WHERE name="q.scoring.producer-multiplier") AS producer_multiplier
+		FROM user
+		LEFT JOIN userscore ON user.id=userscore.user_id
+		WHERE user.id NOT IN (0, 1, 2)
+		GROUP BY user.id
+		ORDER BY user.id ASC;
+
+CREATE OR REPLACE VIEW userscoreview AS
+	SELECT userscoreaggregateview.id AS id, username, created_on,
+		producer_score, consumer_score, bonus_score,
+		(FLOOR(producer_score*producer_multiplier+consumer_score+bonus_score)) AS total_score,
+		MAX(rank.threshold) AS rank_threshold,
+		rank.name AS rank_name,
+		rank.image AS rank_image
+		FROM userscoreaggregateview
+		LEFT JOIN rank
+			ON (rank.threshold<=(FLOOR(producer_score*producer_multiplier+consumer_score+bonus_score))
+				OR rank.threshold=0)
+		GROUP BY id;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -73,7 +73,7 @@
 										. htmlspecialchars($current->username) . "</a>", true);
 									$outputRow($current->created_on);
 									$outputRow("<span style=\"display:none\">{$current->rank_threshold}</span>"
-										. ($current->rank_image != "" ? "<img src=\"{$rankImagePath}\" />" : "") . ' ' . htmlspecialchars($current->rank), true);
+										. ($current->rank_image != "" ? "<img src=\"{$rankImagePath}\" />" : "") . ' ' . htmlspecialchars($current->rank_name), true);
 									$outputRow((int)$current->producer_score);
 									$outputRow((int)$current->consumer_score);
 									echo "</tr>";
