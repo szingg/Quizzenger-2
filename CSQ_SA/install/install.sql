@@ -557,13 +557,14 @@ CREATE OR REPLACE VIEW userscoreview AS
 	SELECT userscoreaggregateview.id AS id, username, created_on,
 		producer_score, consumer_score, bonus_score,
 		(FLOOR(producer_score*producer_multiplier+consumer_score+bonus_score)) AS total_score,
-		rank.threshold AS rank_threshold,
+		MAX(rank.threshold) AS rank_threshold,
 		rank.name AS rank_name,
 		rank.image AS rank_image
 		FROM userscoreaggregateview
 		LEFT JOIN rank
 			ON (rank.threshold<=(FLOOR(producer_score*producer_multiplier+consumer_score+bonus_score))
-				OR rank.threshold=0);
+				OR rank.threshold=0)
+		GROUP BY id;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

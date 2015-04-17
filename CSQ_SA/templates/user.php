@@ -50,10 +50,19 @@
 								echo '<td><span class="badge alert-info">' . '&#9733;&nbsp;' . htmlspecialchars("{$catScore['user_rank']} / {$catScore['user_count']}") . '</span></td>';
 								echo '</tr>';
 							}
+							echo '<tr>';
+							echo '<td style="font-weight:bold">Bonus</td>';
+							echo '<td><span class="badge alert-success">' . htmlspecialchars($userScore['bonus_score']) . '</span></td>';
+							echo '<td></td>';
+
+							echo '<tr style="font-size: 18pt">';
+							echo '<td style="padding:18px 0 48px 0">Total</td>';
+							echo '<td style="padding:18px 0 48px 0">' . htmlspecialchars($userScore['total_score']) . '</td>';
+							echo '<td></td>';
+							echo '</tr>';
 						?>
 					</table>
-					<br><h4>Gesamtpunktezahl <?= ' <span class="badge alert-success">'.htmlspecialchars($userScore).'</span>'?></h4>
-					<div class="btn-group hidden-lg hidden-md" >
+					<div class="btn-group hidden-lg hidden-md">
 						<h4 class="pull-left">Rang </h4>
 						<div class="rank rank-position-neutral"  data-tooltip-title="<?php echo htmlspecialchars($userRank->name); ?>"
 							data-tooltip-text="<?php echo htmlspecialchars("{$userRank->threshold} Punkte"); ?>">

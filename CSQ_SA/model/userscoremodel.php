@@ -26,9 +26,16 @@ class UserScoreModel {
 		return ($catscore == null) ? 0 : $catscore;
 	}
 
-	public function getUserScore($user_id) {
+	public function getUserScore($userId) {
+		$result = $this->mysqli->s_query('SELECT total_score, bonus_score'
+			. ' FROM userscoreview WHERE id=?',
+			['i'], [$userId], false);
+
+return $this->mysqli->getSingleResult($result);
+
+	
 		$result = $this->mysqli->s_query('SELECT SUM(score) FROM userscore WHERE user_id=?',
-			['i'], [$user_id]);
+			['i'], [$userId]);
 		$score = $this->mysqli->getSingleResult($result)['SUM(score)'];
 		return ($score == null) ? 0 : $score;
 	}
