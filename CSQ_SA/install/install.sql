@@ -538,6 +538,34 @@ ALTER TABLE `message`
   ADD CONSTRAINT `fk_message_translation` FOREIGN KEY (`type`) REFERENCES `translation` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
+--
+-- Views
+--
+CREATE OR REPLACE VIEW userscoreaggregateview AS
+	SELECT user.id, user.username, user.created_on,
+		SUM(userscore.producer_score) AS producer_score,
+		SUM(userscore.consumer_score) AS consumer_score,
+		user.bonus_score,
+		(SELECT value FROM settings WHERE name="q.scoring.producer-multiplier") AS producer_multiplier
+		FROM user
+		LEFT JOIN userscore ON user.id=userscore.user_id
+		WHERE user.id NOT IN (0, 1, 2)
+		GROUP BY user.id
+		ORDER BY user.id ASC;
+
+CREATE OR REPLACE VIEW userscoreview AS
+	SELECT userscoreaggregateview.id AS id, username, created_on,
+		producer_score, consumer_score, bonus_score,
+		(FLOOR(producer_score*producer_multiplier+consumer_score+bonus_score)) AS total_score,
+		rank.threshold AS rank_threshold,
+		rank.name AS rank_name,
+		rank.image AS rank_image
+		FROM userscoreaggregateview
+		LEFT JOIN rank
+			ON (rank.threshold<=(FLOOR(producer_score*producer_multiplier+consumer_score+bonus_score))
+				OR rank.threshold=0);
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
