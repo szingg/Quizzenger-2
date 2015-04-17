@@ -275,8 +275,8 @@ CREATE TABLE IF NOT EXISTS `userscore` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
-  `producer_score` int(11),
-  `consumer_score` int(11),
+  `producer_score` int(11) DEFAULT 0 NOT NULL,
+  `consumer_score` int(11) DEFAULT 0 NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY (`user_id`,`category_id`),
   KEY `fk_useruserscore` (`user_id`),
@@ -312,7 +312,7 @@ CREATE TABLE IF NOT EXISTS `achievement` (
   `type` varchar(50) NOT NULL,
   `image` varchar(64) NOT NULL,
   `arguments` text NULL,
-  `bonus_score` int(11) NOT NULL,
+  `bonus_score` int(11) DEFAULT 0 NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
 
@@ -336,8 +336,8 @@ CREATE TABLE IF NOT EXISTS `achievementtrigger` (
 --
 CREATE TABLE IF NOT EXISTS `eventtrigger` (
   `name` varchar(64) NOT NULL,
-  `producer_score` int(11),
-  `consumer_score` int(11),
+  `producer_score` int(11) DEFAULT 0 NOT NULL,
+  `consumer_score` int(11) DEFAULT 0 NOT NULL,
   PRIMARY KEY(`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
 
