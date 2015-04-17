@@ -80,14 +80,8 @@ namespace quizzenger\gamification\controller {
 			$solutionView->assign ('alreadyreported',$alreadyReported);
 
 			$correctAnswer = $this->answerModel->getCorrectAnswer ( $questionID );
+
 			//TODO: Score ändern
-			/*
-			if($GLOBALS['loggedin'] && $correctAnswer == $selectedAnswer){
-				if(!$userscoreModel->hasUserScoredQuestion( $this->request ['id'],$_SESSION['user_id'])){ // no multiple scoring for question
-					$userscoreModel->addScoreToCategory($_SESSION['user_id'], $question ['category_id'],QUESTION_ANSWERED_SCORE, $moderationModel);
-					$viewInner->assign ( 'pointsearned', QUESTION_ANSWERED_SCORE );
-				}
-			} */
 
 			//$session_id = $this->request ['session_id'];
 			//$inc_counter=0;
