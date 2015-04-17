@@ -65,5 +65,14 @@ return $this->mysqli->getSingleResult($result);
 
 		return $this->mysqli->getQueryResultArray($result);
 	}
+
+	public function getLeadingTrailingUsers($userId) {
+		$result = $this->mysqli->s_query('SELECT * FROM user',
+			[], []);
+
+		// TODO: Calculation has to be based on total score.
+		//       Consider using the Reporting Model.
+		return $this->mysqli->getQueryResultArray($result);
+	}
 }
 ?>
