@@ -1,6 +1,7 @@
 <?php
 
-class UserScoreModel{
+use \quizzenger\Settings as Settings;
+class UserScoreModel {
 	private $mysqli;
 	private $logger;
 
@@ -32,17 +33,28 @@ class UserScoreModel{
 		return ($score == null) ? 0 : $score;
 	}
 
-	public function getUserScoreAllCategories($user_id) {
-		$result = $this->mysqli->s_query('SELECT category.name, category.id, userscore.score,'
-			. ' (SELECT COUNT(*) FROM userscore AS score_rank '
-			. '     WHERE score_rank.category_id=userscore.category_id AND score_rank.score>=userscore.score) AS rank,'
-			. ' (SELECT COUNT(*) FROM userscore AS score_user'
-			. '     WHERE score_user.category_id=userscore.category_id) AS user_count'
-			. ' FROM userscore'
-			. ' LEFT JOIN category ON userscore.category_id=category.id'
-			. ' WHERE user_id=? AND userscore.score>0'
-			. ' ORDER BY category.name',
-			['i'], [$user_id]);
+	public function getUserScoreAllCategories($userId) {
+		$pmp = (new Settings($this->mysqli->database()))->getSingle('q.scoring.producer-multiplier');
+		$result = $this->mysqli->s_query('SELECT category_id, category_name,'
+			. '     (FLOOR(producer_score*?+consumer_score)) AS category_score,'
+			. '     user_count, user_rank'
+			. '     FROM (SELECT c.id AS category_id,'
+			. '    	    c.name AS category_name,'
+			. '         u.producer_score AS producer_score,'
+			. '         u.consumer_score AS consumer_score,'
+			. '         (SELECT COUNT(*) FROM userscore AS us'
+			. '             WHERE us.category_id=c.id) AS user_count,'
+			. '         (SELECT COUNT(*) FROM userscore AS us'
+			. '             WHERE us.category_id=u.category_id'
+			. '                 AND us.producer_score*?+us.consumer_score'
+			. '                     >=u.producer_score*?+u.consumer_score) AS user_rank'
+			. '     FROM userscore AS u'
+			. '     LEFT JOIN category AS c ON (c.id=u.category_id)'
+			. '     WHERE u.user_id=? AND (u.producer_score>0 OR u.consumer_score>0)'
+			. '     ORDER BY c.name'
+			. ' ) AS general',
+			['d', 'd', 'd', 'i'],
+			[$pmp, $pmp, $pmp, $userId], false);
 
 		return $this->mysqli->getQueryResultArray($result);
 	}

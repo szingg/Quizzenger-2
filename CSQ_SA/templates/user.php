@@ -43,11 +43,11 @@
 							<th>Rang</th>
 						</tr>
 						<?php
-							foreach($categoryscores as $catScore){
+							foreach($categoryscores as $catScore) {
 								echo '<tr>';
-								echo '<td>' . htmlspecialchars($catScore['name']) . '</td>';
-								echo '<td><span class="badge alert-success">' . htmlspecialchars($catScore['score']) . '</span></td>';
-								echo '<td><span class="badge alert-info">' . '&#9733;&nbsp;' . htmlspecialchars("{$catScore['rank']} / {$catScore['user_count']}") . '</span></td>';
+								echo '<td>' . htmlspecialchars($catScore['category_name']) . '</td>';
+								echo '<td><span class="badge alert-success">' . htmlspecialchars($catScore['category_score']) . '</span></td>';
+								echo '<td><span class="badge alert-info">' . '&#9733;&nbsp;' . htmlspecialchars("{$catScore['user_rank']} / {$catScore['user_count']}") . '</span></td>';
 								echo '</tr>';
 							}
 						?>
