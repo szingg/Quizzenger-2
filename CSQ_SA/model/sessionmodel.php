@@ -13,8 +13,8 @@ class SessionModel {
 
 	public function processLogin($email,$password) {
 		if (isset ( $GLOBALS ['loggedin'] ) && $GLOBALS ['loggedin']) { // no manual / spoofed / replayed double logins
-			header ( 'Location: ./index.php?info=mes_login_already' );
-			die ();
+			MessageQueue::pushPersistent($_SESSION['user_id'], 'mes_login_already');
+			NavigationUtility::redirect();
 		}
 		if (!is_null($email) && !is_null($password) ) {
 			$password =  hash ( 'sha512', $password );
@@ -29,24 +29,22 @@ class SessionModel {
 				}
 				MessageQueue::pushPersistent($_SESSION['user_id'], 'mes_login_success');
 				NavigationUtility::redirect('./index.php?view='.$pageBefore);
-				//header ( 'Location: ./index.php?view='.$pageBefore.'&info=mes_login_success' );
-				//die ();
 			} elseif ($loginResult == - 1) {
 				$this->logger->log ( "User tried to log in with bad credentials, email: ".$email, Logger::WARNING );
-				header ( 'Location: ./index.php?view=error&err=err_login_bad_credentials' );
-				die ();
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_login_bad_credentials');
+				NavigationUtility::redirectToErrorPage();
 			} elseif ($loginResult == - 2) {
 				$this->logger->log ( "User has reached maximum login tries, email: ".$email, Logger::WARNING );
-				header ( 'Location: ./index.php?view=error&err=err_login_tries_exceeded' );
-				die ();
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_login_tries_exceeded', ['timeout' => (int) BRUTE_FORCE_COOLDOWN/60]);
+				NavigationUtility::redirectToErrorPage();
 			} elseif ($loginResult == - 3) {
 					$this->logger->log ( "Inactive User tried to login, email: ".$email, Logger::INFO );
-					header ( 'Location: ./index.php?view=error&err=err_login_inactive' );
-					die ();
+					MessageQueue::pushPersistent($_SESSION['user_id'], 'err_login_inactive');
+					NavigationUtility::redirectToErrorPage();
 			} else {
 				$this->logger->log ( "User tried to log in with bad credentials (unkown return from login), email: ".$email, Logger::WARNING );
-				header ( 'Location: ./index.php?view=error&err=err_login_bad_credentials' );
-				die ();
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_login_bad_credentials');
+				NavigationUtility::redirectToErrorPage();
 			}
 		} else {
 			$this->logger->log ( "Invalid POST request made", Logger::WARNING );
@@ -156,8 +154,8 @@ class SessionModel {
 
 		// Bye!
 		session_destroy ();
-		header('Location: index.php?info=mes_logout_success');
-		die();
+		MessageQueue::pushPersistent($_SESSION['user_id'], 'mes_logout_success');
+		NavigationUtility::redirect();
 	}
 
 
