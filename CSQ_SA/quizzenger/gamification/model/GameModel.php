@@ -326,9 +326,11 @@ END | */
 		 * @return array with columns questionAnswered, questionAnsweredCorrect, totalQuestions, totalTimeInSec, timePerQuestion, user_id, username
 		 */
 		public function getGameReport($game_id){
-			$result = $this->mysqli->s_query('SELECT @rank:=@rank+1 AS rank, questionAnswered, questionAnsweredCorrect, totalQuestions, user_id, username,'
-					.' totalTimeInSec, totalTimeInSec/questionAnsweredCount AS timePerQuestion , endtime, starttime, userEndtime FROM'
-					.' (SELECT @rank := 0, questionAnswered, questionAnsweredCorrect, totalQuestions, user_id, username, questionAnsweredCount,'
+			$result = $this->mysqli->s_query('SELECT  @rank:=@rank+1 AS rank, questionAnswered, questionAnsweredCorrect, totalQuestions, user_id, username,'
+					.' totalTimeInSec, timePerQuestion, endtime, starttime, userEndtime FROM'
+					.' (SELECT @rank := 0, questionAnswered, questionAnsweredCorrect, totalQuestions, user_id, username,'
+					.' totalTimeInSec, totalTimeInSec/questionAnsweredCount AS timePerQuestion, endtime, starttime, userEndtime FROM'
+					.' (SELECT questionAnswered, questionAnsweredCorrect, totalQuestions, user_id, username, questionAnsweredCount,'
 					.' TIMESTAMPDIFF(SECOND,starttime,(CASE WHEN (endtime IS NOT NULL AND questionAnswered <> totalQuestions)'
 						.' THEN endtime ELSE '
 							.' (CASE WHEN (endtime IS NULL AND questionAnswered <> totalQuestions) THEN CURRENT_TIMESTAMP ELSE userEndtime END ) '
@@ -355,9 +357,9 @@ END | */
 							.' GROUP BY q.user_id) AS time'
 						.' ON time.user_id = m.user_id'
 						.' WHERE m.gamesession_id = ?'
-						.' GROUP BY m.user_id) as subsubQuery) '
+						.' GROUP BY m.user_id) as subsubQuery)'
 					.' as subQuery'
-					.' ORDER BY questionAnsweredCorrect DESC, timePerQuestion ASC',['i','i','i'],[$game_id,$game_id,$game_id]);
+					.' ORDER BY questionAnsweredCorrect DESC, timePerQuestion ASC) as Query',['i','i','i'],[$game_id,$game_id,$game_id]);
 			return $this->mysqli->getQueryResultArray($result);
 			/*
 					in der aktuellen Version wurde angepasst: rank korrigiert, user_id, totalTimeInSec, timePerQuestion funktioniert jetzt auch ohne questionperformance

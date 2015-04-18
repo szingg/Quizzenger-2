@@ -182,6 +182,9 @@ class SessionModel {
 		} else {
 			$GLOBALS ['loggedin'] = false;
 			$_SESSION['user_id'] = 1; // ID=1 is Guest User
+			$_SESSION ['username'] = '';
+			$_SESSION ['email'] = '';
+			$_SESSION['superuser']= false;
 		}
 
 	}
