@@ -118,11 +118,13 @@
 		<div class="container">
 			<?php
 				$messages = MessageQueue::popAll($this->_['userid']);
+				$messages = TextTranslator::translate($messages);
 				foreach($messages as $current) {
 					echo '<div class="alert alert-info" role="alert">';
 					echo '<a href="#" class="close" data-dismiss="alert">&times;</a>';
 					/*echo 'temporary: ' . htmlspecialchars($current->type) . '(' . (int)$current->static . ') ' . htmlspecialchars(json_encode($current->arguments)); */
-					echo TextTranslator::translate(htmlspecialchars($current->type), json_decode(htmlspecialchars(json_encode($current->arguments))));
+					//echo TextTranslator::translate(htmlspecialchars($current->type), json_decode(htmlspecialchars(json_encode($current->arguments))));
+					echo htmlspecialchars($current->text);
 					echo '</div>';
 				}
 
