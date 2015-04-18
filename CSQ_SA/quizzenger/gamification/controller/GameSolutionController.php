@@ -21,6 +21,7 @@ namespace quizzenger\gamification\controller {
 		private $answerModel;
 		private $reportModel;
 		private $categoryModel;
+		private $userscoreModel;
 		//private $userModel;
 
 		private $gameid;
@@ -39,6 +40,7 @@ namespace quizzenger\gamification\controller {
 			$this->answerModel = new \AnswerModel($this->sqlhelper, log::get());
 			$this->reportModel = new \ReportModel($this->sqlhelper, log::get());
 			$this->categoryModel = new \CategoryModel($this->sqlhelper, log::get());
+			$this->userscoreModel = new \UserScoreModel($this->sqlhelper, log::get());
 			//$this->userModel = new \UserModel($this->sqlhelper, log::get());
 
 			$this->checkGameSessionParams();
@@ -80,14 +82,15 @@ namespace quizzenger\gamification\controller {
 			$solutionView->assign ('alreadyreported',$alreadyReported);
 
 			$correctAnswer = $this->answerModel->getCorrectAnswer ( $questionID );
-			//TODO: Score ändern
-			/*
+
+			//Score
 			if($GLOBALS['loggedin'] && $correctAnswer == $selectedAnswer){
-				if(!$userscoreModel->hasUserScoredQuestion( $this->request ['id'],$_SESSION['user_id'])){ // no multiple scoring for question
-					$userscoreModel->addScoreToCategory($_SESSION['user_id'], $question ['category_id'],QUESTION_ANSWERED_SCORE, $moderationModel);
-					$viewInner->assign ( 'pointsearned', QUESTION_ANSWERED_SCORE );
+				if(!$this->userscoreModel->hasUserScoredQuestion( $questionID, $_SESSION['user_id'])){ // no multiple scoring for question
+					EventController::fire('game-question-answered-correct', $_SESSION['user_id'], [
+						'gameid' => $this->gameid
+					]);
 				}
-			} */
+			}
 
 			//$session_id = $this->request ['session_id'];
 			//$inc_counter=0;
@@ -126,7 +129,7 @@ namespace quizzenger\gamification\controller {
 
 		private function loadReportView(){
 			$reportView = new \View();
-			$reportView->setTemplate ( 'gamereport' ); 
+			$reportView->setTemplate ( 'gamereport' );
 			/*
 			$reportView->assign('gameinfo', $this->gameinfo);
 			$gameReport = $this->gameModel->getGameReport($this->gameid);
