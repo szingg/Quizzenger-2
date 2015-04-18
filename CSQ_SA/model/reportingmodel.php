@@ -22,36 +22,15 @@ class ReportingModel {
 
 	public function getUserList($categoryId) {
 		if($categoryId == "" || $categoryId == 0) {
-			$producer_multiplier = (new Settings($this->mysqli->database()))->getSingle('q.scoring.producer-multiplier');
-
-			return $this->mysqli->s_query('SELECT user.id, user.username, user.created_on,'
-				. ' (SELECT rank.name FROM rank WHERE rank.threshold<=(producer_score+consumer_score)*? OR rank.threshold=0'
-				. '     ORDER BY rank.threshold DESC LIMIT 1) AS rank,'
-				. ' (SELECT rank.image FROM rank WHERE rank.name=rank) AS rank_image,'
-				. ' (SELECT rank.threshold FROM rank WHERE rank.name=rank) AS rank_threshold,'
-				. ' SUM(userscore.producer_score) AS producer_score,'
-				. ' SUM(userscore.consumer_score) AS consumer_score'
-				. ' FROM user'
-				. ' LEFT JOIN (userscore) ON (user.id=userscore.user_id)'
-				. ' WHERE user.id NOT IN (0, 1, 2)' // Ignore Superuser and Guest.
-				. ' GROUP BY user.id'
-				. ' ORDER BY user.id ASC',
-				['d'], [$producer_multiplier], false);
+			return $this->mysqli->s_query('SELECT * FROM userscoreview', [], [], false);
 		}
 		else {
-			return $this->mysqli->s_query('SELECT user.id, user.username, DATE(user.created_on) AS created_on,'
-				. ' "" AS rank,'
-				. ' "" AS rank_image,'
-				. ' (SELECT rank.threshold FROM rank WHERE rank.name=rank) AS rank_threshold,'
-				. ' SUM(userscore.producer_score) AS producer_score,'
-				. ' SUM(userscore.consumer_score) AS consumer_score'
-				. ' FROM user'
-				. ' LEFT JOIN (userscore) ON (user.id=userscore.user_id)'
+			return $this->mysqli->s_query('SELECT * FROM userscoreview AS v'
+				. ' RIGHT JOIN userscore ON (v.id=userscore.user_id)'
 				. ' WHERE userscore.category_id=?'
-				. '   AND user.id NOT IN (0, 1, 2)' // Ignore Superuser and Guest.
-				. ' GROUP BY user.id'
-				. ' ORDER BY user.id ASC',
-				['s'], [$categoryId], false);
+				. ' GROUP BY v.id'
+				. ' ORDER BY v.id ASC',
+				['i'], [$categoryId], false);
 		}
 	}
 

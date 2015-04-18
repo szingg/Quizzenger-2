@@ -91,7 +91,6 @@ namespace quizzenger\gamification\controller {
 					]);
 				}
 			}
-
 			//$session_id = $this->request ['session_id'];
 			//$inc_counter=0;
 
