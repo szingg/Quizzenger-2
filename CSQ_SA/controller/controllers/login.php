@@ -1,8 +1,12 @@
 <?php
-	$viewInner->setTemplate ( 'login' );
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+	use \quizzenger\messages\MessageQueue as MessageQueue;
+
 	// no double logins
 	if($GLOBALS['loggedin']){
-		header('Location: index.php?info=mes_login_already');
-		die();
+		MessageQueue::pushPersistent($_SESSION['user_id'], 'mes_login_already');
+		NavigationUtility::redirect();
 	}
+
+	$viewInner->setTemplate ( 'login' );
 ?>

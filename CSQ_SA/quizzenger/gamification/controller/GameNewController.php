@@ -8,6 +8,7 @@ namespace quizzenger\gamification\controller {
 	use \quizzenger\logging\Log as Log;
 	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
 	use \quizzenger\utilities\PermissionUtility as PermissionUtility;
+	use \quizzenger\messages\MessageQueue as MessageQueue;
 	use \quizzenger\gamification\model\GameModel as GameModel;
 
 	class GameNewController{
@@ -56,14 +57,15 @@ namespace quizzenger\gamification\controller {
 		private function checkPermission($quiz_id){
 			if (! $this->quizModel->userIDhasPermissionOnQuizId($quiz_id,$_SESSION ['user_id'])) {
 				log::warning('Unauthorized try to add new Gamesession for Quiz-ID :'.game_id);
-				header('Location: ./index.php?view=error&err=err_not_authorized');
-				die();
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_not_authorized');
+				NavigationUtility::redirectToErrorPage();
 			}
 		}
 
 		private function redirect($gameid){
 			if($gameid == null){
-				NavigationUtility::redirectToErrorPage('err_db_query_failed');
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_db_query_failed');
+				NavigationUtility::redirectToErrorPage();
 			}
 			else{
 				NavigationUtility::redirect('./index.php?view=GameStart&gameid=' . $gameid);
