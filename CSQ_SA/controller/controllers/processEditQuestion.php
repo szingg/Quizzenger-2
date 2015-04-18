@@ -1,8 +1,11 @@
 <?php
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+	use \quizzenger\messages\MessageQueue as MessageQueue;
+
 	// only author and mods can edit
 	if (! $questionModel->userIDhasPermissionOnQuestionID ( $this->request ['opquestion_form_question_id'], $_SESSION ['user_id'] )) {
-		header ( 'Location: ./index.php?view=error&err=err_not_authorized_questionedit' );
-		die ();
+		MessageQueue::pushPersistent($_SESSION['user_id'], 'err_not_authorized_questionedit');
+		NavigationUtility::redirectToErrorPage();
 	}
 
 	$viewInner->setTemplate ( 'blankContent' );
@@ -15,5 +18,5 @@
 	$questionModel->newQuestionHistory($_POST['opquestion_form_question_id'],$_SESSION ['user_id'],"Editiert");
 	$questionModel->opQuestionWithAnswers ( $answerModel,$categoryModel, $tagModel, "edit",$_POST['opquestion_form_chosenCategory']);
 
-	header ( 'Location: ./index.php?view=question&id='.$_POST['opquestion_form_question_id']);
+	NavigationUtility::redirect('./index.php?view=question&id='.$_POST['opquestion_form_question_id']);
 ?>
