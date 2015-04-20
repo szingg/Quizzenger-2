@@ -19,13 +19,6 @@ class UserScoreModel {
 		return ($result[0] == "1");
 	}
 
-	public function getCategoryScore($user_id, $category_id) {
-		$result = $this->mysqli->s_query('SELECT score FROM userscore WHERE user_id=? AND category_id=?',
-			['i', 'i'], [$user_id, $category_id]);
-		$catscore = $this->mysqli->getSingleResult($result)['score'];
-		return ($catscore == null) ? 0 : $catscore;
-	}
-
 	public function getUserScore($userId) {
 		$result = $this->mysqli->s_query('SELECT total_score, bonus_score'
 			. ' FROM userscoreview WHERE id=?',
