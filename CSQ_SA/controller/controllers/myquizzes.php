@@ -1,4 +1,6 @@
 <?php
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+
 	if ($GLOBALS ['loggedin']) {
 		$viewInner->setTemplate ( 'quizlist' );
 
@@ -9,18 +11,18 @@
 					$quizModel->addQuestionToQuiz ( $quiz_id, $question );
 				}
 			}
-			redirect('?view=mycontent&quizid='.$quiz_id.'&info=mes_add_questions_to_quiz#myquizzes');
+			NavigationUtility::redirect('?view=mycontent&quizid='.$quiz_id.'&info=mes_add_questions_to_quiz#myquizzes');
 		}
 
 		if(isset($this->request['copyquiz'])){ //COPYING QUIZ
 			$copiedQuizID=$quizModel->copyQuiz($_SESSION['user_id'], $this->request['copyquiz']);
-			redirect('?view=mycontent&quizid='.$copiedQuizID.'#myquizzes');
+			NavigationUtility::redirect('?view=mycontent&quizid='.$copiedQuizID.'#myquizzes');
 		}
 
 		if(isset($this->request['savegeneratedquiz'])){ // SAVING GENERATED QUIZ
 			$questions=$_SESSION ['questions'.$this->request['savegeneratedquiz']];
 			$copiedQuizID=$quizModel->saveGeneratedQuiz($_SESSION['user_id'], $questions);
-			redirect('?view=mycontent&quizid='.$copiedQuizID.'#myquizzes');
+			NavigationUtility::redirect('?view=mycontent&quizid='.$copiedQuizID.'#myquizzes');
 		}
 
 		if(isset($this->request['quizNameField'])){ //EDIT QUIZ NAME
@@ -28,7 +30,7 @@
 			if(isset($this->request['editQuizNameID'])
 					&& $quizModel->userIDhasPermissionOnQuizID($editedQuizId, $_SESSION['user_id']) ){
 				$quizModel->setQuizName($this->request['editQuizNameID'],$this->request['quizNameField']);
-				redirect('?view=mycontent&quizid='.$editedQuizId.'#myquizzes');
+				NavigationUtility::redirect('?view=mycontent&quizid='.$editedQuizId.'#myquizzes');
 			}
 		}
 
@@ -46,8 +48,7 @@
 			$quizzes [$key] ['questions'] = $quizModel->getNumberOfQuestions ( $quiz ['id'] );
 		}
 	} else {
-		header ( 'Location: ./index.php?view=login&pageBefore=' . $this->template );
-		die ();
+		NavigationUtility::redirect('?view=login&pageBefore=' . $this->template);
 	}
 
 	$viewInner->assign ( 'quizzes', $quizzes);

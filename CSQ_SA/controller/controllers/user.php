@@ -1,4 +1,6 @@
 <?php
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+
 	$viewInner->setTemplate ( 'user' );
 
 	if (isset ( $this->request ['id'] )) {
@@ -6,8 +8,7 @@
 	} elseif ($GLOBALS['loggedin']) {
 		$userID = $_SESSION ['user_id'];
 	} else {
-		header ( 'Location: ./index.php?view=login&pageBefore=' . $this->template );
-		die ();
+		NavigationUtility::redirect('./index.php?view='.$this->template);
 	}
 
 	$user = $userModel->getUserByID ( $userID );

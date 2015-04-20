@@ -1,6 +1,7 @@
 <?php
 use \quizzenger\controlling\EventController as EventController;
 use \quizzenger\utilities\FormatUtility as FormatUtility;
+use \quizzenger\logging\Log as Log;
 
 class AjaxController {
 	private $request = null;
@@ -26,7 +27,7 @@ class AjaxController {
 		$viewInner->setTemplate('defaultajax');
 
 		$ratingModel = new RatingModel($this->mysqli,$this->logger);
-		$categoryListModel = new CategoryModel($this->mysqli,$this->logger);
+		$categoryModel = new CategoryModel($this->mysqli,$this->logger);
 		$quizModel = new QuizModel($this->mysqli,$this->logger);
 		$questionModel = new QuestionModel($this->mysqli, $this->logger);
 		$sessionModel = new SessionModel ( $this->mysqli, $this->logger );
@@ -40,13 +41,20 @@ class AjaxController {
 		switch ($this->template) {
 			// -------------------------------------------------------
 			case 'addrating_ajax':
-				$ret = $ratingModel->newRating($this->request['question_id'],$this->request['stars'],$this->request['comment'],$this->request['parent']);
+				//check Permissions
+				if(! $this->isLoggedin()) return;
+				$parent = $this->request['parent'];
+				$alreadyRated= $ratingModel->userHasAlreadyRated($this->request['question_id'] , $_SESSION ['user_id']);
+				if((!isset($parent) || !is_numeric($parent)) && $alreadyRated) return;
+
+				//make new rating
+				$ret = $ratingModel->newRating($this->request['question_id'], $this->request['stars'],$this->request['comment'],$parent);
 				break;
 			// -------------------------------------------------------
 			case 'categorylist_ajax':
 				$viewInner->setTemplate('categorylist_ajax');
-				$categories = $categoryListModel->getChildren($this->request['id']);
-				$categories = $categoryListModel->fillCategoryListWithQuestionCount($categories);
+				$categories = $categoryModel->getChildren($this->request['id']);
+				$categories = $categoryModel->fillCategoryListWithQuestionCount($categories);
 				if(isset($this->request['mode'])){
 					$viewInner->assign('mode', $this->request['mode']);
 				}
@@ -55,37 +63,49 @@ class AjaxController {
 				break;
 			// -------------------------------------------------------
 			case 'remove_quizquestion':
-				$quizModel->removeQuestionFromQuiz($this->request['quiz'], $this->request['question']);
-				break;
+				$result = $quizModel->removeQuestionFromQuiz($this->request['quiz'], $this->request['question']);
+				return $this->sendJSONResponse(($result? 'success' : 'error'));
 			// -------------------------------------------------------
 			case 'remove_question':
-				$questionModel->removeQuestion($this->request['question']);
-				break;
+				$result = $questionModel->removeQuestion($this->request['question']);
+				return $this->sendJSONResponse(($result? 'success' : 'error'));
 			// -------------------------------------------------------
 			case 'remove_quiz':
-				$quizModel->removeQuiz($this->request['quiz']);
-				break;
+				$result = $quizModel->removeQuiz($this->request['quiz']);
+				return $this->sendJSONResponse(($result? 'success' : 'error'));
 			// -------------------------------------------------------
 			case 'remove_sub_cat':
-				$quizModel->removeQuiz($this->request['id']);
-				break;
+				$cateogryId = $this->request['id'];
+				$trueChild = $categoryModel->isTrueChild($cateogryId);
+				if($trueChild){
+					$result = $categoryModel->removeCategory($cateogryId);
+				}
+				else{
+					$result = false;
+				}
+				return $this->sendJSONResponse(($result? 'success' : 'error'));
 			// -------------------------------------------------------
 			case 'inactive_user':
 				$retVal=$userModel->setUserInactiveByID($this->request['id']);
 				if($retVal!=1){ // if not authorized -> dont remove reports
 					$reportModel->removeReportsByObject($this->request['id'], 'user', $_SESSION['user_id']);
+					$result = 'success';
 				}
-				break;
+				else{
+					$result = 'error';
+				}
+				return $this->sendJSONResponse($result);
 			// -------------------------------------------------------
 			case 'remove_reports':
+				//TODO: Berechtigung überprüfen: was darf Moderator, was darf Superuser?
 				if(isset($this->request['id'], $this->request['reporttype'])){
 					$reportModel->removeReportsByObject($this->request['id'], $this->request['reporttype'], $_SESSION['user_id']);
 				}
 				break;
 			// -------------------------------------------------------
 			case 'set_weight':
-				$questionModel->setWeight($this->request['id'], $this->request['weight']);
-				break;
+				$result = $questionModel->setWeight($this->request['id'], $this->request['weight']);
+				return $this->sendJSONResponse(($result? 'success' : 'error'));
 			// -------------------------------------------------------
 			case 'report_list':
 				if(isset($this->request['id'], $this->request['reporttype'])){
@@ -99,10 +119,11 @@ class AjaxController {
 				$fileupload = new FileUpload($_FILES);
 				return $fileupload->processFileUpload();
 			case 'joinGame' :
+				if(! $this->isLoggedin()) return;
 				$result = $gameModel->userJoinGame($_SESSION['user_id'], $this->request['gameid']);
-				$result == 0? $result = 'success' : 'error';
-				return $this->sendJSONResponse($result, '', '');
+				return $this->sendJSONResponse(($result == 0? 'success' : 'error'), '', '');
 			case 'leaveGame' :
+				if(! $this->isLoggedin()) return;
 				$gameModel->userLeaveGame($_SESSION['user_id'], $this->request['gameid']);
 				break;
 			case 'startGame' :
@@ -115,6 +136,9 @@ class AjaxController {
 				break;
 			case 'getGameReport' :
 				$gameid = $this->request['gameid'];
+				//checkPermission
+				if(! $gameModel->isGameMember($_SESSION['user_id'], $gameid)) return;
+
 				$gameReport = $gameModel->getGameReport($gameid);
 				$gameinfo = $gameModel->getGameInfoByGameId($gameid)[0];
 
@@ -166,18 +190,8 @@ class AjaxController {
 				$data = $gameModel->getOpenGames();
 				return $this->sendJSONResponse('', '', $data);
 			case 'remove_game' :
-				$gameid = $this->request['gameid'];
-				if($gameModel->userIDhasPermissionOnGameId($_SESSION['user_id'], $gameid)){
-					if($gameModel->removeGame($gameid)){
-						return $this->sendJSONResponse('success', '', '');
-					}
-					else{
-						return $this->sendJSONResponse('error', 'failed to remove game id: '.$gameid, '');
-					}
-				}
-				return $this->sendJSONResponse('error', 'no permission on game id: '.$gameid, '');
-
-				break;
+				$result = $gameModel->removeGame($this->request['gameid']);
+				return $this->sendJSONResponse(($result? 'success' : 'error'));
 			case 'default' :
 			default :
 				break;
@@ -194,7 +208,7 @@ class AjaxController {
 	 * @param $message send an optional message
 	 * @param $data optional data
 	 */
-	private function sendJSONResponse($result, $message, $data) {
+	private function sendJSONResponse($result='', $message='', $data=''){
 		header('Content-Type: application/json');
 		echo json_encode(array('result' => $result, 'message' => $message, 'data' => $data));
 	}
@@ -238,6 +252,14 @@ class AjaxController {
 				$this->setGameend($game['id']);
 			}
 		}
+	}
+
+	/*
+	 * Checks if user is logged in.
+	 * @return Returns true if User is logged in, else false;
+	 */
+	public static function isLoggedin(){
+		return $GLOBALS ['loggedin'];
 	}
 }
 ?>

@@ -10,6 +10,7 @@ class Logger {
 	const FATAL = '[FATAL]';
 	public function __construct() {
 		$today = date("Y-m-d");
+		if(! file_exists(LOGPATH)) { mkdir(LOGPATH, 0777, true); }
 		$filePath= LOGPATH . DIRECTORY_SEPARATOR . $today . '.log';
 		if (is_null ( $this->fileHandle )) {
 			$this->openLogFile ($filePath);

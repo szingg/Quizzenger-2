@@ -15,8 +15,8 @@ function throwMalformedXMLException(){
 	die();
 }
 
-function throwSqlInsertException($link){
-	echo("<p style=\"color:red; \">Insert Failed! Error : (". $link->errno .") ". $link->error ."</p><br>");
+function throwSqlInsertException($link, $statement){
+	echo("<p style=\"color:red; \">Insert Failed! Error : (". $link->errno .") ". $link->error ."</p><p>".$statement."</p><br>");
 	die();
 }
 
@@ -25,7 +25,7 @@ if(isset($_POST['install'])){
 
 	echo("Connecting to DB...<br>");
 	$link = mysqli_connect(dbhost.":".dbport, dbuser, dbpassword) ;
-	if (!$link) {
+	if (!$link || !$link->set_charset("utf8")) {
 		die ("MySQL Connection error");
 	}
 	echo("<p style=\"color:green;\">Connected to DB</p><br>");
@@ -59,11 +59,12 @@ if(isset($_POST['install'])){
 		$producer_score = '"'.$link->real_escape_string($trigger->producer_score).'"';
 		$consumer_score = '"'.$link->real_escape_string($trigger->consumer_score).'"';
 
-		$result = $link->query("INSERT INTO eventtrigger (name, producer_score, consumer_score) VALUES ($name, $producer_score, $consumer_score)"
-			." ON DUPLICATE KEY UPDATE producer_score=$producer_score, consumer_score=$consumer_score");
+		$stmt = "INSERT INTO eventtrigger (name, producer_score, consumer_score) VALUES ($name, $producer_score, $consumer_score)"
+			." ON DUPLICATE KEY UPDATE producer_score=$producer_score, consumer_score=$consumer_score";
+		$result = $link->query($stmt);
 		if($result){}
 		else{
-			throwSqlInsertException($link);
+			throwSqlInsertException($link, $stmt);
 		}
 	}
 
@@ -95,7 +96,8 @@ if(isset($_POST['install'])){
 		$bonus_score = '"'.$link->real_escape_string($ach->bonus_score).'"';
 		$triggers = $ach->eventtriggers;
 
-		$result = $link->query("INSERT INTO achievement (name, description, sort_order, type, image, arguments, bonus_score) VALUES ($name, $description, $sort_order, $type, $image, $arguments, $bonus_score)");
+		$stmt = "INSERT INTO achievement (name, description, sort_order, type, image, arguments, bonus_score) VALUES ($name, $description, $sort_order, $type, $image, $arguments, $bonus_score)";
+		$result = $link->query($stmt);
 		if($result){
 			$achievementId = $link->insert_id;
 			foreach($triggers->eventtrigger as $trigger){
@@ -103,15 +105,16 @@ if(isset($_POST['install'])){
 					throwMalformedXMLException();
 				}
 				$triggerName = '"'.$link->real_escape_string($trigger['name']).'"';
-				$resultTrigger = $link->query("INSERT INTO achievementtrigger (achievement_id, eventtrigger_name) VALUES ($achievementId, $triggerName)");
+				$stmt = "INSERT INTO achievementtrigger (achievement_id, eventtrigger_name) VALUES ($achievementId, $triggerName)";
+				$resultTrigger = $link->query($stmt);
 				if($resultTrigger){}
 				else{
-					throwSqlInsertException($link);
+					throwSqlInsertException($link, $stmt);
 				}
 			}
 		}
 		else{
-			throwSqlInsertException($link);
+			throwSqlInsertException($link, $stmt);
 		}
 	}
 	echo("<p style=\"color:green;\">Achievements successfully installed!</p><br>");
@@ -128,13 +131,34 @@ if(isset($_POST['install'])){
 		$threshold = '"'.$link->real_escape_string($rank['threshold']).'"';
 		$image = '"'.$link->real_escape_string($rank['image']).'"';
 
-		$result = $link->query("INSERT INTO rank (name, threshold, image) VALUES ($name, $threshold, $image)");
+		$stmt = "INSERT INTO rank (name, threshold, image) VALUES ($name, $threshold, $image)";
+		$result = $link->query($stmt);
 		if($result){}
 		else{
-			throwSqlInsertException($link);
+			throwSqlInsertException($link, $stmt);
 		}
 	}
 	echo("<p style=\"color:green;\">Ranks successfully installed!</p><br>");
+
+	if(! isset($xml->messages, $xml->messages[0])){
+		throwMalformedXMLException();
+	}
+
+	foreach ($xml->messages[0]->message as $message){
+		if(! isset($message->type, $message->text)){
+			throwMalformedXMLException();
+		}
+		$type = '"'.$link->real_escape_string($message->type).'"';
+		$text = '"'.$link->real_escape_string($message->text).'"';
+
+		$stmt = "INSERT INTO translation (type, text) VALUES ($type, $text)";
+		$result = $link->query($stmt);
+		if($result){}
+		else{
+			throwSqlInsertException($link, $stmt);
+		}
+	}
+	echo("<p style=\"color:green;\">Messages successfully installed!</p><br>");
 
 	echo("<hr>");
 	echo"<b>Remove following files: settings.xml, installerSettings.php!</b>";

@@ -1,4 +1,6 @@
 <?php
+use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+use \quizzenger\messages\MessageQueue as MessageQueue;
 
 class SqlHelper {
 	private $mysqli;
@@ -15,9 +17,8 @@ class SqlHelper {
 
 		if (!$this->mysqli->set_charset("utf8")) {
 			$this->logger->log("sqlhelper failed to set utf8 charset, error:".$this->mysqli->error , FileLogger::FATAL);
-			header('Location: ./index.php?view=error&err=err_db_query_failed');
-			die();
-
+			MessageQueue::pushPersistent($_SESSION['user_id'], 'err_db_query_failed');
+			NavigationUtility::redirectToErrorPage();
 		}
 
 	}
@@ -75,8 +76,8 @@ class SqlHelper {
 			$resultExecute = $stmt->execute ();
 			if (!$resultExecute ) {
 				$this->logger->log ( "Error trying to execute statement. Caller:".$this->getCaller(3)." -  SQL Error: " . $this->mysqli->error, Logger::ERROR );
-				header ( 'Location: ./index.php?view=error&err=err_db_query_failed' );
-				die ();
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_db_query_failed');
+				NavigationUtility::redirectToErrorPage();
 			} else {
 				if($type=="query"){
 					$result = $stmt->get_result(); // needs MySQLND (native driver)
@@ -88,8 +89,8 @@ class SqlHelper {
 							$error = $this->mysqli->error;
 						}
 						$this->logger->log($this->getCaller(3)." failed to get result. SQL Error: ".$error ,Logger::ERROR);
-						header('Location: ./index.php?view=error&err=err_db_query_failed');
-						die();
+						MessageQueue::pushPersistent($_SESSION['user_id'], 'err_db_query_failed');
+						NavigationUtility::redirectToErrorPage();
 					}
 					$stmt -> close();
 					return $result;
@@ -99,8 +100,8 @@ class SqlHelper {
 			}
 		} else {
 			$this->logger->log ( "Error trying to prepare statement. Caller:".$this->getCaller(3)." -  SQL Error: " . $this->mysqli->error, Logger::ERROR );
-			header ( 'Location: ./index.php?view=error&err=err_db_query_failed' );
-			die ();
+			MessageQueue::pushPersistent($_SESSION['user_id'], 'err_db_query_failed');
+			NavigationUtility::redirectToErrorPage();
 		}
 
 	}
@@ -116,8 +117,8 @@ class SqlHelper {
 				$error = $this->mysqli->error;
 			}
 			$this->logger->log($this->getCaller(2)." failed to get result. SQL Error: ".$error ,Logger::ERROR);
-			header('Location: ./index.php?view=error&err=err_db_query_failed');
-			die();
+			MessageQueue::pushPersistent($_SESSION['user_id'], 'err_db_query_failed');
+			NavigationUtility::redirectToErrorPage();
 		}
 
 		return $queryResult;

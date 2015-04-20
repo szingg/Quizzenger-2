@@ -3,7 +3,7 @@
 namespace quizzenger\gamification\model {
 	use \stdClass as stdClass;
 	use \SplEnum as SplEnum;
-	use \quizzenger\logging\Log as Log;
+	use \quizzenger\logging\Log as log;
 	use \SqlHelper as SqlHelper;
 
 	/*	@author Simon Zingg
@@ -42,12 +42,13 @@ namespace quizzenger\gamification\model {
 		 * @return Returns true if successful, else null
 		 */
 		public function removeGame($game_id){
-			if(isset($game_id)){
+			if(isset($game_id) && $this->userIDhasPermissionOnGameId($_SESSION['user_id'], $game_id)){
 				log::info('Removing Game with ID :'.$game_id);
-				$result = $this->mysqli->s_query('DELETE FROM gamesession WHERE id = ?',['i'], [$game_id]); //result of query is always false. But if no error occured it worked.
+				$this->mysqli->s_query('DELETE FROM gamesession WHERE id = ?',['i'], [$game_id]);	
 				return true;
 			}
 			else{
+				log::warning('Unauthorized try to remove game id :'.$game_id);
 				return false;
 			}
 		}
@@ -132,7 +133,7 @@ END | */
 		/*
 		 * Sets the endtime of a game
 		 * This method checks if user has permission on this game
-		 * The endtime can only once be set
+		 * The endtime can only be set once and is not bigger than the calculated endtime (starttime+duration)
 		 * @param $game_id
 		 * @return Returns old value of endtime on success, else returns false
 		 */
@@ -141,7 +142,7 @@ END | */
 				log::info('Stop Game with ID :'.$game_id);
 				$oldValue = $this->mysqli->s_query('SELECT endtime FROM gamesession WHERE id = ?',['i'],[$game_id]);
 				$update = $this->mysqli->s_query('UPDATE gamesession SET endtime = '
-						.' CASE WHEN endtime IS NULL THEN CURRENT_TIMESTAMP ELSE endtime END'
+						.' CASE WHEN endtime IS NULL THEN LEAST(CURRENT_TIMESTAMP, ADDTIME(starttime, duration)) ELSE endtime END'
 						.' WHERE id = ?',['i'],[$game_id]);
 
 				return $this->mysqli->getSingleResult($oldValue)['endtime'];
@@ -325,9 +326,11 @@ END | */
 		 * @return array with columns questionAnswered, questionAnsweredCorrect, totalQuestions, totalTimeInSec, timePerQuestion, user_id, username
 		 */
 		public function getGameReport($game_id){
-			$result = $this->mysqli->s_query('SELECT @rank:=@rank+1 AS rank, questionAnswered, questionAnsweredCorrect, totalQuestions, user_id, username,'
-					.' totalTimeInSec, totalTimeInSec/questionAnsweredCount AS timePerQuestion , endtime, starttime, userEndtime FROM'
-					.' (SELECT @rank := 0, questionAnswered, questionAnsweredCorrect, totalQuestions, user_id, username, questionAnsweredCount,'
+			$result = $this->mysqli->s_query('SELECT  @rank:=@rank+1 AS rank, questionAnswered, questionAnsweredCorrect, totalQuestions, user_id, username,'
+					.' totalTimeInSec, timePerQuestion, endtime, starttime, userEndtime FROM'
+					.' (SELECT @rank := 0, questionAnswered, questionAnsweredCorrect, totalQuestions, user_id, username,'
+					.' totalTimeInSec, totalTimeInSec/questionAnsweredCount AS timePerQuestion, endtime, starttime, userEndtime FROM'
+					.' (SELECT questionAnswered, questionAnsweredCorrect, totalQuestions, user_id, username, questionAnsweredCount,'
 					.' TIMESTAMPDIFF(SECOND,starttime,(CASE WHEN (endtime IS NOT NULL AND questionAnswered <> totalQuestions)'
 						.' THEN endtime ELSE '
 							.' (CASE WHEN (endtime IS NULL AND questionAnswered <> totalQuestions) THEN CURRENT_TIMESTAMP ELSE userEndtime END ) '
@@ -354,9 +357,9 @@ END | */
 							.' GROUP BY q.user_id) AS time'
 						.' ON time.user_id = m.user_id'
 						.' WHERE m.gamesession_id = ?'
-						.' GROUP BY m.user_id) as subsubQuery) '
+						.' GROUP BY m.user_id) as subsubQuery)'
 					.' as subQuery'
-					.' ORDER BY questionAnsweredCorrect DESC, timePerQuestion ASC',['i','i','i'],[$game_id,$game_id,$game_id]);
+					.' ORDER BY questionAnsweredCorrect DESC, timePerQuestion ASC) as Query',['i','i','i'],[$game_id,$game_id,$game_id]);
 			return $this->mysqli->getQueryResultArray($result);
 			/*
 					in der aktuellen Version wurde angepasst: rank korrigiert, user_id, totalTimeInSec, timePerQuestion funktioniert jetzt auch ohne questionperformance

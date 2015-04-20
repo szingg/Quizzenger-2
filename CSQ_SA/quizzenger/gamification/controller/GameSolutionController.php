@@ -8,6 +8,7 @@ namespace quizzenger\gamification\controller {
 	use \quizzenger\logging\Log as Log;
 	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
 	use \quizzenger\utilities\PermissionUtility as PermissionUtility;
+	use \quizzenger\messages\MessageQueue as MessageQueue;
 	use \quizzenger\gamification\model\GameModel as GameModel;
 
 	class GameSolutionController{
@@ -21,6 +22,7 @@ namespace quizzenger\gamification\controller {
 		private $answerModel;
 		private $reportModel;
 		private $categoryModel;
+		private $userscoreModel;
 		//private $userModel;
 
 		private $gameid;
@@ -39,6 +41,7 @@ namespace quizzenger\gamification\controller {
 			$this->answerModel = new \AnswerModel($this->sqlhelper, log::get());
 			$this->reportModel = new \ReportModel($this->sqlhelper, log::get());
 			$this->categoryModel = new \CategoryModel($this->sqlhelper, log::get());
+			$this->userscoreModel = new \UserScoreModel($this->sqlhelper, log::get());
 			//$this->userModel = new \UserModel($this->sqlhelper, log::get());
 
 			$this->checkGameSessionParams();
@@ -81,8 +84,14 @@ namespace quizzenger\gamification\controller {
 
 			$correctAnswer = $this->answerModel->getCorrectAnswer ( $questionID );
 
-			//TODO: Score ändern
-
+			//Score
+			if($GLOBALS['loggedin'] && $correctAnswer == $selectedAnswer){
+				if(!$this->userscoreModel->hasUserScoredQuestion( $questionID, $_SESSION['user_id'])){ // no multiple scoring for question
+					EventController::fire('game-question-answered-correct', $_SESSION['user_id'], [
+						'gameid' => $this->gameid
+					]);
+				}
+			}
 			//$session_id = $this->request ['session_id'];
 			//$inc_counter=0;
 
@@ -120,7 +129,7 @@ namespace quizzenger\gamification\controller {
 
 		private function loadReportView(){
 			$reportView = new \View();
-			$reportView->setTemplate ( 'gamereport' ); 
+			$reportView->setTemplate ( 'gamereport' );
 			/*
 			$reportView->assign('gameinfo', $this->gameinfo);
 			$gameReport = $this->gameModel->getGameReport($this->gameid);
@@ -142,7 +151,10 @@ namespace quizzenger\gamification\controller {
 		 */
 		private function getGameInfo(){
 			$gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
-			if(count($gameinfo) <= 0) NavigationUtility::redirectToErrorPage('err_db_query_failed');
+			if(count($gameinfo) <= 0) {
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_db_query_failed');
+				NavigationUtility::redirectToErrorPage();
+			}
 			else return $gameinfo[0];
 		}
 
@@ -172,7 +184,8 @@ namespace quizzenger\gamification\controller {
 					|| $finished
 					|| $this->hasStarted($this->gameinfo['starttime'])==false){
 
-				NavigationUtility::redirectToErrorPage('err_not_authorized');
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_not_authorized');
+				NavigationUtility::redirectToErrorPage();
 			}
 		}
 		private function checkGameSessionParams(){
@@ -181,7 +194,8 @@ namespace quizzenger\gamification\controller {
 					$_SESSION ['game'][$this->request ['gameid']]['gamecounter'],
 					$this->request ['answer'] )
 			){
-				NavigationUtility::redirectToErrorPage('err_not_authorized');
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_not_authorized');
+				NavigationUtility::redirectToErrorPage();
 			}
 		}
 

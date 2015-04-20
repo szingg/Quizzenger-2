@@ -1,10 +1,13 @@
 <?php
-	checkLogin();
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+	use \quizzenger\utilities\PermissionUtility as PermissionUtility;
+	use \quizzenger\messages\MessageQueue as MessageQueue;
+	PermissionUtility::checkLogin();
 
 	// only author and mods can edit
 	if (! $questionModel->userIDhasPermissionOnQuestionID ( $this->request ['id'], $_SESSION ['user_id'] )) {
-		header ( 'Location: ./index.php?view=error&err=err_not_authorized_questionedit' );
-		die ();
+		MessageQueue::pushPersistent($_SESSION['user_id'], 'err_not_authorized_questionedit');
+		NavigationUtility::redirectToErrorPage();
 	}
 
 	if (isset ( $this->request ['type'] )) {

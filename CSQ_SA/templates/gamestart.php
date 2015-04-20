@@ -2,10 +2,6 @@
 javascript:window.history.forward(1);
 //--></script>
 <div class="jumbotron">
-	<?php /*if(is_null($this->_ ['gameinfo']['gameid'])){
-		header('Location: index.php');
-		die();
-	} */ ?>
 	<h1>Willkommen zum Game '<?php echo htmlspecialchars($this->_ ['gameinfo']['gamename']); ?>'</h1>
 
 		<br>

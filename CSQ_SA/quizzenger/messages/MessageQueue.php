@@ -113,7 +113,7 @@ namespace quizzenger\messages {
 				$message->userId = $current->user_id;
 				$message->type = $current->type;
 				$message->static = true;
-				$message->arguments = json_decode($current->arguments);
+				$message->arguments = json_decode($current->arguments, true);
 
 				$persistentMessages[] = $message;
 				self::deletePersistentMessage($current->id);
@@ -124,6 +124,7 @@ namespace quizzenger\messages {
 
 			return $combinedMessages;
 		}
+
 	} // class MessageQueue
 } // namespace quizzenger\messages
 
