@@ -87,6 +87,7 @@ namespace quizzenger\dispatching {
 					break;
 
 				case 'question-created':
+				case 'question-removed':
 				case 'question-answered-correct':
 				case 'game-question-answered-correct':
 					$this->dispatchWithCategory($event, $producerScore, $consumerScore);

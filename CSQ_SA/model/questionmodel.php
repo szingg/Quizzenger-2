@@ -1,5 +1,6 @@
 <?php
 
+use \quizzenger\controlling\EventController as EventController;
 class QuestionModel {
 	private $mysqli;
 	private $logger;
@@ -302,16 +303,20 @@ class QuestionModel {
 	 * @return Returns true on success, else false
 	 *
 	*/
-	public function removeQuestion($question_id){
-		if($this->userIDhasPermissionOnQuestionID($question_id,$_SESSION ['user_id'])){
-			$this->logger->log ( "Removing Question with ID :".$question_id, Logger::INFO );
-			$question = $this->getQuestion($question_id);
-			$this->logger->log ( "Decrement userscore (5) in category ". $question['category_id'] ." and user_id ". $question['user_id'] , Logger::INFO );
-			$this->mysqli->s_query("UPDATE userscore SET score=score-". QUESTION_CREATED_SCORE ." WHERE user_id=? AND category_id=?", array('i', 'i'), array($question['user_id'], $question['category_id']));
-			$this->mysqli->s_query("DELETE FROM question WHERE id=?",array('i'),array($question_id));
+	public function removeQuestion($questionId) {
+		$userId = $_SESSION['user_id'];
+		if($this->userIDhasPermissionOnQuestionID($questionId, $userId)) {
+			$this->logger->log("User $userId is removing question $questionId.", Logger::INFO);
+			$question = $this->getQuestion($questionId);
+			EventController::fire('question-removed', $question['user_id'], [
+				'category' => $question['category_id']
+			]);
+
+			$this->mysqli->s_query("DELETE FROM question WHERE id=?", ['i'], [$question_id]);
 			return true;
-		} else {
-			$this->logger->log ( "Unauthorized try to remove of Question with ID :".$question_id, Logger::WARNING );
+		}
+		else {
+			$this->logger->log("User $userId is not authorized to remove question $questionId.", Logger::WARNING);
 			return false;
 		}
 	}
