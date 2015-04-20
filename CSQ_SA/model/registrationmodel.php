@@ -1,4 +1,7 @@
 <?php
+use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+use \quizzenger\messages\MessageQueue as MessageQueue;
+
 class RegistrationModel {
 	private $mysqli;
 	private $logger;
@@ -12,8 +15,8 @@ class RegistrationModel {
 		$error_msg = "";
 		if ((is_null($username)) || (is_null($email)) || (is_null($password))) {
 			$this->logger->log ( "Error trying to register : Missing fields", Logger::ERROR );
-			header ( 'Location: ./index.php?view=error&err=err_missing_input');
-			die ();
+			MessageQueue::pushPersistent($_SESSION['user_id'], 'err_missing_input');
+			NavigationUtility::redirect('./index.php?view=error');
 		}else{
 			// sanitize and validate the data passed in
 			if (! filter_var ( $email, FILTER_VALIDATE_EMAIL )) {
@@ -65,17 +68,17 @@ class RegistrationModel {
 					$insert_stmt->bind_param ( 'ssss', $username, $email, $password, $random_salt );
 					if (! $insert_stmt->execute ()) {
 						$this->logger->log ( "Error trying to register (insert). SQL Error: " . $this->mysqli ->error(), Logger::ERROR );
-						header ( 'Location: ./index.php?view=error&err=err_register_insert' );
-						die ();
+						MessageQueue::pushPersistent($_SESSION['user_id'], 'err_register_insert');
+						NavigationUtility::redirect('./index.php?view=error');
 					}
 				}
 				$this->logger->log ( "User registered sucessfully", Logger::INFO );
-				header ( 'Location: ./index.php?info=mes_register_success' );
-				die ();
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'mes_register_success');
+				NavigationUtility::redirect('./index.php');
 			} else {
 				$this->logger->log ( "Error trying to register :" . $error_msg, Logger::ERROR );
-				header ( 'Location: ./index.php?view=error&err='.$error_msg );
-				die ();
+				MessageQueue::pushPersistent($_SESSION['user_id'], $error_msg);
+				NavigationUtility::redirect('./index.php?view=error');
 			}
 		}
 	}

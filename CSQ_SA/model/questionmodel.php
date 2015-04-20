@@ -1,4 +1,7 @@
 <?php
+use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+use \quizzenger\utilities\PermissionUtility as PermissionUtility;
+use \quizzenger\messages\MessageQueue as MessageQueue;
 
 use \quizzenger\controlling\EventController as EventController;
 class QuestionModel {
@@ -101,16 +104,13 @@ class QuestionModel {
 			}
 		}
 		if($missingParam){
-			header ( 'Location: ./index.php?view=error&err=err_missing_input' );
-			die ();
+			MessageQueue::pushPersistent($_SESSION['user_id'], 'err_missing_input');
+			NavigationUtility::redirectToErrorPage();
 		}
 	}
 
 	public function opQuestionWithAnswers($answerModel,$categoryModel, $tagModel,$operation,$chosenCategory){
-		if (!isset ( $GLOBALS ['loggedin'] ) || !$GLOBALS ['loggedin']) {
-			header ( 'Location: ./index.php?view=login' );
-			die ();
-		}
+		PermissionUtility::checkLogin();
 
 		$this->checkForMissingParametersOpQwA($chosenCategory,$operation,$categoryModel);
 
@@ -178,8 +178,8 @@ class QuestionModel {
 			return;
 		}
 		$this->logger->log ( "Invalid questionType used in questionmodel", Logger::WARNING );
-		header ( 'Location: ./index.php?view=error&err=err_db_query_failed' );
-		die();
+		MessageQueue::pushPersistent($_SESSION['user_id'], 'err_db_query_failed');
+		NavigationUtility::redirectToErrorPage();
 	}
 
 	/**

@@ -1,4 +1,6 @@
 <?php
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+
 	$viewInner->setTemplate('reporting');
 
 	if(isset($this->request['id'])) {
@@ -6,15 +8,13 @@
 	} elseif($GLOBALS['loggedin']) {
 		$userId = $_SESSION['user_id'];
 	} else {
-		header('Location: ./index.php?view=login&pageBefore=' . $this->template);
-		die();
+		NavigationUtility::redirect('./index.php?view=login&pageBefore=' . $this->template);
 	}
 
 	$user = $userModel->getUserByID($userId);
 
 	if(!$user['superuser'] && !$reportingModel->isAnyModerator($userId)) {
-		header('Location: ./index.php?view=login&pageBefore=' . $this->template);
-		die();
+		NavigationUtility::redirect('./index.php?view=login&pageBefore=' . $this->template);
 	}
 
 	$categoryId = (isset($_GET['category']) ? ((int)$_GET['category']) : 0);

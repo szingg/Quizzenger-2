@@ -2,6 +2,7 @@
 use \quizzenger\messages\MessageQueue as MessageQueue;
 use \quizzenger\messages\MessageFormatter as MessageFormatter;
 use \quizzenger\messages\TextTranslator as TextTranslator;
+use \quizzenger\utilities\NavigationUtility as NavigationUtility;
 use \quizzenger\controlling\EventController as EventController;
 use \quizzenger\gamification\model\GameModel as GameModel;
 use \quizzenger\logging\LogViewer as LogViewer;
@@ -71,8 +72,7 @@ class Controller {
 			case 'syslog':
 				if(!$_SESSION['superuser'] || !isset($_GET['logfile']))
 				{
-					header('Location: ./index.php');
-					die();
+					NavigationUtility::redirect();
 				}
 				else {
 					(new LogViewer())->render($_GET['logfile']);

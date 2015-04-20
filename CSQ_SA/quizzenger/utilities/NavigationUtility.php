@@ -16,8 +16,8 @@ namespace quizzenger\utilities {
 		 * Redirects to the error page
 		 * @param $errorCode specify the errorCode which will be displayed as message for the user. Default is 'err_unknown'
 		 */
-		public static function redirectToErrorPage($errorCode = 'err_unkown'){
-			NavigationUtility::redirect('./index.php?view=error&err='.$errorCode);
+		public static function redirectToErrorPage(){
+			NavigationUtility::redirect('./index.php?view=error');
 		}
 
 		/*
