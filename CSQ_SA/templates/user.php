@@ -110,7 +110,7 @@
 				<ul>
 					<?php
 						foreach($leadingTrailingUsers as $current) {
-							echo "<li>{$current['username']}</li>";
+							echo "<li>{$current['id']} :: {$current['rank']} :: {$current['username']} :: {$current['total_score']}</li>";
 						}
 					?>
 				</ul>
