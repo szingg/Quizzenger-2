@@ -106,14 +106,16 @@
 					<?php endforeach; ?>
 				</div>
 			</div>
-			<div>
-				<ul>
-					<?php
-						foreach($leadingTrailingUsers as $current) {
-							echo "<li>{$current['id']} :: {$current['rank']} :: {$current['username']} :: {$current['total_score']}</li>";
-						}
-					?>
-				</ul>
+			<div style="text-align:center">
+				<?php foreach($leadingTrailingUsers as $current): ?>
+					<p>
+						<span class="badge alert-<?php echo ($current['id'] == $user['id']) ? 'success' : 'info'; ?>">
+							<?php echo '#' . $current['rank']; ?><br>
+							<?php echo $current['username']; ?><br>
+							<?php echo $current['total_score']; ?>
+						</span>
+					</p>
+				<?php endforeach; ?>
 			</div>
 			<hr>
 			<!--  -->
