@@ -420,6 +420,21 @@ CREATE TABLE IF NOT EXISTS `translation` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `settings`
+--
+
+CREATE TABLE IF NOT EXISTS `settings` (
+	`name` varchar(64) NOT NULL,
+    `value` text NOT NULL,
+	PRIMARY KEY(`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `settings` (`name`, `value`) VALUES	('q.scoring.producer-multiplier', '1.75');
+
+-- --------------------------------------------------------
+
+
+--
 -- Constraints for dumped tables
 --
 
