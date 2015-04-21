@@ -54,7 +54,6 @@ class UserScoreModel {
 	}
 
 	public function getLeadingTrailingUsers($userId) {
-	$userId =46;
 		$result = $this->mysqli->s_query('SELECT id, CAST(rank AS UNSIGNED) AS rank, username, total_score'
 			. ' FROM (SELECT @rank:=@rank+1 AS rank, @user_rank=IF(id=?,@rank,0) AS user_rank, id,'
 			. '     username, IFNULL(total_score, 0) AS total_score'
