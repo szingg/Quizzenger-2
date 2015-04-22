@@ -73,15 +73,11 @@ namespace quizzenger\gamification\controller {
 		}
 
 		/*
-		 * Gets the Gameinfo. Redirects to errorpage when no result returned.
+		 * Gets the Gameinfo.
 		 */
 		private function getGameInfo(){
 			$gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
-			if(count($gameinfo) <= 0)  {
-				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_db_query_failed');
-				NavigationUtility::redirectToErrorPage();
-			}
-			else return $gameinfo[0];
+			return $gameinfo;
 		}
 
 		private function isGameOwner($owner_id){

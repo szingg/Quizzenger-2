@@ -75,6 +75,8 @@ namespace quizzenger\gamification\controller {
 			$solutionView->assign ( 'category', $categoryName );
 
 			$answers = $this->answerModel->getAnswersByQuestionID ( $questionID );
+			$order = $_SESSION['questionorder'][$questionID];
+			array_multisort($order, $answers);
 			$solutionView->assign ( 'answers', $answers );
 			$selectedAnswer = $this->request ['answer'];
 			$solutionView->assign ( 'selectedAnswer', $selectedAnswer );
@@ -147,15 +149,11 @@ namespace quizzenger\gamification\controller {
 		}
 
 		/*
-		 * Gets the Gameinfo. Redirects to errorpage when no result returned.
+		 * Gets the Gameinfo.
 		 */
 		private function getGameInfo(){
 			$gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
-			if(count($gameinfo) <= 0) {
-				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_db_query_failed');
-				NavigationUtility::redirectToErrorPage();
-			}
-			else return $gameinfo[0];
+			return $gameinfo;
 		}
 
 		/*
