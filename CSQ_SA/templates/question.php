@@ -54,7 +54,7 @@ if(isset($this->_['progress'])){ ?>
 	<!-- List group -->
 	<ul class="list-group">
 	<?php
-	shuffle($this->_ ['answers']); //randomize answers
+	//shuffle($this->_ ['answers']); //randomize answers
 	foreach ( $this->_ ['answers'] as $answer ) { ?>
 		<!-- <a href="?view=solution&amp;id=<?= ($this->_['questionID']); ?>&amp;answer=<?php echo $answer['id']; echo $this->_['session_id']; ?>">  -->
 		<a href="<?php echo $this->_['linkToSolution'] ;?>&amp;answer=<?php echo $answer['id'];?>">
