@@ -32,6 +32,7 @@
 
 	$achievementList = $userModel->getAchievementList($userID);
 	$rankList = $userModel->getRankList($userID);
+	$rankListByCategory = $userscoreModel->getRankinglistAllCategories($userID);
 
 	$viewInner->assign('alreadyreported',$alreadyReported);
 	$viewInner->assign('user', $user);
@@ -44,4 +45,7 @@
 	$viewInner->assign('absolvedcount', $absolvedCount);
 	$viewInner->assign('achievementlist', $achievementList);
 	$viewInner->assign('ranklist', $rankList);
+	$viewInner->assign('rankListByCategory', $rankListByCategory);
+
+
 ?>

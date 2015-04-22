@@ -580,7 +580,19 @@ CREATE OR REPLACE VIEW userscoreview AS
 		LEFT JOIN rank
 			ON (rank.threshold=(SELECT threshold FROM rank
 				WHERE threshold<=(FLOOR(producer_score*producer_multiplier+consumer_score+bonus_score))
-					OR threshold=0 ORDER BY threshold DESC LIMIT 1))
+					OR threshold=0 ORDER BY threshold DESC LIMIT 1));
+
+CREATE OR REPLACE VIEW rankinglistallcategoriesview AS
+  SELECT user.id, user.username, userscore.category_id,
+  SUM(userscore.producer_score) AS producer_score,
+  SUM(userscore.consumer_score) AS consumer_score, user.bonus_score,
+  (SELECT value FROM settings WHERE name="q.scoring.producer-multiplier") AS producer_multiplier,
+  (FLOOR(SUM(userscore.producer_score)*(SELECT value FROM settings WHERE name="q.scoring.producer-multiplier")+SUM(userscore.consumer_score))) AS total_score
+  FROM user
+  RIGHT JOIN userscore ON user.id=userscore.user_id
+  WHERE user.id NOT IN (0, 1, 2)
+  GROUP BY userscore.category_id, user.id
+  ORDER BY userscore.category_id, total_score DESC;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

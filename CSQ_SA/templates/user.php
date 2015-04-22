@@ -9,6 +9,7 @@
 	$absolvedCount = $this->_ ['absolvedcount'];
 	$achievementList = $this->_['achievementlist'];
 	$rankList = $this->_['ranklist'];
+	$rankListByCategory = $this->_['rankListByCategory'];
 
 	if (isset($this->_['message'])){
 		echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($this->_['message']).'</div>';
@@ -37,7 +38,7 @@
 			<div class="row">
   				<div class="col-md-6">
 					<h4><img alt="ribbon" src="<?=APP_PATH?>/templates/img/ribbon.png"> Punkte pro Kategorie</h4>
-					<table style="width:100%">
+					<table id="ranklist" style="width:100%">
 						<tr>
 							<th>Kategorie</th>
 							<th>Punktzahl</th>
@@ -46,33 +47,57 @@
 						<?php
 							foreach($categoryscores as $catScore) {
 								echo '<tr>';
-								echo '<td>' . htmlspecialchars($catScore['category_name']) . '</td>';
+								echo '<td>' . htmlspecialchars($catScore['category_name']);
+								echo '<span id="ranklistTooltip" class="hide" style="position: absolute; background-color: white; box-shadow: 0 0 2px #888; padding: 10px; z-index: 1000; right: 100px; margin-top: -50px;">';
+									echo '<span class="" style="padding: 0px 10px; margin-bottom: 6px; display: inline-block"><strong>Rangliste:</strong></span><br>';
+                            		foreach($rankListByCategory[$catScore['category_id']] as $current){
+                            			echo '<a href="?view=user&id='.$current['id'].'">';
+			                    		echo '<span class="badge alert-'.(($current['id'] == $user['id']) ? 'success' : 'info').'" style="padding: 6px 10px; margin-bottom: 5px">';
+			                    		echo '#'.$current['rank'].' '.htmlspecialchars($current['username']).' '.$current['total_score'];
+			                    		echo '</span></a><br>';
+                            		}
+                            	echo '</span>';
+								echo '</td>';
 								echo '<td><span class="badge alert-success">' . htmlspecialchars($catScore['category_score']) . '</span></td>';
 								echo '<td><span class="badge alert-info">' . '&#9733;&nbsp;' . htmlspecialchars("{$catScore['user_rank']} / {$catScore['user_count']}") . '</span></td>';
 								echo '</tr>';
-							}
+							} /*
+							echo '<tr class="rankinglist-tooltip">';
+                            echo '<td>test';
+                            echo '<span class="" style="position: absolute; background-color: white; box-shadow: 0 0 2px #888; padding: 10px; z-index: 1000; margin-left: 50px; margin-top: -50px; right: 0px; display: inline;">'; ?>
+                            <span class="" style="padding: 0px 10px; margin-bottom: 6px; display: inline-block"><strong>Rangliste:</strong></span><br>
+		                    <span class="badge alert-info" style="padding: 6px 10px; margin-bottom: 5px">#5 username score</span><br>
+		                    <span class="badge alert-success" style="padding: 6px 10px; margin-bottom: 5px">#5 username score</span><br>
+		                    <span class="badge alert-info" style="padding: 6px 10px; margin-bottom: 5px">#5 username score</span><br>
+                            <?php echo '</span></td>';
+                            echo '<td><span class="badge alert-success">111</span></td>';
+                            echo '<td><span class="badge alert-info">' . '&#9733;&nbsp;7/210</span></td>';
+                            echo '</tr>'; */
+
 							echo '<tr>';
 							echo '<td style="font-weight:bold">Bonus</td>';
 							echo '<td><span class="badge alert-success">' . htmlspecialchars($userScore['bonus_score']) . '</span></td>';
 							echo '<td></td>';
 
-							echo '<tr style="font-size: 18pt">';
-							echo '<td style="padding:18px 0 48px 0">Total</td>';
-							echo '<td style="padding:18px 0 48px 0">' . htmlspecialchars($userScore['total_score']) . '</td>';
-							echo '<td></td>';
-							echo '</tr>';
+							echo '<tr style="font-size: 16pt">';
+							echo '<td>Total';
+							echo '<span id="ranklistTooltip" class="hide" style="position: absolute; background-color: white; box-shadow: 0 0 2px #888; padding: 10px; z-index: 1000; right: 100px; margin-top: -50px;">';
+									echo '<span class="" style="padding: 0px 10px; margin-bottom: 6px; display: inline-block"><strong>Rangliste:</strong></span><br>';
+                            		foreach($leadingTrailingUsers as $current):
+                            			if(($current['id'] == $user['id'])) $userrank = $current['rank'];
+                            			echo '<a href="?view=user&id='.$current['id'].'">';
+                                   		echo '<span class="badge alert-'.(($current['id'] == $user['id']) ? 'success' : 'info').'" style="padding: 6px 10px; margin-bottom: 5px">';
+			                    		echo '#'.$current['rank'].' '.htmlspecialchars($current['username']).' '.$current['total_score'];
+			                    		echo '</span></a><br>';
+									endforeach;
+                            echo '</span>';
+							echo '</td>';
+							echo '<td> <span class="badge alert-success" style="font-size: 18pt">' . htmlspecialchars($userScore['total_score']) . '</span></td>';
+							echo '<td> <span class="badge alert-info" style="font-size: 18pt">&#9733;&nbsp;' . htmlspecialchars("{$userrank} / {$userScore['total_users']}") .'</span></td>';
+							echo '</tr>'; 
 						?>
 					</table>
-					<div class="btn-group hidden-lg hidden-md">
-						<h4 class="pull-left">Rang </h4>
-						<div class="rank rank-position-neutral"  data-tooltip-title="<?php echo htmlspecialchars($userRank->name); ?>"
-							data-tooltip-text="<?php echo htmlspecialchars("{$userRank->threshold} Punkte"); ?>">
-							<div class="point point-rank clickable point-active">
-								<img src="<?php echo RANK_PATH . "/{$userRank->image}." . RANK_IMAGE_EXTENSION; ?>"></img>
-							</div>
-						</div>
-						<br>
-					</div>
+					<br><br>
 				</div>
   				<div class="col-md-6">
 					<?php
@@ -94,8 +119,19 @@
 					Anzahl beantworteter Fragen: <span class="badge"><?= $absolvedCount ?></span>
 				</div>
 			</div>
-			<div class="scrollable">
-				<div class="rankbar hidden-xs hidden-sm">
+			<div class="btn-group hidden-lg hidden-md">
+				<h4 class="pull-left">Rang </h4>
+				<div class="rank rank-position-neutral"  data-tooltip-title="<?php echo htmlspecialchars($userRank->name); ?>"
+					data-tooltip-text="<?php echo htmlspecialchars("{$userRank->threshold} Punkte"); ?>">
+					<div class="point point-rank clickable point-active">
+						<img src="<?php echo RANK_PATH . "/{$userRank->image}." . RANK_IMAGE_EXTENSION; ?>"></img>
+					</div>
+				</div>
+				<br>
+			</div>
+			<div class="scrollable hidden-xs hidden-sm">
+				<h4>Rang</h4><br>
+				<div class="rankbar">
 					<?php foreach($ranks as $current): ?>
 						<div class="rank" data-tooltip-title="<?php echo htmlspecialchars($current->name); ?>"
 							data-tooltip-text="<?php echo htmlspecialchars("{$current->threshold} Punkte"); ?>">
@@ -105,7 +141,7 @@
 						</div>
 					<?php endforeach; ?>
 				</div>
-			</div>
+			</div> <?php /*
 			<div style="text-align:center">
 				<?php foreach($leadingTrailingUsers as $current): ?>
 					<p>
@@ -117,7 +153,7 @@
 					</p>
 				<?php endforeach; ?>
 			</div>
-			<hr>
+			<hr> */ ?>
 			<!--  -->
 			<div id="achievements">
 				<h4>Achievements</h4>

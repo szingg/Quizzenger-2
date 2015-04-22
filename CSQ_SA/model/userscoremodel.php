@@ -20,7 +20,8 @@ class UserScoreModel {
 	}
 
 	public function getUserScore($userId) {
-		$result = $this->mysqli->s_query('SELECT total_score, bonus_score'
+		$result = $this->mysqli->s_query('SELECT total_score, bonus_score, '
+			. ' (SELECT COUNT(id) FROM userscoreview) AS total_users'
 			. ' FROM userscoreview WHERE id=?',
 			['i'], [$userId], false);
 
@@ -53,6 +54,47 @@ class UserScoreModel {
 		return $this->mysqli->getQueryResultArray($result);
 	}
 
+	public function getRankinglistAllCategories($userId){
+		$result = $this->mysqli->s_query('SELECT a.id, username, rank, user_rank, total_score, a.category_id, name'
+			.' FROM('
+			.' SELECT id, username, category_id, total_score, '
+			.' @rank:=CASE WHEN @currentcat <> category_id THEN 1 ELSE @rank+1 END AS rank, '
+   			.' @currentcat:=category_id AS currentcat '
+			.' FROM ('
+				.' SELECT * FROM rankinglistallcategoriesview WHERE category_id IN '
+				.' (SELECT category_id FROM rankinglistallcategoriesview WHERE id=?) '
+				.' ORDER BY category_id, total_score DESC'
+			.' ) r, '
+			.' (SELECT @rank:= -1) s, '
+  			.' (SELECT @currentcat:= -1) c) as a '
+			.' JOIN category c ON c.id = category_id '
+			.' JOIN ('
+				.' SELECT category_id, MAX(user_rank) as user_rank FROM '
+				.' (SELECT id, username, category_id, total_score, '
+				.' @rank:=CASE WHEN @currentcat <> category_id THEN 1 ELSE @rank+1 END AS rank, '
+				.' @user_rank:=IF(id=?,@rank,0) AS user_rank, '
+   				.' @currentcat:=category_id AS currentcat '
+				.' FROM ('
+					.' SELECT * FROM rankinglistallcategoriesview WHERE category_id IN'
+					.' (SELECT category_id FROM rankinglistallcategoriesview WHERE id=?)'
+					.' ORDER BY category_id, total_score DESC'
+				.' ) r, '
+				.' (SELECT @rank:= -1) s, '
+  				.' (SELECT @currentcat:= -1) c) AS subquery '
+  				.' GROUP BY category_id'
+			.' ) b ON b.category_id = a.category_id'
+ 			.' WHERE rank >= user_rank-5 AND rank <= user_rank+5'
+		,['i','i','i'],[$userId, $userId, $userId]);
+		$resultArray = [];
+		while ( $row = $result->fetch_assoc () ) {
+			if(! isset($resultArray[$row['category_id']])){
+				$resultArray[$row['category_id']] = [];
+			}
+			array_push($resultArray[$row['category_id']], $row);
+		}
+		return $resultArray;
+	}
+
 	public function getLeadingTrailingUsers($userId) {
 		$result = $this->mysqli->s_query('SELECT id, CAST(rank AS UNSIGNED) AS rank, username, total_score'
 			. ' FROM (SELECT @rank:=@rank+1 AS rank, @user_rank=IF(id=?,@rank,0) AS user_rank, id,'
@@ -67,6 +109,26 @@ class UserScoreModel {
 			, ['i'], [$userId]);
 
 		return $this->mysqli->getQueryResultArray($result);
+		
+
+		/*
+		$result = $this->mysqli->s_query('SELECT id, CAST(rank AS UNSIGNED) AS rank, username, total_score, '
+			. ' (SELECT id, MAX(user_rank) as user_rank FROM '
+			. ' 	(SELECT @rank:=@rank+1 AS rank, @user_rank=IF(id=?,@rank,0) AS user_rank, id,'
+			. '     username, IFNULL(total_score, 0) AS total_score'
+			. '     FROM (SELECT * FROM userscoreview ORDER BY total_score DESC) u,'
+			. '		(SELECT @rank:=0) r'
+			. '	) as subquery) as user_rank'
+			. ' FROM (SELECT @rank:=@rank+1 AS rank, id,'
+			. '     username, IFNULL(total_score, 0) AS total_score'
+			. '     FROM (SELECT * FROM userscoreview ORDER BY total_score DESC) u,'
+			. '		(SELECT @rank:=0) r'
+			. ' ) AS a'
+			. ' WHERE rank >= user_rank-5 AND rank <= user_rank+5'
+			. ' ORDER BY rank ASC'
+			, ['i'], [$userId]);
+
+		return $this->mysqli->getQueryResultArray($result); */
 	}
 }
 ?>

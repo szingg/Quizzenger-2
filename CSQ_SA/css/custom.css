@@ -393,3 +393,13 @@ div>a {
 .display-inline-block {
 	display: inline-block;
 }
+.display-inline {
+	display: inline;
+}
+
+.warp{
+	overflow: pre-wrap;
+	word-wrap: normal;
+	white-space: pre-wrap;
+	text-overflow: ellipsis
+}
