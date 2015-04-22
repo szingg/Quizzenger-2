@@ -73,6 +73,11 @@ namespace quizzenger\gamification\controller {
 			$questionView->assign ( 'category', $categoryName );
 
 			$answers = $this->answerModel->getAnswersByQuestionID ( $questionID );
+			//randomize array
+			mt_srand(time());
+			$order = array_map(create_function('$val', 'return mt_rand();'), range(1, count($answers)));
+			$_SESSION['questionorder'][$questionID] = $order;
+			array_multisort($order, $answers);
 			$questionView->assign ( 'answers', $answers );
 			$linkToSolution = '?view=GameSolution&gameid='.$this->gameid;
 			$questionView->assign ( 'linkToSolution', $linkToSolution );
@@ -113,15 +118,11 @@ namespace quizzenger\gamification\controller {
 		}
 
 		/*
-		 * Gets the Gameinfo. Redirects to errorpage when no result returned.
+		 * Gets the Gameinfo.
 		 */
 		private function getGameInfo(){
 			$gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
-			if(count($gameinfo) <= 0) {
-				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_db_query_failed');
-				NavigationUtility::redirectToErrorPage();
-			}
-			else return $gameinfo[0];
+			return $gameinfo;
 		}
 
 		/*

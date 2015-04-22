@@ -5,12 +5,14 @@
 		$viewInner->setTemplate ( 'solution' );
 
 		$question = $questionModel->getQuestion ( $this->request ['id'] );
-		
+
 		$author = $userModel->getUsernameByID ( $question ['user_id'] );
-		
+
 		$categoryName = $categoryModel->getNameByID ( $question ['category_id'] );
 
 		$answers = $answerModel->getAnswersByQuestionID ( $this->request ['id'] );
+		$order = $_SESSION['questionorder'][$this->request ['id']];
+		array_multisort($order, $answers);
 		$selectedAnswer = $this->request ['answer'];
 		$correctAnswer = $answerModel->getCorrectAnswer ( $this->request ['id'] );
 

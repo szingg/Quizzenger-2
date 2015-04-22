@@ -8,7 +8,7 @@
 	} elseif ($GLOBALS['loggedin']) {
 		$userID = $_SESSION ['user_id'];
 	} else {
-		NavigationUtility::redirect('./index.php?view='.$this->template);
+		NavigationUtility::redirect('./index.php?view=login&pageBefore='.$this->template);
 	}
 
 	$user = $userModel->getUserByID ( $userID );

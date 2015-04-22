@@ -4,8 +4,22 @@
 ::-moz-selection { background: #4089c8; color: #fff; }
 
 body {
-	padding-top: 70px;
 	background-image: url(../templates/img/bg.png);
+}
+
+@media ( min-width :768px) {
+	body { padding-top: 170px; }
+}
+@media ( max-width :768px) {
+	body { padding-top: 70px; }
+}
+
+@media ( min-width :992px) {
+	body { padding-top: 120px; }
+}
+
+@media ( min-width :1200px) {
+	body { padding-top: 70px; }
 }
 
 .category-badge {

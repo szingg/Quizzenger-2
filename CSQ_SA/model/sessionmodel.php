@@ -124,7 +124,9 @@ class SessionModel {
 			return false;
 		}
 
-		$valid_attempts = time() - (BRUTE_FORCE_COOLDOWN );
+		$date = new DateTime();
+		$date->modify('-'.( BRUTE_FORCE_COOLDOWN ).' seconds');
+		$valid_attempts = $date->format('Y-m-d H:i:s');
 
 		if ($stmt = $mysqli->prepare ( "SELECT time
 				FROM login_attempts
@@ -134,7 +136,7 @@ class SessionModel {
 
 				$stmt->execute ();
 				$stmt->store_result ();
-
+				//echo '<br>stmt<br>';print_r($stmt); die();
 				if ($stmt->num_rows >= BRUTE_FORCE_MAX_ATTEMPTS) {
 					return true;
 				} else {
