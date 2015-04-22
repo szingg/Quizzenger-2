@@ -186,7 +186,7 @@ END | */
 					." starttime, endtime, duration, ADDTIME(starttime, duration) as calcEndtime, quiz_id, "
 					."user_id as owner_id, q.name as quizname, created as quiz_created_on FROM gamesession g, quiz q "
 					."WHERE g.id = ? AND g.quiz_id = q.id",['i'],[$game_id]);
-			return $this->mysqli->getQueryResultArray($result);
+			return $this->mysqli->getSingleResult($result);
 		}
 
 		/*

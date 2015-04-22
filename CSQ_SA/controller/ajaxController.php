@@ -140,7 +140,7 @@ class AjaxController {
 				if(! $gameModel->isGameMember($_SESSION['user_id'], $gameid)) return;
 
 				$gameReport = $gameModel->getGameReport($gameid);
-				$gameinfo = $gameModel->getGameInfoByGameId($gameid)[0];
+				$gameinfo = $gameModel->getGameInfoByGameId($gameid);
 
 				$now = date("Y-m-d H:i:s");
 				$durationSec = FormatUtility::timeToSeconds($gameinfo['duration']);
@@ -165,7 +165,7 @@ class AjaxController {
 				return $this->sendJSONResponse('', '', $data);
 			case 'getGameStartInfo' :
 				$game_id = $this->request['gameid'];
-				$gameinfo = $gameModel->getGameInfoByGameId($game_id)[0];
+				$gameinfo = $gameModel->getGameInfoByGameId($game_id);
 				$isMember = $gameModel->isGameMember($_SESSION['user_id'], $game_id);
 				$members = $gameModel->getGameMembersByGameId($game_id);
 

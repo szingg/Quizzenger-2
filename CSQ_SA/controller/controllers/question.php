@@ -1,38 +1,43 @@
 <?php
 
 	$questionID= $this->request ['id'];
-	
+
 	//viewQuestionInfo
 	$viewQuestionInfo= new View();
 	$viewQuestionInfo->setTemplate('questioninfo');
-	
+
 	$question = $questionModel->getQuestion ( $questionID );
 	$viewQuestionInfo->assign( 'question', $question );
-	
+
 	$questionHistory = $questionModel->getHistoryForQuestionByID($questionID);
 	$viewQuestionInfo->assign( 'questionhistory', $questionHistory );
 
 	$author = $userModel->getUsernameByID ( $question ['user_id'] );
 	$viewQuestionInfo->assign ( 'author', $author );
 	$viewQuestionInfo->assign ( 'user_id',$question ['user_id']);
-	
+
 	$tags = $tagModel->getAllTagsByQuestionID ( $questionID );
 	$viewQuestionInfo->assign ( 'tags', $tags );
-	
+
 	$viewInner->assign( 'questioninfo', $viewQuestionInfo->loadTemplate());
-	
-	
+
+
 	//innerView
 	$viewInner->setTemplate ( 'question' );
-	
+
 	$viewInner->assign ( 'questionID', $questionID );
 	$viewInner->assign ( 'question', $question );
 	$categoryName = $categoryModel->getNameByID ( $question ['category_id'] );
 	$viewInner->assign ( 'category', $categoryName );
 
 	$answers = $answerModel->getAnswersByQuestionID ( $questionID );
+	//randomize array
+	mt_srand(time());
+	$order = array_map(create_function('$val', 'return mt_rand();'), range(1, count($answers)));
+	$_SESSION['questionorder'][$questionID] = $order;
+	array_multisort($order, $answers);
 	$viewInner->assign ( 'answers', $answers );
-	
+
 	$alreadyReported= $reportModel->checkIfUserAlreadyDoneReport("question", $questionID , $_SESSION ['user_id']);
 	$viewInner->assign ('alreadyreported',$alreadyReported);
 
@@ -73,7 +78,7 @@
 		$sessionString = "";
 	}
 	$viewInner->assign ( 'session_id', $sessionString );
-	
+
 	$linkToSolution = '?view=solution&id='.$questionID.$sessionString;
 	$viewInner->assign ( 'linkToSolution', $linkToSolution);
 ?>
