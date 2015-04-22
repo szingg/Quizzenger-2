@@ -143,14 +143,38 @@
 			</noscript>
 			<?=  $this->_['csq_content']; ?>
 			<hr />
-			<?php
-				echo $this->_['csq_footer'];
-				if(SHOW_PROCESSING_TIME){
-					$time_end = microtime(true);
-					$execution_time = round(($time_end - $GLOBALS["time_start"]),4);
-					echo ('<span style="float:right"><i>Seite erstellt in: '.$execution_time." s</i></span>");
-				}
-			?>
+			<footer>
+				<div class="panel panel-default" id="panelQuestionHistoryUser">
+					<div class="panel-heading">
+						<b>Quizzenger - Die Wissensplattform</b>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-4">
+								<ul>
+									<li><a href="<?php echo APP_PATH . '?view=about'; ?>">Über Quizzenger</a></li>
+									<li><a href="https://github.com/ozzi-/Quizzenger/">Github Repository</a></li>
+								</ul>
+							</div>
+							<div class="col-md-4">
+								<ul>
+									<li><a href="<?php echo APP_PATH . '?view=about'; ?>">Impressum</a></li>
+									<li><a href="<?php echo APP_PATH . '?view=about'; ?>">Rechtliche Hinweise</a></li>
+								</ul>
+							</div>
+							<div class="col-md-4">
+								<?php
+									if(SHOW_PROCESSING_TIME) {
+										$time_end = microtime(true);
+										$execution_time = round(($time_end - $GLOBALS['time_start']), 4);
+										echo '<div class="pull-right">Erstelldauer: ' . $execution_time . 's</div';
+									}
+								?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</footer>
 		</div>
 	</body>
 </html>
