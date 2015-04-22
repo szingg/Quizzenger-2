@@ -1,4 +1,4 @@
-<div class="panel panel-default" id="panelQuestionHistoryUser">
+<div class="panel panel-default">
 	<div class="panel-heading">
 		<h1>Quizzenger <small>Die Wissensplattform</small></h1>
 	</div>
