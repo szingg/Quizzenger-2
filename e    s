@@ -1,211 +1,0 @@
-[1mdiff --git a/CSQ_SA/controller/ajaxController.php b/CSQ_SA/controller/ajaxController.php[m
-[1mindex b95ca33..be39538 100644[m
-[1m--- a/CSQ_SA/controller/ajaxController.php[m
-[1m+++ b/CSQ_SA/controller/ajaxController.php[m
-[36m@@ -40,7 +40,14 @@[m [mclass AjaxController {[m
- 		switch ($this->template) {[m
- 			// -------------------------------------------------------[m
- 			case 'addrating_ajax':[m
-[31m-				$ret = $ratingModel->newRating($this->request['question_id'],$this->request['stars'],$this->request['comment'],$this->request['parent']);[m
-[32m+[m				[32m//check Permissions[m[41m[m
-[32m+[m				[32mif(! $this->isLoggedin()) return;[m[41m[m
-[32m+[m				[32m$parent = $this->request['parent'];[m[41m[m
-[32m+[m				[32m$alreadyRated= $ratingModel->userHasAlreadyRated($this->request['question_id'] , $_SESSION ['user_id']);[m[41m[m
-[32m+[m				[32mif((!isset($parent) || !is_numeric($parent)) && $alreadyRated) return;[m[41m[m
-[32m+[m[41m[m
-[32m+[m				[32m//make new rating[m[41m[m
-[32m+[m				[32m$ret = $ratingModel->newRating($this->request['question_id'], $this->request['stars'],$this->request['comment'],$parent);[m[41m[m
- 				break;[m
- 			// -------------------------------------------------------[m
- 			case 'categorylist_ajax':[m
-[36m@@ -63,8 +70,8 @@[m [mclass AjaxController {[m
- 				break;[m
- 			// -------------------------------------------------------[m
- 			case 'remove_quiz':[m
-[31m-				$quizModel->removeQuiz($this->request['quiz']);[m
-[31m-				break;[m
-[32m+[m				[32m$result = $quizModel->removeQuiz($this->request['quiz']);[m[41m[m
-[32m+[m				[32mreturn $this->sendJSONResponse(($result? 'success' : 'error'), '', '');[m[41m[m
- 			// -------------------------------------------------------[m
- 			case 'remove_sub_cat':[m
- 				$quizModel->removeQuiz($this->request['id']);[m
-[36m@@ -100,8 +107,7 @@[m [mclass AjaxController {[m
- 				return $fileupload->processFileUpload();[m
- 			case 'joinGame' :[m
- 				$result = $gameModel->userJoinGame($_SESSION['user_id'], $this->request['gameid']);[m
-[31m-				$result == 0? $result = 'success' : 'error';[m
-[31m-				return $this->sendJSONResponse($result, '', '');[m
-[32m+[m				[32mreturn $this->sendJSONResponse(($result == 0? 'success' : 'error'), '', '');[m[41m[m
- 			case 'leaveGame' :[m
- 				$gameModel->userLeaveGame($_SESSION['user_id'], $this->request['gameid']);[m
- 				break;[m
-[36m@@ -194,7 +200,6 @@[m [mclass AjaxController {[m
- 	 * @param $message send an optional message[m
- 	 * @param $data optional data[m
- 	 */[m
-[31m-	private function sendJSONResponse($result, $message, $data) {[m
- 		header('Content-Type: application/json');[m
- 		echo json_encode(array('result' => $result, 'message' => $message, 'data' => $data));[m
- 	}[m
-[36m@@ -239,5 +244,13 @@[m [mclass AjaxController {[m
- 			}[m
- 		}[m
- 	}[m
-[32m+[m[41m[m
-[32m+[m	[32m/*[m[41m[m
-[32m+[m	[32m * Checks if user is logged in.[m[41m[m
-[32m+[m	[32m * @return Returns true if User is logged in, else false;[m[41m[m
-[32m+[m	[32m */[m[41m[m
-[32m+[m	[32mpublic static function isLoggedin(){[m[41m[m
-[32m+[m		[32mreturn $GLOBALS ['loggedin'];[m[41m[m
-[32m+[m	[32m}[m[41m[m
- }[m
- ?>[m
-[1mdiff --git a/CSQ_SA/controller/controllers/myquizzes.php b/CSQ_SA/controller/controllers/myquizzes.php[m
-[1mindex 36c0c36..c8fe302 100644[m
-[1m--- a/CSQ_SA/controller/controllers/myquizzes.php[m
-[1m+++ b/CSQ_SA/controller/controllers/myquizzes.php[m
-[36m@@ -1,4 +1,6 @@[m
- <?php[m
-[32m+[m	[32muse \quizzenger\utilities\NavigationUtility as NavigationUtility;[m
-[32m+[m
- 	if ($GLOBALS ['loggedin']) {[m
- 		$viewInner->setTemplate ( 'quizlist' );[m
- [m
-[36m@@ -9,18 +11,18 @@[m
- 					$quizModel->addQuestionToQuiz ( $quiz_id, $question );[m
- 				}[m
- 			}[m
-[31m-			redirect('?view=mycontent&quizid='.$quiz_id.'&info=mes_add_questions_to_quiz#myquizzes');[m
-[32m+[m			[32mNavigationUtility::redirect('?view=mycontent&quizid='.$quiz_id.'&info=mes_add_questions_to_quiz#myquizzes');[m
- 		}[m
- [m
- 		if(isset($this->request['copyquiz'])){ //COPYING QUIZ[m
- 			$copiedQuizID=$quizModel->copyQuiz($_SESSION['user_id'], $this->request['copyquiz']);[m
-[31m-			redirect('?view=mycontent&quizid='.$copiedQuizID.'#myquizzes');[m
-[32m+[m			[32mNavigationUtility::redirect('?view=mycontent&quizid='.$copiedQuizID.'#myquizzes');[m
- 		}[m
- [m
- 		if(isset($this->request['savegeneratedquiz'])){ // SAVING GENERATED QUIZ[m
- 			$questions=$_SESSION ['questions'.$this->request['savegeneratedquiz']];[m
- 			$copiedQuizID=$quizModel->saveGeneratedQuiz($_SESSION['user_id'], $questions);[m
-[31m-			redirect('?view=mycontent&quizid='.$copiedQuizID.'#myquizzes');[m
-[32m+[m			[32mNavigationUtility::redirect('?view=mycontent&quizid='.$copiedQuizID.'#myquizzes');[m
- 		}[m
- [m
- 		if(isset($this->request['quizNameField'])){ //EDIT QUIZ NAME[m
-[36m@@ -28,7 +30,7 @@[m
- 			if(isset($this->request['editQuizNameID'])[m
- 					&& $quizModel->userIDhasPermissionOnQuizID($editedQuizId, $_SESSION['user_id']) ){[m
- 				$quizModel->setQuizName($this->request['editQuizNameID'],$this->request['quizNameField']);[m
-[31m-				redirect('?view=mycontent&quizid='.$editedQuizId.'#myquizzes');[m
-[32m+[m				[32mNavigationUtility::redirect('?view=mycontent&quizid='.$editedQuizId.'#myquizzes');[m
- 			}[m
- 		}[m
- [m
-[36m@@ -46,8 +48,7 @@[m
- 			$quizzes [$key] ['questions'] = $quizModel->getNumberOfQuestions ( $quiz ['id'] );[m
- 		}[m
- 	} else {[m
-[31m-		header ( 'Location: ./index.php?view=login&pageBefore=' . $this->template );[m
-[31m-		die ();[m
-[32m+[m		[32mNavigationUtility::redirect('?view=login&pageBefore=' . $this->template);[m
- 	}[m
- [m
- 	$viewInner->assign ( 'quizzes', $quizzes);[m
-[1mdiff --git a/CSQ_SA/js/ajax.js b/CSQ_SA/js/ajax.js[m
-[1mindex ba16d97..ea46645 100644[m
-[1m--- a/CSQ_SA/js/ajax.js[m
-[1m+++ b/CSQ_SA/js/ajax.js[m
-[36m@@ -109,18 +109,19 @@[m [mfunction deleteQuestion(question){[m
- function deleteGame(gameid){[m
- 	ajaxGET("index.php?view=remove_game&type=ajax&gameid=" + gameid+"");[m
- }[m
-[31m-function deleteQuiz(quiz){[m
-[31m-	ajaxGET("index.php?view=remove_quiz&type=ajax&quiz=" + quiz +"");[m
-[32m+[m[32mfunction deleteQuiz(quiz, callback){[m[41m[m
-[32m+[m	[32majaxGET("index.php?view=remove_quiz&type=ajax&quiz=" + quiz +"", callback);[m[41m[m
- }[m
- function deleteRating(rating){[m
- 	ajaxGET("index.php?view=remove_rating&type=ajax&rating=" + rating +"");[m
- }[m
- [m
-[31m-function ajaxGET(url){[m
-[32m+[m[32mfunction ajaxGET(url, callback){[m[41m[m
- 	var xmlhttp;[m
- 	if (window.XMLHttpRequest) {[m
- 		xmlhttp = new XMLHttpRequest();[m
- 	}[m
-[32m+[m	[32mxmlhttp.onreadystatechange = callback;[m[41m[m
- 	xmlhttp.open("GET", url, true);[m
- 	xmlhttp.send();[m
- }[m
-[1mdiff --git a/CSQ_SA/js/jqueryfunctions.js b/CSQ_SA/js/jqueryfunctions.js[m
-[1mindex 156b577..eaa5a34 100644[m
-[1m--- a/CSQ_SA/js/jqueryfunctions.js[m
-[1m+++ b/CSQ_SA/js/jqueryfunctions.js[m
-[36m@@ -52,12 +52,12 @@[m [m$(function(){[m
- [m
- 		bootbox.confirm( message, function(result) {[m
- 			if(result){[m
-[31m-				if(type = 'game'){[m
-[32m+[m				[32mif(type == 'game'){[m[41m[m
- 					deleteGame(id);[m
- 				} else if(type == 'question'){[m
- 					deleteQuestion(id);[m
- 				} else if(type == 'quiz'){[m
-[31m-					deleteQuiz(id);[m
-[32m+[m					[32mdeleteQuiz(id, removeRowCallback(element, this));[m[41m[m
- 				} else if(type == 'questionreports'){[m
- 					deleteReports(id, 'question')[m
- 				} else if(type == 'ratingreports'){[m
-[36m@@ -69,15 +69,18 @@[m [m$(function(){[m
- 				} else if(type == 'userreports'){[m
- 					deleteReports(id,'user')[m
- 				}[m
-[31m-				element.closest('tr')[m
-[32m+[m			[32m}[m[41m[m
-[32m+[m		[32m});[m[41m[m
-[32m+[m	[32m});[m[41m[m
-[32m+[m[41m[m
-[32m+[m	[32mfunction removeRowCallback(remove_btn, bootbox){[m[41m[m
-[32m+[m		[32m$(remove_btn).closest('tr')[m[41m[m
- 				.children('td')[m
- 				.animate({ padding: 0 })[m
- 				.wrapInner('<div />')[m
- 				.children()[m
-[31m-				.slideUp(function() { $(this).closest('tr').remove(); });[m
-[31m-			}[m
-[31m-		});[m
-[31m-	});[m
-[32m+[m				[32m.slideUp(function() { $(bootbox).closest('tr').remove(); });[m[41m[m
-[32m+[m	[32m}[m[41m[m
- [m
- [m
- 	// ================================================================================[m
-[1mdiff --git a/CSQ_SA/model/quizmodel.php b/CSQ_SA/model/quizmodel.php[m
-[1mindex a1973bd..25ab109 100644[m
-[1m--- a/CSQ_SA/model/quizmodel.php[m
-[1m+++ b/CSQ_SA/model/quizmodel.php[m
-[36m@@ -121,10 +121,19 @@[m [mclass QuizModel {[m
- 		return $this->mysqli->getSingleResult($weightRes)['weight'];[m
- 	}[m
- [m
-[32m+[m	[32m/*[m[41m[m
-[32m+[m	[32m * Removes a quiz. Checks if user has permission on quiz[m[41m[m
-[32m+[m	[32m *[m[41m[m
-[32m+[m	[32m*/[m[41m[m
- 	public function removeQuiz($quiz_id) {[m
- 		$this->logger->log ( "Removing Quiz with ID :".$quiz_id, Logger::INFO );[m
-[31m-		$result = $this->mysqli->s_query("DELETE FROM quiz WHERE id = ?",array('i'),array($quiz_id));[m
-[31m-		return $this->mysqli->getSingleResult($result);[m
-[32m+[m		[32mif($this->userIDhasPermissionOnQuizID($quiz_id,$_SESSION['user_id'])){[m[41m[m
-[32m+[m			[32m$result = $this->mysqli->s_query("DELETE FROM quiz WHERE id = ?",array('i'),array($quiz_id));[m[41m[m
-[32m+[m			[32mreturn true;[m[41m[m
-[32m+[m		[32m}[m[41m[m
-[32m+[m		[32melse{[m[41m[m
-[32m+[m			[32mreturn false;[m[41m[m
-[32m+[m		[32m}[m[41m[m
- 	}[m
- [m
- 	public function getQuizName($quiz_id) {[m
