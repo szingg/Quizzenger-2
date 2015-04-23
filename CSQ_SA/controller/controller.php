@@ -90,7 +90,6 @@ class Controller {
 		$this->viewOuter->assign('username', $_SESSION ['username']);
 		$this->viewOuter->assign('superuser', $_SESSION['superuser']);
 		$this->viewOuter->assign('anymoderator', $reportingModel->isAnyModerator($_SESSION['user_id']));
-		$this->viewOuter->assign( 'csq_footer', 'Die Wissensplattform');
 		$this->viewOuter->assign( 'csq_content', $viewInner->loadTemplate());
 		// Return the whole page now
 		return $this->viewOuter->loadTemplate ();

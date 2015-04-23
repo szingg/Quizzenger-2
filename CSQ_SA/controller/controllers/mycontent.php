@@ -8,6 +8,7 @@
 	loadGameView($this->mysqli, $viewInner);
 
 	$viewInner->setTemplate ( 'mycontent' );
+	$viewInner->assign('template', $this->template);
 
 	function loadGameView($mysqli, $viewInner){
 		$gameView = new \View();

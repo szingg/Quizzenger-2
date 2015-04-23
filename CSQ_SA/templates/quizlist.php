@@ -1,16 +1,15 @@
-<form id="addToQuizForm" role="form" method="post">
-	<div class="panel panel-default">
-		<div class="panel-body">
-			<table class="table" data-link="row" id="tableQuizList">
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th class="hidden-xs">Fragen</th>
-						<th class="hidden-xs">Durchf&uuml;hrungen</th>
-						<th class="hidden-xs">Bearbeiten</th>
-					</tr>
-				</thead>
-				<tbody>
+<div class="panel-body">
+	<form id="addToQuizForm" role="form" method="post">
+		<table class="table" data-link="row" id="tableQuizList">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th class="hidden-xs">Fragen</th>
+					<th class="hidden-xs">Durchf&uuml;hrungen</th>
+					<th class="hidden-xs">Bearbeiten</th>
+				</tr>
+			</thead>
+			<tbody>
 				<?php
 				if (! is_null ( $this->_ ['quizzes'] )) {
 					foreach ( $this->_ ['quizzes'] as $quiz ) { ?>
@@ -45,16 +44,15 @@
 				}
 				?>
 			</tbody>
-			</table>
-		</div>
-	</div>
-	<button type="button" class="btn btn-success hidden-xs" data-toggle="modal" data-target="#newQuizDialog2">
-		Quiz erstellen
-	</button>
-	<a href="?view=generatequiz" class="btn btn-success hidden-xs">
-		Quiz generieren
-	</a>
-</form>
+		</table>
+		<button type="button" class="btn btn-success hidden-xs" data-toggle="modal" data-target="#newQuizDialog2">
+			Quiz erstellen
+		</button>
+		<a href="?view=generatequiz" class="btn btn-success hidden-xs">
+			Quiz generieren
+		</a>
+	</form>
+</div>
 
 <form role="form" method="post">
 	<div class="modal fade" id="newQuizDialog2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

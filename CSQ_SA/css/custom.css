@@ -101,6 +101,9 @@ label.css-label {
 	content: "\e080";
 }
 
+.panel-heading h1 {
+	margin: 0;
+}
 
 /* RATING STAR PART  */
 #hide {
@@ -393,6 +396,7 @@ div>a {
 .display-inline-block {
 	display: inline-block;
 }
+<<<<<<< HEAD
 .display-inline {
 	display: inline;
 }
@@ -408,3 +412,10 @@ div>a {
 	white-space: pre-wrap;
 	text-overflow: ellipsis */
 }
+/* ----------------------------------------------- */
+/*                     Footer                      */
+/* ----------------------------------------------- */
+footer ul {
+	margin: 0;
+}
+

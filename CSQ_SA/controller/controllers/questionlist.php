@@ -10,7 +10,9 @@
 
 	include("helper/question_tag.php");
 
-	$viewInner->assign ( 'questions', $questions );
+	$viewInner->assign('questions', $questions);
+	$viewInner->assign('template', $this->template);
+
 	if ($GLOBALS ['loggedin']) {
 		$quizzes = $quizListModel->getUserQuizzesByUserID ( $_SESSION ['user_id'] );
 		$viewInner->assign ( 'quizzes', $quizzes );
