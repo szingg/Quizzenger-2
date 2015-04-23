@@ -398,8 +398,13 @@ div>a {
 }
 
 .warp{
-	overflow: pre-wrap;
+	max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+	/*overflow: pre-wrap;
 	word-wrap: normal;
 	white-space: pre-wrap;
-	text-overflow: ellipsis
+	text-overflow: ellipsis */
 }
