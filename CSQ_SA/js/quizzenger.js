@@ -16,9 +16,30 @@ function Quizzenger() {
 
 		self.initAchievements();
 		self.initRanks();
+		self.initRanklist();
 		self.loadTabPage();
 
 	};
+
+	this.initRanklist = function(){
+		$("#ranklist tr").click(function(){
+			//hide all
+			$('#ranklist tr').find('#ranklistTooltip').removeClass("display-inline");
+			$('#ranklist tr').find('#ranklistTooltip').addClass("hide");
+			//show single tooptip
+			$(this).find('#ranklistTooltip').addClass("display-inline");
+			$(this).find('#ranklistTooltip').removeClass("hide");
+		});
+		$("#ranklist tr").mouseenter(function(){
+			$(this).find('#ranklistTooltip').removeClass("hide");
+			$(this).find('#ranklistTooltip').addClass("display-inline");
+		});
+		$("#ranklist tr").mouseleave(function(){
+			$(this).find('#ranklistTooltip').removeClass("display-inline");
+			$(this).find('#ranklistTooltip').addClass("hide");
+		});
+	}
+
 
 	this.initAchievements = function(){
 		$(".point-achievement").click(function(){

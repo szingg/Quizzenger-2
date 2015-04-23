@@ -396,13 +396,26 @@ div>a {
 .display-inline-block {
 	display: inline-block;
 }
+<<<<<<< HEAD
+.display-inline {
+	display: inline;
+}
 
+.warp{
+	max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
+	/*overflow: pre-wrap;
+	word-wrap: normal;
+	white-space: pre-wrap;
+	text-overflow: ellipsis */
+}
 /* ----------------------------------------------- */
 /*                     Footer                      */
 /* ----------------------------------------------- */
 footer ul {
 	margin: 0;
 }
-
 
