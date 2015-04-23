@@ -95,7 +95,7 @@ class UserScoreModel {
 		return $resultArray;
 	}
 
-	public function getLeadingTrailingUsers($userId) {
+	public function getLeadingTrailingUsers($userId) {/*
 		$result = $this->mysqli->s_query('SELECT id, CAST(rank AS UNSIGNED) AS rank, username, total_score'
 			. ' FROM (SELECT @rank:=@rank+1 AS rank, @user_rank=IF(id=?,@rank,0) AS user_rank, id,'
 			. '     username, IFNULL(total_score, 0) AS total_score'
@@ -109,26 +109,27 @@ class UserScoreModel {
 			, ['i'], [$userId]);
 
 		return $this->mysqli->getQueryResultArray($result);
-		
+		*/
 
-		/*
-		$result = $this->mysqli->s_query('SELECT id, CAST(rank AS UNSIGNED) AS rank, username, total_score, '
-			. ' (SELECT id, MAX(user_rank) as user_rank FROM '
-			. ' 	(SELECT @rank:=@rank+1 AS rank, @user_rank=IF(id=?,@rank,0) AS user_rank, id,'
+		
+		$result = $this->mysqli->s_query('SELECT id, rank, username, total_score, user_rank FROM'
+			. ' (SELECT id, CAST(rank AS UNSIGNED) AS rank, username, total_score, '
+			. ' (SELECT MAX(user_rank) as user_rank FROM '
+			. ' 	(SELECT @rank:=@rank+1 AS rank, @user_rank:=IF(id=?,@rank,0) AS user_rank, id,'
 			. '     username, IFNULL(total_score, 0) AS total_score'
 			. '     FROM (SELECT * FROM userscoreview ORDER BY total_score DESC) u,'
 			. '		(SELECT @rank:=0) r'
 			. '	) as subquery) as user_rank'
-			. ' FROM (SELECT @rank:=@rank+1 AS rank, id,'
+			. ' FROM (SELECT @rank2:=@rank2+1 AS rank, id,'
 			. '     username, IFNULL(total_score, 0) AS total_score'
 			. '     FROM (SELECT * FROM userscoreview ORDER BY total_score DESC) u,'
-			. '		(SELECT @rank:=0) r'
+			. '		(SELECT @rank2:=0) r'
 			. ' ) AS a'
+			. ' ORDER BY rank ASC) AS b'
 			. ' WHERE rank >= user_rank-5 AND rank <= user_rank+5'
-			. ' ORDER BY rank ASC'
 			, ['i'], [$userId]);
 
-		return $this->mysqli->getQueryResultArray($result); */
+		return $this->mysqli->getQueryResultArray($result); 
 	}
 }
 ?>
