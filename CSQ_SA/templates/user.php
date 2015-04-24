@@ -38,7 +38,6 @@
 			<div class="row">
   				<div class="col-md-6">
 					<h4><img alt="ribbon" src="<?=APP_PATH?>/templates/img/ribbon.png"> Punkte pro Kategorie</h4>
-					<!-- <div class="table-responsive table-bordered"> -->
 					<div style="overflow-x: auto; -webkit-overflow-scrolling: touch; -ms-overflow-style: -ms-autohiding-scrollbar;">
 					<table id="ranklist" style="width:100%; ">
 						<tr>
@@ -63,18 +62,7 @@
 								echo '<td><span class="badge alert-success">' . htmlspecialchars($catScore['category_score']) . '</span></td>';
 								echo '<td><span class="badge alert-info">' . '&#9733;&nbsp;' . htmlspecialchars("{$catScore['user_rank']} / {$catScore['user_count']}") . '</span></td>';
 								echo '</tr>';
-							} /*
-							echo '<tr class="rankinglist-tooltip">';
-                            echo '<td>test';
-                            echo '<span class="" style="position: absolute; background-color: white; box-shadow: 0 0 2px #888; padding: 10px; z-index: 1000; margin-left: 50px; margin-top: -50px; right: 0px; display: inline;">'; ?>
-                            <span class="" style="padding: 0px 10px; margin-bottom: 6px; display: inline-block"><strong>Rangliste:</strong></span><br>
-		                    <span class="badge alert-info" style="padding: 6px 10px; margin-bottom: 5px">#5 username score</span><br>
-		                    <span class="badge alert-success" style="padding: 6px 10px; margin-bottom: 5px">#5 username score</span><br>
-		                    <span class="badge alert-info" style="padding: 6px 10px; margin-bottom: 5px">#5 username score</span><br>
-                            <?php echo '</span></td>';
-                            echo '<td><span class="badge alert-success">111</span></td>';
-                            echo '<td><span class="badge alert-info">' . '&#9733;&nbsp;7/210</span></td>';
-                            echo '</tr>'; */
+							}
 
 							echo '<tr>';
 							echo '<td class="wrap" style="font-weight:bold;">Bonus</td>';
@@ -96,7 +84,7 @@
 							echo '</td>';
 							echo '<td> <span class="badge alert-success" style="font-size: 18pt">' . htmlspecialchars($userScore['total_score']) . '</span></td>';
 							echo '<td> <span class="badge alert-info" style="font-size: 18pt">&#9733;&nbsp;' . htmlspecialchars("{$userrank} / {$userScore['total_users']}") .'</span></td>';
-							echo '</tr>'; 
+							echo '</tr>';
 						?>
 					</table> </div>
 					<br><br>
@@ -143,25 +131,13 @@
 						</div>
 					<?php endforeach; ?>
 				</div>
-			</div> <?php /*
-			<div style="text-align:center">
-				<?php foreach($leadingTrailingUsers as $current): ?>
-					<p>
-						<span class="badge alert-<?php echo ($current['id'] == $user['id']) ? 'success' : 'info'; ?>">
-							<?php echo '#' . $current['rank']; ?><br>
-							<?php echo $current['username']; ?><br>
-							<?php echo $current['total_score']; ?>
-						</span>
-					</p>
-				<?php endforeach; ?>
 			</div>
-			<hr> */ ?>
-			<!--  -->
 			<div id="achievements">
 				<h4>Achievements</h4>
 				<?php while($current = $achievementList->fetch_object()): ?>
 					<div class="point point-achievement clickable <?php echo $current->achieved ? ' point-active' : ''; ?>"
-						data-tooltip-title="<?php echo '★ ' . htmlspecialchars($current->name) . ' ★'; ?>"
+						data-tooltip-title="<?php echo '★ ' . htmlspecialchars($current->name)
+							. ' (' . htmlspecialchars($current->bonus_score) . ' Punkte)' . ' ★'; ?>"
 						data-tooltip-text="<?php echo htmlspecialchars($current->description); ?>">
 						<img src="<?php echo ACHIEVEMENT_PATH . "/{$current->image}." . ACHIEVEMENT_IMAGE_EXTENSION; ?>" />
 					</div>
