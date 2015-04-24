@@ -3,7 +3,7 @@
 namespace quizzenger\gamification\model {
 	use \stdClass as stdClass;
 	use \SplEnum as SplEnum;
-	use \quizzenger\logging\Log as Log;
+	use \quizzenger\logging\Log as log;
 	use \SqlHelper as SqlHelper;
 
 	/*	@author Simon Zingg
@@ -42,12 +42,13 @@ namespace quizzenger\gamification\model {
 		 * @return Returns true if successful, else null
 		 */
 		public function removeGame($game_id){
-			if(isset($game_id)){
+			if(isset($game_id) && $this->userIDhasPermissionOnGameId($_SESSION['user_id'], $game_id)){
 				log::info('Removing Game with ID :'.$game_id);
-				$result = $this->mysqli->s_query('DELETE FROM gamesession WHERE id = ?',['i'], [$game_id]); //result of query is always false. But if no error occured it worked.
+				$this->mysqli->s_query('DELETE FROM gamesession WHERE id = ?',['i'], [$game_id]);	
 				return true;
 			}
 			else{
+				log::warning('Unauthorized try to remove game id :'.$game_id);
 				return false;
 			}
 		}
@@ -55,35 +56,100 @@ namespace quizzenger\gamification\model {
 
 		/*
 		 * Starts the Game
-		 * Method checks Permission
+		 * This method checks if user has permission on this game
+		 * The starttime can only once be set
 		 * @param $game_id
-		 * @return if false return null
+		 * @return Returns old value of starttime on success, else returns false if user is unauthorized
 		 */
 		public function startGame($game_id){
 			if(isset($game_id) && $this->userIDhasPermissionOnGameId($_SESSION ['user_id'], $game_id)){
 				log::info('Start Game with ID :'.$game_id);
-				$this->mysqli->s_query("UPDATE gamesession SET has_started=CURRENT_TIMESTAMP WHERE id=?",array('i'),array($game_id));
+				$oldValue = $this->mysqli->s_query('SELECT starttime FROM gamesession WHERE id = ?',['i'],[$game_id]);
+				$update = $this->mysqli->s_query('UPDATE gamesession SET starttime = '
+						.' CASE WHEN starttime IS NULL THEN CURRENT_TIMESTAMP ELSE starttime END'
+						.' WHERE id = ?',['i'],[$game_id]);
+
+				return $this->mysqli->getSingleResult($oldValue)['starttime'];
 			}
 			else{
-				log::warning('Unauthorized try to start game id :'.game_id);
-				return null;
+				log::warning('Unauthorized try to start game id :'.$game_id);
+				return false;
 			}
+
+/*
+				if ($result) {
+					do {
+						if ($result = $mysqli->store_result()) {
+							$obj = $result->fetch_object();
+							//while ($row = $result->fetch_row()) {
+							//	$bla = $row[0]; //printf("%s\n", $row[0]);
+							//}
+							//$result->free();
+							$x = 1;
+						}
+						if ($mysqli->more_results()) {
+							//printf("-----------------\n");
+						}
+					} while ($mysqli->next_result());
+				} */
+
+				//$result = $this->mysqli->s_query(' UPDATE gamesession SET starttime = CURRENT_TIMESTAMP WHERE id=? ; '
+				//		.' SELECT starttime FROM gamesession; ',['i','i'],[$game_id, $game_id]);
+				/*
+				 *
+				 * $result = $this->mysqli->s_query('SET @oldValue := 0;'
+						.' SELECT @oldValue := starttime FROM gamesession WHERE id=? ;'
+						.' UPDATE gamesession SET starttime = CURRENT_TIMESTAMP WHERE id=? ; '
+						.' SELECT @oldValue AS starttime; ',['i','i'],[$game_id, $game_id]);
+
+
+			funktioniert:
+
+				 * SET @oldValue := 0;
+ SELECT @oldValue := starttime FROM gamesession WHERE id = 88;
+ UPDATE gamesession SET starttime = CURRENT_TIMESTAMP WHERE id = 88;
+ SELECT @oldValue AS starttime;
+
+ stored function - return value ist falsch.
+
+ DELIMITER |
+DROP FUNCTION IF EXISTS setGameend;
+CREATE FUNCTION setGameend(gameid int)
+  RETURNS TIMESTAMP
+  DETERMINISTIC
+BEGIN
+  DECLARE oldValue TIMESTAMP DEFAULT NULL;
+
+	SELECT old.endtime INTO oldValue FROM gamesession old WHERE old.id = gameid
+	UPDATE gamesession g
+	SET g.endtime =
+	 CASE WHEN g.endtime IS NULL THEN CURRENT_TIMESTAMP ELSE 	g.endtime END
+	WHERE  id = gameid;
+
+  RETURN oldValue;
+END | */
 		}
 
 		/*
-		 * Stops the Game
-		 * Method checks Permission
+		 * Sets the endtime of a game
+		 * This method checks if user has permission on this game
+		 * The endtime can only be set once and is not bigger than the calculated endtime (starttime+duration)
 		 * @param $game_id
-		 * @return if false return null
+		 * @return Returns old value of endtime on success, else returns false
 		 */
-		public function stopGame($game_id){
+		public function setGameend($game_id){
 			if(isset($game_id) && $this->userIDhasPermissionOnGameId($_SESSION ['user_id'], $game_id)){
 				log::info('Stop Game with ID :'.$game_id);
-				$this->mysqli->s_query("UPDATE gamesession SET is_finished=CURRENT_TIMESTAMP WHERE id=?",array('i'),array($game_id));
+				$oldValue = $this->mysqli->s_query('SELECT endtime FROM gamesession WHERE id = ?',['i'],[$game_id]);
+				$update = $this->mysqli->s_query('UPDATE gamesession SET endtime = '
+						.' CASE WHEN endtime IS NULL THEN LEAST(CURRENT_TIMESTAMP, ADDTIME(starttime, duration)) ELSE endtime END'
+						.' WHERE id = ?',['i'],[$game_id]);
+
+				return $this->mysqli->getSingleResult($oldValue)['endtime'];
 			}
 			else{
-				log::warning('Unauthorized try to stop game id :'.game_id);
-				return null;
+				log::warning('Unauthorized try to setGameend id :'.game_id);
+				return false;
 			}
 		}
 
@@ -117,17 +183,17 @@ namespace quizzenger\gamification\model {
 		 */
 		public function getGameInfoByGameId($game_id){
 			$result = $this->mysqli->s_query("SELECT g.id as game_id, g.name as gamename, created_on, "
-					." has_started, is_finished, duration, ADDTIME(has_started, duration) as gameend, quiz_id, "
+					." starttime, endtime, duration, ADDTIME(starttime, duration) as calcEndtime, quiz_id, "
 					."user_id as owner_id, q.name as quizname, created as quiz_created_on FROM gamesession g, quiz q "
 					."WHERE g.id = ? AND g.quiz_id = q.id",['i'],[$game_id]);
-			return $this->mysqli->getQueryResultArray($result);
+			return $this->mysqli->getSingleResult($result);
 		}
 
 		/*
 		 * Gets all games of a user
 		 */
 		public function getGamesByUser($user_id){
-			$result = $this->mysqli->s_query('SELECT g.id, g.name, session.members, g.has_started, g.duration FROM gamesession g '.
+			$result = $this->mysqli->s_query('SELECT g.id, g.name, session.members, g.starttime, g.duration FROM gamesession g '.
 					'JOIN quiz q ON g.quiz_id = q.id '.
 					'LEFT JOIN (SELECT gamesession_id, COUNT(user_id) AS members FROM gamemember '.
 					'GROUP BY gamesession_id) AS session ON g.id = session.gamesession_id '.
@@ -195,19 +261,33 @@ namespace quizzenger\gamification\model {
 					'JOIN user u ON q.user_id = u.id '.
 					'LEFT JOIN (SELECT gamesession_id, COUNT(user_id) AS members FROM gamemember '.
 					'GROUP BY gamesession_id) AS session ON g.id = session.gamesession_id '.
-					'WHERE g.has_started IS NULL');
+					'WHERE g.starttime IS NULL');
+			return $this->mysqli->getQueryResultArray($result);
+		}
+
+		/*
+		 * Gets all active games by user id
+		 */
+		public function getActiveGamesByUser($user_id){
+			$result = $this->mysqli->s_query('SELECT g.id, g.name, u.username, session.members, '.
+					'g.duration, g.starttime, ADDTIME(g.starttime, g.duration) as calcEndtime FROM gamesession g '.
+					'JOIN quiz q ON g.quiz_id = q.id '.
+					'JOIN user u ON q.user_id = u.id '.
+					'JOIN gamemember m ON g.id = m.gamesession_id '.
+					'LEFT JOIN (SELECT gamesession_id, COUNT(user_id) AS members FROM gamemember '.
+					'GROUP BY gamesession_id) AS session ON g.id = session.gamesession_id '.
+					'WHERE m.user_id = ? AND g.starttime IS NOT NULL AND g.endtime IS NULL',['i'],[$user_id]);
 			return $this->mysqli->getQueryResultArray($result);
 		}
 
 		/*
 		 * User join a game.
-		 *   //TODO:
-		 * @return Returns 0 if successful else you will be redirected to the error page because entry already exists. Returns null when no input parameters are passed.
+		 * @return Returns 0 if successful. Returns null when no input parameters are passed.
 		 */
 		public function userJoinGame($user_id, $game_id){
 			if(! isset($user_id, $game_id)) return null;
 			log::info('User joins game ID:'.$game_id);
-			return $this->mysqli->s_insert("INSERT INTO gamemember (gamesession_id, user_id) VALUES (?, ?)",array('i','i'),array($game_id, $user_id));
+			return $this->mysqli->s_insert('INSERT IGNORE INTO gamemember (gamesession_id, user_id) VALUES (?, ?)',['i','i'],[$game_id, $user_id]);
 		}
 
 		/*
@@ -220,13 +300,13 @@ namespace quizzenger\gamification\model {
 		}
 
 		/*
-		 * @return Returns true when has started, otherwise false
+		 * @return Returns true when starttime, otherwise false
 		 */
 		public function gameHasStarted($game_id){
-			$result = $this->mysqli->s_query("SELECT has_started FROM gamesession WHERE id=?",['i'],[$game_id]);
+			$result = $this->mysqli->s_query("SELECT starttime FROM gamesession WHERE id=?",['i'],[$game_id]);
 			$resultArray = $this->mysqli->getQueryResultArray($result);
 			if($result->num_rows > 0){
-				return isset($resultArray[0]['has_started']);
+				return isset($resultArray[0]['starttime']);
 			}
 			else return false;
 		}
@@ -246,10 +326,48 @@ namespace quizzenger\gamification\model {
 		 * @return array with columns questionAnswered, questionAnsweredCorrect, totalQuestions, totalTimeInSec, timePerQuestion, user_id, username
 		 */
 		public function getGameReport($game_id){
-			$result = $this->mysqli->s_query('SELECT @rank:=@rank+1 AS rank, SUM(weight) AS questionAnswered,'
+			$result = $this->mysqli->s_query('SELECT  @rank:=@rank+1 AS rank, questionAnswered, questionAnsweredCorrect, totalQuestions, user_id, username,'
+					.' totalTimeInSec, timePerQuestion, endtime, starttime, userEndtime FROM'
+					.' (SELECT @rank := 0, questionAnswered, questionAnsweredCorrect, totalQuestions, user_id, username,'
+					.' totalTimeInSec, totalTimeInSec/questionAnsweredCount AS timePerQuestion, endtime, starttime, userEndtime FROM'
+					.' (SELECT questionAnswered, questionAnsweredCorrect, totalQuestions, user_id, username, questionAnsweredCount,'
+					.' TIMESTAMPDIFF(SECOND,starttime,(CASE WHEN (endtime IS NOT NULL AND questionAnswered <> totalQuestions)'
+						.' THEN endtime ELSE '
+							.' (CASE WHEN (endtime IS NULL AND questionAnswered <> totalQuestions) THEN CURRENT_TIMESTAMP ELSE userEndtime END ) '
+						.' END)) AS totalTimeInSec, starttime, userEndtime, endtime'
+					.' FROM'
+						.' (SELECT SUM(CASE WHEN weight IS NOT NULL THEN weight ELSE 0 END) AS questionAnswered,'
+						.' SUM(CASE WHEN questionCorrect = 100 THEN weight ELSE 0 END) AS questionAnsweredCorrect,'
+						.' total.totalQuestions, u.id as user_id, u.username, COUNT(q.gamesession_id) as questionAnsweredCount, '
+						.' total.starttime, time.userEndtime, '
+						.' (CASE WHEN total.endtime > total.calcEndtime THEN total.calcEndtime ELSE total.endtime END) as endtime FROM gamemember m'
+						.' LEFT JOIN questionperformance q ON q.gamesession_id = m.gamesession_id AND q.user_id = m.user_id'
+						.' LEFT JOIN user u ON u.id = m.user_id'
+						.' LEFT JOIN ('
+							.' SELECT gamesession.id, gamesession.quiz_id, gamesession.endtime, '
+							.' gamesession.starttime, ADDTIME(starttime, duration) as calcEndtime, SUM(weight) AS totalQuestions '
+							.' FROM gamesession, quiztoquestion'
+							.' WHERE gamesession.quiz_id = quiztoquestion.quiz_id AND gamesession.id = ?) AS total'
+						.' ON total.id = m.gamesession_id'
+						.' LEFT JOIN quiztoquestion qq ON qq.quiz_id = total.quiz_id AND qq.question_id = q.question_id'
+						.' LEFT JOIN ('
+							.' SELECT user_id, MAX(timestamp) AS userEndtime'
+							.' FROM questionperformance q, gamesession g'
+							.' WHERE q.gamesession_id = g.id AND q.gamesession_id = ?'
+							.' GROUP BY q.user_id) AS time'
+						.' ON time.user_id = m.user_id'
+						.' WHERE m.gamesession_id = ?'
+						.' GROUP BY m.user_id) as subsubQuery)'
+					.' as subQuery'
+					.' ORDER BY questionAnsweredCorrect DESC, timePerQuestion ASC) as Query',['i','i','i'],[$game_id,$game_id,$game_id]);
+			return $this->mysqli->getQueryResultArray($result);
+			/*
+					in der aktuellen Version wurde angepasst: rank korrigiert, user_id, totalTimeInSec, timePerQuestion funktioniert jetzt auch ohne questionperformance
+					alte Version:
+				$result = $this->mysqli->s_query('SELECT @rank:=@rank+1 AS rank, SUM(CASE WHEN weight IS NOT NULL THEN weight ELSE 0 END) AS questionAnswered,'
 					.' SUM(CASE WHEN questionCorrect = 100 THEN weight ELSE 0 END) AS questionAnsweredCorrect,'
 					.' total.totalQuestions, time.totalTimeInSec, time.totalTimeInSec/COUNT(q.gamesession_id) AS timePerQuestion,'
-					.' q.user_id, u.username FROM gamemember m'
+					.' u.user_id, u.username FROM gamemember m'
 					.' LEFT JOIN questionperformance q ON q.gamesession_id = m.gamesession_id AND q.user_id = m.user_id'
 					.' LEFT JOIN user u ON u.id = m.user_id'
 					.' LEFT JOIN ('
@@ -259,7 +377,8 @@ namespace quizzenger\gamification\model {
 					.' ON total.id = m.gamesession_id'
 					.' LEFT JOIN quiztoquestion qq ON qq.quiz_id = total.quiz_id AND qq.question_id = q.question_id'
 					.' LEFT JOIN ('
-						.' SELECT user_id, TIMESTAMPDIFF(SECOND,g.has_started,MAX(timestamp)) AS totalTimeInSec'
+						.' SELECT user_id, TIMESTAMPDIFF(SECOND,g.starttime,(CASE WHEN g.endtime IS NOT NULL '
+						.' THEN g.endtime ELSE MAX(timestamp) END)) AS totalTimeInSec'
 						.' FROM questionperformance q, gamesession g'
 						.' WHERE q.gamesession_id = g.id AND q.gamesession_id = ?'
 						.' GROUP BY q.user_id) AS time'
@@ -268,7 +387,7 @@ namespace quizzenger\gamification\model {
 					.' GROUP BY m.user_id'
 					.' ORDER BY questionAnsweredCorrect DESC',['i','i','i'],[$game_id,$game_id,$game_id]);
 			return $this->mysqli->getQueryResultArray($result);
-			/*
+
 			 * jetzt mit totalTime = gameFinished
 			 * TIMESTAMPDIFF(SECOND,g.has_started,(CASE WHEN g.is_finished IS NOT NULL THEN g.is_finished ELSE MAX(timestamp) END)) AS totalTimeInSec
 			 *

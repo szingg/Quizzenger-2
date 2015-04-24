@@ -36,7 +36,6 @@
 		include('includes/config.php');
 		include('includes/logger.php');
 		include('includes/sqlhelper.php');
-		include('includes/utilities.php');
 		include('controller/controller.php');
 		include('controller/ajaxController.php');
 		//include('model/model.php');

@@ -3,6 +3,7 @@
 namespace quizzenger\dispatching {
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
+	use \quizzenger\Settings as Settings;
 	use \quizzenger\dispatching\UserEvent as UserEvent;
 
 	/**
@@ -12,6 +13,7 @@ namespace quizzenger\dispatching {
 	class ScoreDispatcher {
 		/**
 		 * Holds an instance to the database connection.
+		 * @var SqlHelper
 		**/
 		private $mysqli;
 
@@ -24,22 +26,51 @@ namespace quizzenger\dispatching {
 		}
 
 		/**
-		 * Dispatches the scores of the associated user.
-		 * @param UserEvent $event The event that is to be dispatched.
-		 * @param $producerScore Producer score to be accounted.
-		 * @param $consumerScore Consumer score to be accounted.
+		 * Promotes the specified user to a moderator for the passed category
+		 * if the score requirements are met.
+		 * @param int $userId User ID.
+		 * @param int $categoryId Category ID.
 		**/
-		private function dispatchScore(UserEvent $event, $producerScore, $consumerScore) {
-			// TODO: Implement proper dispatching via plugins.
-			// - question-answered-correct
-			// - question-created
-			$eventName = $event->name();
-			if($event->name() !== 'question-answered-correct') {
-				Log::warning("Score for event '$eventName' cannot be dispatched.");
-				return;
-			}
+		public function promoteUserIfEligible($userId, $categoryId) {
+			$threshold = (new Settings($this->mysqli->database()))->getSingle('q.scoring.moderator-threshold');
+			$statement= $this->mysqli->database()->prepare('INSERT IGNORE INTO moderation (user_id, category_id)'
+				. ' SELECT ?, ? FROM userscore WHERE (SELECT (SUM(producer_score)+SUM(consumer_score)) FROM userscore'
+				. '     WHERE user_id=? AND category_id=? GROUP BY user_id) >= ?');
 
-			$statement = $this->mysqli->prepare('INSERT INTO userscore (user_id, category_id, producer_score, consumer_score)'
+			$statement->bind_param('iiiii', $userId, $categoryId, $userId, $categoryId, $threshold);
+			if(!$statement->execute())
+				Log::info('Could not execute user promotion');
+		}
+
+		/**
+		 * Dispatches a bonus score to the event-specified user.
+		 * @param UserEvent $event Event to be handled.
+		 * @param int $producerScore Producer score to be added as bonus score.
+		 * @param int $consumerScore Consumer score to be added as bonus score.
+		**/
+		private function dispatchBonusScore(UserEvent $event, $producerScore, $consumerScore) {
+			$statement = $this->mysqli->database()->prepare('UPDATE user'
+				. ' SET bonus_score=bonus_score+?'
+				. ' WHERE id=?');
+
+			$userId = $event->user();
+			$bonusScore = $producerScore + $consumerScore;
+			$statement->bind_param('ii', $bonusScore, $userId);
+
+			if($statement->execute())
+				Log::info("Added bonus score ($producerScore, $consumerScore) to user $userId.");
+			else
+				Log:error("Could not grant bonus score for user $userId.");
+		}
+
+		/**
+		 * Dispatches a score to the event-specified user.
+		 * @param UserEvent $event Event to be handled.
+		 * @param int $producerScore Producer score to be granted to the user.
+		 * @param int $consumerScore Consumer score to be granted to the user.
+		**/
+		private function dispatchWithCategory(UserEvent $event, $producerScore, $consumerScore) {
+			$statement = $this->mysqli->database()->prepare('INSERT INTO userscore (user_id, category_id, producer_score, consumer_score)'
 				. ' VALUES(?, ?, ?, ?) ON DUPLICATE KEY UPDATE'
 				. ' producer_score=producer_score+VALUES(producer_score), consumer_score=consumer_score+VALUES(consumer_score)');
 
@@ -49,9 +80,44 @@ namespace quizzenger\dispatching {
 				$producerScore, $consumerScore);
 
 			if($statement->execute())
-				Log::info("Added score ($producerScore, $consumerScore) to user $userId.");
+				Log::info("Added score ($producerScore, $consumerScore) to user $userId for category $categoryId.");
 			else
-				Log::error('Could not update score.');
+				Log::error("Could not grant score to user $userId for category $categoryId.");
+
+			$this->promoteUserIfEligible($userId, $categoryId);
+		}
+
+		/**
+		 * Dispatches the actual scores for the event.
+		 * @param UserEvent $event Event that has triggered the dispatching.
+		 * @param int $producerScore Producer Score to be added.
+		 * @param int $consumerScore Consumer Score to be added.
+		**/
+		private function dispatchScore(UserEvent $event, $producerScore, $consumerScore) {
+			$eventName = $event->name();
+			if($producerScore == 0 && $consumerScore == 0) {
+				Log::info("Skipped score dispatching for event '$eventName'.");
+				return;
+			}
+
+			switch($eventName) {
+				case 'always':
+				case 'game-start':
+				case 'game-end':
+					$this->dispatchBonusScore($event, $producerScore, $consumerScore);
+					break;
+
+				case 'question-created':
+				case 'question-removed':
+				case 'question-answered-correct':
+				case 'game-question-answered-correct':
+					$this->dispatchWithCategory($event, $producerScore, $consumerScore);
+					break;
+
+				default:
+					Log::warning("Score for event '$eventName' could not be dispatched.");
+					break;
+			}
 		}
 
 		/**
@@ -59,7 +125,7 @@ namespace quizzenger\dispatching {
 		 * @param UserEvent $event The event that has been fired and is now to be dispatched.
 		**/
 		public function dispatch(UserEvent $event) {
-			$statement = $this->mysqli->prepare('SELECT producer_score, consumer_score'
+			$statement = $this->mysqli->database()->prepare('SELECT producer_score, consumer_score'
 				. ' FROM eventtrigger WHERE name=? LIMIT 1');
 
 			$trigger = $event->name();

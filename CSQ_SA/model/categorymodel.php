@@ -14,9 +14,20 @@ class CategoryModel{
 		return $this->mysqli->getSingleResult($result);
 	}
 
+	/*
+	 * Removes a quiz. Checks if user is authorized. Only superuses are authorized.
+	 * @return Returns true if successful, false if not authorized.
+	*/
 	public function removeCategory($category_id) {
-		$this->logger->log ( "Removing Category with associated questions, ".$category_id, Logger::INFO );
-		$result = $this->mysqli->s_query("DELETE FROM category WHERE id = ?",array('i'),array($category_id));
+		if($_SESSION['superuser']){
+			$this->logger->log ( "Removing Category with associated questions, ".$category_id, Logger::INFO );
+			$result = $this->mysqli->s_query("DELETE FROM category WHERE id = ?",array('i'),array($category_id));
+			return true;
+		}
+		else{
+			$this->logger->log('Unauthorized try to remove category with all its questions. Category ID :'.$cateogryId, Logger::WARNING);
+			return false;
+		}
 	}
 
 	public function createCategory($name,$parent_id) {
@@ -67,6 +78,15 @@ class CategoryModel{
 	public function getAllTrueChildren() { // gets all true children, meaning they aren't parents for anybody
 		$result = $this->mysqli->s_query("SELECT * FROM category ct WHERE ct.id not in (SELECT parent_id FROM category)  ORDER BY name asc",array(),array());
 		return $this->mysqli->getQueryResultArray($result);
+	}
+
+	/*
+	 * Tells if a category is a true child, meaning the category isn't parent for anybody
+	 * @return Returns true if category is a true child, else false
+	*/
+	public function isTrueChild($category_id){
+		$result = $this->mysqli->s_query('SELECT * FROM category ct WHERE ct.id = ? AND ct.id not in (SELECT parent_id FROM category)',['i'],[$category_id]);
+		return $result->num_rows == 1;
 	}
 
 	public function getAllMiddle() { // gets all elements which have a parent and are parent for somebody else

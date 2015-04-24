@@ -4,8 +4,22 @@
 ::-moz-selection { background: #4089c8; color: #fff; }
 
 body {
-	padding-top: 70px;
 	background-image: url(../templates/img/bg.png);
+}
+
+@media ( min-width :768px) {
+	body { padding-top: 170px; }
+}
+@media ( max-width :768px) {
+	body { padding-top: 70px; }
+}
+
+@media ( min-width :992px) {
+	body { padding-top: 120px; }
+}
+
+@media ( min-width :1200px) {
+	body { padding-top: 70px; }
 }
 
 .category-badge {
@@ -87,6 +101,9 @@ label.css-label {
 	content: "\e080";
 }
 
+.panel-heading h1 {
+	margin: 0;
+}
 
 /* RATING STAR PART  */
 #hide {
@@ -379,3 +396,26 @@ div>a {
 .display-inline-block {
 	display: inline-block;
 }
+<<<<<<< HEAD
+.display-inline {
+	display: inline;
+}
+
+.warp{
+	max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+	/*overflow: pre-wrap;
+	word-wrap: normal;
+	white-space: pre-wrap;
+	text-overflow: ellipsis */
+}
+/* ----------------------------------------------- */
+/*                     Footer                      */
+/* ----------------------------------------------- */
+footer ul {
+	margin: 0;
+}
+

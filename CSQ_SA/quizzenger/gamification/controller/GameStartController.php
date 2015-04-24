@@ -6,6 +6,9 @@ namespace quizzenger\gamification\controller {
 	use \mysqli as mysqli;
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+	use \quizzenger\utilities\PermissionUtility as PermissionUtility;
+	use \quizzenger\messages\MessageQueue as MessageQueue;
 	use \quizzenger\gamification\model\GameModel as GameModel;
 
 
@@ -31,7 +34,7 @@ namespace quizzenger\gamification\controller {
 
 		}
 		public function loadView(){
-			checkLogin();
+			PermissionUtility::checkLogin();
 
 			$this->loadGameStartView();
 
@@ -43,7 +46,7 @@ namespace quizzenger\gamification\controller {
 		private function loadGameStartView(){
 			$this->view->setTemplate ( 'gamestart' );
 
-			$this->checkGameStarted($this->gameinfo['has_started']);
+			$this->checkGameStarted($this->gameinfo['starttime']);
 			$this->view->assign ( 'gameinfo', $this->gameinfo );
 
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
@@ -70,12 +73,11 @@ namespace quizzenger\gamification\controller {
 		}
 
 		/*
-		 * Gets the Gameinfo. Redirects to errorpage when no result returned.
+		 * Gets the Gameinfo.
 		 */
 		private function getGameInfo(){
 			$gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
-			if(count($gameinfo) <= 0) redirectToErrorPage('err_db_query_failed');
-			else return $gameinfo[0];
+			return $gameinfo;
 		}
 
 		private function isGameOwner($owner_id){
@@ -84,7 +86,8 @@ namespace quizzenger\gamification\controller {
 
 		private function checkGameStarted($has_started){
 			if ( isset($has_started)) {
-				redirectToErrorPage('err_game_has_started');
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_game_has_started');
+				NavigationUtility::redirectToErrorPage();
 			}
 		}
 	} // class GameController

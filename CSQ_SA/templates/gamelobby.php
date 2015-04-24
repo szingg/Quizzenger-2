@@ -18,6 +18,26 @@
 			</td>
 		</tr>
 	</script>
+		<script id="dot-activeGameRow" type="text/x-dot-template">
+		<tr>
+			<td>
+				<a href="?view=GameQuestion&gameid={{=htmlspecialchars(it.id)}}">
+					{{=it.name}}
+				</a>
+			</td>
+			<td class="hidden-xs">
+			{{?it.members==null}}0 {{?}}
+			{{?it.members!=null}}{{=htmlspecialchars(it.members)}} {{?}}Teilnehmer</td>
+			<td class="hidden-xs">{{=htmlspecialchars(it.username)}}</td>
+			<td class="hidden-xs">{{=htmlspecialchars(it.starttime)}}</td>
+			<td class="hidden-xs">{{=htmlspecialchars(it.duration)}}</td>
+			<td class="hidden-xs">
+				<a href="?view=GameQuestion&gameid={{=it.id}}">
+					<span class="glyphicon glyphicon-play"></span>
+				</a>
+			</td>
+		</tr>
+	</script>
 	<div class="panel-group">
 		<div class="panel panel-default no-margin">
 			<a data-toggle="collapse" data-target="#openGames" href="#openGames">
@@ -44,7 +64,7 @@
 							</tr>
 						</thead>
 						<tbody id="tableBodyOpenGames">
-						<?php foreach ( $this->_ ['openGames'] as $game ) { ?>
+						<?php /* foreach ( $this->_ ['openGames'] as $game ) { ?>
 							<tr>
 								<td>
 									<a href="<?php echo '?view=GameStart&gameid=' . $game['id']; ?>">
@@ -60,12 +80,63 @@
 									</a>
 								</td>
 							</tr>
-						<?php }  ?>
+						<?php } */ ?>
 						</tbody>
 					</table>
 				</div> <!-- panel-body -->
 	    	</div> <!-- panel-collapse -->
 	    </div> <!-- panel -->
+
+	    <div class="panel panel-default no-margin" id="activeGamesPanel" hidden="true" <?php /* if( count( $this->_ ['activeGames'] ) == 0) { echo 'hidden="true"'; } */ ?>>
+			<a data-toggle="collapse" data-target="#activeGames" href="#activeGames">
+				<div class="panel-heading bg-info text-info">
+					<h4 class="panel-title">Meine aktiven Games</h4>
+				</div>
+			</a>
+	    	<div id="activeGames" class="panel-collapse collapse in">
+				<div class="panel-body">
+					<table class="table" id="tableActiveGames">
+						<thead>
+							<tr>
+								<th>
+									Name
+								</th>
+								<th class="hidden-xs">
+									Teilnehmer
+								</th>
+								<th class="hidden-xs">
+									Ersteller
+								</th>
+								<th class="hidden-xs">Start</th>
+								<th class="hidden-xs">Dauer</th>
+								<th class="hidden-xs">Weiterspielen</th>
+							</tr>
+						</thead>
+						<tbody id="tableBodyOpenGames">
+						<?php /* foreach ( $this->_ ['activeGames'] as $game ) { ?>
+							<tr>
+								<td>
+									<a href="<?php echo '?view=GameQuestion&gameid=' . $game['id']; ?>">
+										<?php echo htmlspecialchars($game['name']); ?>
+									</a>
+								</td>
+								<td class="hidden-xs"><?php echo (isset($game['members'])?$game['members']:'0').' Teilnehmer'; ?> </td>
+								<td class="hidden-xs"><?php echo htmlspecialchars($game['username']); ?></td>
+								<td class="hidden-xs"><?php echo htmlspecialchars($game['starttime']); ?></td>
+								<td class="hidden-xs"><?php echo htmlspecialchars(formatTime($game['duration'])); ?></td>
+								<td class="hidden-xs">
+									<a href="<?php echo '?view=GameQuestion&gameid=' . $game['id']; ?>" >
+										<span class="glyphicon glyphicon-play"></span>
+									</a>
+								</td>
+							</tr>
+						<?php } */  ?>
+						</tbody>
+					</table>
+				</div> <!-- panel-body -->
+	    	</div> <!-- panel-collapse -->
+	    </div> <!-- panel -->
+
 	    <a class="panel btn btn-primary hidden-xs" data-toggle="modal" data-target="#newGame" href="javascript:void()">
 	    Game erstellen
 	    </a>

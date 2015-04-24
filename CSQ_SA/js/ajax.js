@@ -100,20 +100,20 @@ function newComment(question_id,parent){
 	document.getElementById('commentFormButton'+parent).innerHTML= 'Kommentar abgeschickt';
 }
 
-function deleteQuestionFromQuiz(quiz, question){
-	ajaxGET("index.php?view=remove_quizquestion&type=ajax&question=" + question + "&quiz=" + quiz +"");
+function deleteQuestionFromQuiz(quiz, question, onSuccess, onError){
+	ajaxGetJson("index.php?view=remove_quizquestion&type=ajax&question=" + question + "&quiz=" + quiz +"", onSuccess, onError);
 }
-function deleteQuestion(question){
-	ajaxGET("index.php?view=remove_question&type=ajax&question=" + question+"");
+function deleteQuestion(question, onSuccess, onError){
+	ajaxGetJson("index.php?view=remove_question&type=ajax&question=" + question+"", onSuccess, onError);
 }
-function deleteGame(gameid){
-	ajaxGET("index.php?view=remove_game&type=ajax&gameid=" + gameid+"");
+function deleteGame(gameid, onSuccess, onError){
+	ajaxGetJson("index.php?view=remove_game&type=ajax&gameid=" + gameid+"", onSuccess, onError);
 }
-function deleteQuiz(quiz){
-	ajaxGET("index.php?view=remove_quiz&type=ajax&quiz=" + quiz +"");
+function deleteQuiz(quiz, onSuccess, onError){
+	ajaxGetJson("index.php?view=remove_quiz&type=ajax&quiz=" + quiz +"", onSuccess, onError);
 }
-function deleteRating(rating){
-	ajaxGET("index.php?view=remove_rating&type=ajax&rating=" + rating +"");
+function deleteRating(rating, onSuccess, onError){
+	ajaxGetJson("index.php?view=remove_rating&type=ajax&rating=" + rating +"", onSuccess, onError);
 }
 
 function ajaxGET(url){
@@ -125,20 +125,38 @@ function ajaxGET(url){
 	xmlhttp.send();
 }
 
-function removeSubCat(id){
-	ajaxGET("index.php?view=remove_sub_cat&type=ajax&id=" + id);
+function ajaxGetJson(url, onSuccess, onError){
+	$.ajax({
+		url: url,
+		type: "GET",
+		contentType: false,
+		cache: false,
+		processData:false,
+		complete: function(response){
+			if(response.responseJSON === undefined || response.responseJSON.data === undefined
+				|| response.responseJSON.result != 'success'){
+				if(onError !== undefined) onError();
+				return;
+			}
+			if(onSuccess !== undefined) onSuccess();
+		}
+	});
 }
 
-function inactiveUser(id){
-	ajaxGET("index.php?view=inactive_user&type=ajax&id=" + id);
+function removeSubCat(id, onSuccess, onError){
+	ajaxGetJson("index.php?view=remove_sub_cat&type=ajax&id=" + id, onSuccess, onError);
 }
 
-function deleteReports(id, type){
-	ajaxGET("index.php?view=remove_reports&type=ajax&id=" + id +"&reporttype=" + type);
+function inactiveUser(id, onSuccess, onError){
+	ajaxGetJson("index.php?view=inactive_user&type=ajax&id=" + id, onSuccess, onError);
+}
+
+function deleteReports(id, type, onSuccess, onError){
+	ajaxGetJson("index.php?view=remove_reports&type=ajax&id=" + id +"&reporttype=" + type, onSuccess, onError);
 }
 function setWeight(weight, id){
-	ajaxGET("index.php?view=set_weight&type=ajax&id=" + id + "&weight=" + weight +"");
-	document.getElementById('dropdownWeight' + id).innerHTML = weight + " <span class=\"caret\"></span>";
+	ajaxGetJson("index.php?view=set_weight&type=ajax&id=" + id + "&weight=" + weight +"",
+		function(){ document.getElementById('dropdownWeight' + id).innerHTML = weight + " <span class=\"caret\"></span>"; });
 }
 
 function getReports(object_id, type){
@@ -153,7 +171,7 @@ function getReports(object_id, type){
 			var oTable = $('#tableListOfReports').dataTable();
 			oTable.fnDestroy();
 
-			document.getElementById('tablebodyreports').innerHTML = xmlhttp.responseText;
+			document.getElementById('tablebodyreports').innerHTML = $.responseText;
 
 			$('#tableListOfReports').dataTable({
 				responsive: true,

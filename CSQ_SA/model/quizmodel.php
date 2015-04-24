@@ -121,10 +121,21 @@ class QuizModel {
 		return $this->mysqli->getSingleResult($weightRes)['weight'];
 	}
 
+	/*
+	 * Removes a quiz. Checks if user has permission on quiz
+	 * @return Returns true on success, else false
+	 *
+	*/
 	public function removeQuiz($quiz_id) {
-		$this->logger->log ( "Removing Quiz with ID :".$quiz_id, Logger::INFO );
-		$result = $this->mysqli->s_query("DELETE FROM quiz WHERE id = ?",array('i'),array($quiz_id));
-		return $this->mysqli->getSingleResult($result);
+		if($this->userIDhasPermissionOnQuizID($quiz_id,$_SESSION['user_id'])){
+			$this->logger->log ( "Removing Quiz with ID :".$quiz_id, Logger::INFO );
+			$result = $this->mysqli->s_query("DELETE FROM quiz WHERE id = ?",array('i'),array($quiz_id));
+			return true;
+		}
+		else{
+			$this->logger->log ( "Unauthorized try to remove Quiz with ID :".$quiz_id, Logger::WARNING );
+			return false;
+		}
 	}
 
 	public function getQuizName($quiz_id) {
@@ -202,9 +213,20 @@ class QuizModel {
 		return $result->num_rows;
 	}
 
+	/*
+	 * Removes a question from a quiz. Checks if user has permission on the quiz
+	 * @return Returns true on success, else false
+	*/
 	public function removeQuestionFromQuiz($quiz_id, $question_id) {
-		$this->logger->log ( "Removing quiztoquestion links for Quiz ID:".$quiz_id." and Question ID:".$question_id, Logger::INFO );
-		return $this->mysqli->s_query("DELETE FROM quiztoquestion WHERE quiz_id =  ? AND question_id = ? ",array('i','i'),array($quiz_id,$question_id));
+		if($this->userIDhasPermissionOnQuizID($quiz_id,$_SESSION['user_id'])){
+			$this->logger->log ( "Removing quiztoquestion links for Quiz ID:".$quiz_id." and Question ID:".$question_id, Logger::INFO );
+			$this->mysqli->s_query("DELETE FROM quiztoquestion WHERE quiz_id =  ? AND question_id = ? ",array('i','i'),array($quiz_id,$question_id));
+			return true;
+		}
+		else{
+			$this->logger->log ( "Unauthorized try to remove quiztoquestion link for Quiz ID :".$quiz_id, Logger::WARNING );
+			return false;
+		}
 	}
 
 	public function getQuestionArray($quiz_id) {

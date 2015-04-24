@@ -1,4 +1,6 @@
 <?php
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+
 	$viewInner->setTemplate ( 'user' );
 
 	if (isset ( $this->request ['id'] )) {
@@ -6,8 +8,7 @@
 	} elseif ($GLOBALS['loggedin']) {
 		$userID = $_SESSION ['user_id'];
 	} else {
-		header ( 'Location: ./index.php?view=login&pageBefore=' . $this->template );
-		die ();
+		NavigationUtility::redirect('./index.php?view=login&pageBefore='.$this->template);
 	}
 
 	$user = $userModel->getUserByID ( $userID );
@@ -15,6 +16,7 @@
 	$questionCount = $questionListModel->getQuestionsByUserIDCount ( $userID );
 	$userscore = $userscoreModel->getUserScore($userID);
 	$categoryscores = $userscoreModel->getUserScoreAllCategories($userID);
+	$leadingTrailingUsers = $userscoreModel->getLeadingTrailingUsers($userID);
 	$moderatedCategories = $moderationModel->getModeratedCategoryNames($userID);
 	$absolvedCount=$userModel->getQuestionAbsolvedCount($userID);
 
@@ -30,15 +32,20 @@
 
 	$achievementList = $userModel->getAchievementList($userID);
 	$rankList = $userModel->getRankList($userID);
+	$rankListByCategory = $userscoreModel->getRankinglistAllCategories($userID);
 
 	$viewInner->assign('alreadyreported',$alreadyReported);
-	$viewInner->assign('user', $user );
-	$viewInner->assign('quizcount', $quizCount );
-	$viewInner->assign('questioncount', $questionCount );
-	$viewInner->assign('userscore', $userscore );
-	$viewInner->assign('categoryscores', $categoryscores );
-	$viewInner->assign('moderatedcategories', $moderatedCategories );
-	$viewInner->assign('absolvedcount', $absolvedCount );
+	$viewInner->assign('user', $user);
+	$viewInner->assign('quizcount', $quizCount);
+	$viewInner->assign('questioncount', $questionCount);
+	$viewInner->assign('userscore', $userscore);
+	$viewInner->assign('categoryscores', $categoryscores);
+	$viewInner->assign('leadingtrailingusers', $leadingTrailingUsers);
+	$viewInner->assign('moderatedcategories', $moderatedCategories);
+	$viewInner->assign('absolvedcount', $absolvedCount);
 	$viewInner->assign('achievementlist', $achievementList);
 	$viewInner->assign('ranklist', $rankList);
+	$viewInner->assign('rankListByCategory', $rankListByCategory);
+
+
 ?>

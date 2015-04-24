@@ -1,5 +1,9 @@
 <?php
+use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+use \quizzenger\utilities\PermissionUtility as PermissionUtility;
+use \quizzenger\messages\MessageQueue as MessageQueue;
 
+use \quizzenger\controlling\EventController as EventController;
 class QuestionModel {
 	private $mysqli;
 	private $logger;
@@ -30,9 +34,29 @@ class QuestionModel {
 		return $result["count"]>0;
 	}
 
+	/*
+	 * Sets weight of a question in the quiztoquestion table.
+	 * @Precondition Please check if user has permission on the quiz
+	*/
 	public function setWeight($id, $weight){
-		$this->logger->log ( "Editing Weigth(".$weight.") for QuizToQuestion ID: ".$id, Logger::INFO );
-		return $this->mysqli->s_query("UPDATE quiztoquestion SET weight=? WHERE id=?",array('i','i'),array($weight, $id));
+		if($this->userIDhasPermissionOnQuizToQuestionID($id, $_SESSION['user_id'])){
+			$this->logger->log ( "Editing Weigth(".$weight.") for QuizToQuestion ID: ".$id, Logger::INFO );
+			$this->mysqli->s_query("UPDATE quiztoquestion SET weight=? WHERE id=?",array('i','i'),array($weight, $id));	
+			return true;
+		}
+		else{
+			$this->logger->log ( "Unauthorized try to edit weight for QuizToQuestion ID :".$id, Logger::WARNING );
+			return false;
+		}
+	}
+
+	public function userIDhasPermissionOnQuizToQuestionID($id,$user_id) {
+		$result = $this->mysqli->s_query('SELECT q.user_id AS owner FROM quiztoquestion qtq, quiz q WHERE q.id = qtq.quiz_id AND qtq.id =?',['i'],[$id]);
+		if($result){
+			$result = $this->mysqli->getSingleResult($result);
+			return $result['owner'] == $user_id;
+		}
+		return false;
 	}
 
 	public function getQuestion($id){
@@ -80,16 +104,13 @@ class QuestionModel {
 			}
 		}
 		if($missingParam){
-			header ( 'Location: ./index.php?view=error&err=err_missing_input' );
-			die ();
+			MessageQueue::pushPersistent($_SESSION['user_id'], 'err_missing_input');
+			NavigationUtility::redirectToErrorPage();
 		}
 	}
 
 	public function opQuestionWithAnswers($answerModel,$categoryModel, $tagModel,$operation,$chosenCategory){
-		if (!isset ( $GLOBALS ['loggedin'] ) || !$GLOBALS ['loggedin']) {
-			header ( 'Location: ./index.php?view=login' );
-			die ();
-		}
+		PermissionUtility::checkLogin();
 
 		$this->checkForMissingParametersOpQwA($chosenCategory,$operation,$categoryModel);
 
@@ -157,8 +178,8 @@ class QuestionModel {
 			return;
 		}
 		$this->logger->log ( "Invalid questionType used in questionmodel", Logger::WARNING );
-		header ( 'Location: ./index.php?view=error&err=err_db_query_failed' );
-		die();
+		MessageQueue::pushPersistent($_SESSION['user_id'], 'err_db_query_failed');
+		NavigationUtility::redirectToErrorPage();
 	}
 
 	/**
@@ -277,15 +298,26 @@ class QuestionModel {
 		return $this->mysqli->s_insert("INSERT INTO question (type, questiontext, user_id, category_id,created,attachment,attachment_local) VALUES (?, ?, ?, ?, ?, ?, ?)",array('s', 's','i','i','s','s','i'),array($type,$questiontext,$userID,$categoryID,null,$attachment,$attachment_local));
 	}
 
-	public function removeQuestion($question_id){
-		if($this->userIDhasPermissionOnQuestionID($question_id,$_SESSION ['user_id'])){
-			$this->logger->log ( "Removing Question with ID :".$question_id, Logger::INFO );
-			$question = $this->getQuestion($question_id);
-			$this->logger->log ( "Decrement userscore (5) in category ". $question['category_id'] ." and user_id ". $question['user_id'] , Logger::INFO );
-			$this->mysqli->s_query("UPDATE userscore SET score=score-". QUESTION_CREATED_SCORE ." WHERE user_id=? AND category_id=?", array('i', 'i'), array($question['user_id'], $question['category_id']));
-			return $this->mysqli->s_query("DELETE FROM question WHERE id=?",array('i'),array($question_id));
-		} else {
-			$this->logger->log ( "Unauthorized try to remove of Question with ID :".$question_id, Logger::WARNING );
+	/*
+	 * Removes a question. Checks if user has permission on question
+	 * @return Returns true on success, else false
+	 *
+	*/
+	public function removeQuestion($questionId) {
+		$userId = $_SESSION['user_id'];
+		if($this->userIDhasPermissionOnQuestionID($questionId, $userId)) {
+			$this->logger->log("User $userId is removing question $questionId.", Logger::INFO);
+			$question = $this->getQuestion($questionId);
+			EventController::fire('question-removed', $question['user_id'], [
+				'category' => $question['category_id']
+			]);
+
+			$this->mysqli->s_query("DELETE FROM question WHERE id=?", ['i'], [$question_id]);
+			return true;
+		}
+		else {
+			$this->logger->log("User $userId is not authorized to remove question $questionId.", Logger::WARNING);
+			return false;
 		}
 	}
 

@@ -1,8 +1,7 @@
 <?php
-	if (! $GLOBALS ['loggedin']) {
-		header ( 'Location: ./index.php?view=login&pageBefore=' . $this->template );
-		die ();
-	}
+	use \quizzenger\utilities\PermissionUtility as PermissionUtility;
+
+	PermissionUtility::checkLogin();
 
 	$viewInner->setTemplate ( 'opquestion' );
 	if (isset ( $this->request ['type'] )) {

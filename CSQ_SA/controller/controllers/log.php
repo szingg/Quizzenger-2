@@ -1,4 +1,6 @@
 <?php
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+
 	$viewInner->setTemplate ( 'log' );
 	if($_SESSION['superuser']){
 		$logFiles = scandir(getcwd()."/".LOGPATH);
@@ -10,8 +12,7 @@
 		}
 		$viewInner->assign ( 'logfiles', $logArray );
 	}else{
-		header ( 'Location: ./index.php');
-		die ();
+		NavigationUtility::redirect();
 	}
 
 ?>

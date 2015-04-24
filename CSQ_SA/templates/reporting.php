@@ -29,7 +29,9 @@
 			<li role="presentation" class="active"><a href="#tab-user-report" role="tab" data-toggle="tab"><b>Benutzer</b></a></li>
 			<li role="presentation"><a href="#tab-question-report" role="tab" data-toggle="tab"><b>Fragen</b></a></li>
 			<li role="presentation"><a href="#tab-author-report" role="tab" data-toggle="tab"><b>Autoren</b></a></li>
+			<?php if($user['superuser']): ?>
 			<li role="presentation"><a href="#tab-system-report" role="tab" data-toggle="tab"><b>System</b></a></li>
+			<?php endif; ?>
 		</ul>
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active" id="tab-user-report">
@@ -71,12 +73,19 @@
 										. htmlspecialchars($current->username) . "</a>", true);
 									$outputRow($current->created_on);
 									$outputRow("<span style=\"display:none\">{$current->rank_threshold}</span>"
-										. ($current->rank_image != "" ? "<img src=\"{$rankImagePath}\" />" : "") . ' ' . htmlspecialchars($current->rank), true);
+										. ($current->rank_image != "" ? "<img src=\"{$rankImagePath}\" />" : "") . ' ' . htmlspecialchars($current->rank_name), true);
 									$outputRow((int)$current->producer_score);
 									$outputRow((int)$current->consumer_score);
 									echo "</tr>";
 								}
 							?>
+							<?php if($categoryId != 0): ?>
+								<script>
+									(function() {
+										$('#tableReportUserList').DataTable().column(3).visible(false);
+									})();
+								</script>
+							<?php endif; ?>
 						</tbody>
 					</table>
 				</div>
@@ -156,6 +165,7 @@
 					</table>
 				</div>
 			</div>
+			<?php if($user['superuser']): ?>
 			<div role="tabpanel" class="tab-pane" id="tab-system-report">
 				<div class="panel-body">
 					<p><b>System Status</b></p>
@@ -170,13 +180,14 @@
 						<?php
 							foreach($systemStatus->log_files as $log) {
 								$log = htmlspecialchars($log);
-								$filename = htmlspecialchars(APP_PATH) . '/log/' . $log;
+								$filename = htmlspecialchars(APP_PATH . '/index.php?view=syslog&logfile=' . $log);
 								echo "<li><a href=\"$filename\">$log</a></li>";
 							}
 						?>
 					</ul>
 				</div>
 			</div>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>

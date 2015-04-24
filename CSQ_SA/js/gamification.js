@@ -126,7 +126,7 @@ function Gamification(){
 					var resp = data.responseJSON.data;
 
 					//startGame
-					if(resp.gameinfo.has_started != null){
+					if(resp.gameinfo.starttime != null){
 						window.location.href = "index.php?view=GameQuestion&gameid=" + resp.gameinfo.game_id;
 					}
 
@@ -148,51 +148,60 @@ function Gamification(){
 				clearInterval(gameLobbyTimer);
 			}
 			if(e.currentTarget.hash == "#gameLobby"){
+				self.updateGameLobbyData();
 				//setTimer
 				gameLobbyTimer = window.setInterval(function(){
-					self.updateOpenGames();
+					self.updateGameLobbyData();
 				}, 2000);
 			}
 		});
 	}
 
-	this.updateOpenGames = function(){
+	this.updateGameLobbyData = function(){
 
 		$.ajax({
-				url: "index.php?view=getOpenGames&type=ajax",
+				url: "index.php?view=getGameLobbyData&type=ajax",
 				type: "GET",
 				contentType: false,
 				cache: false,
 				processData:false,
 				complete: function(data){
 					if(data.responseJSON === undefined) return;
-					//$("#tableBodyOpenGames").html("");
+
+					//openGames
 					var table = $('#tableOpenGames').DataTable();
-					//table.destroy();
 					table.rows().remove();
 					var template = '#dot-openGameRow';
-					$(data.responseJSON.data).each(function(id, game){
+					$(data.responseJSON.data.openGames).each(function(id, game){
 						game.duration = self.formatTime(game.duration);
 
 						var tempHtml = (doT.template($(template).text()))(game);
 						table.row.add($(tempHtml));
-						//self.appendTemplateToContainer("dot-openGameRow", game, "tableBodyOpenGames");
 					});
-				/*	$('#tableOpenGames').DataTable( {
-        				responsive: true
-    				} ); */
 					table.draw();
+
+					//activeGames
+					var table = $('#tableActiveGames').DataTable();
+					table.rows().remove();
+
+					if(data.responseJSON.data.activeGames.length > 0){
+						$('#activeGamesPanel').removeAttr('hidden');
+
+						var template = '#dot-activeGameRow';
+						$(data.responseJSON.data.activeGames).each(function(id, game){
+							game.duration = self.formatTime(game.duration);
+
+							var tempHtml = (doT.template($(template).text()))(game);
+							table.row.add($(tempHtml));
+						});
+						table.draw();
+					}
+					else{
+						$('#activeGamesPanel').attr('hidden', 'true');
+					}
+
 				}
 			});
-
-		/*
-		var table = $('#tableOpenGames');
-		var x = table.data();
-		var i = 1;
-		//table.ajax.url('index.php?view=getOpenGames&type=ajax');
-		/*table.ajax.reload( function(data, dt){
-			var x = 1;
-		}, false ); */
 	}
 
 	this.gameReportTimer = function(){
@@ -221,7 +230,7 @@ function Gamification(){
 					if(resp.responseJSON === undefined || resp.responseJSON.data == undefined) return;
 					var data = resp.responseJSON.data;
 					//set Countdown
-					if(data.timeToEnd > 0){
+					if(data.timeToEnd > 0 && data.gameInfo.endtime==null){
 						var formatTimeToEnd = self.formatSeconds(data.timeToEnd);
 						self.applyTemplate("dot-gameReportCountdown", {
 							'progressCountdown' : data.progressCountdown,
@@ -229,6 +238,7 @@ function Gamification(){
 						}, "gameCountdown");
 					}
 					else{
+						$('#gameCountdown').html('');
 						//redirect to GameEnd view if not already on this view
 						if(! self.contains(document.URL, 'view=GameEnd')){
 							window.location.href = "index.php?view=GameEnd&gameid=" + data.gameInfo.game_id;

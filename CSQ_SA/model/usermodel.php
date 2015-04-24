@@ -1,4 +1,6 @@
 <?php
+use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+use quizzenger\messages\MessageQueue as MessageQueue;
 
 class UserModel {
 
@@ -36,8 +38,7 @@ class UserModel {
 
 	public function processChangepassword($password) {
 		if (!isset ($GLOBALS ['loggedin'] ) || ! $GLOBALS ['loggedin']) { // only logged in users
-			header ( 'Location: ./index.php' );
-			die();
+			NavigationUtility::redirect();
 		}
 
 		if (!is_null($password)) {
@@ -45,12 +46,12 @@ class UserModel {
 			$changepasswordResult = $this->changePassword( $password, $this->mysqli );
 			if($changepasswordResult){
 				$this->logger->log ( "User changed password sucessfully ", Logger::INFO );
-				header ( 'Location: ./index.php?info=mes_passwordchange_success' );
-				die();
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'mes_passwordchange_success');
+				NavigationUtility::redirect();
 			}else{
 				$this->logger->log ( "Something went wrong when user tried to change password ", Logger::WARNING );
-				header ( 'Location: ./index.php?view=error&err=err_db_query_failed' );
-				die();
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_db_query_failed');
+				NavigationUtility::redirectToErrorPage();
 			}
 		}
 	}

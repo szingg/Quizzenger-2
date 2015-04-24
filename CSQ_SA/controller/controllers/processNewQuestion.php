@@ -1,4 +1,5 @@
 <?php
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
 	use \quizzenger\controlling\EventController as EventController;
 
 	$viewInner->setTemplate ( 'blankContent' );
@@ -15,7 +16,8 @@
 			EventController::fire('question-created', $_SESSION['user_id'], [
 				'category' => $chosenCategory
 			]);
-			header ( 'Location: ./index.php?view=mycontent&id='.$addedQuestion );		}
+			NavigationUtility::redirect('./index.php?view=mycontent&id='.$addedQuestion);
+		}
 	}else{
 		$this->logger->log ( "Invalid POST request made (processNewQuestion)", Logger::WARNING );
 		die ( 'Invalid Request. Please stop this' );

@@ -6,6 +6,10 @@ namespace quizzenger\gamification\controller {
 	use \mysqli as mysqli;
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+	use \quizzenger\utilities\PermissionUtility as PermissionUtility;
+	use \quizzenger\messages\MessageQueue as MessageQueue;
+	use \quizzenger\utilities\FormatUtility as FormatUtility;
 	use \quizzenger\gamification\model\GameModel as GameModel;
 
 	class GameQuestionController{
@@ -69,6 +73,11 @@ namespace quizzenger\gamification\controller {
 			$questionView->assign ( 'category', $categoryName );
 
 			$answers = $this->answerModel->getAnswersByQuestionID ( $questionID );
+			//randomize array
+			mt_srand(time());
+			$order = array_map(create_function('$val', 'return mt_rand();'), range(1, count($answers)));
+			$_SESSION['questionorder'][$questionID] = $order;
+			array_multisort($order, $answers);
 			$questionView->assign ( 'answers', $answers );
 			$linkToSolution = '?view=GameSolution&gameid='.$this->gameid;
 			$questionView->assign ( 'linkToSolution', $linkToSolution );
@@ -92,28 +101,28 @@ namespace quizzenger\gamification\controller {
 		private function loadReportView(){
 			$reportView = new \View();
 			$reportView->setTemplate ( 'gamereport' );
+			/*
 			$reportView->assign('gameinfo', $this->gameinfo);
 			$gameReport = $this->gameModel->getGameReport($this->gameid);
 			$reportView->assign('gamereport', $gameReport);
 
 			$now = date("Y-m-d H:i:s");
 			$durationSec = timeToSeconds($this->gameinfo['duration']);
-			$timeToEnd = strtotime($this->gameinfo['gameend']) - strtotime($now);
+			$timeToEnd = strtotime($this->gameinfo['calcEndtime']) - strtotime($now);
 			$progressCountdown = (int) (100 / $durationSec * $timeToEnd);
 			$reportView->assign( 'timeToEnd', $timeToEnd);
 			$reportView->assign( 'progressCountdown', $progressCountdown);
-
+			*/
 
 			$this->view->assign ( 'reportView', $reportView->loadTemplate() );
 		}
 
 		/*
-		 * Gets the Gameinfo. Redirects to errorpage when no result returned.
+		 * Gets the Gameinfo.
 		 */
 		private function getGameInfo(){
 			$gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
-			if(count($gameinfo) <= 0) redirectToErrorPage('err_db_query_failed');
-			else return $gameinfo[0];
+			return $gameinfo;
 		}
 
 		/*
@@ -124,33 +133,36 @@ namespace quizzenger\gamification\controller {
 		 * @Precondition Game is not finished
 		 */
 		private function checkPreconditions(){
-			checkLogin();
+			PermissionUtility::checkLogin();
 
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
 
 			$now = date("Y-m-d H:i:s");
-			$timeToEnd = strtotime($this->gameinfo['gameend']) - strtotime($now);
-			$finished = $timeToEnd <= 0;
+			$timeToEnd = strtotime($this->gameinfo['calcEndtime']) - strtotime($now);
+			$finished = $timeToEnd <= 0 || isset($this->gameinfo['endtime']);
 
 			if($isMember && ( $finished || $this->gamecounter >= count($this->gamequestions)) ){
-				redirect('./index.php?view=GameEnd&gameid='.$this->gameid);
+				NavigationUtility::redirect('./index.php?view=GameEnd&gameid='.$this->gameid);
 			}
 
-			if($isMember==false && $this->hasStarted($this->gameinfo['has_started'])){
-				redirectToErrorPage('err_game_has_started');
+			if($isMember==false && $this->hasStarted($this->gameinfo['starttime'])){
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_game_has_started');
+				NavigationUtility::redirectToErrorPage();
 			}
 
 			if($isMember==false || $finished
-					|| $this->hasStarted($this->gameinfo['has_started'])==false ){
-				redirectToErrorPage('err_not_authorized');
+					|| $this->hasStarted($this->gameinfo['starttime'])==false ){
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_not_authorized');
+				NavigationUtility::redirectToErrorPage();
 			}
 		}
 		private function checkGameSessionParams(){
 			if(! isset($this->request ['gameid'],
 					$_SESSION ['game'][$this->request ['gameid']]['gamequestions'],
 					$_SESSION ['game'][$this->request ['gameid']]['gamecounter'])
-					){
-						redirectToErrorPage('err_not_authorized');
+			){
+						MessageQueue::pushPersistent($_SESSION['user_id'], 'err_not_authorized');
+						NavigationUtility::redirectToErrorPage();
 			}
 		}
 
@@ -159,9 +171,6 @@ namespace quizzenger\gamification\controller {
 		}
 		private function hasStarted($has_started){
 			return isset($has_started);
-		}
-		private function isFinished($is_finished){
-			return isset($is_finished);
 		}
 
 	} // class GameQuestionController

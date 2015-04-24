@@ -1,6 +1,11 @@
 <?php
+use \quizzenger\messages\MessageQueue as MessageQueue;
+use \quizzenger\messages\MessageFormatter as MessageFormatter;
+use \quizzenger\messages\TextTranslator as TextTranslator;
+use \quizzenger\utilities\NavigationUtility as NavigationUtility;
 use \quizzenger\controlling\EventController as EventController;
 use \quizzenger\gamification\model\GameModel as GameModel;
+use \quizzenger\logging\LogViewer as LogViewer;
 
 class Controller {
 	private $request = null;
@@ -16,6 +21,8 @@ class Controller {
 		$this->template = ! empty ( $request ['view'] ) ? $request ['view'] : 'default';
 		$this->mysqli = new sqlhelper ( $this->logger );
 
+		MessageQueue::setup($this->mysqli->database());
+		TextTranslator::setup($this->mysqli->database(), new MessageFormatter());
 		EventController::setup($this->mysqli);
 	}
 
@@ -62,6 +69,16 @@ class Controller {
 				$controller = new $className($viewInner);
 				$viewInner = $controller->loadView();
 				break;
+			case 'syslog':
+				if(!$_SESSION['superuser'] || !isset($_GET['logfile']))
+				{
+					NavigationUtility::redirect();
+				}
+				else {
+					(new LogViewer())->render($_GET['logfile']);
+					die();
+				}
+				break;
 			default:
 				include("controllers/default.php");
 				break;
@@ -69,11 +86,11 @@ class Controller {
 
 		// loads the head, css etc.
 		$this->viewOuter->setTemplate ( 'skeleton' );
-		$this->viewOuter->assign('username', $userModel->getUsernameByID($_SESSION['user_id']));
-		$this->viewOuter->assign('superuser', $userModel->isSuperuser($_SESSION['user_id']));
+		$this->viewOuter->assign('userid', $_SESSION['user_id']);
+		$this->viewOuter->assign('username', $_SESSION ['username']);
+		$this->viewOuter->assign('superuser', $_SESSION['superuser']);
 		$this->viewOuter->assign('anymoderator', $reportingModel->isAnyModerator($_SESSION['user_id']));
-		$this->viewOuter->assign ( 'csq_footer', 'Die Wissensplattform' );
-		$this->viewOuter->assign ( 'csq_content', $viewInner->loadTemplate () );
+		$this->viewOuter->assign( 'csq_content', $viewInner->loadTemplate());
 		// Return the whole page now
 		return $this->viewOuter->loadTemplate ();
 	}

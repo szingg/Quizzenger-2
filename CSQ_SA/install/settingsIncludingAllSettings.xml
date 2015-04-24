@@ -29,6 +29,10 @@
 			<producer_score>0</producer_score>
 			<consumer_score>0</consumer_score>
 		</eventtrigger>
+		<eventtrigger name="question-removed">
+			<producer_score>-30</producer_score>
+			<consumer_score>0</consumer_score>
+		</eventtrigger>
 	</eventtriggers>
 	<achievements>
 		<achievement type="QuestionAnsweredCorrect">
@@ -323,16 +327,114 @@
 		</achievement>
 	</achievements>
 	<ranks>
-		<rank name="Neuling" threshold="0" image="neuling" />
-		<rank name="Besucher" threshold="1000" image="besucher" />
-		<rank name="Einsteiger" threshold="2500" image="einsteiger" />
-		<rank name="Aufsteiger" threshold="5000" image="aufsteiger" />
-		<rank name="Fragekenner" threshold="8000" image="fragekenner" />
-		<rank name="Alleskönner" threshold="12000" image="alleskoenner" />
-		<rank name="Profi" threshold="18000" image="profi" />
+		<rank name="Neuling" threshold="0" image="newbie" />
+		<rank name="Besucher" threshold="1000" image="visitor" />
+		<rank name="Einsteiger" threshold="2500" image="beginner" />
+		<rank name="Aufsteiger" threshold="5000" image="climber" />
+		<rank name="Fragekenner" threshold="8000" image="adept" />
+		<rank name="Alleskönner" threshold="12000" image="all-rounder" />
+		<rank name="Profi" threshold="18000" image="pro" />
 		<rank name="Veteran" threshold="26000" image="veteran" />
-		<rank name="Meister" threshold="34000" image="meister" />
+		<rank name="Meister" threshold="34000" image="master" />
 		<rank name="Baron" threshold="44000" image="baron" />
-		<rank name="Legende" threshold="60000" image="legende" />
+		<rank name="Legende" threshold="60000" image="legend" />
 	</ranks>
+	<messages>
+		<message>
+			<type>err_register_invalid_mail</type>
+			<text>Die eingegebene Email Adresse ist ungültig</text>
+		</message>
+		<message>
+			<type>err_register_pw</type>
+			<text>Ungültige Passwort konfiguration (=/ 128). Haben Sie Javascript aktiviert?</text>
+		</message>
+		<message>
+			<type>err_register_existing_information</type>
+			<text>Die Email Adresse oder der Benutzername wird bereits verwendet</text>
+		</message>
+		<message>
+			<type>err_register_check</type>
+			<text>Verbindung mit der Datenbank fehlgeschlagen</text>
+		</message>
+		<message>
+			<type>err_register_insert</type>
+			<text>Erstellen Ihres Benutzers ist fehlgeschlagen - Insert failed</text>
+		</message>
+		<message>
+			<type>err_login_bad_credentials</type>
+			<text>Email Adresse oder Passwort inkorrekt</text>
+		</message>
+		<message>
+			<type>err_login_inactive</type>
+			<text>Ihr Benutzer ist inaktiv</text>
+		</message>
+		<message>
+			<type>err_login_tries_exceeded</type>
+			<text>Die Anzahl fehlgeschlagene Logins für Ihren Benutzer wurden erreicht. Bitte probieren Sie es in {{timeout#integer}} Minuten erneut</text>
+		</message>
+		<message>
+			<type>err_db_query_failed</type>
+			<text>Oops, es wurde eine ungültige Datenbank abfrage getätigt</text>
+		</message>
+		<message>
+			<type>err_missing_input</type>
+			<text>Bitte füllen Sie alle benötigten Felder aus</text>
+		</message>
+		<message>
+			<type>err_not_authorized_questionedit</type>
+			<text>Sie sind nicht berechtigt diese Frage zu bearbeiten</text>
+		</message>
+		<message>
+			<type>err_not_authorized_quizdetail</type>
+			<text>Sie sind nicht berechtigt dieses Quiz anzuschauen</text>
+		</message>
+		<message>
+			<type>err_not_authorized</type>
+			<text>Sie sind nicht berechtigt, diese Aktion durchzuführen</text>
+		</message>
+		<message>
+			<type>err_game_has_started</type>
+			<text>Das Game wurde bereits gestartet. Sie können nicht mehr teilnehmen</text>
+		</message>
+		<message>
+			<type>err_game_if_finished</type>
+			<text>Das Game wurde bereits beendet. Sie können keine Fragen mehr beantworten</text>
+		</message>
+		<message>
+			<type>err_unkown</type>
+			<text>Oops, es ist ein unbekannter Fehler aufgetreten!</text>
+		</message>
+		<message>
+			<type>mes_login_success</type>
+			<text>Login erfolgreich</text>
+		</message>
+		<message>
+			<type>mes_register_success</type>
+			<text>Registrierung erfolgreich. Sie können sich nun anmelden</text>
+		</message>
+		<message>
+			<type>mes_logout_success</type>
+			<text>Logout erfolgreich</text>
+		</message>
+		<message>
+			<type>mes_login_already</type>
+			<text>Sie sind bereits angemeldet</text>
+		</message>
+		<message>
+			<type>mes_passwordchange_success</type>
+			<text>Ihr Passwort wurde erfolgreich geändert. Bitte melden Sie sich erneut an</text>
+		</message>
+		<message>
+			<type>mes_sent_report</type>
+			<text>Die Meldung wurde erfasst und wird von den Moderatoren angeschaut</text>
+		</message>
+		<message>
+			<type>mes_no_results</type>
+			<text>Ihr gesetzter Filter ergab leider keine Ergebnisse</text>
+		</message>
+		<message>
+			<type>mes_add_questions_to_quiz</type>
+			<text>Fragen können über den Fragepool zum Quiz hinzugefügt werden</text>
+		</message>
+	</messages>
 </quizzenger>

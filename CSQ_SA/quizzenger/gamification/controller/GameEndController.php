@@ -5,6 +5,9 @@ namespace quizzenger\gamification\controller {
 	use \SplEnum as SplEnum;
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+	use \quizzenger\utilities\PermissionUtility as PermissionUtility;
+	use \quizzenger\messages\MessageQueue as MessageQueue;
 	use \quizzenger\gamification\model\GameModel as GameModel;
 
 
@@ -61,18 +64,20 @@ namespace quizzenger\gamification\controller {
 		private function loadReportView(){
 			$reportView = new \View();
 			$reportView->setTemplate ( 'gamereport' );
+			/*
 			$reportView->assign('gameinfo', $this->gameinfo);
 			$gameReport = $this->gameModel->getGameReport($this->gameid);
 			$reportView->assign('gamereport', $gameReport);
 
 			$now = date("Y-m-d H:i:s");
 			$durationSec = timeToSeconds($this->gameinfo['duration']);
-			$timeToEnd = strtotime($this->gameinfo['gameend']) - strtotime($now);
+			$timeToEnd = strtotime($this->gameinfo['calcEndtime']) - strtotime($now);
 			$progressCountdown = (int) (100 / $durationSec * $timeToEnd);
 			$reportView->assign( 'timeToEnd', $timeToEnd);
 			$reportView->assign( 'progressCountdown', $progressCountdown);
+			*/
 
-			$this->view->assign ( 'reportView', $reportView->loadTemplate() );
+			$this->view->assign ( 'reportView', $reportView->loadTemplate());
 		}
 
 		/*
@@ -83,13 +88,14 @@ namespace quizzenger\gamification\controller {
 		 * @Precondition Game has started
 		 */
 		private function checkPreconditions(){
-			checkLogin();
+			PermissionUtility::checkLogin();
 
 			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
 
 			//checkConditions
-			if($isMember==false || $this->hasStarted($this->gameinfo['has_started'])==false){
-				redirectToErrorPage('err_not_authorized');
+			if($isMember==false || $this->hasStarted($this->gameinfo['starttime'])==false){
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_not_authorized');
+				NavigationUtility::redirectToErrorPage();
 			}
 		}
 		private function checkGameSessionParams(){
@@ -97,19 +103,19 @@ namespace quizzenger\gamification\controller {
 					$_SESSION ['game'][$this->request ['gameid']]['gamequestions'],
 					$_SESSION ['game'][$this->request ['gameid']]['gamecounter'])
 			){
-				redirectToErrorPage('err_not_authorized');
+				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_not_authorized');
+				NavigationUtility::redirectToErrorPage();
 			}
 		}
 
 
 
 		/*
-		 * Gets the Gameinfo. Redirects to errorpage when no result returned.
+		 * Gets the Gameinfo.
 		 */
 		private function getGameInfo(){
 			$gameinfo = $this->gameModel->getGameInfoByGameId($this->gameid);
-			if(count($gameinfo) <= 0) redirectToErrorPage('err_db_query_failed');
-			else return $gameinfo[0];
+			return $gameinfo;
 		}
 		private function isGameOwner($owner_id){
 			return $owner_id == $_SESSION['user_id'];

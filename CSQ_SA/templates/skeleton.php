@@ -1,5 +1,6 @@
 <?php
-	use \quizzenger\dispatching\MessageQueue as MessageQueue;
+	use \quizzenger\messages\MessageQueue as MessageQueue;
+	use \quizzenger\messages\TextTranslator as TextTranslator;
 
 	function checkActiveTab($openedView){
 		$pageBefore = filter_input(INPUT_GET, 'pageBefore', $filter = FILTER_SANITIZE_SPECIAL_CHARS);
@@ -78,7 +79,7 @@
 							<span class="glyphicon glyphicon-list"></span> Fragepool</a>
 						</li>
 						<li class="<?=  checkActiveTab("learn");?>">
-							<a href="?view=learn"><span class="glyphicon glyphicon-random"></span> Lernen</a>
+							<a href="?view=learn"><span class="glyphicon glyphicon-random"></span> Quiz/Game</a>
 						</li>
 						<li class="hidden-xs <?=  checkActiveTab("newquestion");?>">
 							<a href="?view=newquestion"><span class="glyphicon glyphicon-plus"></span> Frage</a>
@@ -116,10 +117,15 @@
 		</div>
 		<div class="container">
 			<?php
-				while($message = MessageQueue::pop()) {
-					echo '<div class="alert alert-' . $message->type . '" role="alert">';
+				$messages = MessageQueue::popAll($this->_['userid']);
+				$messages = TextTranslator::translate($messages);
+				foreach($messages as $current) {
+					$alertType = (strpos($current->type,'err_') !== false?'danger':'info');
+					echo '<div class="alert alert-'.$alertType.'" role="alert">';
 					echo '<a href="#" class="close" data-dismiss="alert">&times;</a>';
-					echo htmlspecialchars($message->content);
+					/*echo 'temporary: ' . htmlspecialchars($current->type) . '(' . (int)$current->static . ') ' . htmlspecialchars(json_encode($current->arguments)); */
+					//echo TextTranslator::translate(htmlspecialchars($current->type), json_decode(htmlspecialchars(json_encode($current->arguments))));
+					echo htmlspecialchars($current->text);
 					echo '</div>';
 				}
 
@@ -137,14 +143,38 @@
 			</noscript>
 			<?=  $this->_['csq_content']; ?>
 			<hr />
-			<?php
-				echo $this->_['csq_footer'];
-				if(SHOW_PROCESSING_TIME){
-					$time_end = microtime(true);
-					$execution_time = round(($time_end - $GLOBALS["time_start"]),4);
-					echo ('<span style="float:right"><i>Seite erstellt in: '.$execution_time." s</i></span>");
-				}
-			?>
+			<footer>
+				<div class="panel panel-default" id="panelQuestionHistoryUser">
+					<div class="panel-heading">
+						<b>Quizzenger - Die Wissensplattform</b>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-4">
+								<ul>
+									<li><a href="<?php echo APP_PATH . '?view=about'; ?>">Über Quizzenger</a></li>
+									<li><a href="https://github.com/ozzi-/Quizzenger/">Github Repository</a></li>
+								</ul>
+							</div>
+							<div class="col-md-4">
+								<ul>
+									<li><a href="<?php echo APP_PATH . '?view=about'; ?>">Impressum</a></li>
+									<li><a href="<?php echo APP_PATH . '?view=about'; ?>">Rechtliche Hinweise</a></li>
+								</ul>
+							</div>
+							<div class="col-md-4">
+								<?php
+									if(SHOW_PROCESSING_TIME) {
+										$time_end = microtime(true);
+										$execution_time = round(($time_end - $GLOBALS['time_start']), 4);
+										echo '<div class="pull-right">Erstelldauer: ' . $execution_time . 's</div';
+									}
+								?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</footer>
 		</div>
 	</body>
 </html>

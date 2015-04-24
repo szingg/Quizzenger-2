@@ -1,4 +1,7 @@
 <?php
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+	use \quizzenger\messages\MessageQueue as MessageQueue;
+
 	if (isset ( $this->request ['session_id'] )) {
 		$session_id = $this->request ['session_id'];
 
@@ -19,6 +22,7 @@
 		$viewInner->assign ('session_id',$session_id);
 
 	}else {
-		header('Location: ./index.php?view=error&err=err_db_query_failed');
+		MessageQueue::pushPersistent($_SESSION['user_id'], 'err_db_query_failed');
+		NavigationUtility::redirectToErrorPage();
 	}
 ?>

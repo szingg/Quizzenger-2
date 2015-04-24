@@ -1,5 +1,5 @@
 <script id="dot-gameReportRow" type="text/x-dot-template">
-				<div class="row game-report-row {{?it.isCurrentUser==null}}game-report-active{{?}}">
+				<div class="row game-report-row {{?it.isCurrentUser}}game-report-active{{?}}">
 					<strong class="col-md-1">Rang: {{=it.report.rank}}</strong><span class="col-md-1">{{=it.report.username}}</span>
 					<span class="col-md-6" >
 						<div class="progress game-report-progress" >

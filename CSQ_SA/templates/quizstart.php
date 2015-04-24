@@ -3,8 +3,8 @@ javascript:window.history.forward(1);
 //--></script>
 <div class="jumbotron">
 	<?php if(is_null($this->_ ['quizinfo']['quizid'])){
-		header('Location: index.php');
-		die();
+		use \quizzenger\utilities\NavigationUtility as NavigationUtility;
+		NavigationUtility::redirect();
 	} ?>
 	<h1>Willkommen bei Quizzenger</h1>
 	<p>
