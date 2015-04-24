@@ -28,11 +28,9 @@
 ?>
 <div class="panel panel-default">
 	<div class="panel-heading"><strong><?php echo htmlspecialchars($user['username']);?></strong>
-		<?php
-			if(!$this->_ ['alreadyreported']){?>
+		<?php if(!$this->_ ['alreadyreported'] && $user['id'] != $_SESSION['user_id']): ?>
 			<button type="button" class="btn btn-link btn-xs pull-right" data-toggle="modal" data-target="#newUserReportDialog">Benutzer melden</button>
-			<?php }
-		?>
+		<?php endif; ?>
 	</div>
 		<div class="panel-body">
 			<div class="row">
