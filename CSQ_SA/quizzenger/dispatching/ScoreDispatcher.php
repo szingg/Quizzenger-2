@@ -25,7 +25,13 @@ namespace quizzenger\dispatching {
 			$this->mysqli = $mysqli;
 		}
 
-		public function promoteUser($userId, $categoryId) {
+		/**
+		 * Promotes the specified user to a moderator for the passed category
+		 * if the score requirements are met.
+		 * @param int $userId User ID.
+		 * @param int $categoryId Category ID.
+		**/
+		public function promoteUserIfEligible($userId, $categoryId) {
 			$threshold = (new Settings($this->mysqli->database()))->getSingle('q.scoring.moderator-threshold');
 			$statement= $this->mysqli->database()->prepare('INSERT IGNORE INTO moderation (user_id, category_id)'
 				. ' SELECT ?, ? FROM userscore WHERE (SELECT (SUM(producer_score)+SUM(consumer_score)) FROM userscore'
@@ -78,7 +84,7 @@ namespace quizzenger\dispatching {
 			else
 				Log::error("Could not grant score to user $userId for category $categoryId.");
 
-			$this->promoteUser($userId, $categoryId);
+			$this->promoteUserIfEligible($userId, $categoryId);
 		}
 
 		/**
