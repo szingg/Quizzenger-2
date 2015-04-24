@@ -55,12 +55,11 @@ CREATE TABLE IF NOT EXISTS `login_attempts` (
 --
 
 CREATE TABLE IF NOT EXISTS `moderation` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
   `inactive` tinyint(1) NOT NULL DEFAULT '0',
   `startdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`user_id`, `category_id`),
   KEY `fk_usermoderation` (`user_id`),
   KEY `fk_categorymoderation` (`category_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;

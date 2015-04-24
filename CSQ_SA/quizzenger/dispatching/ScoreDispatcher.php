@@ -3,6 +3,7 @@
 namespace quizzenger\dispatching {
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
+	use \quizzenger\Settings as Settings;
 	use \quizzenger\dispatching\UserEvent as UserEvent;
 
 	/**
@@ -22,6 +23,17 @@ namespace quizzenger\dispatching {
 		**/
 		public function __construct(SqlHelper $mysqli) {
 			$this->mysqli = $mysqli;
+		}
+
+		public function promoteUser($userId, $categoryId) {
+			$threshold = (new Settings($this->mysqli->database()))->getSingle('q.scoring.moderator-threshold');
+			$statement= $this->mysqli->database()->prepare('INSERT IGNORE INTO moderation (user_id, category_id)'
+				. ' SELECT ?, ? FROM userscore WHERE (SELECT (SUM(producer_score)+SUM(consumer_score)) FROM userscore'
+				. '     WHERE user_id=? AND category_id=? GROUP BY user_id) >= ?');
+
+			$statement->bind_param('iiiii', $userId, $categoryId, $userId, $categoryId, $threshold);
+			if(!$statement->execute())
+				Log::info('Could not execute user promotion');
 		}
 
 		/**
@@ -65,6 +77,8 @@ namespace quizzenger\dispatching {
 				Log::info("Added score ($producerScore, $consumerScore) to user $userId for category $categoryId.");
 			else
 				Log::error("Could not grant score to user $userId for category $categoryId.");
+
+			$this->promoteUser($userId, $categoryId);
 		}
 
 		/**
@@ -96,6 +110,7 @@ namespace quizzenger\dispatching {
 
 				default:
 					Log::warning("Score for event '$eventName' could not be dispatched.");
+					break;
 			}
 		}
 

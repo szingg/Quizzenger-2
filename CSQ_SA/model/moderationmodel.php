@@ -13,16 +13,6 @@ class ModerationModel {
 		return ($this->mysqli->getSingleResult($result)['COUNT(*)'] > 0 ? true : false);
 	}
 
-	public function checkPromotion($user_id, $category_id, $score) {
-		if($score >= MODERATION_SCORE && !$this->isModerator($user_id, $category_id)){
-			$this->addModerator($user_id, $category_id);
-		}
-	}
-
-	public function addModerator($user_id, $category_id) {
-		return $this->mysqli->s_insert("INSERT INTO moderation (user_id, category_id) VALUES (?, ?)",array('i','i'),array($user_id, $category_id));
-	}
-
 	public function getModeratedCategories($user_id) {
 		$result = $this->mysqli->s_query("SELECT category_id FROM moderation WHERE user_id=? AND inactive=0",array('i'),array($user_id));
 		return $this->mysqli->getQueryResultArray($result);
