@@ -18,13 +18,13 @@
 				<p>Unser Ziel ist es einerseits eine erfolgreiche und spannende Studienarbeit durchzuführen, andererseits eine gut zu wartende Lernplattform zu erstellen.
 				Diese Lernplattform soll sich mit der Zeit selbst verwalten und den Leuten eine effektive Möglichkeit bieten zu Lernen sowie eigenes Wissen weiterzugeben.</p>
 				<p>Wir versuchen unser Bestes eine stabile und gut durchdachte Plattform zu erstellen, auf der im Rahmen einer weiteren Arbeit weitere Features und Verbesserunge eingebracht werden können.</p>
-			</div>
-			<div class="col-md-6">
+
 				<h3>Technisches</h3>
 				<p>Verwendet wurde PHP 5.5, MySQLi, Eclipse PDT, EGIT.</p>
 				<p>Der Webserver zum Testen war ein Debian 3.2 vServer mit Apache2 und MySQL 5.6.</p>
 				<p>Link zum <a href="https://github.com/ozzi-/Quizzenger/">GitHub Repository</a></p>
-
+			</div>
+			<div class="col-md-6">
 				<h3>Herausgeberin</h3>
 				<p>HSR Hochschule für Technik Rapperswil<br>Oberseestrasse 10, Postfach 1475, CH-8640 Rapperswil<br>Tel: 055 222 41 11, Fax: 055 222 44 00, office(at)hsr.ch</p>
 				<p>Diese Website wird durch die Abteilung Informatik der HSR Hochschule für Technik Rapperswil betreut. Fragen und Anregungen nehmen wir gerne entgegen.</p>
@@ -33,6 +33,12 @@
 				<h3>Rechtliche Hinweise</h3>
 				<p>Die HSR Hochschule für Technik Rapperswil behält sich das Recht vor, jederzeit und nach eigenem Ermessen den Inhalt der Website ganz oder teilweise zu ändern, zu ergänzen oder zu löschen. Trotz aller vernünftigerweise zumutbaren Vorkehrungen können technische Ungenauigkeiten, Auslassungen oder Fehler in den Inhalten der Website der HSR nicht ausgeschlossen werden. Die HSR kann keine Haftung für die Richtigkeit, Vollständigkeit und Aktualität der auf der Website publizierten Informationen übernehmen.
 				Manche Links auf der HSR Website führen zu Websites Dritter. Diese stehen nicht mehr unter dem Einflussbereich der HSR. Für die Richtigkeit, Vollständigkeit und Rechtmässigkeit der dort enthaltenen Inhalte und Verlinkung mit weiteren Websites übernimmt die HSR keinerlei Verantwortung.</p>
+
+				<h4>Hochgeladene Inhalte</h4>
+				<p>Als Benutzer von Quizzenger haben Sie die Möglichkeit, wertvolle Inhalte in Form von Fragen und Anhängen
+				zum Projekt beizusteuern. Damit die Langlebigkeit des Inhaltes gewährleistet werden kann, erteilen alle Benutzer
+				den Autoren von Quizzenger das uneingeschränkte Verwendungsrecht an den hochgeladenen Fragen und deren Anhängen
+				im Rahmen des Quizzenger-Projektes.</p>
 			</div>
 		</div>
 		<hr>
