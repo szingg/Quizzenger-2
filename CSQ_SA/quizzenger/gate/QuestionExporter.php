@@ -45,7 +45,11 @@ namespace quizzenger\gate {
 			$document = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8" ?>'
 				. '<quizzenger-question-export version="1.0"></quizzenger-question-export>');
 
-			// TODO: Add attachment, meta, category and user information.
+			$meta = $document->addChild('meta');
+			$meta->addChild('system', APP_PATH);
+			$meta->addChild('date', date('Y-m-d H:i:s'));
+
+			// TODO: Add attachment, category and user information.
 			$questions = $document->addChild('questions');
 			foreach($export as $current) {
 				$questionElement = $questions->addChild('question');
