@@ -15,10 +15,12 @@ namespace quizzenger\gate {
 
 		private function queryQuestions($userId) {
 			$statement = $this->mysqli->prepare('SELECT id, user_id, type, questiontext,'
-				. ' created, lastModified, difficulty, difficultycount, attachment'
+				. ' created, lastModified, difficulty, difficultycount, attachment, attachment_local,'
+				. ' (SELECT username FROM user WHERE id=user_id) AS username'
 				. ' FROM question'
 				. ' WHERE user_id=?'
 				. ' ORDER BY id');
+
 
 			$statement->bind_param('i', $userId);
 			if(!$statement->execute())
@@ -46,27 +48,41 @@ namespace quizzenger\gate {
 				. '<quizzenger-question-export version="1.0"></quizzenger-question-export>');
 
 			$meta = $document->addChild('meta');
-			$meta->addChild('system', APP_PATH);
-			$meta->addChild('date', date('Y-m-d H:i:s'));
+			$meta->addChild('system')->{0} = APP_PATH;
+			$meta->addChild('date')->{0} = date('Y-m-d H:i:s');
 
-			// TODO: Add attachment, category and user information.
+			// TODO: Add attachment, category.
 			$questions = $document->addChild('questions');
 			foreach($export as $current) {
 				$questionElement = $questions->addChild('question');
 				$questionElement->addAttribute('type', $current->type);
 				$questionElement->addAttribute('difficulty', $current->difficulty);
 
-				$questionElement->addChild('created', $current->created);
-				$questionElement->addChild('modified', $current->lastModified);
-				$questionElement->addChild('text', $current->questiontext);
+				$questionElement->addChild('author')->{0} = $current->username;
+				$questionElement->addChild('created')->{0} = $current->created;
+				$questionElement->addChild('modified')->{0} = $current->lastModified;
+				$questionElement->addChild('text')->{0} = $current->questiontext;
 
 				$answersElement = $questionElement->addChild('answers');
 				foreach($current->answers as $answer) {
 					$answerElement = $answersElement->addChild('answer');
 					$answerElement->addAttribute('correctness', $answer->correctness);
-					$answerElement->addChild('text', $answer->text);
+					$answerElement->addChild('text')->{0} = $answer->text;
 					if(!empty($answer->explanation))
-						$answerElement->addChild('explanation', $answer->explanation);
+						$answerElement->addChild('explanation')->{0} = $answer->explanation;
+				}
+
+				if($current->attachment) {
+					$attachmentElement = $questionElement->addChild('attachment');
+					if($current->attachment_local) {
+						$attachmentElement->addAttribute('type', 'local');
+						$attachmentElement->addAttribute('extension', $current->attachment);
+						// TODO: Add Base64 encoding here.
+					}
+					else {
+						$attachmentElement->addAttribute('type', 'url');
+						$attachmentElement->{0} = $current->attachment;
+					}
 				}
 			}
 
