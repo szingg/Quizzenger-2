@@ -87,7 +87,7 @@ namespace quizzenger\gate {
 			}
 
 			header('Content-Type: text/xml');
-			echo $document->asXML();
+			echo utf8_encode($document->asXML());
 		}
 
 		public function export($userId) {
