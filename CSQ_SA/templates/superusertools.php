@@ -1,5 +1,4 @@
 <?php  if($_SESSION['superuser']){?>
-	<a href="index.php?view=log"><h4>Log Viewer</h4></a><br>
 	<p>
 		<h4>Inhalte</h4>
 		<a href="<?php echo APP_PATH . '/?view=questionexport' ?>">Alle Fragen exportieren</a>
