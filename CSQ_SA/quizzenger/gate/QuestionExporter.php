@@ -14,13 +14,20 @@ namespace quizzenger\gate {
 		}
 
 		private function queryQuestions($userId) {
-			$statement = $this->mysqli->prepare('SELECT id, user_id, type, questiontext,'
-				. ' created, lastModified, difficulty, difficultycount, attachment, attachment_local,'
+			$statement = $this->mysqli->prepare('SELECT question.id, question.user_id, question.type, question.questiontext,'
+				. ' question.created, question.lastModified, question.difficulty, question.difficultycount,'
+				. ' question.attachment, question.attachment_local,'
+				. ' category.first_category, category.second_category, category.third_category,'
 				. ' (SELECT username FROM user WHERE id=user_id) AS username'
 				. ' FROM question'
+				. ' LEFT OUTER JOIN ('
+				. '     SELECT ct3.id, ct1.name AS first_category, ct2.name AS second_category, ct3.name AS third_category'
+				. '     FROM category AS ct1'
+				. '     LEFT JOIN category AS ct2 ON ct2.parent_id = ct1.id'
+				. '     LEFT JOIN category AS ct3 ON ct3.parent_id = ct2.id'
+				. ' ) AS category ON category.id=question.category_id'
 				. ' WHERE user_id=?'
 				. ' ORDER BY id');
-
 
 			$statement->bind_param('i', $userId);
 			if(!$statement->execute())
@@ -51,7 +58,7 @@ namespace quizzenger\gate {
 			$meta->addChild('system')->{0} = APP_PATH;
 			$meta->addChild('date')->{0} = date('Y-m-d H:i:s');
 
-			// TODO: Add attachment, category.
+			// TODO: Add attachment.
 			$questions = $document->addChild('questions');
 			foreach($export as $current) {
 				$questionElement = $questions->addChild('question');
@@ -61,8 +68,13 @@ namespace quizzenger\gate {
 				$questionElement->addChild('author')->{0} = $current->username;
 				$questionElement->addChild('created')->{0} = $current->created;
 				$questionElement->addChild('modified')->{0} = $current->lastModified;
-				$questionElement->addChild('text')->{0} = $current->questiontext;
 
+				$categoryElement = $questionElement->addChild('category');
+				$categoryElement->addAttribute('first', $current->first_category);
+				$categoryElement->addAttribute('second', $current->second_category);
+				$categoryElement->addAttribute('third', $current->third_category);
+
+				$questionElement->addChild('text')->{0} = $current->questiontext;
 				$answersElement = $questionElement->addChild('answers');
 				foreach($current->answers as $answer) {
 					$answerElement = $answersElement->addChild('answer');
