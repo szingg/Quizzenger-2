@@ -26,10 +26,11 @@ namespace quizzenger\gate {
 				. '     LEFT JOIN category AS ct2 ON ct2.parent_id = ct1.id'
 				. '     LEFT JOIN category AS ct3 ON ct3.parent_id = ct2.id'
 				. ' ) AS category ON category.id=question.category_id'
-				. ' WHERE user_id=?'
+				. ' WHERE user_id=? OR ?'
 				. ' ORDER BY id');
 
-			$statement->bind_param('i', $userId);
+			$everything = ($userId === null) ? 1 : 0;
+			$statement->bind_param('ii', $userId, $everything);
 			if(!$statement->execute())
 				return false;
 
@@ -40,14 +41,21 @@ namespace quizzenger\gate {
 			$statement = $this->mysqli->prepare('SELECT question_id, correctness, text, explanation'
 				. ' FROM answer'
 				. ' LEFT JOIN question ON question.id=answer.question_id'
-				. ' WHERE user_id=?'
+				. ' WHERE user_id=? OR ?'
 				. ' ORDER BY question_id');
 
-			$statement->bind_param('i', $userId);
+			$everything = ($userId === null) ? 1 : 0;
+			$statement->bind_param('ii', $userId, $everything);
 			if(!$statement->execute())
 				return false;
 
 			return $statement->get_result();
+		}
+
+		private function encodeAttachment($questionId) {
+			// TODO: Read the correct file associated with the question.
+			//       The filename should be the question ID.
+			return base64_encode(file_get_contents(__FILE__));
 		}
 
 		private function output($export) {
@@ -58,7 +66,6 @@ namespace quizzenger\gate {
 			$meta->addChild('system')->{0} = APP_PATH;
 			$meta->addChild('date')->{0} = date('Y-m-d H:i:s');
 
-			// TODO: Add attachment.
 			$questions = $document->addChild('questions');
 			foreach($export as $current) {
 				$questionElement = $questions->addChild('question');
@@ -89,7 +96,7 @@ namespace quizzenger\gate {
 					if($current->attachment_local) {
 						$attachmentElement->addAttribute('type', 'local');
 						$attachmentElement->addAttribute('extension', $current->attachment);
-						// TODO: Add Base64 encoding here.
+						$attachmentElement->{0} = $this->encodeAttachment($current->id);
 					}
 					else {
 						$attachmentElement->addAttribute('type', 'url');

@@ -60,7 +60,7 @@ namespace quizzenger\dispatching {
 			if($statement->execute())
 				Log::info("Added bonus score ($producerScore, $consumerScore) to user $userId.");
 			else
-				Log:error("Could not grant bonus score for user $userId.");
+				Log::error("Could not grant bonus score for user $userId.");
 		}
 
 		/**
