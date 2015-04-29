@@ -6,6 +6,7 @@ use \quizzenger\utilities\NavigationUtility as NavigationUtility;
 use \quizzenger\controlling\EventController as EventController;
 use \quizzenger\gamification\model\GameModel as GameModel;
 use \quizzenger\logging\LogViewer as LogViewer;
+use \quizzenger\gate\QuestionExporter as QuestionExporter;
 
 class Controller {
 	private $request = null;
@@ -53,7 +54,6 @@ class Controller {
 		$viewInner = new View ();
 
 		switch ($this->template) {
-
 			case 'about' : case 'learn' :
 			case 'question' :case 'login' : case 'user' : case 'solution' : case 'questionlist' : case 'myquestions' :
 			case 'mycontent' : case 'myquizzes' : case 'quizdetail' : case 'quizstart' : case 'quizend' : case 'categorylist' :
@@ -63,15 +63,16 @@ class Controller {
 			case 'default' :
 				include("controllers/".$this->template.".php");
 				break;
+
 			case 'GameNew' : case 'GameStart' : case 'GameEnd' :
 			case 'GameQuestion' : case 'GameSolution' : case 'GameDetail' :
 				$className = '\\quizzenger\\gamification\\controller\\'.$this->template.'Controller';
 				$controller = new $className($viewInner);
 				$viewInner = $controller->loadView();
 				break;
+
 			case 'syslog':
-				if(!$_SESSION['superuser'] || !isset($_GET['logfile']))
-				{
+				if(!$_SESSION['superuser'] || !isset($_GET['logfile'])) {
 					NavigationUtility::redirect();
 				}
 				else {
@@ -79,6 +80,23 @@ class Controller {
 					die();
 				}
 				break;
+
+			case 'questionexport':
+				$exportUserId = (isset($_GET['id']) ? $_GET['id'] : null);
+				if($exportUserId === null && $_SESSION['superuser']) {
+					(new QuestionExporter($this->mysqli->database()))->export(null);
+					die();
+				}
+				else if($exportUserId == $_SESSION['user_id']) {
+					(new QuestionExporter($this->mysqli->database()))->export($_SESSION['user_id']);
+					die();
+				}
+				else {
+					NavigationUtility::redirect();
+				}
+
+				break;
+
 			default:
 				include("controllers/default.php");
 				break;

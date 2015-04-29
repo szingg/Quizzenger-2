@@ -105,8 +105,11 @@ namespace quizzenger\gate {
 				}
 			}
 
-			header('Content-Type: text/xml');
-			echo utf8_encode($document->asXML());
+			header('Content-Type: application/octet-stream');
+			header('Content-Transfer-Encoding: Binary');
+			header('Content-Disposition: attachment; filename="' . date('YmdHis') . '.quizzenger"');
+
+			echo gzencode(utf8_encode($document->asXML()));
 		}
 
 		public function export($userId) {
