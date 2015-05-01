@@ -1,7 +1,6 @@
 <?php
 
 namespace quizzenger\gate {
-	use \stdClass as stdClass;
 	use \mysqli as mysqli;
 	use \SimpleXMLElement as SimpleXMLElement;
 	use \quizzenger\logging\Log as Log;
