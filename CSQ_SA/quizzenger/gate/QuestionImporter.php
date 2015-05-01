@@ -12,6 +12,27 @@ namespace quizzenger\gate {
 			$this->mysqli = $mysqli;
 		}
 
+		private function transaction() {
+			Log::info('Starting transaction for question import.');
+			$this->mysqli->autocommit(false);
+		}
+
+		private function rollback() {
+			Log::info('An error occured during question import, executing rollback.');
+			$this->mysqli->rollback();
+			$this->mysqli->autocommit(true);
+		}
+
+		private function commit() {
+			Log::info('Committing transaction for question import.');
+			$this->mysqli->commit();
+		}
+
+		private function insertQuestion(SimpleXMLElement $question) {
+			// TODO: Implement insert statements.
+			return true;
+		}
+
 		public function import($data) {
 			$xml = simplexml_load_string($data);
 			if(!$xml) {
@@ -19,10 +40,15 @@ namespace quizzenger\gate {
 				return false;
 			}
 
-			$questions = $xml->xpath('/quizzenger-question-export/questions');
+			$questions = $xml->xpath('/quizzenger-question-export/questions/question');
+			$this->transaction();
 			foreach($questions as $current) {
-				//
+				if(!$this->insertQuestion($current)) {
+					$this->rollback();
+					return false;
+				}
 			}
+			$this->commit();
 		}
 	} // class QuestionImporter
 } // namespace quizzenger\gate
