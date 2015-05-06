@@ -115,8 +115,9 @@ class AjaxController {
 				}
 				break;
 			case 'fileupload':
-				require_once("../quizzenger/fileupload/fileupload.php");
-				$fileupload = new FileUpload($_FILES);
+				//require_once("../quizzenger/fileupload/fileupload.php");
+				$fileupload = new \quizzenger\fileupload\FileUpload($_FILES);
+				//$fileupload = new FileUpload($_FILES);
 				return $fileupload->processFileUpload();
 			case 'joinGame' :
 				if(! $this->isLoggedin()) return;

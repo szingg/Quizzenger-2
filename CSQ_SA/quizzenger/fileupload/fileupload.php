@@ -2,6 +2,8 @@
 /*	@author Simon Zingg
  *	This script uploads attachment to the defined path and checks for extensions, size and if already exists.
 */
+namespace quizzenger\fileupload {
+
 class FileUpload {
 	private $files;
 
@@ -89,5 +91,6 @@ class FileUpload {
 
 		return preg_replace('#/+#','/',join('/', $paths));
 	}
-}
+} //class Fileupload
+} //namespace quizzenger\fileupload
 ?>
