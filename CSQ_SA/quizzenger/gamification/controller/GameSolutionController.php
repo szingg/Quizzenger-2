@@ -8,6 +8,7 @@ namespace quizzenger\gamification\controller {
 	use \quizzenger\logging\Log as Log;
 	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
 	use \quizzenger\utilities\PermissionUtility as PermissionUtility;
+	use \quizzenger\controlling\EventController as EventController;
 	use \quizzenger\messages\MessageQueue as MessageQueue;
 	use \quizzenger\gamification\model\GameModel as GameModel;
 
