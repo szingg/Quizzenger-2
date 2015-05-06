@@ -95,10 +95,10 @@
 						?>
 					</div>
 					<div hidden="true">
-						<input name="opquestion_form_attachment" id="opquestion_form_attachment" type="text" value="<?= htmlspecialchars($question['attachment']) ?>"/>
-						<input name="opquestion_form_attachmentTempFileName" id="opquestion_form_attachmentTempFileName" type="text" value="<?= htmlspecialchars($question['attachment']) ?>"/>
-						<input name="opquestion_form_attachmentLocal" id="opquestion_form_attachmentLocal" type="text" value="<?= htmlspecialchars($question['attachment_local']) ?>"/>
-						<input name="opquestion_form_attachmentOld" id="opquestion_form_attachmentOld" type="text" value="<?= htmlspecialchars($question['attachment']) ?>" />
+						<input name="opquestion_form_attachment" id="opquestion_form_attachment" type="text" value="<?= (($operation=="edit")?htmlspecialchars($question['attachment']):'') ?>"/>
+						<input name="opquestion_form_attachmentTempFileName" id="opquestion_form_attachmentTempFileName" type="text" value="<?= (($operation=="edit")?htmlspecialchars($question['attachment']):'') ?>"/>
+						<input name="opquestion_form_attachmentLocal" id="opquestion_form_attachmentLocal" type="text" value="<?= (($operation=="edit")?htmlspecialchars($question['attachment_local']):'') ?>"/>
+						<input name="opquestion_form_attachmentOld" id="opquestion_form_attachmentOld" type="text" value="<?= (($operation=="edit")?htmlspecialchars($question['attachment']):'') ?>" />
 					</div>
 				</div>
 				<h3>Antworten:</h3>
