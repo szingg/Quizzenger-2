@@ -211,9 +211,9 @@
 			            </div> <!-- modal-body -->
 			        </div> <!-- modal-content -->
 			    </div> <!-- modal-dialog -->
-			</div>
-		</div>
-
+			</div> <!-- modal -->
+		</div> <!-- panel-body -->
+	</div> <!-- panel -->
 <?php }
 // Add different question types here
 ?>
