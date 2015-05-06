@@ -148,7 +148,7 @@ END | */
 				return $this->mysqli->getSingleResult($oldValue)['endtime'];
 			}
 			else{
-				log::warning('Unauthorized try to setGameend id :'.game_id);
+				log::warning('Unauthorized try to setGameend id :'.$game_id);
 				return false;
 			}
 		}
