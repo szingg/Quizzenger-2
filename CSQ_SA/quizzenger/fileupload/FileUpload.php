@@ -12,7 +12,7 @@ class FileUpload {
 	}
 
 	public function processFileUpload() {
-		require_once("../../includes/config.php");
+		//require_once("../../includes/config.php");
 
 		//check file uploaded
 		if(! isset($this->files["file"]["type"])){
