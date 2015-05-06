@@ -115,7 +115,7 @@ class AjaxController {
 				}
 				break;
 			case 'fileupload':
-				require_once("/../quizzenger/fileupload/fileupload.php");
+				require_once("../quizzenger/fileupload/fileupload.php");
 				$fileupload = new FileUpload($_FILES);
 				return $fileupload->processFileUpload();
 			case 'joinGame' :
