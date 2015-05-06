@@ -91,7 +91,8 @@ namespace quizzenger\gamification\controller {
 			if($GLOBALS['loggedin'] && $correctAnswer == $selectedAnswer){
 				if(!$this->userscoreModel->hasUserScoredQuestion( $questionID, $_SESSION['user_id'])){ // no multiple scoring for question
 					EventController::fire('game-question-answered-correct', $_SESSION['user_id'], [
-						'gameid' => $this->gameid
+						'gameid' => $this->gameid,
+						'category' => $question['category_id']
 					]);
 				}
 			}
