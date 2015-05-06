@@ -2,6 +2,7 @@
 use \quizzenger\controlling\EventController as EventController;
 use \quizzenger\utilities\FormatUtility as FormatUtility;
 use \quizzenger\logging\Log as Log;
+use \quizzenger\gamification\model\GameModel as GameModel;
 
 class AjaxController {
 	private $request = null;
@@ -17,7 +18,7 @@ class AjaxController {
 		$this->request = $request;
 		$this->template = ! empty ( $request ['view'] ) ? $request ['view'] : 'defaultajax';
 		$this->mysqli = new sqlhelper ($this->logger);
-		$this->gameModel = new \quizzenger\gamification\model\GameModel($this->mysqli);
+		$this->gameModel = new GameModel($this->mysqli);
 
 		EventController::setup($this->mysqli);
 	}
