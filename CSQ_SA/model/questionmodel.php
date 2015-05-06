@@ -41,7 +41,7 @@ class QuestionModel {
 	public function setWeight($id, $weight){
 		if($this->userIDhasPermissionOnQuizToQuestionID($id, $_SESSION['user_id'])){
 			$this->logger->log ( "Editing Weigth(".$weight.") for QuizToQuestion ID: ".$id, Logger::INFO );
-			$this->mysqli->s_query("UPDATE quiztoquestion SET weight=? WHERE id=?",array('i','i'),array($weight, $id));	
+			$this->mysqli->s_query("UPDATE quiztoquestion SET weight=? WHERE id=?",array('i','i'),array($weight, $id));
 			return true;
 		}
 		else{
@@ -295,7 +295,7 @@ class QuestionModel {
 
 	public function newQuestion($type, $questiontext, $userID, $categoryID, $attachment, $attachment_local){
 		$this->logger->log ( "Creating Question with ID", Logger::INFO );
-		return $this->mysqli->s_insert("INSERT INTO question (type, questiontext, user_id, category_id,created,attachment,attachment_local) VALUES (?, ?, ?, ?, ?, ?, ?)",array('s', 's','i','i','s','s','i'),array($type,$questiontext,$userID,$categoryID,null,$attachment,$attachment_local));
+		return $this->mysqli->s_insert("INSERT INTO question (uuid, type, questiontext, user_id, category_id,created,attachment,attachment_local) VALUES (UUID(),?, ?, ?, ?, ?, ?, ?)",array('s', 's','i','i','s','s','i'),array($type,$questiontext,$userID,$categoryID,null,$attachment,$attachment_local));
 	}
 
 	/*

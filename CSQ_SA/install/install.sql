@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS `moderation` (
 
 CREATE TABLE IF NOT EXISTS `question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uuid` char(36) NOT NULL,
   `type` varchar(50) NOT NULL,
   `questiontext` varchar(320) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -85,6 +86,7 @@ CREATE TABLE IF NOT EXISTS `question` (
   `attachment` varchar(300) DEFAULT NULL,
   `attachment_local` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE(`uuid`),
   KEY `fk_userquestion` (`user_id`),
   KEY `fk_categoryquestion` (`category_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
