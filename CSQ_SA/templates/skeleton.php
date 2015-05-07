@@ -31,23 +31,23 @@
 	    <link rel="shortcut icon" href="templates/img/favicon.ico" />
 	    <title>Quizzenger</title>
 
-		<link href="css/bootstrap.min.css" rel="stylesheet">
-	    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
-	    <link href="datatables/media/css/jquery.dataTables.min.css" rel="stylesheet">
-	    <link href="datatables/extensions/Responsive/css/dataTables.responsive.css" rel="stylesheet">
-	    <link href="css/custom.css" rel="stylesheet">
-	    <script type="text/javascript" src="js/ajax.js"></script>
-	    <script src="js/jquery-1.11.1.min.js"></script>
-	    <script type="text/javascript" src="js/markdown.min.js"></script>
-	    <script type="text/javascript" src="js/bootstrap.min.js"></script>
-	    <script type="text/javascript" src="js/doT.min.js"></script>
-	    <script type="text/javascript" src="js/custom.js"></script>
-	   	<script type="text/javascript" src="js/jqueryfunctions.js"></script>
-	   	<script type="text/javascript" src="js/opquestion.js"></script>
-	   	<script type="text/javascript" src="js/gamification.js"></script>
-	   	<script type="text/javascript" src="js/quizzenger.js"></script>
-	    <script type="text/javascript" charset="utf-8" src="datatables/media/js/jquery.dataTables.min.js"></script>
-	    <script type="text/javascript" charset="utf-8" src="datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+		<link href="content/css/bootstrap.min.css" rel="stylesheet">
+	    <link href="content/css/bootstrap-theme.min.css" rel="stylesheet">
+	    <link href="content/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet">
+	    <link href="content/datatables/extensions/Responsive/css/dataTables.responsive.css" rel="stylesheet">
+	    <link href="content/css/custom.css" rel="stylesheet">
+	    <script type="text/javascript" src="content/js/ajax.js"></script>
+	    <script src="content/js/jquery-1.11.1.min.js"></script>
+	    <script type="text/javascript" src="content/js/markdown.min.js"></script>
+	    <script type="text/javascript" src="content/js/bootstrap.min.js"></script>
+	    <script type="text/javascript" src="content/js/doT.min.js"></script>
+	    <script type="text/javascript" src="content/js/custom.js"></script>
+	   	<script type="text/javascript" src="content/js/jqueryfunctions.js"></script>
+	   	<script type="text/javascript" src="content/js/opquestion.js"></script>
+	   	<script type="text/javascript" src="content/js/gamification.js"></script>
+	   	<script type="text/javascript" src="content/js/quizzenger.js"></script>
+	    <script type="text/javascript" charset="utf-8" src="content/datatables/media/js/jquery.dataTables.min.js"></script>
+	    <script type="text/javascript" charset="utf-8" src="content/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
 	</head>
 	<body>
 		<div role="navigation" class="navbar navbar-default navbar-fixed-top">
