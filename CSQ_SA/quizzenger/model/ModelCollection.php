@@ -1,6 +1,6 @@
 <?php
 
-namespace model {
+namespace quizzenger\model {
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
 	use \quizzenger\gamification\model\GameModel as GameModel;
@@ -52,6 +52,8 @@ namespace model {
 		 * Creates instances of all accessable models
 		 **/
 		public static function setup(SqlHelper $mysqli) {
+			self::loadIncludes();
+
 			self::$questionListModel = new \QuestionListModel ( $mysqli, log::get() );
 			self::$questionModel = new \QuestionModel ( $mysqli, log::get() );
 			self::$answerModel = new \AnswerModel ( $mysqli, log::get() );
@@ -68,6 +70,24 @@ namespace model {
 			self::$reportModel = new \ReportModel( $mysqli, log::get() );
 			self::$reportingModel = new \ReportingModel($mysqli, log::get());
 			self::$gameModel = new GameModel($mysqli);
+		}
+
+		private static function loadIncludes(){
+			include('sessionmodel.php');
+			include('ratingmodel.php');
+			include('tagmodel.php');
+			include('registrationmodel.php');
+			include('questionlistmodel.php');
+			include('questionmodel.php');
+			include('categorymodel.php');
+			include('usermodel.php');
+			include('answermodel.php');
+			include('quizlistmodel.php');
+			include('quizmodel.php');
+			include('userscoremodel.php');
+			include('moderationmodel.php');
+			include('reportmodel.php');
+			include('reportingmodel.php');
 		}
 
 	} // class

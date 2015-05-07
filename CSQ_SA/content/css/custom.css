@@ -4,7 +4,7 @@
 ::-moz-selection { background: #4089c8; color: #fff; }
 
 body {
-	background-image: url(../../templates/img/bg.png);
+	background-image: url(../../quizzenger/templates/img/bg.png);
 }
 
 @media ( min-width :768px) {
@@ -82,7 +82,7 @@ input[type=radio].css-checkbox:checked + label.css-label {
 }
 
 label.css-label {
-	background-image:url(../../templates/img/css_checkbox.png);
+	background-image:url(../../quizzenger/templates/img/css_checkbox.png);
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -125,7 +125,7 @@ label.css-label {
 	height:16px;
 	line-height:16px;
 	padding:1px 22px 1px 0; /* 1px FireFox fix */
-	background:url(../../templates/img/star.png) no-repeat -22px 0;
+	background:url(../../quizzenger/templates/img/star.png) no-repeat -22px 0;
 }
 
 /* Change span immediately following the checked radio */
@@ -336,6 +336,10 @@ div>a {
 	width: 32px;
 	height: 32px;
 }
+
+/* ----------------------------------------------- */
+/*                   GameReport					   */
+/* ----------------------------------------------- */
 
 .game-report-row {
 	margin: 5px 5px;

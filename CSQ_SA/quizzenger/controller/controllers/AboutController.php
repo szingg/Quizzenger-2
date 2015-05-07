@@ -1,6 +1,6 @@
 <?php
 
-namespace controller\controllers {
+namespace quizzenger\controller\controllers {
 
 	class AboutController{
 		private $view;
@@ -15,6 +15,6 @@ namespace controller\controllers {
 		}
 
 	} // class Aboutcontroller
-} // namespace controller\controllers
+} // namespace quizzenger\controller\controllers
 
 ?>

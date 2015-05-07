@@ -4,6 +4,6 @@
 	</div>
 	<div class="panel-body">
 		<h4>Wähle ein Thema und suche nach interessanten Fragen</h4>
-		<?php include("categorylist.php"); ?>
+		<?php echo $this->_['categorylist']; ?>
 	</div>
 </div>
