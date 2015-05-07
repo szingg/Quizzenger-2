@@ -1,4 +1,5 @@
 <?php
+use \model\ModelCollection as ModelCollection;
 use \quizzenger\messages\MessageQueue as MessageQueue;
 use \quizzenger\messages\MessageFormatter as MessageFormatter;
 use \quizzenger\messages\TextTranslator as TextTranslator;
@@ -22,6 +23,7 @@ class Controller {
 		$this->template = ! empty ( $request ['view'] ) ? $request ['view'] : 'default';
 		$this->mysqli = new sqlhelper ( $this->logger );
 
+		ModelCollection::setup($this->mysqli);
 		MessageQueue::setup($this->mysqli->database());
 		TextTranslator::setup($this->mysqli->database(), new MessageFormatter());
 		EventController::setup($this->mysqli);
@@ -38,7 +40,6 @@ class Controller {
 		$sessionModel = new SessionModel ( $this->mysqli, $this->logger );
 		$quizListModel = new QuizListModel ( $this->mysqli, $this->logger );
 		$tagModel = new TagModel ( $this->mysqli, $this->logger );
-		$answerModel = new AnswerModel ( $this->mysqli, $this->logger );
 		$registrationModel = new RegistrationModel ( $this->mysqli, $this->logger );
 		$userscoreModel = new UserScoreModel ( $this->mysqli, $this->logger );
 		$moderationModel = new ModerationModel( $this->mysqli, $this->logger );

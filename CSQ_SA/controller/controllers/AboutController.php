@@ -1,15 +1,6 @@
 <?php
 
 namespace controller\controllers {
-	use \stdClass as stdClass;
-	use \SplEnum as SplEnum;
-	use \mysqli as mysqli;
-	use \SqlHelper as SqlHelper;
-	use \quizzenger\logging\Log as Log;
-	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
-	use \quizzenger\utilities\PermissionUtility as PermissionUtility;
-	use \quizzenger\messages\MessageQueue as MessageQueue;
-	use \quizzenger\utilities\FormatUtility as FormatUtility;
 
 	class AboutController{
 		private $view;
@@ -19,11 +10,11 @@ namespace controller\controllers {
 		}
 
 		public function render(){
-			$viewInner->setTemplate ( 'about' );
+			$this->view->setTemplate ( 'about' );
 			return $this->view->loadTemplate();
 		}
 
-	} // class
+	} // class Aboutcontroller
 } // namespace controller\controllers
 
 ?>
