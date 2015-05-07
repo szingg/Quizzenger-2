@@ -109,6 +109,9 @@ class QuestionModel {
 		}
 	}
 
+	/*
+	 * Checks the google recaptcha and redirects to error page if not successful
+	 */
 	private function checkRecaptcha(){
 		if(isset($_POST['g-recaptcha-response'])){
           $captcha=$_POST['g-recaptcha-response'];
