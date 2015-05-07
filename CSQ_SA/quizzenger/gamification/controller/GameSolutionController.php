@@ -76,8 +76,10 @@ namespace quizzenger\gamification\controller {
 			$solutionView->assign ( 'category', $categoryName );
 
 			$answers = $this->answerModel->getAnswersByQuestionID ( $questionID );
-			$order = $_SESSION['questionorder'][$questionID];
-			array_multisort($order, $answers);
+			if(isset($_SESSION['questionorder'], $_SESSION['questionorder'][$questionID])){
+				$order = $_SESSION['questionorder'][$questionID];
+				array_multisort($order, $answers);
+			}
 			$solutionView->assign ( 'answers', $answers );
 			$selectedAnswer = $this->request ['answer'];
 			$solutionView->assign ( 'selectedAnswer', $selectedAnswer );
@@ -91,7 +93,8 @@ namespace quizzenger\gamification\controller {
 			if($GLOBALS['loggedin'] && $correctAnswer == $selectedAnswer){
 				if(!$this->userscoreModel->hasUserScoredQuestion( $questionID, $_SESSION['user_id'])){ // no multiple scoring for question
 					EventController::fire('game-question-answered-correct', $_SESSION['user_id'], [
-						'gameid' => $this->gameid
+						'gameid' => $this->gameid,
+						'category' => $question['category_id']
 					]);
 				}
 			}
@@ -187,17 +190,32 @@ namespace quizzenger\gamification\controller {
 				NavigationUtility::redirectToErrorPage();
 			}
 		}
+
 		private function checkGameSessionParams(){
-			if(! isset($this->request ['gameid'],
-					$_SESSION ['game'][$this->request ['gameid']]['gamequestions'],
-					$_SESSION ['game'][$this->request ['gameid']]['gamecounter'],
-					$this->request ['answer'] )
-			){
+			if(! isset($this->request ['gameid'], $this->request ['answer'])){
 				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_not_authorized');
 				NavigationUtility::redirectToErrorPage();
 			}
+			/*
+			if(! isset($_SESSION ['game'][$this->request ['gameid']]['gamequestions'],
+					$_SESSION ['game'][$this->request ['gameid']]['gamecounter']))
+			{
+				if($this->gameModel->isGameMember($_SESSION['user_id'], $this->request ['gameid'])){
+					//restore GameSession
+					$sessionData = $this->gameModel->getSessionData($_SESSION['user_id'], $this->request ['gameid']);
+					$_SESSION ['game'][$this->request ['gameid']]['gamequestions'] = $sessionData['gamequestions'];
+					$_SESSION ['game'][$this->request ['gameid']]['gamecounter'] = $sessionData['gamecounter'];
+				}
+				else{
+					MessageQueue::pushPersistent($_SESSION['user_id'], 'err_not_authorized');
+					NavigationUtility::redirectToErrorPage();
+				}
+			}*/
+			//restore GameSession
+			$sessionData = $this->gameModel->getSessionData($_SESSION['user_id'], $this->request ['gameid']);
+			$_SESSION ['game'][$this->request ['gameid']]['gamequestions'] = $sessionData['gamequestions'];
+			$_SESSION ['game'][$this->request ['gameid']]['gamecounter'] = $sessionData['gamecounter'];
 		}
-
 
 		private function isGameOwner($owner_id){
 			return $owner_id == $_SESSION['user_id'];

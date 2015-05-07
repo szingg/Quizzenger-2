@@ -98,17 +98,32 @@ namespace quizzenger\gamification\controller {
 				NavigationUtility::redirectToErrorPage();
 			}
 		}
+
 		private function checkGameSessionParams(){
-			if(! isset($this->request ['gameid'],
-					$_SESSION ['game'][$this->request ['gameid']]['gamequestions'],
-					$_SESSION ['game'][$this->request ['gameid']]['gamecounter'])
-			){
+			if(! isset($this->request ['gameid'])){
 				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_not_authorized');
 				NavigationUtility::redirectToErrorPage();
 			}
+			/*
+			if(! isset($_SESSION ['game'][$this->request ['gameid']]['gamequestions'],
+					$_SESSION ['game'][$this->request ['gameid']]['gamecounter']))
+			{
+				if($this->gameModel->isGameMember($_SESSION['user_id'], $this->request ['gameid'])){
+					//restore GameSession
+					$sessionData = $this->gameModel->getSessionData($_SESSION['user_id'], $this->request ['gameid']);
+					$_SESSION ['game'][$this->request ['gameid']]['gamequestions'] = $sessionData['gamequestions'];
+					$_SESSION ['game'][$this->request ['gameid']]['gamecounter'] = $sessionData['gamecounter'];
+				}
+				else{
+					MessageQueue::pushPersistent($_SESSION['user_id'], 'err_not_authorized');
+					NavigationUtility::redirectToErrorPage();
+				}
+			}*/
+			//restore GameSession
+			$sessionData = $this->gameModel->getSessionData($_SESSION['user_id'], $this->request ['gameid']);
+			$_SESSION ['game'][$this->request ['gameid']]['gamequestions'] = $sessionData['gamequestions'];
+			$_SESSION ['game'][$this->request ['gameid']]['gamecounter'] = $sessionData['gamecounter'];
 		}
-
-
 
 		/*
 		 * Gets the Gameinfo.
