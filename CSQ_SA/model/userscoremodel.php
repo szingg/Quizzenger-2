@@ -111,7 +111,6 @@ class UserScoreModel {
 		return $this->mysqli->getQueryResultArray($result);
 		*/
 
-		
 		$result = $this->mysqli->s_query('SELECT id, rank, username, total_score, user_rank FROM'
 			. ' (SELECT id, CAST(rank AS UNSIGNED) AS rank, username, total_score, '
 			. ' (SELECT MAX(user_rank) as user_rank FROM '

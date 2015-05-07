@@ -53,6 +53,28 @@ namespace quizzenger\gamification\model {
 			}
 		}
 
+		/*
+		 * Gets the information which normally should be stored in the $_SESSION. This methode can be used to restore gamesessions for users
+		 * @param $user_id User Id
+		 * @param $game_id Game Id
+		 * @return Returns an array with the 'gamecounter' and the 'gamequestions'
+		*/
+		public function getSessionData($user_id, $game_id){
+			$result = $this->mysqli->s_query('SELECT COUNT(id) AS gamecounter FROM `questionperformance` '
+				.' WHERE gamesession_id = ? AND user_id = ?', ['i','i'], [$game_id, $user_id]);
+			$gamecounter = $this->mysqli->getSingleResult($result)['gamecounter'];
+
+
+			$result = $this->mysqli->s_query('SELECT q.question_id FROM gamesession g, quiztoquestion q '
+				.' WHERE g.quiz_id = q.quiz_id AND g.id = ?', ['i'], [$game_id]);
+			$gamequestions = [];
+			while ( $row = $result->fetch_assoc () ) {
+				array_push($gamequestions, $row['question_id']);
+			}
+
+			return [ 'gamecounter' => $gamecounter, 'gamequestions' => $gamequestions ];
+		}
+
 
 		/*
 		 * Starts the Game
@@ -138,7 +160,7 @@ END | */
 		 * @return Returns old value of endtime on success, else returns false
 		 */
 		public function setGameend($game_id){
-			if(isset($game_id) && $this->userIDhasPermissionOnGameId($_SESSION ['user_id'], $game_id)){
+			if(isset($game_id) && $this->isGameMember($_SESSION ['user_id'], $game_id)){
 				log::info('Stop Game with ID :'.$game_id);
 				$oldValue = $this->mysqli->s_query('SELECT endtime FROM gamesession WHERE id = ?',['i'],[$game_id]);
 				$update = $this->mysqli->s_query('UPDATE gamesession SET endtime = '
