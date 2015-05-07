@@ -54,7 +54,7 @@ class Controller {
 		$viewInner = new View ();
 
 		switch ($this->template) {
-			case 'about' : case 'learn' :
+			case 'learn' :
 			case 'question' :case 'login' : case 'user' : case 'solution' : case 'questionlist' : case 'myquestions' :
 			case 'mycontent' : case 'myquizzes' : case 'quizdetail' : case 'quizstart' : case 'quizend' : case 'categorylist' :
 			case 'logout' : case 'error' : case 'register' : case 'processLogin' : case 'processChangepassword' : case 'processRegistration' :
@@ -67,7 +67,7 @@ class Controller {
 
 			case 'about' :
 				$tmplt = strtoupper($this->template[0]).substr($this->template, 1);
-				$className = '\\controllers\\'.$tmplt.'Controller';
+				$className = '\\controller\\controllers\\'.$tmplt.'Controller';
 				$controller = new $className($viewInner);
 				$viewInner = $controller->render();
 				break;

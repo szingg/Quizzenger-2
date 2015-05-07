@@ -41,8 +41,6 @@ namespace quizzenger\gamification\controller {
 			$this->reportModel = new \ReportModel($this->sqlhelper, log::get());
 			$this->categoryModel = new \CategoryModel($this->sqlhelper, log::get());
 
-			print_r($_SESSION ['game'][$this->gameid]);
-
 			$this->checkGameSessionParams();
 			$this->gameid = $this->request ['gameid'];
 			//print_r($_SESSION['game']);
@@ -50,8 +48,6 @@ namespace quizzenger\gamification\controller {
 			$this->gamequestions = $_SESSION ['game'][$this->gameid]['gamequestions'];
 			$this->gamecounter = $_SESSION ['game'][$this->gameid]['gamecounter'];
 			$this->gameinfo = $this->getGameInfo();
-
-			print_r($_SESSION ['game'][$this->gameid]);
 		}
 		public function render(){
 			$this->checkPreconditions();
