@@ -27,7 +27,7 @@ class Controller {
 		EventController::setup($this->mysqli);
 	}
 
-	public function display() {
+	public function render() {
 		$questionListModel = new QuestionListModel ( $this->mysqli, $this->logger );
 		$questionModel = new QuestionModel ( $this->mysqli, $this->logger );
 		$answerModel = new AnswerModel ( $this->mysqli, $this->logger );
@@ -62,13 +62,20 @@ class Controller {
 			case 'log': case 'questionpool': case 'processEditQuestion': case 'reporting':
 			case 'default' :
 				include("controllers/".$this->template.".php");
+				$viewInner = $viewInner->loadTemplate();
 				break;
 
+			case 'about' :
+				$tmplt = strtoupper($this->template[0]).substr($this->template, 1);
+				$className = '\\controllers\\'.$tmplt.'Controller';
+				$controller = new $className($viewInner);
+				$viewInner = $controller->render();
+				break;
 			case 'GameNew' : case 'GameStart' : case 'GameEnd' :
 			case 'GameQuestion' : case 'GameSolution' : case 'GameDetail' :
 				$className = '\\quizzenger\\gamification\\controller\\'.$this->template.'Controller';
 				$controller = new $className($viewInner);
-				$viewInner = $controller->loadView();
+				$viewInner = $controller->render();
 				break;
 
 			case 'syslog':
@@ -108,7 +115,7 @@ class Controller {
 		$this->viewOuter->assign('username', $_SESSION ['username']);
 		$this->viewOuter->assign('superuser', $_SESSION['superuser']);
 		$this->viewOuter->assign('anymoderator', $reportingModel->isAnyModerator($_SESSION['user_id']));
-		$this->viewOuter->assign( 'csq_content', $viewInner->loadTemplate());
+		$this->viewOuter->assign( 'csq_content', $viewInner);
 		// Return the whole page now
 		return $this->viewOuter->loadTemplate ();
 	}

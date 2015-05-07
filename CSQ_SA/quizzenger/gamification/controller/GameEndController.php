@@ -38,14 +38,14 @@ namespace quizzenger\gamification\controller {
 			$this->gameinfo = $this->getGameInfo();
 
 		}
-		public function loadView(){
+		public function render(){
 			$this->checkPreconditions();
 
 			$this->loadGameEndView();
 
 			$this->loadReportView();
 
-			return $this->view;
+			return $this->view->loadTemplate();
 		}
 
 		private function loadGameEndView(){

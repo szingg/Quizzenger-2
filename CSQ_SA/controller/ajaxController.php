@@ -23,7 +23,7 @@ class AjaxController {
 		EventController::setup($this->mysqli);
 	}
 
-	public function display() {
+	public function render() {
 		$viewInner = new View ();
 		$viewInner->setTemplate('defaultajax');
 

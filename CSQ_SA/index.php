@@ -17,7 +17,7 @@
 		$controller = new Controller ( $request,$log );
 	}
 
-	echo $controller->display ();
+	echo $controller->render();
 
 
 	// -----------------------
