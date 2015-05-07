@@ -72,7 +72,7 @@
 											<label> <input type="checkbox" name="addtoquiz[]" class="hidden-xs" value="<?php echo $question['id']; ?>"></label>&nbsp;
 
 										<?php if(isset($this->_ ['myquestions']) && $this->_ ['myquestions']=="myquestions" ){?>
-											<a class="remove-row" href="javascript:void()" data-qid="<?php echo $question['id']; ?>" data-type="question">
+											<a class="remove-row" href="#" data-qid="<?php echo $question['id']; ?>" data-type="question">
 												<span class="glyphicon glyphicon-remove"></span>
 											</a>
 											&nbsp;

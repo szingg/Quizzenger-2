@@ -28,7 +28,7 @@ if(isset($this->_['progress'])){ ?>
 		<?php }  ?>
 	</div>
 	<div class="panel-body">
-		<div id="question-content" data-attachment="<?php 
+		<div id="question-content" data-attachment="<?php
 			$link = "";
 			$question = $this->_ ['question'];
 			switch($question['attachment_local']){

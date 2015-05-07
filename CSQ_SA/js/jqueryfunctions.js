@@ -183,7 +183,23 @@ $(function(){
 $(document).ready(function() {
 	$('.opquestion_form').bootstrapValidator({
 		message: 'This value is not valid',
+		excluded: ':disabled, :hidden',
+        live: 'enabled',
 		fields: {
+			captcha_validation: {
+				validators:{
+					notEmpty: {
+						message: 'Bitte bestätigen Sie, dass die Eingabe nicht maschinell erfolgt.'
+					}
+				}
+			},
+			captcha_validation_message: {
+				validators:{
+					notEmpty: {
+						message: 'Bitte bestätigen Sie, dass die Eingabe nicht maschinell erfolgt.'
+					}
+				}
+			},
 			opquestion_form_chosenCorrectAnswer: {
 				validators: {
 					notEmpty: {

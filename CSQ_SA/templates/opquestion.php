@@ -145,17 +145,48 @@
 									</div>
 								 </div><!-- /.col-lg-6 -->
 								<?php
-							}
+							} /*
 							if($questionRowCount==1){
 								?><br><div class="col-lg-6">
 									<button class="btn btn-lg btn-primary btn-block" type="submit" id="opquestion_form_<?=$submitButtonName?>"><?= ($operation=="new")?"Frage erfassen":"Änderungen speichern";?></button>
 								</div><!-- /.col-lg-6 --><?php
-							}
+							} */
 						?>
 						</div><br>
 					<?php
-						if($questionRowCount==2 && $i==$rows){
-							?><br><div class="row"><div class="col-lg-12">
+						/* if($questionRowCount==2 && $i==$rows){ */
+							if($i==$rows){
+							?>
+							<!-- <div class="row"><div class="col-lg-12"> -->
+							<div class="clearfix">
+								<script type="text/javascript">
+									 var onloadCallback = function() {
+									 	grecaptcha.render('recaptcha', {
+								          'sitekey' : '6LezfQYTAAAAAA69AND-TRt3J7ZOTAhV-_C957XM',
+								          'callback' : verifyCallback,
+								        });
+									  };
+									  var verifyCallback = function(obj){
+									  	if(obj){
+									  		//$('#captcha_validation').parent().html('<input type="text" class="form-control"  id="captcha_validation" name="captcha_validation" size="10" value="" data-bv-excluded="false"/>');
+									  		document.getElementById("captcha_validation").value='valid';
+									  		$(".opquestion_form").bootstrapValidator('revalidateField', 'captcha_validation');
+									  	}
+									  }
+
+								</script>
+								<script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit' async defer></script>
+								<div class="form-group">
+									<div class="form-control" style="width: 330px; height: 90px;">
+										<div id="recaptcha"></div>
+										<input type="text" class="form-control" style="visibility: hidden;" id="captcha_validation" name="captcha_validation" size="10" value="" data-bv-excluded="false"/>
+									</div>
+								</div>
+								<!--
+								<div class="g-recaptcha" name="opquestion_form_recaptcha" id="opquestion_form_recaptcha"
+								data-sitekey="6LezfQYTAAAAAA69AND-TRt3J7ZOTAhV-_C957XM"></div>   -->
+							</div>
+							<br><div class="row"><div class="col-lg-12">
 								<button class="btn btn-lg btn-primary btn-block" type="submit" id="opquestion_form_<?=$submitButtonName?>"><?= ($operation=="new")?"Frage erfassen":"Änderungen speichern";?></button>
 							</div><!-- /.col-lg-6 --></div><!-- /.row --><?php
 						}

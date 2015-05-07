@@ -109,10 +109,25 @@ class QuestionModel {
 		}
 	}
 
+	private function checkRecaptcha(){
+		if(isset($_POST['g-recaptcha-response'])){
+          $captcha=$_POST['g-recaptcha-response'];
+          $secret='6LezfQYTAAAAAGSBUII8DVnP3eEickOuer47vuMO';
+          $response=file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$captcha.'&remoteip='.$_SERVER['REMOTE_ADDR']);
+        }
+
+        if($captcha == false || $response.success == false){
+        	$this->logger->log ( "Try to opQuestion without valid recaptcha", Logger::WARNING );
+        	MessageQueue::pushPersistent($_SESSION['user_id'], 'err_missing_input');
+			NavigationUtility::redirectToErrorPage();
+        }
+	}
+
 	public function opQuestionWithAnswers($answerModel,$categoryModel, $tagModel,$operation,$chosenCategory){
 		PermissionUtility::checkLogin();
 
 		$this->checkForMissingParametersOpQwA($chosenCategory,$operation,$categoryModel);
+		$this->checkRecaptcha();
 
 		if ($_POST['opquestion_form_questionType'] == SINGLECHOICE_TYPE){
 			$type = $_POST ['opquestion_form_questionType'];
@@ -312,7 +327,7 @@ class QuestionModel {
 				'category' => $question['category_id']
 			]);
 
-			$this->mysqli->s_query("DELETE FROM question WHERE id=?", ['i'], [$question_id]);
+			$this->mysqli->s_query("DELETE FROM question WHERE id=?", ['i'], [$questionId]);
 			return true;
 		}
 		else {
