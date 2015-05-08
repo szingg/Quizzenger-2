@@ -120,7 +120,7 @@ namespace quizzenger\gate {
 			header('Content-Transfer-Encoding: Binary');
 			header('Content-Disposition: attachment; filename="' . date('YmdHis') . '.quizzenger"');
 
-			echo gzencode(utf8_encode($document->asXML()));
+			echo gzencode($document->asXML());
 			return true;
 		}
 
