@@ -8,11 +8,14 @@ namespace quizzenger\gate {
 
 	class QuestionImporter {
 		private $mysqli;
+		private $categoryCache;
+		private $categoryCacheStatement;
 		private $questionInsertStatement;
 		private $answerInsertStatement;
 
 		public function __construct(mysqli $mysqli) {
 			$this->mysqli = $mysqli;
+			$this->categoryCache = [];
 
 			$this->categoryCacheStatement = $this->mysqli->prepare('SELECT ct1.name AS first_name, ct1.id AS first_id, ct1.parent_id AS first_parent,'
 				. ' ct2.name AS second_name, ct2.id AS second_id, ct2.parent_id AS second_parent,'
@@ -89,8 +92,8 @@ namespace quizzenger\gate {
 			return $cache[$name];
 		}
 
-		private function cacheCategory(array &$cache, stdClass &$category) {
-			$firstLevel = &$this->cacheCategoryLevel($cache, $category->first_name, $category->first_id, $category->first_parent);
+		private function cacheCategory(stdClass &$category) {
+			$firstLevel = &$this->cacheCategoryLevel($this->categoryCache, $category->first_name, $category->first_id, $category->first_parent);
 			if($firstLevel === null)
 				return;
 
@@ -101,15 +104,31 @@ namespace quizzenger\gate {
 			$thirdLevel = &$this->cacheCategoryLevel($secondLevel['children'], $category->third_name, $category->third_id, $category->third_parent);
 		}
 
-		private function importQuestionsForUser($userId, array $questions) {
+		private function rebuildCategoryCache() {
 			if(!$this->categoryCacheStatement->execute())
 				return false;
 
-			$cache = [];
+			$this->categoryCache = [];
 			$result = $this->categoryCacheStatement->get_result();
 			while($current = $result->fetch_object()) {
-				$this->cacheCategory($cache, $current);
+				$this->cacheCategory($current);
 			}
+		}
+
+		private function &getCachedCategory($first, $second, $third) {
+			$null = null;
+			if(!(isset($this->categoryCache[$first])
+				&& isset($this->categoryCache[$first]['children'][$second])
+				&& isset($this->categoryCache[$first]['children'][$second]['children'][$third])))
+			{
+				return $null;
+			}
+
+			return $this->categoryCache[$first]['children'][$second]['children'][$third];
+		}
+
+		private function importQuestionsForUser($userId, array $questions) {
+			$this->rebuildCategoryCache();
 		}
 
 		public function import($userId, $data) {
