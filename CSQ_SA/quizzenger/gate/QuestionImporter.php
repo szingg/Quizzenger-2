@@ -45,7 +45,7 @@ namespace quizzenger\gate {
 				. ' LEFT JOIN category AS ct2 ON ct2.parent_id=ct1.id'
 				. ' LEFT JOIN category AS ct3 ON ct3.parent_id=ct2.id'
 				. ' WHERE ct1.name=? AND ct2.name=? AND ct3.name=?'
-				. '     AND ? NOT IN (SELECT uuid FROM question)');
+				. '     AND NOT EXISTS (SELECT DISTINCT uuid FROM question WHERE uuid=?)');
 
 			$this->answerInsertStatement = $this->mysqli->prepare('INSERT INTO answer (correctness, text,'
 				. ' explanation, question_id) VALUES (?, ?, ?, ?)');
@@ -106,7 +106,10 @@ namespace quizzenger\gate {
 			$thirdCategory = (string)$question->category->attributes()->third;
 			$text = (string)$question->text;
 			$attachment = (string)$question->attachment;
-			$attachmentLocal = (string)$question->attachment->attributes()->type;
+			$attachmentLocal = '';
+
+			if($attachment)
+				$attachmentLocal = (string)$question->attachment->attributes()->type;
 
 			if($attachmentLocal !== "url")
 				$attachment = base64_decode($attachment);
