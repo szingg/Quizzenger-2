@@ -85,6 +85,11 @@ namespace quizzenger\gate {
 			$secondCategory = (string)$question->category->attributes()->second;
 			$thirdCategory = (string)$question->category->attributes()->third;
 			$text = (string)$question->text;
+			$attachment = (string)$question->attachment;
+			$attachmentLocal = (string)$question->attachment->attributes()->type;
+
+			if($attachmentLocal !== "url")
+				$attachment = base64_decode($attachment);
 
 			$this->questionInsertStatement->bind_param('ssssssdissssss', $uuid, $type, $text, $userId, $created, $modified,
 				$difficulty, $difficultyCount, $attachment, $attachmentLocal, $firstCategory, $secondCategory, $thirdCategory, $uuid);
