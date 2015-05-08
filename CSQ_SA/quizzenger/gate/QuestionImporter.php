@@ -1,6 +1,7 @@
 <?php
 
 namespace quizzenger\gate {
+	use \stdClass as stdClass;
 	use \mysqli as mysqli;
 	use \SimpleXMLElement as SimpleXMLElement;
 	use \quizzenger\logging\Log as Log;
@@ -12,6 +13,15 @@ namespace quizzenger\gate {
 
 		public function __construct(mysqli $mysqli) {
 			$this->mysqli = $mysqli;
+
+			$this->categoryCacheStatement = $this->mysqli->prepare('SELECT ct1.name AS first_name, ct1.id AS first_id, ct1.parent_id AS first_parent,'
+				. ' ct2.name AS second_name, ct2.id AS second_id, ct2.parent_id AS second_parent,'
+				. ' ct3.name AS third_name, ct3.id AS third_id, ct3.parent_id AS third_parent'
+				. ' FROM category AS ct1'
+				. ' LEFT JOIN category AS ct2 ON ct2.parent_id=ct1.id'
+				. ' LEFT JOIN category AS ct3 ON ct3.parent_id=ct2.id'
+				. ' WHERE ct1.parent_id=0'
+				. ' ORDER BY ct1.parent_id, ct2.parent_id, ct3.parent_id');
 
 			$this->questionInsertStatement = $this->mysqli->prepare('INSERT INTO question'
 				. ' (type, questiontext, user_id, created, lastModified, difficulty, category_id)'
@@ -57,6 +67,51 @@ namespace quizzenger\gate {
 			return true;
 		}
 
+		private function createCacheEntry($name, $id, $parent, $existing = true) {
+			return [
+				'name' => $name,
+				'id' => $id,
+				'parent' => $parent,
+				'existing' => $existing,
+				'children' => []
+			];
+		}
+
+		private function &cacheCategoryLevel(array &$cache, $name, $id, $parent) {
+			$null = null;
+
+			if($name === null || $name === "")
+				return $null;
+
+			if(!isset($cache[$name]))
+				$cache[$name] = $this->createCacheEntry($name, $id, $parent);
+
+			return $cache[$name];
+		}
+
+		private function cacheCategory(array &$cache, stdClass &$category) {
+			$firstLevel = &$this->cacheCategoryLevel($cache, $category->first_name, $category->first_id, $category->first_parent);
+			if($firstLevel === null)
+				return;
+
+			$secondLevel = &$this->cacheCategoryLevel($firstLevel['children'], $category->second_name, $category->second_id, $category->second_parent);
+			if($secondLevel === null)
+				return;
+
+			$thirdLevel = &$this->cacheCategoryLevel($secondLevel['children'], $category->third_name, $category->third_id, $category->third_parent);
+		}
+
+		private function importQuestionsForUser($userId, array $questions) {
+			if(!$this->categoryCacheStatement->execute())
+				return false;
+
+			$cache = [];
+			$result = $this->categoryCacheStatement->get_result();
+			while($current = $result->fetch_object()) {
+				$this->cacheCategory($cache, $current);
+			}
+		}
+
 		public function import($userId, $data) {
 			$xml = simplexml_load_string($data);
 			if(!$xml) {
@@ -65,15 +120,7 @@ namespace quizzenger\gate {
 			}
 
 			$questions = $xml->xpath('/quizzenger-question-export/questions/question');
-			$this->transaction();
-			foreach($questions as $current) {
-				if(!$this->insertQuestion($userId, $current)) {
-					$this->rollback();
-					return false;
-				}
-			}
-
-			$this->commit();
+			return $this->importQuestionsForUser($userId, $questions);
 		}
 	} // class QuestionImporter
 } // namespace quizzenger\gate
