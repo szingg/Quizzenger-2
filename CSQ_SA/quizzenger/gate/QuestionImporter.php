@@ -11,6 +11,7 @@ namespace quizzenger\gate {
 		private $firstCategoryInsertStatement;
 		private $secondCategoryInsertStatement;
 		private $thirdCategoryInsertStatement;
+		private $questionInsertStatement;
 
 		public function __construct(mysqli $mysqli) {
 			$this->mysqli = $mysqli;
@@ -34,6 +35,16 @@ namespace quizzenger\gate {
 				. '     JOIN category AS ct2 ON ct2.parent_id=ct1.id'
 				. '     JOIN category AS ct3 ON ct3.parent_id=ct2.id'
 				. '     WHERE ct1.parent_id=0 AND ct1.name=? AND ct2.name=? AND ct3.name=?)');
+
+			$this->questionInsertStatement = $this->mysqli->prepare('INSERT INTO question'
+				. ' (uuid, type, questiontext, user_id, category_id, created, lastModified,'
+				. '     difficulty, difficultycount, attachment, attachment_local, imported)'
+				. ' SELECT DISTINCT ?, ?, ?, ?, ct3.id, ?, ?, ?, ?, ?, ?, 1'
+				. ' FROM category AS ct1'
+				. ' LEFT JOIN category AS ct2 ON ct2.parent_id=ct1.id'
+				. ' LEFT JOIN category AS ct3 ON ct3.parent_id=ct2.id'
+				. ' WHERE ct1.name=? AND ct2.name=? AND ct3.name=?'
+				. '     AND ? NOT IN (SELECT uuid FROM question)');
 		}
 
 		private function transaction() {
@@ -62,29 +73,56 @@ namespace quizzenger\gate {
 				&& $this->thirdCategoryInsertStatement->execute();
 		}
 
+		private function insertQuestion($userId, SimpleXMLElement $question) {
+			$uuid = (string)$question->attributes()->uuid;
+			$type = (string)$question->attributes()->type;
+			$difficulty = (double)$question->attributes()->difficulty;
+			$difficultyCount = (integer)$question->attributes()->{'difficulty-count'};
+			$author = (string)$question->author;
+			$created = (string)$question->created;
+			$modified = (string)$question->modified;
+			$firstCategory = (string)$question->category->attributes()->first;
+			$secondCategory = (string)$question->category->attributes()->second;
+			$thirdCategory = (string)$question->category->attributes()->third;
+			$text = (string)$question->text;
+
+			$this->questionInsertStatement->bind_param('ssssssdissssss', $uuid, $type, $text, $userId, $created, $modified,
+				$difficulty, $difficultyCount, $attachment, $attachmentLocal, $firstCategory, $secondCategory, $thirdCategory, $uuid);
+
+			return $this->questionInsertStatement->execute();
+		}
+
 		private function importSingleQuestionForUser($userId, SimpleXMLElement $question) {
 			$uuid = $question->attributes()->uuid;
 			$firstCategory = $question->category->attributes()->first;
 			$secondCategory = $question->category->attributes()->second;
 			$thirdCategory = $question->category->attributes()->third;
 
-			$this->transaction();
 			if(!$this->insertCategories($firstCategory, $secondCategory, $thirdCategory)) {
 				$this->rollback();
-				Log::error("Categories for question $uuid could not be created.");
+				Log::error("Categories for question $uuid could not be inserted.");
 				return false;
 			}
 
-			$this->commit();
+			if(!$this->insertQuestion($userId, $question)) {
+				Log::error("Question $uuid could not be inserted.");
+				return false;
+			}
+
 			return true;
 		}
 
 		private function importQuestionsForUser($userId, array $questions) {
 			foreach($questions as $current) {
 				$uuid = $current->attributes()->uuid;
+
+				$this->transaction();
 				if(!$this->importSingleQuestionForUser($userId, $current)) {
 					Log::error("Import of question $uuid failed.");
+					$this->rollback();
+					continue;
 				}
+				$this->commit();
 			}
 		}
 
