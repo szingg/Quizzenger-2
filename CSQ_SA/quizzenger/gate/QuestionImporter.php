@@ -12,6 +12,7 @@ namespace quizzenger\gate {
 		private $secondCategoryInsertStatement;
 		private $thirdCategoryInsertStatement;
 		private $questionInsertStatement;
+		private $answerInsertStatement;
 
 		public function __construct(mysqli $mysqli) {
 			$this->mysqli = $mysqli;
@@ -45,6 +46,9 @@ namespace quizzenger\gate {
 				. ' LEFT JOIN category AS ct3 ON ct3.parent_id=ct2.id'
 				. ' WHERE ct1.name=? AND ct2.name=? AND ct3.name=?'
 				. '     AND ? NOT IN (SELECT uuid FROM question)');
+
+			$this->answerInsertStatement = $this->mysqli->prepare('INSERT INTO answer (correctness, text,'
+				. ' explanation, question_id) VALUES (?, ?, ?, ?)');
 		}
 
 		private function transaction() {
@@ -73,6 +77,22 @@ namespace quizzenger\gate {
 				&& $this->thirdCategoryInsertStatement->execute();
 		}
 
+		private function insertAnswers($questionId, array $answers) {
+			foreach($answers as $current) {
+				$correctness = (integer)$current->attributes()->correctness;
+				$text = (string)$current->text;
+				$explanation = (string)$current->explanation;
+
+				$this->answerInsertStatement->bind_param('issi', $correctness, $text, $explanation, $questionId);
+				if(!$this->answerInsertStatement->execute()) {
+					Log:error("Could not insert answer for question $questionId.");
+					return false;
+				}
+			}
+
+			return true;
+		}
+
 		private function insertQuestion($userId, SimpleXMLElement $question) {
 			$uuid = (string)$question->attributes()->uuid;
 			$type = (string)$question->attributes()->type;
@@ -94,7 +114,19 @@ namespace quizzenger\gate {
 			$this->questionInsertStatement->bind_param('ssssssdissssss', $uuid, $type, $text, $userId, $created, $modified,
 				$difficulty, $difficultyCount, $attachment, $attachmentLocal, $firstCategory, $secondCategory, $thirdCategory, $uuid);
 
-			return $this->questionInsertStatement->execute();
+			if(!$this->questionInsertStatement->execute()) {
+				Log::error("Insert of question $uuid failed.");
+				return false;
+			}
+
+			// Question UUID already existed, so no insert has been performed.
+			if($this->questionInsertStatement->insert_id === 0) {
+				Log::info("Question $uuid already exists.");
+				return true;
+			}
+
+			return $this->insertAnswers($this->questionInsertStatement->insert_id,
+				$question->xpath('./answers/answer'));
 		}
 
 		private function importSingleQuestionForUser($userId, SimpleXMLElement $question) {
@@ -110,6 +142,7 @@ namespace quizzenger\gate {
 			}
 
 			if(!$this->insertQuestion($userId, $question)) {
+				$this->rollback();
 				Log::error("Question $uuid could not be inserted.");
 				return false;
 			}
