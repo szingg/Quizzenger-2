@@ -60,7 +60,7 @@ namespace quizzenger\controller {
 				case 'question' :case 'login' : case 'user' : case 'solution' : case 'questionlist' : case 'myquestions' :
 				case 'mycontent' : case 'myquizzes' : case 'quizdetail' : case 'quizstart' : case 'quizend' : case 'categorylist' :
 				case 'logout' : case 'error' : case 'register' : case 'processLogin' : case 'processChangepassword' : case 'processRegistration' :
-				case 'newquestion' : case 'generatequiz' : case 'editquestion' : case 'processNewQuestion' : case 'processGenerateQuiz':
+				case 'newquestion' : case 'editquestion' : case 'processNewQuestion' : case 'processGenerateQuiz':
 				case 'log': case 'questionpool': case 'processEditQuestion': case 'reporting':
 				case 'default' :
 					/*include("controllers/".$this->template.".php");
@@ -105,7 +105,9 @@ namespace quizzenger\controller {
 					break;
 
 				default:
-					include("controllers/default.php");
+					$className = '\\quizzenger\\controller\\controllers\\DefaultController';
+					$controller = new $className($viewInner);
+					$viewInner = $controller->render();
 					break;
 			}
 

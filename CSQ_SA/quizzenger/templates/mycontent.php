@@ -25,10 +25,10 @@
 		<!-- Tab panes -->
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active" id="myquestions">
-				<?php include("questionlist.php"); ?>
+				<?php echo $this->_['questionlist']; ?>
 			</div>
 			<div role="tabpanel" class="tab-pane" id="myquizzes">
-				<?php include("quizlist.php"); ?>
+				<?php echo $this->_['quizlist']; ?>
 			</div>
 			<div role="tabpanel" class="tab-pane" id="mygames">
 				<?php echo $this->_['gamelist']; ?>
