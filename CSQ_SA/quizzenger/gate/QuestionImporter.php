@@ -37,15 +37,14 @@ namespace quizzenger\gate {
 				. '     JOIN category AS ct3 ON ct3.parent_id=ct2.id'
 				. '     WHERE ct1.parent_id=0 AND ct1.name=? AND ct2.name=? AND ct3.name=?)');
 
-			$this->questionInsertStatement = $this->mysqli->prepare('INSERT INTO question'
+			$this->questionInsertStatement = $this->mysqli->prepare('INSERT IGNORE INTO question'
 				. ' (uuid, type, questiontext, user_id, category_id, created, lastModified,'
 				. '     difficulty, difficultycount, attachment, attachment_local, imported)'
 				. ' SELECT DISTINCT ?, ?, ?, ?, ct3.id, ?, ?, ?, ?, ?, ?, 1'
 				. ' FROM category AS ct1'
 				. ' LEFT JOIN category AS ct2 ON ct2.parent_id=ct1.id'
 				. ' LEFT JOIN category AS ct3 ON ct3.parent_id=ct2.id'
-				. ' WHERE ct1.name=? AND ct2.name=? AND ct3.name=?'
-				. '     AND NOT EXISTS (SELECT DISTINCT uuid FROM question WHERE uuid=?)');
+				. ' WHERE ct1.name=? AND ct2.name=? AND ct3.name=?');
 
 			$this->answerInsertStatement = $this->mysqli->prepare('INSERT INTO answer (correctness, text,'
 				. ' explanation, question_id) VALUES (?, ?, ?, ?)');
@@ -114,8 +113,8 @@ namespace quizzenger\gate {
 			if($attachmentLocal !== "url")
 				$attachment = base64_decode($attachment);
 
-			$this->questionInsertStatement->bind_param('ssssssdissssss', $uuid, $type, $text, $userId, $created, $modified,
-				$difficulty, $difficultyCount, $attachment, $attachmentLocal, $firstCategory, $secondCategory, $thirdCategory, $uuid);
+			$this->questionInsertStatement->bind_param('ssssssdisssss', $uuid, $type, $text, $userId, $created, $modified,
+				$difficulty, $difficultyCount, $attachment, $attachmentLocal, $firstCategory, $secondCategory, $thirdCategory);
 
 			if(!$this->questionInsertStatement->execute()) {
 				Log::error("Insert of question $uuid failed.");
