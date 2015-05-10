@@ -13,7 +13,7 @@ namespace quizzenger\gate {
 		}
 
 		private function queryQuestions($userId) {
-			$statement = $this->mysqli->prepare('SELECT question.id, question.user_id, question.type, question.questiontext,'
+			$statement = $this->mysqli->prepare('SELECT question.id, question.uuid, question.user_id, question.type, question.questiontext,'
 				. ' question.created, question.lastModified, question.difficulty, question.difficultycount,'
 				. ' question.attachment, question.attachment_local,'
 				. ' category.first_category, category.second_category, category.third_category,'
@@ -51,10 +51,16 @@ namespace quizzenger\gate {
 			return $statement->get_result();
 		}
 
-		private function encodeAttachment($questionId) {
-			// TODO: Read the correct file associated with the question.
-			//       The filename should be the question ID.
-			return base64_encode(file_get_contents(__FILE__));
+		private function encodeAttachment($filename) {
+			$absolutePath = QUIZZENGER_ROOT . DIRECTORY_SEPARATOR
+				. ATTACHMENT_PATH . DIRECTORY_SEPARATOR . $filename;
+
+			$content = file_get_contents($absolutePath);
+			if($content === false) {
+				return false;
+			}
+
+			return base64_encode($content);
 		}
 
 		private function output($export) {
@@ -68,6 +74,7 @@ namespace quizzenger\gate {
 			$questions = $document->addChild('questions');
 			foreach($export as $current) {
 				$questionElement = $questions->addChild('question');
+				$questionElement->addAttribute('uuid', $current->uuid);
 				$questionElement->addAttribute('type', $current->type);
 				$questionElement->addAttribute('difficulty', $current->difficulty);
 
@@ -95,7 +102,12 @@ namespace quizzenger\gate {
 					if($current->attachment_local) {
 						$attachmentElement->addAttribute('type', 'local');
 						$attachmentElement->addAttribute('extension', $current->attachment);
-						$attachmentElement->{0} = $this->encodeAttachment($current->id);
+
+						$encodedAttachment = $this->encodeAttachment($current->id . '.' . $current->attachment);
+						if($encodedAttachment === false)
+							return false;
+
+						$attachmentElement->{0} = $encodedAttachment;
 					}
 					else {
 						$attachmentElement->addAttribute('type', 'url');
@@ -108,7 +120,8 @@ namespace quizzenger\gate {
 			header('Content-Transfer-Encoding: Binary');
 			header('Content-Disposition: attachment; filename="' . date('YmdHis') . '.quizzenger"');
 
-			echo gzencode(utf8_encode($document->asXML()));
+			echo gzencode($document->asXML());
+			return true;
 		}
 
 		public function export($userId) {

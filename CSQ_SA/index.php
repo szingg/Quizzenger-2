@@ -1,4 +1,6 @@
 <?php
+	define("QUIZZENGER_ROOT", dirname(__FILE__));
+
 	require_once 'quizzenger/autoloader.php';
 
 	load_includes();
