@@ -173,6 +173,12 @@ namespace quizzenger\gate {
 				return false;
 			}
 
+			$version = $xml->xpath('/quizzenger-question-export/@version');
+			if(empty($version) || ((string)$version[0]) !== '1.0') {
+				Log::error('The specified version for the import is not supported.');
+				return false;
+			}
+
 			$questions = $xml->xpath('/quizzenger-question-export/questions/question');
 			return $this->importQuestionsForUser($userId, $questions);
 		}
