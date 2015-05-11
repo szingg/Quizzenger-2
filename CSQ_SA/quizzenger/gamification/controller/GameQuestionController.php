@@ -49,7 +49,7 @@ namespace quizzenger\gamification\controller {
 			$this->gamecounter = $_SESSION ['game'][$this->gameid]['gamecounter'];
 			$this->gameinfo = $this->getGameInfo();
 		}
-		public function loadView(){
+		public function render(){
 			$this->checkPreconditions();
 
 			$this->view->setTemplate( 'gamequestion' );
@@ -57,7 +57,7 @@ namespace quizzenger\gamification\controller {
 
 			$this->loadReportView();
 
-			return $this->view;
+			return $this->view->loadTemplate();
 		}
 
 		private function LoadQuestionView(){

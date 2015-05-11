@@ -33,14 +33,14 @@ namespace quizzenger\gamification\controller {
 			$this->gameinfo = $this->getGameInfo();
 
 		}
-		public function loadView(){
+		public function render(){
 			PermissionUtility::checkLogin();
 
 			$this->loadGameStartView();
 
 			$this->setGameSession();
 
-			return $this->view;
+			return $this->view->loadTemplate();
 		}
 
 		private function loadGameStartView(){

@@ -3,6 +3,10 @@
 
 	require_once 'quizzenger/autoloader.php';
 
+	use \quizzenger\controller\Controller as Controller;
+	use \quizzenger\controller\AjaxController as AjaxController;
+
+
 	load_includes();
 	https_only();
 
@@ -19,7 +23,7 @@
 		$controller = new Controller ( $request,$log );
 	}
 
-	echo $controller->display ();
+	echo $controller->render();
 
 
 	// -----------------------
@@ -35,9 +39,11 @@
 	}
 
 	function load_includes(){
-		include('includes/config.php');
-		include('includes/logger.php');
-		include('includes/sqlhelper.php');
+		require_once('quizzenger/autoloader.php');
+		require_once('includes/config.php');
+		require_once('includes/logger.php');
+		require_once('includes/sqlhelper.php');
+		/*
 		include('controller/controller.php');
 		include('controller/ajaxController.php');
 		//include('model/model.php');
@@ -56,7 +62,7 @@
 		include('model/userscoremodel.php');
 		include('model/moderationmodel.php');
 		include('model/reportmodel.php');
-		include('model/reportingmodel.php');
+		include('model/reportingmodel.php'); */
 	}
 
 ?>
