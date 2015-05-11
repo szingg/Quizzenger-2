@@ -6,7 +6,8 @@
 		<div class="row">
 			<div class="col-md-6">
 				<h3>Idee</h3>
-				Quizzenger wurde im Rahmen einer Studienarbeit an der Hochschule für Technik Rapperswil von <strong>Tobias Zahner</strong> und <strong>Oussama Zgheb</strong> entwickelt.
+				Quizzenger wurde im Rahmen einer Studienarbeit an der Hochschule für Technik Rapperswil von <strong>Tobias Zahner</strong> und <strong>Oussama Zgheb</strong> entwickelt
+				und ist während einer zweiten Studienarbeit von <strong>Rico Beti</strong> und <strong>Simon Zingg</strong> erweitert worden.
 				<p>Quizzenger ist eine webbasierte Wissensdatenbank welche dem User ermöglicht für verschiedenste Themenbereich Quizzes durchzuführen.
 				Das System soll sich selbst verwalten, durch ausgeklügelte Statistiken sowie dank der Community selbst.</p>
 				<p>Quizzenger verfolgt die Idee einer offenen Community an der jeder Teilnehmen darf, deswegen ist es auch nahe liegend das Projekt mit einer Opensource Lizenz öffentlich zugänglich zu machen.</p>
@@ -35,10 +36,9 @@
 				Manche Links auf der HSR Website führen zu Websites Dritter. Diese stehen nicht mehr unter dem Einflussbereich der HSR. Für die Richtigkeit, Vollständigkeit und Rechtmässigkeit der dort enthaltenen Inhalte und Verlinkung mit weiteren Websites übernimmt die HSR keinerlei Verantwortung.</p>
 
 				<h4>Hochgeladene Inhalte</h4>
-				<p>Als Benutzer von Quizzenger haben Sie die Möglichkeit, wertvolle Inhalte in Form von Fragen und Anhängen
+				<p>Als Benutzer von Quizzenger haben Sie die Möglichkeit, Inhalte in Form von Fragen und Anhängen
 				zum Projekt beizusteuern. Damit die Langlebigkeit des Inhaltes gewährleistet werden kann, erteilen alle Benutzer
-				den Autoren von Quizzenger das uneingeschränkte Verwendungsrecht an den hochgeladenen Fragen und deren Anhängen
-				im Rahmen des Quizzenger-Projektes.</p>
+				dem Quizzenger-Projekt das uneingeschränkte Verwendungsrecht an den hochgeladenen Inhalten.</p>
 			</div>
 		</div>
 		<hr>
