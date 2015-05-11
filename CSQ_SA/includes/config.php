@@ -57,7 +57,7 @@ define ("DIFFERENT_QUESTION_WEIGHTS", "5");
 // Log Settings
 define ("LOGGING_ACTIVE",true);
 define ("LOGPATH","/var/log/quizzenger");
-
+define ("MAX_LOG_DAYS", 365);
 
 // Security Login / Register
 // -------------------------
