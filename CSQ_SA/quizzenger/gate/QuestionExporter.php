@@ -5,13 +5,28 @@ namespace quizzenger\gate {
 	use \SimpleXMLElement as SimpleXMLElement;
 	use \quizzenger\logging\Log as Log;
 
+	/**
+	 * Provides the required functionality to export questions using Quizzenger's XML format.
+	**/
 	class QuestionExporter {
+		/**
+		 * Holds a reference to an active database connection.
+		**/
 		private $mysqli;
 
+		/**
+		 * Creates the object based on an active database connection.
+		 * @param mysqli $mysqli Active database connection.
+		**/
 		public function __construct(mysqli $mysqli) {
 			$this->mysqli = $mysqli;
 		}
 
+		/**
+		 * Executes a query to retrieve all questions assigned with the specified user.
+		 * @param integer $userId The user ID that indicates what questions to retrieve.
+		 * @return mysqli_result Returns the MySQLi result set.
+		**/
 		private function queryQuestions($userId) {
 			$statement = $this->mysqli->prepare('SELECT question.id, question.uuid, question.user_id, question.type, question.questiontext,'
 				. ' question.created, question.lastModified, question.difficulty, question.difficultycount,'
@@ -36,6 +51,11 @@ namespace quizzenger\gate {
 			return $statement->get_result();
 		}
 
+		/**
+		 * Executes a query to retrieve all answers associated with questions from the specified user.
+		 * @param integer $userId The user ID that indicates what answers to retrieve.
+		 * @return mysqli_result Returns the MySQLi result set.
+		**/
 		private function queryAnswers($userId) {
 			$statement = $this->mysqli->prepare('SELECT question_id, correctness, text, explanation'
 				. ' FROM answer'
@@ -51,6 +71,11 @@ namespace quizzenger\gate {
 			return $statement->get_result();
 		}
 
+		/**
+		 * Encodes the specified attachment with Base64.
+		 * @param string $filename The filename of the attachment to be encoded.
+		 * @return string Returns the Base64 encoded content, or false on failure.
+		**/
 		private function encodeAttachment($filename) {
 			$absolutePath = QUIZZENGER_ROOT . DIRECTORY_SEPARATOR
 				. ATTACHMENT_PATH . DIRECTORY_SEPARATOR . $filename;
@@ -63,6 +88,12 @@ namespace quizzenger\gate {
 			return base64_encode($content);
 		}
 
+		/**
+		 * Generates the XML file based on the specified questions and writes it onto the output stream.
+		 * @param array $export Array of questions to be exported.
+		 * @return boolean Returns true on success, false otherwise. The generated XML file will be
+		 *         sent back to the client automatically.
+		**/
 		private function output($export) {
 			$document = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8" ?>'
 				. '<quizzenger-question-export version="1.0"></quizzenger-question-export>');
@@ -124,6 +155,12 @@ namespace quizzenger\gate {
 			return true;
 		}
 
+		/**
+		 * Exports all questions associated with the specified user and creates the XML file.
+		 * @param integer $userId The user ID that indicates what questions to retrieve.
+		 * @return boolean Returns true on success, false otherwise. The generated XML file will
+		 *         be rendered and sent back to the client.
+		**/
 		public function export($userId) {
 			$export = [];
 			$questions = null;
@@ -154,6 +191,7 @@ namespace quizzenger\gate {
 			}
 
 			$this->output($export);
+			return true;
 		}
 	} // class QuestionExporter
 } // namespace quizzenger\gate
