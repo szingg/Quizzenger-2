@@ -21,7 +21,7 @@
 								Username
 							</th>
 							<th>
-								Antworten
+								Punkte
 							</th>
 							<th>
 								Zeit / Frage

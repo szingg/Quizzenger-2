@@ -34,19 +34,8 @@ namespace quizzenger\controller\controllers {
 		}
 
 		function loadGameView(){
-			$gameView = new View();
-			$gameView->setTemplate ( 'gamelist' );
-
-			//$games = ModelCollection::gameModel()->getGamesByUser($_SESSION['user_id']);
-			//$gameView->assign( 'games', $games);
-
-			$hostedGames = ModelCollection::gameModel()->getHostedGamesByUser($_SESSION['user_id']);
-			$gameView->assign( 'hostedGames', $hostedGames);
-
-			$participatedGames = ModelCollection::gameModel()->getParticipatedGamesByUser($_SESSION['user_id']);
-			$gameView->assign( 'participatedGames', $participatedGames);
-
-			$this->view->assign ( 'gamelist', $gameView->loadTemplate() );
+			$mygamescontroller = new MyGamesController(new View());
+			$this->view->assign ( 'gamelist', $mygamescontroller->render() );
 		}
 
 	} // class MycontentController
