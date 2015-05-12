@@ -35,7 +35,7 @@
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-md-6">
-					<h4><img alt="ribbon" src="<?=APP_PATH?>/templates/img/ribbon.png"> Punkte pro Kategorie</h4>
+					<h4><img alt="ribbon" src="<?=APP_PATH?>/content/img/ribbon.png"> Punkte pro Kategorie</h4>
 					<div style="overflow-x: auto; -webkit-overflow-scrolling: touch; -ms-overflow-style: -ms-autohiding-scrollbar;">
 					<table id="ranklist" style="width:100%; ">
 						<tr>
@@ -90,10 +90,10 @@
 				<div class="col-md-6">
 					<?php
 					if($user['superuser']){
-						echo('<h4 style="color:red"><img alt="superuser" src="'.htmlspecialchars(APP_PATH).'/templates/img/superuser.png"> Ist Superuser</h4><br>');
+						echo('<h4 style="color:red"><img alt="superuser" src="'.htmlspecialchars(APP_PATH).'/content/img/superuser.png"> Ist Superuser</h4><br>');
 					}
 					if($moderatedCategories!=null){
-						echo('<h4><img alt="moderator" src="'.htmlspecialchars(APP_PATH).'/templates/img/moderator.png"> Moderator in folgenden Kategorien</h4>');
+						echo('<h4><img alt="moderator" src="'.htmlspecialchars(APP_PATH).'/content/img/moderator.png"> Moderator in folgenden Kategorien</h4>');
 						foreach($moderatedCategories as $modCat){
 							echo(htmlspecialchars($modCat['name'])."<br>");
 						}

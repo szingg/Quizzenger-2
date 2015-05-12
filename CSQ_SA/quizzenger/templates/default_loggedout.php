@@ -2,7 +2,7 @@
 	<h1>Willkommen bei Quizzenger</h1>
 	<p class="lead">
 		<img style="float: right" alt="Quizzenger Logo"
-			src="<?= htmlspecialchars(APP_PATH)?>/templates/img/logo_s.png"> Quizzenger bietet jedem
+			src="<?= htmlspecialchars(APP_PATH)?>/content/img/logo_s.png"> Quizzenger bietet jedem
 		eine webbasierte Wissensdatenbank für verschiendste Themenbereiche.
 		Die zur verfügungenstehenden Fragen werden durch die Community selbst
 		erstellt und unterhalten.<br> <br> Quizzenger verfolgt die Idee einer
@@ -42,7 +42,7 @@
 			Dank neusten Technologien auch auf Smartphones unterwegs benutzbar.<br>
 			<a
 				href="http://validator.w3.org/check?uri=<?php echo htmlspecialchars(APP_PATH); ?>"><img
-				src="<?= htmlspecialchars(APP_PATH) ?>/templates/img/html5-badge-h-solo.png" width="63"
+				src="<?= htmlspecialchars(APP_PATH) ?>/content/img/html5-badge-h-solo.png" width="63"
 				height="64" alt="HTML5 Powered" title="HTML5 Powered"></a>
 		</p>
 	</div>
@@ -60,7 +60,7 @@
 			mattis consectetur purus sit amet fermentum.</p>
 
 		<h3>Libre Open Source Software</h3>
-		<img src="<?= htmlspecialchars(APP_PATH) ?>/templates/img/GPLv3_Logo.png" width="144"
+		<img src="<?= htmlspecialchars(APP_PATH) ?>/content/img/GPLv3_Logo.png" width="144"
 			height="72" alt="GPLv3" title="GPLv3">
 	</div>
 </div>

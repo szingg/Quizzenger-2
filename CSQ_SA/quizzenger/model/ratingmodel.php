@@ -1,4 +1,6 @@
 <?php
+use \quizzenger\model\ModelCollection as ModelCollection;
+
 class RatingModel {
 	private $mysqli;
 	private $logger;
@@ -10,7 +12,7 @@ class RatingModel {
 
 	public function removeComment($id,$moderator_name,$explanation){
 		$this->logger->log ( "[MOD] Removing Comment ".$id, Logger::INFO );
-		return $this->mysqli->s_query("UPDATE rating SET comment='Kommentar entfernt durch Moderator: ".$moderator_name."<br>Begründung: ".$explanation."' WHERE id=?",array('i'),array($id));
+		return $this->mysqli->s_query("UPDATE rating SET comment='Kommentar entfernt durch Moderator ".$moderator_name.". Begründung: ".$explanation."' WHERE id=?",array('i'),array($id));
 	}
 	public function getAllRatingsByQuestionID($id){
 		$result = $this->mysqli->s_query("SELECT * FROM rating WHERE question_id=? AND parent IS NULL",array('i'),array($id));
@@ -49,7 +51,9 @@ class RatingModel {
 		return ($result[0]=="1");
 	}
 
-	public function enrichRatingsWithAuthorName($ratings, $userModel,$moderationModel,$questionModel,$reportModel){
+	public function enrichRatingsWithAuthorName($ratings){
+		$userModel = ModelCollection::userModel(); $moderationModel = ModelCollection::moderationModel();
+		$questionModel = ModelCollection::questionModel(); $reportModel = ModelCollection::reportModel();
 		$entries = array ();
 		foreach ( $ratings as $key => $rating ) {
 			$question = $questionModel->getQuestion( $rating ['question_id'] );

@@ -21,7 +21,7 @@ namespace quizzenger\controller\controllers {
 			} elseif ($GLOBALS['loggedin']) {
 				$userID = $_SESSION ['user_id'];
 			} else {
-				NavigationUtility::redirect('./index.php?view=login&pageBefore='.$this->template);
+				NavigationUtility::redirect('./index.php?view=login&pageBefore=user');
 			}
 
 			$user = ModelCollection::userModel()->getUserByID ( $userID );

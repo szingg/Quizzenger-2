@@ -28,7 +28,7 @@
 		<meta name="keywords" content="Quizzenger, Fragen, Lernen, Community, Prüfungen, Quiz, Quizzes">
 		<meta name="robots" content="index, follow">
 
-	    <link rel="shortcut icon" href="quizzenger/templates/img/favicon.ico" />
+	    <link rel="shortcut icon" href="content/img/favicon.ico" />
 	    <title>Quizzenger</title>
 
 		<link href="content/css/bootstrap.min.css" rel="stylesheet">
@@ -52,7 +52,7 @@
 	<body>
 		<div role="navigation" class="navbar navbar-default navbar-fixed-top">
 			<div class="hidden-lg hidden-sm hidden-md">
-				<a href="index.php"><img src="<?= htmlspecialchars(APP_PATH) ?>/quizzenger/templates/img/header_50.png" alt="Quizzenger Logo"  style="position:absolute;" /></a>
+				<a href="index.php"><img src="<?= htmlspecialchars(APP_PATH) ?>/content/img/header_50.png" alt="Quizzenger Logo"  style="position:absolute;" /></a>
 			</div>
 			<div class="container">
 				<div class="navbar-header">
@@ -71,7 +71,7 @@
 								<span class="glyphicon glyphicon-home"></span> Home
 							</span>
 							<span class="hidden-xs">
-								<img src="<?= htmlspecialchars(APP_PATH) ?>/quizzenger/templates/img/header_50.png" alt="Quizzenger Logo" style="max-width: 100px; margin-top: -15px;margin-bottom: -15px; " /></a>
+								<img src="<?= htmlspecialchars(APP_PATH) ?>/content/img/header_50.png" alt="Quizzenger Logo" style="max-width: 100px; margin-top: -15px;margin-bottom: -15px; " /></a>
 							</span>
 						</li>
 						<li class="<?=  checkActiveTab("questionpool");?>">

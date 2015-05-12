@@ -42,6 +42,6 @@
 			</div>
 		</div>
 		<hr>
-		<img src="<?= htmlspecialchars(APP_PATH) ?>/templates/img/header_s.png" class="img-responsive center-block" alt="Quizzenger Header Logo" />
+		<img src="<?= htmlspecialchars(APP_PATH) ?>/content/img/header_s.png" class="img-responsive center-block" alt="Quizzenger Header Logo" />
 	</div>
 </div>

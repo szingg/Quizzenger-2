@@ -86,8 +86,8 @@
 
 	function createRatingString($rating,$userIsModHere){
 		$strng='<a target="_blank" href="index.php?view=user&amp;id='.$rating['user_id'].'">';
-		$modString= ($rating['ismod'])?'<img alt="Moderator" src="'.htmlspecialchars(APP_PATH).'/templates/img/moderator.png">':"" ;
-		$suString= ($rating['issuperuser'])?'<img alt="Sueruser" src="'.htmlspecialchars(APP_PATH).'/templates/img/superuser.png">':"" ;
+		$modString= ($rating['ismod'])?'<img alt="Moderator" src="'.htmlspecialchars(APP_PATH).'/content/img/moderator.png">':"" ;
+		$suString= ($rating['issuperuser'])?'<img alt="Superuser" src="'.htmlspecialchars(APP_PATH).'/content/img/superuser.png">':"" ;
 
 
 		$strng2=$rating['author'].'</a>'.$modString.$suString.' am '.htmlspecialchars($rating['created']);

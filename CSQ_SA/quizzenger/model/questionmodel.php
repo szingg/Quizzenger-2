@@ -1,4 +1,5 @@
 <?php
+use \quizzenger\model\ModelCollection as ModelCollection;
 use \quizzenger\utilities\NavigationUtility as NavigationUtility;
 use \quizzenger\utilities\PermissionUtility as PermissionUtility;
 use \quizzenger\messages\MessageQueue as MessageQueue;
@@ -126,7 +127,11 @@ class QuestionModel {
         }
 	}
 
-	public function opQuestionWithAnswers($answerModel,$categoryModel, $tagModel,$operation,$chosenCategory){
+	//public function opQuestionWithAnswers($answerModel,$categoryModel, $tagModel,$operation,$chosenCategory){
+	public function opQuestionWithAnswers($operation,$chosenCategory){
+		$answerModel = ModelCollection::answerModel();
+		$categoryModel = ModelCollection::categoryModel();
+		$tagModel = ModelCollection::tagModel();
 		PermissionUtility::checkLogin();
 
 		$this->checkForMissingParametersOpQwA($chosenCategory,$operation,$categoryModel);
