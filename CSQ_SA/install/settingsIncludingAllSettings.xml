@@ -14,7 +14,7 @@
 			<consumer_score>10</consumer_score>
 		</eventtrigger>
 		<eventtrigger name="question-created">
-			<producer_score>30</producer_score>
+			<producer_score>50</producer_score>
 			<consumer_score>0</consumer_score>
 		</eventtrigger>
 		<eventtrigger name="quiz-end">
@@ -30,7 +30,11 @@
 			<consumer_score>0</consumer_score>
 		</eventtrigger>
 		<eventtrigger name="question-removed">
-			<producer_score>-30</producer_score>
+			<producer_score>-100</producer_score>
+			<consumer_score>0</consumer_score>
+		</eventtrigger>
+		<eventtrigger name="question-rated">
+			<producer_score>5</producer_score>
 			<consumer_score>0</consumer_score>
 		</eventtrigger>
 	</eventtriggers>
@@ -43,7 +47,7 @@
 			<arguments>
 				<argument name="question-count" value="1" />
 			</arguments>
-			<bonus_score>10</bonus_score>
+			<bonus_score>5</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
 				<eventtrigger name="game-question-answered-correct" />
@@ -52,7 +56,7 @@
 		<achievement type="QuestionAnsweredCorrect">
 			<name>10 Fragen!</name>
 			<description>Du hast 10 Fragen korrekt beantwortet.</description>
-			<sort_order>10</sort_order>
+			<sort_order>20</sort_order>
 			<image>achievement-question-answered-10</image>
 			<arguments>
 				<argument name="question-count" value="10" />
@@ -66,7 +70,7 @@
 		<achievement type="QuestionAnsweredCorrect">
 			<name>50 Fragen!</name>
 			<description>Du hast 50 Fragen korrekt beantwortet.</description>
-			<sort_order>50</sort_order>
+			<sort_order>100</sort_order>
 			<image>achievement-question-answered-50</image>
 			<arguments>
 				<argument name="question-count" value="50" />
@@ -85,7 +89,7 @@
 			<arguments>
 				<argument name="question-count" value="100" />
 			</arguments>
-			<bonus_score>500</bonus_score>
+			<bonus_score>200</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
 				<eventtrigger name="game-question-answered-correct" />
@@ -99,7 +103,7 @@
 			<arguments>
 				<argument name="question-count" value="200" />
 			</arguments>
-			<bonus_score>2000</bonus_score>
+			<bonus_score>400</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
 				<eventtrigger name="game-question-answered-correct" />
@@ -113,7 +117,7 @@
 			<arguments>
 				<argument name="question-count" value="500" />
 			</arguments>
-			<bonus_score>5000</bonus_score>
+			<bonus_score>1000</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
 				<eventtrigger name="game-question-answered-correct" />
@@ -127,7 +131,7 @@
 			<arguments>
 				<argument name="question-count" value="1000" />
 			</arguments>
-			<bonus_score>10000</bonus_score>
+			<bonus_score>2000</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
 				<eventtrigger name="game-question-answered-correct" />
@@ -141,7 +145,7 @@
 			<arguments>
 				<argument name="date-time" value="*-12-24-*-*-*" />
 			</arguments>
-			<bonus_score>1000</bonus_score>
+			<bonus_score>50</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="always" />
 			</eventtriggers>
@@ -167,7 +171,7 @@
 			<arguments>
 				<argument name="member-count" value="5" />
 			</arguments>
-			<bonus_score>100</bonus_score>
+			<bonus_score>50</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="game-end" />
 			</eventtriggers>
@@ -180,7 +184,7 @@
 			<arguments>
 				<argument name="member-count" value="10" />
 			</arguments>
-			<bonus_score>250</bonus_score>
+			<bonus_score>100</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="game-end" />
 			</eventtriggers>
@@ -193,7 +197,7 @@
 			<arguments>
 				<argument name="member-count" value="20" />
 			</arguments>
-			<bonus_score>500</bonus_score>
+			<bonus_score>200</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="game-end" />
 			</eventtriggers>
@@ -206,7 +210,7 @@
 			<arguments>
 				<argument name="member-count" value="2" />
 			</arguments>
-			<bonus_score>40</bonus_score>
+			<bonus_score>30</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="game-end" />
 			</eventtriggers>
@@ -219,7 +223,7 @@
 			<arguments>
 				<argument name="member-count" value="5" />
 			</arguments>
-			<bonus_score>200</bonus_score>
+			<bonus_score>75</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="game-end" />
 			</eventtriggers>
@@ -232,7 +236,7 @@
 			<arguments>
 				<argument name="member-count" value="10" />
 			</arguments>
-			<bonus_score>500</bonus_score>
+			<bonus_score>150</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="game-end" />
 			</eventtriggers>
@@ -245,18 +249,31 @@
 			<arguments>
 				<argument name="member-count" value="20" />
 			</arguments>
-			<bonus_score>1000</bonus_score>
+			<bonus_score>300</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="game-end" />
 			</eventtriggers>
 		</achievement>
 		<achievement type="GameHosting">
 			<name>Game hosten</name>
-			<description>Ein Game mit mindestens 5 Teilnehmern hosten</description>
+			<description>Hoste ein Game mit mindestens 5 Teilnehmern</description>
 			<sort_order>5</sort_order>
 			<image>achievement-game-hosting-5</image>
 			<arguments>
 				<argument name="member-count" value="5" />
+			</arguments>
+			<bonus_score>20</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="game-start" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="GameHosting">
+			<name>Game hosten</name>
+			<description>Hoste ein Game mit mindestens 10 Teilnehmern</description>
+			<sort_order>10</sort_order>
+			<image>achievement-game-hosting-10</image>
+			<arguments>
+				<argument name="member-count" value="10" />
 			</arguments>
 			<bonus_score>50</bonus_score>
 			<eventtriggers>
@@ -265,26 +282,13 @@
 		</achievement>
 		<achievement type="GameHosting">
 			<name>Game hosten</name>
-			<description>Ein Game mit mindestens 10 Teilnehmern hosten</description>
-			<sort_order>10</sort_order>
-			<image>achievement-game-hosting-10</image>
-			<arguments>
-				<argument name="member-count" value="10" />
-			</arguments>
-			<bonus_score>200</bonus_score>
-			<eventtriggers>
-				<eventtrigger name="game-start" />
-			</eventtriggers>
-		</achievement>
-		<achievement type="GameHosting">
-			<name>Game hosten</name>
-			<description>Ein Game mit mindestens 20 Teilnehmern hosten</description>
+			<description>Hoste ein Game mit mindestens 20 Teilnehmern</description>
 			<sort_order>20</sort_order>
 			<image>achievement-game-hosting-20</image>
 			<arguments>
 				<argument name="member-count" value="20" />
 			</arguments>
-			<bonus_score>500</bonus_score>
+			<bonus_score>100</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="game-start" />
 			</eventtriggers>
@@ -308,36 +312,552 @@
 			<image>achievement-game-perfect</image>
 			<arguments>
 			</arguments>
-			<bonus_score>100</bonus_score>
+			<bonus_score>50</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="game-end" />
 			</eventtriggers>
 		</achievement>
-		<achievement type="QuizPerfect">
-			<name>Perfektes Quiz</name>
-			<description>Beantworte alle Fragen eines Quizzes korrekt</description>
-			<sort_order>0</sort_order>
-			<image>achievement-quiz-perfect</image>
+		<achievement type="QuestionCreated">
+			<name>Fragen erstellen!</name>
+			<description>Erstelle 1 Frage!</description>
+			<sort_order>1</sort_order>
+			<image>achievement-question-created-1</image>
 			<arguments>
+				<argument name="question-count" value="1" />
+			</arguments>
+			<bonus_score>10</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-created" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionCreated">
+			<name>Fragen erstellen!</name>
+			<description>Erstelle 2 Fragen!</description>
+			<sort_order>2</sort_order>
+			<image>achievement-question-created-2</image>
+			<arguments>
+				<argument name="question-count" value="2" />
+			</arguments>
+			<bonus_score>20</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-created" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionCreated">
+			<name>Fragen erstellen!</name>
+			<description>Erstelle 5 Fragen!</description>
+			<sort_order>5</sort_order>
+			<image>achievement-question-created-5</image>
+			<arguments>
+				<argument name="question-count" value="5" />
+			</arguments>
+			<bonus_score>50</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-created" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionCreated">
+			<name>Fragen erstellen!</name>
+			<description>Erstelle 10 Fragen!</description>
+			<sort_order>10</sort_order>
+			<image>achievement-question-created-10</image>
+			<arguments>
+				<argument name="question-count" value="10" />
 			</arguments>
 			<bonus_score>100</bonus_score>
 			<eventtriggers>
-				<eventtrigger name="quiz-end" />
+				<eventtrigger name="question-created" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionCreated">
+			<name>Fragen erstellen!</name>
+			<description>Erstelle 20 Fragen!</description>
+			<sort_order>20</sort_order>
+			<image>achievement-question-created-20</image>
+			<arguments>
+				<argument name="question-count" value="20" />
+			</arguments>
+			<bonus_score>200</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-created" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionCreated">
+			<name>Fragen erstellen!</name>
+			<description>Erstelle 50 Fragen!</description>
+			<sort_order>50</sort_order>
+			<image>achievement-question-created-50</image>
+			<arguments>
+				<argument name="question-count" value="50" />
+			</arguments>
+			<bonus_score>500</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-created" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionRating">
+			<name>4 Sterne Fragen</name>
+			<description>Du hast 1 Frage mit 4 Sternen (Anzahl Bewertungen mind. 5)</description>
+			<sort_order>1</sort_order>
+			<image>achievement-question-rating4-1</image>
+			<arguments>
+				<argument name="question-count" value="1" />
+				<argument name="min-rating" value="4" />
+				<argument name="min-rating-count" value="5" />
+			</arguments>
+			<bonus_score>20</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-rated" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionRating">
+			<name>4 Sterne Fragen</name>
+			<description>Du hast 2 Fragen mit 4 Sternen (Anzahl Bewertungen mind. 5)</description>
+			<sort_order>2</sort_order>
+			<image>achievement-question-rating4-2</image>
+			<arguments>
+				<argument name="question-count" value="2" />
+				<argument name="min-rating" value="4" />
+				<argument name="min-rating-count" value="5" />
+			</arguments>
+			<bonus_score>40</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-rated" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionRating">
+			<name>4 Sterne Fragen</name>
+			<description>Du hast 5 Fragen mit 4 Sternen (Anzahl Bewertungen mind. 5)</description>
+			<sort_order>5</sort_order>
+			<image>achievement-question-rating4-5</image>
+			<arguments>
+				<argument name="question-count" value="5" />
+				<argument name="min-rating" value="4" />
+				<argument name="min-rating-count" value="5" />
+			</arguments>
+			<bonus_score>100</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-rated" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionRating">
+			<name>4 Sterne Fragen</name>
+			<description>Du hast 10 Fragen mit 4 Sternen (Anzahl Bewertungen mind. 5)</description>
+			<sort_order>10</sort_order>
+			<image>achievement-question-rating4-10</image>
+			<arguments>
+				<argument name="question-count" value="10" />
+				<argument name="min-rating" value="4" />
+				<argument name="min-rating-count" value="5" />
+			</arguments>
+			<bonus_score>200</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-rated" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionRating">
+			<name>4 Sterne Fragen</name>
+			<description>Du hast 20 Fragen mit 4 Sternen (Anzahl Bewertungen mind. 5)</description>
+			<sort_order>20</sort_order>
+			<image>achievement-question-rating4-20</image>
+			<arguments>
+				<argument name="question-count" value="20" />
+				<argument name="min-rating" value="4" />
+				<argument name="min-rating-count" value="5" />
+			</arguments>
+			<bonus_score>400</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-rated" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionRating">
+			<name>4 Sterne Fragen</name>
+			<description>Du hast 50 Fragen mit 4 Sternen (Anzahl Bewertungen mind. 5)</description>
+			<sort_order>50</sort_order>
+			<image>achievement-question-rating4-50</image>
+			<arguments>
+				<argument name="question-count" value="50" />
+				<argument name="min-rating" value="4" />
+				<argument name="min-rating-count" value="5" />
+			</arguments>
+			<bonus_score>1000</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-rated" />
+			</eventtriggers>
+		</achievement>
+				<achievement type="QuestionRating">
+			<name>5 Sterne Fragen</name>
+			<description>Du hast 1 Frage mit 5 Sternen (Anzahl Bewertungen mind. 5)</description>
+			<sort_order>1</sort_order>
+			<image>achievement-question-rating5-1</image>
+			<arguments>
+				<argument name="question-count" value="1" />
+				<argument name="min-rating" value="5" />
+				<argument name="min-rating-count" value="5" />
+			</arguments>
+			<bonus_score>30</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-rated" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionRating">
+			<name>5 Sterne Fragen</name>
+			<description>Du hast 2 Fragen mit 5 Sternen (Anzahl Bewertungen mind. 5)</description>
+			<sort_order>2</sort_order>
+			<image>achievement-question-rating5-2</image>
+			<arguments>
+				<argument name="question-count" value="2" />
+				<argument name="min-rating" value="5" />
+				<argument name="min-rating-count" value="5" />
+			</arguments>
+			<bonus_score>60</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-rated" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionRating">
+			<name>5 Sterne Fragen</name>
+			<description>Du hast 5 Fragen mit 5 Sternen (Anzahl Bewertungen mind. 5)</description>
+			<sort_order>5</sort_order>
+			<image>achievement-question-rating5-5</image>
+			<arguments>
+				<argument name="question-count" value="5" />
+				<argument name="min-rating" value="5" />
+				<argument name="min-rating-count" value="5" />
+			</arguments>
+			<bonus_score>150</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-rated" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionRating">
+			<name>5 Sterne Fragen</name>
+			<description>Du hast 10 Fragen mit 5 Sternen (Anzahl Bewertungen mind. 5)</description>
+			<sort_order>10</sort_order>
+			<image>achievement-question-rating5-10</image>
+			<arguments>
+				<argument name="question-count" value="10" />
+				<argument name="min-rating" value="5" />
+				<argument name="min-rating-count" value="5" />
+			</arguments>
+			<bonus_score>300</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-rated" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionRating">
+			<name>5 Sterne Fragen</name>
+			<description>Du hast 20 Fragen mit 5 Sternen (Anzahl Bewertungen mind. 5)</description>
+			<sort_order>20</sort_order>
+			<image>achievement-question-rating5-20</image>
+			<arguments>
+				<argument name="question-count" value="20" />
+				<argument name="min-rating" value="5" />
+				<argument name="min-rating-count" value="5" />
+			</arguments>
+			<bonus_score>600</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-rated" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionRating">
+			<name>5 Sterne Fragen</name>
+			<description>Du hast 50 Fragen mit 5 Sternen (Anzahl Bewertungen mind. 5)</description>
+			<sort_order>50</sort_order>
+			<image>achievement-question-rating5-50</image>
+			<arguments>
+				<argument name="question-count" value="50" />
+				<argument name="min-rating" value="5" />
+				<argument name="min-rating-count" value="5" />
+			</arguments>
+			<bonus_score>1500</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-rated" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 1 Frage mit Schwierigkeit "normal" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>1</sort_order>
+			<image>achievement-question-difficulty-normal-1</image>
+			<arguments>
+				<argument name="question-count" value="1" />
+				<argument name="min-difficulty" value="26" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>30</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 2 Fragen mit Schwierigkeit "normal" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>2</sort_order>
+			<image>achievement-question-difficulty-normal-2</image>
+			<arguments>
+				<argument name="question-count" value="2" />
+				<argument name="min-difficulty" value="26" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>60</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 5 Fragen mit Schwierigkeit "normal" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>5</sort_order>
+			<image>achievement-question-difficulty-normal-5</image>
+			<arguments>
+				<argument name="question-count" value="5" />
+				<argument name="min-difficulty" value="26" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>150</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 10 Fragen mit Schwierigkeit "normal" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>10</sort_order>
+			<image>achievement-question-difficulty-normal-10</image>
+			<arguments>
+				<argument name="question-count" value="10" />
+				<argument name="min-difficulty" value="26" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>300</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 20 Fragen mit Schwierigkeit "normal" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>20</sort_order>
+			<image>achievement-question-difficulty-normal-20</image>
+			<arguments>
+				<argument name="question-count" value="20" />
+				<argument name="min-difficulty" value="26" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>600</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 50 Fragen mit Schwierigkeit "normal" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>50</sort_order>
+			<image>achievement-question-difficulty-normal-50</image>
+			<arguments>
+				<argument name="question-count" value="50" />
+				<argument name="min-difficulty" value="26" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>1500</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+				<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 1 Frage mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>1</sort_order>
+			<image>achievement-question-difficulty-moderate-1</image>
+			<arguments>
+				<argument name="question-count" value="1" />
+				<argument name="min-difficulty" value="51" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>40</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 2 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>2</sort_order>
+			<image>achievement-question-difficulty-moderate-2</image>
+			<arguments>
+				<argument name="question-count" value="2" />
+				<argument name="min-difficulty" value="51" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>80</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 5 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>5</sort_order>
+			<image>achievement-question-difficulty-moderate-5</image>
+			<arguments>
+				<argument name="question-count" value="5" />
+				<argument name="min-difficulty" value="51" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>200</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 10 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>10</sort_order>
+			<image>achievement-question-difficulty-moderate-10</image>
+			<arguments>
+				<argument name="question-count" value="10" />
+				<argument name="min-difficulty" value="51" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>400</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 20 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>20</sort_order>
+			<image>achievement-question-difficulty-moderate-20</image>
+			<arguments>
+				<argument name="question-count" value="20" />
+				<argument name="min-difficulty" value="51" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>800</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 50 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>50</sort_order>
+			<image>achievement-question-difficulty-moderate-50</image>
+			<arguments>
+				<argument name="question-count" value="50" />
+				<argument name="min-difficulty" value="51" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>2000</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+				<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 1 Frage mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>1</sort_order>
+			<image>achievement-question-difficulty-difficult-1</image>
+			<arguments>
+				<argument name="question-count" value="1" />
+				<argument name="min-difficulty" value="76" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>50</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 2 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>2</sort_order>
+			<image>achievement-question-difficulty-difficult-2</image>
+			<arguments>
+				<argument name="question-count" value="2" />
+				<argument name="min-difficulty" value="76" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>100</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 5 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>5</sort_order>
+			<image>achievement-question-difficulty-difficult-5</image>
+			<arguments>
+				<argument name="question-count" value="5" />
+				<argument name="min-difficulty" value="76" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>250</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 10 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>10</sort_order>
+			<image>achievement-question-difficulty-difficult-10</image>
+			<arguments>
+				<argument name="question-count" value="10" />
+				<argument name="min-difficulty" value="76" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>500</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 20 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>20</sort_order>
+			<image>achievement-question-difficulty-difficult-20</image>
+			<arguments>
+				<argument name="question-count" value="20" />
+				<argument name="min-difficulty" value="76" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>1000</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
+			</eventtriggers>
+		</achievement>
+		<achievement type="QuestionDifficulty">
+			<name>Normale Fragen</name>
+			<description>Du hast 50 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
+			<sort_order>50</sort_order>
+			<image>achievement-question-difficulty-difficult-50</image>
+			<arguments>
+				<argument name="question-count" value="50" />
+				<argument name="min-difficulty" value="76" />
+				<argument name="min-questionperformance-count" value="5" />
+			</arguments>
+			<bonus_score>2500</bonus_score>
+			<eventtriggers>
+				<eventtrigger name="question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 	</achievements>
 	<ranks>
 		<rank name="Neuling" threshold="0" image="newbie" />
-		<rank name="Besucher" threshold="1000" image="visitor" />
-		<rank name="Einsteiger" threshold="2500" image="beginner" />
-		<rank name="Aufsteiger" threshold="5000" image="climber" />
-		<rank name="Fragekenner" threshold="8000" image="adept" />
-		<rank name="Alleskönner" threshold="12000" image="all-rounder" />
-		<rank name="Profi" threshold="18000" image="pro" />
-		<rank name="Veteran" threshold="26000" image="veteran" />
-		<rank name="Meister" threshold="34000" image="master" />
-		<rank name="Baron" threshold="44000" image="baron" />
-		<rank name="Legende" threshold="60000" image="legend" />
+		<rank name="Besucher" threshold="150" image="visitor" />
+		<rank name="Einsteiger" threshold="400" image="beginner" />
+		<rank name="Aufsteiger" threshold="850" image="climber" />
+		<rank name="Fragekenner" threshold="1300" image="adept" />
+		<rank name="Alleskönner" threshold="2000" image="all-rounder" />
+		<rank name="Profi" threshold="3000" image="pro" />
+		<rank name="Veteran" threshold="4300" image="veteran" />
+		<rank name="Meister" threshold="5800" image="master" />
+		<rank name="Baron" threshold="7400" image="baron" />
+		<rank name="Legende" threshold="10000" image="legend" />
 	</ranks>
 	<messages>
 		<message>
