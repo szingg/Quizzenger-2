@@ -160,6 +160,26 @@ if(isset($_POST['install'])){
 	}
 	echo("<p style=\"color:green;\">Messages successfully installed!</p><br>");
 
+	if(! isset($xml->settings, $xml->settings[0])){
+		throwMalformedXMLException();
+	}
+
+	foreach ($xml->settings[0]->setting as $setting){
+		if(! isset($setting['name'], $setting['value'])){
+			throwMalformedXMLException();
+		}
+		$name = '"'.$link->real_escape_string($setting['name']).'"';
+		$value = '"'.$link->real_escape_string($setting['value']).'"';
+
+		$stmt = "INSERT INTO settings (name, value) VALUES ($name, $value)";
+		$result = $link->query($stmt);
+		if($result){}
+		else{
+			throwSqlInsertException($link, $stmt);
+		}
+	}
+	echo("<p style=\"color:green;\">Settings successfully installed!</p><br>");
+
 	echo("<hr>");
 	echo"<b>Remove following files: settings.xml, installerSettings.php!</b>";
 

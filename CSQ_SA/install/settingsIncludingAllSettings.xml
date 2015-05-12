@@ -437,4 +437,8 @@
 			<text>Fragen können über den Fragepool zum Quiz hinzugefügt werden</text>
 		</message>
 	</messages>
+	<settings>
+		<setting name="q.scoring.moderator-threshold" value="1000" />
+		<setting name="q.scoring.producer-multiplier" value="1.75" />
+	</settings>
 </quizzenger>
