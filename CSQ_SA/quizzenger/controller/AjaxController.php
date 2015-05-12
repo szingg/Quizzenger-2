@@ -132,6 +132,7 @@ namespace quizzenger\controller {
 					ModelCollection::gameModel()->userLeaveGame($_SESSION['user_id'], $this->request['gameid']);
 					break;
 				case 'startGame' :
+					//can only be called from GameHost
 					$oldValue = ModelCollection::gameModel()->startGame($this->request['gameid']);
 					if(! isset($oldValue)){ //first time gameend was set
 						EventController::fire('game-start', $_SESSION['user_id'], [
@@ -221,9 +222,12 @@ namespace quizzenger\controller {
 		private function setGameend($gameid){
 			$oldValue = ModelCollection::gameModel()->setGameend($gameid);
 			if(! isset($oldValue)){ //first time gameend was set
-				EventController::fire('game-end', $_SESSION['user_id'], [
-				'gameid' => $gameid
-				]);
+				$members = ModelCollection::gameModel()->getGameMembersByGameId($gameid);
+				foreach($members as $member){
+					EventController::fire('game-end', $member['user_id'], [
+					'gameid' => $gameid
+					]);
+				}
 			}
 		}
 

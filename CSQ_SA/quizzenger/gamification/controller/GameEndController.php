@@ -1,8 +1,7 @@
 <?php
 
 namespace quizzenger\gamification\controller {
-	use \stdClass as stdClass;
-	use \SplEnum as SplEnum;
+	use \quizzenger\view\View as View;
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
 	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
@@ -62,7 +61,7 @@ namespace quizzenger\gamification\controller {
 		}
 
 		private function loadReportView(){
-			$reportView = new \View();
+			$reportView = new View();
 			$reportView->setTemplate ( 'gamereport' );
 			/*
 			$reportView->assign('gameinfo', $this->gameinfo);

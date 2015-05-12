@@ -10,6 +10,10 @@ $(function(){
 		});
 	}, 3000);
 
+	$(".panel-heading.clickable").click(function(){
+			$(this).parent().find('.panel-collapse.collapse').collapse("toggle");
+		});
+
 	$('#quiz_generator_form_count').on('change', function() {
 		$('#quiz_generator_form_count_text').val($(this).val());
 	});
@@ -139,6 +143,12 @@ $(function(){
 		],
 	});
 	$('#tableOpenGames').DataTable({
+		responsive: true
+	});
+	$('#tableHostedGames').DataTable({
+		responsive: true
+	});
+	$('#tableParticipatedGames').DataTable({
 		responsive: true
 	});
 	$('#tableActiveGames').DataTable({

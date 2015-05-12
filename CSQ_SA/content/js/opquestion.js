@@ -15,7 +15,7 @@ function OpQuestion(){
 	}
 
 	var togglePanelsEvent = function(){
-		$(".panel-heading.clickable").click(function(){
+		$(".panel-heading.clickable-toggle").click(function(){
 			$(".panel-collapse.collapse").collapse("toggle");
 		});
 	}

@@ -1,9 +1,6 @@
 <?php
 
 namespace quizzenger\gamification\controller {
-	use \stdClass as stdClass;
-	use \SplEnum as SplEnum;
-	use \mysqli as mysqli;
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
 	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
@@ -11,6 +8,7 @@ namespace quizzenger\gamification\controller {
 	use \quizzenger\controlling\EventController as EventController;
 	use \quizzenger\messages\MessageQueue as MessageQueue;
 	use \quizzenger\gamification\model\GameModel as GameModel;
+	use \quizzenger\view\View as View;
 
 	class GameSolutionController{
 		private $view;
@@ -64,7 +62,7 @@ namespace quizzenger\gamification\controller {
 		}
 
 		private function loadSolutionView(){
-			$solutionView = new \View();
+			$solutionView = new View();
 			$solutionView->setTemplate ( 'solution' );
 
 			$questionID = $this->gamequestions[$this->gamecounter];
@@ -134,7 +132,7 @@ namespace quizzenger\gamification\controller {
 		}
 
 		private function loadReportView(){
-			$reportView = new \View();
+			$reportView = new View();
 			$reportView->setTemplate ( 'gamereport' );
 			/*
 			$reportView->assign('gameinfo', $this->gameinfo);

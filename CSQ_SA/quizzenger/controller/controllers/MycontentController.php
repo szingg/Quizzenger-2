@@ -37,8 +37,14 @@ namespace quizzenger\controller\controllers {
 			$gameView = new View();
 			$gameView->setTemplate ( 'gamelist' );
 
-			$games = ModelCollection::gameModel()->getGamesByUser($_SESSION['user_id']);
-			$gameView->assign( 'games', $games);
+			//$games = ModelCollection::gameModel()->getGamesByUser($_SESSION['user_id']);
+			//$gameView->assign( 'games', $games);
+
+			$hostedGames = ModelCollection::gameModel()->getHostedGamesByUser($_SESSION['user_id']);
+			$gameView->assign( 'hostedGames', $hostedGames);
+
+			$participatedGames = ModelCollection::gameModel()->getParticipatedGamesByUser($_SESSION['user_id']);
+			$gameView->assign( 'participatedGames', $participatedGames);
 
 			$this->view->assign ( 'gamelist', $gameView->loadTemplate() );
 		}

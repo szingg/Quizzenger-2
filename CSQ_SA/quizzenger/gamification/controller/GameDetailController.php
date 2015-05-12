@@ -10,6 +10,7 @@ namespace quizzenger\gamification\controller {
 	use \quizzenger\messages\MessageQueue as MessageQueue;
 	use \quizzenger\utilities\FormatUtility as FormatUtility;
 	use \quizzenger\gamification\model\GameModel as GameModel;
+use quizzenger\model\ModelCollection;
 
 
 	class GameDetailController{
@@ -62,14 +63,10 @@ namespace quizzenger\gamification\controller {
 		 */
 		private function checkPermission(){
 			PermissionUtility::checkLogin();
-			if($this->isGameOwner($this->gameinfo['owner_id']) == false){
+			if(ModelCollection::gameModel()->isGameMember($_SESSION['user_id'], $this->gameid) == false){
 				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_not_authorized');
 				NavigationUtility::redirectToErrorPage();
 			}
-		}
-
-		private function isGameOwner($owner_id){
-			return $owner_id == $_SESSION['user_id'];
 		}
 
 

@@ -1,11 +1,8 @@
 <?php
 	define("QUIZZENGER_ROOT", dirname(__FILE__));
 
-	require_once 'quizzenger/autoloader.php';
-
 	use \quizzenger\controller\Controller as Controller;
 	use \quizzenger\controller\AjaxController as AjaxController;
-
 
 	load_includes();
 	https_only();
@@ -24,6 +21,7 @@
 	}
 
 	echo $controller->render();
+
 
 
 	// -----------------------

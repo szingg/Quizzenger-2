@@ -6,7 +6,8 @@ namespace quizzenger\gamification\model {
 	use \quizzenger\logging\Log as log;
 	use \SqlHelper as SqlHelper;
 
-	/*	@author Simon Zingg
+	/**
+	 * 	@author Simon Zingg
 	 *	The GameModel provides data which is used for games.
 	 *	Each method which modifies the database (INSERT, UPDATE, DELETE) checks if input parameters are set.
 	 */
@@ -17,7 +18,7 @@ namespace quizzenger\gamification\model {
 			$this->mysqli = $mysqli;
 		}
 
-		/*
+		/**
 		 * Adds a new game to a given quiz.
 		 * @precondition Please check if current user has permission to generate a game for this quiz.
 		 * @param $quiz_id Quiz Id
@@ -35,7 +36,7 @@ namespace quizzenger\gamification\model {
 			}
 		}
 
-		/*
+		/**
 		 * Removes a game
 		 * @precondition Please check if current user has permission to remove this game.
 		 * @param $game_id Game Id
@@ -44,7 +45,7 @@ namespace quizzenger\gamification\model {
 		public function removeGame($game_id){
 			if(isset($game_id) && $this->userIDhasPermissionOnGameId($_SESSION['user_id'], $game_id)){
 				log::info('Removing Game with ID :'.$game_id);
-				$this->mysqli->s_query('DELETE FROM gamesession WHERE id = ?',['i'], [$game_id]);	
+				$this->mysqli->s_query('DELETE FROM gamesession WHERE id = ?',['i'], [$game_id]);
 				return true;
 			}
 			else{
@@ -53,7 +54,7 @@ namespace quizzenger\gamification\model {
 			}
 		}
 
-		/*
+		/**
 		 * Gets the information which normally should be stored in the $_SESSION. This methode can be used to restore gamesessions for users
 		 * @param $user_id User Id
 		 * @param $game_id Game Id
@@ -76,7 +77,7 @@ namespace quizzenger\gamification\model {
 		}
 
 
-		/*
+		/**
 		 * Starts the Game
 		 * This method checks if user has permission on this game
 		 * The starttime can only once be set
@@ -97,62 +98,9 @@ namespace quizzenger\gamification\model {
 				log::warning('Unauthorized try to start game id :'.$game_id);
 				return false;
 			}
-
-/*
-				if ($result) {
-					do {
-						if ($result = $mysqli->store_result()) {
-							$obj = $result->fetch_object();
-							//while ($row = $result->fetch_row()) {
-							//	$bla = $row[0]; //printf("%s\n", $row[0]);
-							//}
-							//$result->free();
-							$x = 1;
-						}
-						if ($mysqli->more_results()) {
-							//printf("-----------------\n");
-						}
-					} while ($mysqli->next_result());
-				} */
-
-				//$result = $this->mysqli->s_query(' UPDATE gamesession SET starttime = CURRENT_TIMESTAMP WHERE id=? ; '
-				//		.' SELECT starttime FROM gamesession; ',['i','i'],[$game_id, $game_id]);
-				/*
-				 *
-				 * $result = $this->mysqli->s_query('SET @oldValue := 0;'
-						.' SELECT @oldValue := starttime FROM gamesession WHERE id=? ;'
-						.' UPDATE gamesession SET starttime = CURRENT_TIMESTAMP WHERE id=? ; '
-						.' SELECT @oldValue AS starttime; ',['i','i'],[$game_id, $game_id]);
-
-
-			funktioniert:
-
-				 * SET @oldValue := 0;
- SELECT @oldValue := starttime FROM gamesession WHERE id = 88;
- UPDATE gamesession SET starttime = CURRENT_TIMESTAMP WHERE id = 88;
- SELECT @oldValue AS starttime;
-
- stored function - return value ist falsch.
-
- DELIMITER |
-DROP FUNCTION IF EXISTS setGameend;
-CREATE FUNCTION setGameend(gameid int)
-  RETURNS TIMESTAMP
-  DETERMINISTIC
-BEGIN
-  DECLARE oldValue TIMESTAMP DEFAULT NULL;
-
-	SELECT old.endtime INTO oldValue FROM gamesession old WHERE old.id = gameid
-	UPDATE gamesession g
-	SET g.endtime =
-	 CASE WHEN g.endtime IS NULL THEN CURRENT_TIMESTAMP ELSE 	g.endtime END
-	WHERE  id = gameid;
-
-  RETURN oldValue;
-END | */
 		}
 
-		/*
+		/**
 		 * Sets the endtime of a game
 		 * This method checks if user has permission on this game
 		 * The endtime can only be set once and is not bigger than the calculated endtime (starttime+duration)
@@ -175,7 +123,7 @@ END | */
 			}
 		}
 
-		/*
+		/**
 		 * @return Returns username of the gameowner if successful, else null
 		 */
 		public function getGameOwnerByGameId($game_id){
@@ -187,7 +135,7 @@ END | */
 			else return null;
 		}
 
-		/*
+		/**
 		 * Gets all members of a game
 		 */
 		public function getGameMembersByGameId($game_id){
@@ -195,12 +143,15 @@ END | */
 			return $this->mysqli->getQueryResultArray($result);
 		}
 
+		/**
+		 * Tells weather the user is a member of the game.
+		 */
 		public function isGameMember($user_id, $game_id){
 			$result = $this->mysqli->s_query("SELECT * FROM gamemember WHERE gamesession_id = ? AND user_id = ?",['i','i'],[$game_id, $user_id]);
 			return $result->num_rows > 0;
 		}
 
-		/*
+		/**
 		 * Gets game info. For more information about the columns consult the query
 		 */
 		public function getGameInfoByGameId($game_id){
@@ -211,10 +162,10 @@ END | */
 			return $this->mysqli->getSingleResult($result);
 		}
 
-		/*
-		 * Gets all games of a user
+		/**
+		 * Gets all games where a user is game host
 		 */
-		public function getGamesByUser($user_id){
+		public function getHostedGamesByUser($user_id){
 			$result = $this->mysqli->s_query('SELECT g.id, g.name, session.members, g.starttime, g.duration FROM gamesession g '.
 					'JOIN quiz q ON g.quiz_id = q.id '.
 					'LEFT JOIN (SELECT gamesession_id, COUNT(user_id) AS members FROM gamemember '.
@@ -223,7 +174,18 @@ END | */
 			return $this->mysqli->getQueryResultArray($result);
 		}
 
-		/*
+		/**
+		 * Gets all games where a user is game member
+		 */
+		public function getParticipatedGamesByUser($user_id){
+			$result = $this->mysqli->s_query('SELECT g.id, g.name, session.members, g.starttime, g.duration FROM gamesession g '.
+					'LEFT JOIN (SELECT gamesession_id, COUNT(user_id) AS members FROM gamemember '.
+					'GROUP BY gamesession_id) AS session ON g.id = session.gamesession_id '.
+					'WHERE g.id IN (SELECT gamesession_id FROM gamemember WHERE user_id = ?) ',['i'],[$user_id]);
+			return $this->mysqli->getQueryResultArray($result);
+		}
+
+		/**
 		 * Gets all question details for a game. Columns are questiontext, answeredTotal, answeredCorrect, answeredWrong, weight
 		 */
 		public function getQuestionDetailsByGame($game_id){
@@ -240,41 +202,9 @@ END | */
 					.' WHERE qtq.id = ?'
 					.' GROUP BY qtq.question_id', ['i','i'], [$game_id, $game_id]);
 			return $this->mysqli->getQueryResultArray($result);
-
-			/*
-			 *
-			 * .' RIGHT JOIN ('
-						.' SELECT gamesession.id, gamesession.quiz_id, SUM(weight) AS totalQuestions '
-						.' FROM gamesession, quiztoquestion'
-						.' WHERE gamesession.quiz_id = quiztoquestion.quiz_id AND gamesession.id = ?) AS total'
-					.' ON total.id = qp.gamesession.id'
-
-
-			 * $result = $this->mysqli->s_query('SELECT @rank:=@rank+1 AS rank, SUM(weight) AS questionAnswered,'
-					.' SUM(CASE WHEN questionCorrect = 100 THEN weight ELSE 0 END) AS questionAnsweredCorrect,'
-					.' total.totalQuestions, time.totalTimeInSec, time.totalTimeInSec/COUNT(q.gamesession_id) AS timePerQuestion,'
-					.' q.user_id, u.username FROM gamemember m'
-					.' LEFT JOIN questionperformance q ON q.gamesession_id = m.gamesession_id AND q.user_id = m.user_id'
-					.' LEFT JOIN user u ON u.id = m.user_id'
-					.' LEFT JOIN ('
-						.' SELECT @rank := 0, gamesession.id, gamesession.quiz_id, SUM(weight) AS totalQuestions '
-						.' FROM gamesession, quiztoquestion'
-						.' WHERE gamesession.quiz_id = quiztoquestion.quiz_id AND gamesession.id = ?) AS total'
-					.' ON total.id = m.gamesession_id'
-					.' LEFT JOIN quiztoquestion qq ON qq.quiz_id = total.quiz_id AND qq.question_id = q.question_id'
-					.' LEFT JOIN ('
-						.' SELECT user_id, TIMESTAMPDIFF(SECOND,g.has_started,MAX(timestamp)) AS totalTimeInSec'
-						.' FROM questionperformance q, gamesession g'
-						.' WHERE q.gamesession_id = g.id AND q.gamesession_id = ?'
-						.' GROUP BY q.user_id) AS time'
-					.' ON time.user_id = m.user_id'
-					.' WHERE m.gamesession_id = ?'
-					.' GROUP BY m.user_id'
-					.' ORDER BY questionAnsweredCorrect DESC',['i','i','i'],[$game_id,$game_id,$game_id]);
-			 */
 		}
 
-		/*
+		/**
 		 * Gets all open games.
 		 */
 		public function getOpenGames(){
@@ -287,7 +217,7 @@ END | */
 			return $this->mysqli->getQueryResultArray($result);
 		}
 
-		/*
+		/**
 		 * Gets all active games by user id
 		 */
 		public function getActiveGamesByUser($user_id){
@@ -302,7 +232,7 @@ END | */
 			return $this->mysqli->getQueryResultArray($result);
 		}
 
-		/*
+		/**
 		 * User join a game.
 		 * @return Returns 0 if successful. Returns null when no input parameters are passed.
 		 */
@@ -312,7 +242,8 @@ END | */
 			return $this->mysqli->s_insert('INSERT IGNORE INTO gamemember (gamesession_id, user_id) VALUES (?, ?)',['i','i'],[$game_id, $user_id]);
 		}
 
-		/*
+		/**
+		 * User leave a game
 		* @return Always returns false, because query didn't get any results when delete
 		*/
 		public function userLeaveGame($user_id, $game_id){
@@ -321,7 +252,7 @@ END | */
 			return $this->mysqli->s_query("DELETE FROM gamemember WHERE gamesession_id=? AND user_id=?",['i','i'],[$game_id, $user_id]);
 		}
 
-		/*
+		/**
 		 * @return Returns true when starttime, otherwise false
 		 */
 		public function gameHasStarted($game_id){
@@ -333,7 +264,7 @@ END | */
 			else return false;
 		}
 
-		/*
+		/**
 		 * Checks if user is permitted to modify the given game
 		 * @return Returns true if permitted, else false
 		 */
@@ -343,7 +274,7 @@ END | */
 			else return $gameOwner == $user_id;
 		}
 
-		/*
+		/**
 		 * Gets the game report sorted by rank.
 		 * @return array with columns questionAnswered, questionAnsweredCorrect, totalQuestions, totalTimeInSec, timePerQuestion, user_id, username
 		 */
@@ -383,77 +314,6 @@ END | */
 					.' as subQuery'
 					.' ORDER BY questionAnsweredCorrect DESC, timePerQuestion ASC) as Query',['i','i','i'],[$game_id,$game_id,$game_id]);
 			return $this->mysqli->getQueryResultArray($result);
-			/*
-					in der aktuellen Version wurde angepasst: rank korrigiert, user_id, totalTimeInSec, timePerQuestion funktioniert jetzt auch ohne questionperformance
-					alte Version:
-				$result = $this->mysqli->s_query('SELECT @rank:=@rank+1 AS rank, SUM(CASE WHEN weight IS NOT NULL THEN weight ELSE 0 END) AS questionAnswered,'
-					.' SUM(CASE WHEN questionCorrect = 100 THEN weight ELSE 0 END) AS questionAnsweredCorrect,'
-					.' total.totalQuestions, time.totalTimeInSec, time.totalTimeInSec/COUNT(q.gamesession_id) AS timePerQuestion,'
-					.' u.user_id, u.username FROM gamemember m'
-					.' LEFT JOIN questionperformance q ON q.gamesession_id = m.gamesession_id AND q.user_id = m.user_id'
-					.' LEFT JOIN user u ON u.id = m.user_id'
-					.' LEFT JOIN ('
-						.' SELECT @rank := 0, gamesession.id, gamesession.quiz_id, SUM(weight) AS totalQuestions '
-						.' FROM gamesession, quiztoquestion'
-						.' WHERE gamesession.quiz_id = quiztoquestion.quiz_id AND gamesession.id = ?) AS total'
-					.' ON total.id = m.gamesession_id'
-					.' LEFT JOIN quiztoquestion qq ON qq.quiz_id = total.quiz_id AND qq.question_id = q.question_id'
-					.' LEFT JOIN ('
-						.' SELECT user_id, TIMESTAMPDIFF(SECOND,g.starttime,(CASE WHEN g.endtime IS NOT NULL '
-						.' THEN g.endtime ELSE MAX(timestamp) END)) AS totalTimeInSec'
-						.' FROM questionperformance q, gamesession g'
-						.' WHERE q.gamesession_id = g.id AND q.gamesession_id = ?'
-						.' GROUP BY q.user_id) AS time'
-					.' ON time.user_id = m.user_id'
-					.' WHERE m.gamesession_id = ?'
-					.' GROUP BY m.user_id'
-					.' ORDER BY questionAnsweredCorrect DESC',['i','i','i'],[$game_id,$game_id,$game_id]);
-			return $this->mysqli->getQueryResultArray($result);
-
-			 * jetzt mit totalTime = gameFinished
-			 * TIMESTAMPDIFF(SECOND,g.has_started,(CASE WHEN g.is_finished IS NOT NULL THEN g.is_finished ELSE MAX(timestamp) END)) AS totalTimeInSec
-			 *
-			 * SELECT @rank:=@rank+1 AS rank, SUM(weight) AS questionAnswered, SUM(CASE WHEN questionCorrect = 100 THEN weight ELSE 0 END) AS questionAnsweredCorrect, total.totalQuestions, time.totalTimeInSec, time.totalTimeInSec/COUNT(q.gamesession_id) AS timePerQuestion, q.user_id, u.username FROM gamemember m LEFT JOIN questionperformance q ON q.gamesession_id = m.gamesession_id AND q.user_id = m.user_id LEFT JOIN user u ON u.id = m.user_id LEFT JOIN ( SELECT @rank := 0, gamesession.id, gamesession.quiz_id, SUM(weight) AS totalQuestions  FROM gamesession, quiztoquestion WHERE gamesession.quiz_id = quiztoquestion.quiz_id AND gamesession.id = 37)
-AS total ON total.id = m.gamesession_id LEFT JOIN quiztoquestion qq ON qq.quiz_id = total.quiz_id AND qq.question_id = q.question_id LEFT JOIN ( SELECT user_id, TIMESTAMPDIFF(SECOND,g.has_started,(CASE WHEN g.is_finished IS NOT NULL THEN g.is_finished ELSE MAX(timestamp) END)) AS totalTimeInSec FROM questionperformance q, gamesession g WHERE q.gamesession_id = g.id AND q.gamesession_id = 37
-GROUP BY q.user_id) AS time ON time.user_id = m.user_id WHERE m.gamesession_id = 37 GROUP BY m.user_id  ORDER BY questionAnsweredCorrect DESC
-
-			 ............................
-			 jetzt mit gewichteten punkten
-
-			select SUM(weight) as answered, SUM(CASE WHEN questionCorrect = 100 THEN weight ELSE 0 END) as answerCorrect, total.totalQuestion, time.totalTimeInSec, time.totalTimeInSec/count(q.gamesession_id) as timePerQuestion, m.user_id, u.username from gamemember m
-			left join questionperformance q on q.gamesession_id = m.gamesession_id and q.user_id = m.user_id
-			left join user u on u.id = m.user_id
-			left join (select gamesession.id, gamesession.quiz_id, sum(weight) as totalQuestion from gamesession, quiztoquestion where gamesession.quiz_id = quiztoquestion.quiz_id and gamesession.id = 37) as total on m.gamesession_id = total.id
-			left join quiztoquestion qq on qq.quiz_id = total.quiz_id and qq.question_id = q.question_id
-			left join (select  user_id, max(timestamp)-g.has_started as totalTimeInSec from questionperformance q, gamesession g
-			where q.gamesession_id = g.id and q.gamesession_id = 37
-			group by  q.user_id) as time on time.user_id = m.user_id
-			where m.gamesession_id = 37
-			group by m.user_id
-
-
-			 neue abfrage
-			 select count(q.gamesession_id) as answered, count(CASE WHEN questionCorrect = 100 THEN 1 END) as answerCorrect, total.totalQuestion, time.totalTimeInSec, time.totalTimeInSec/count(q.gamesession_id) as timePerQuestion, m.user_id, u.username from gamemember m
-			left join questionperformance q on q.gamesession_id = m.gamesession_id
-			left join user u on u.id = m.user_id
-			left join (select gamesession.id, count(question_id) as totalQuestion from gamesession, quiztoquestion where gamesession.quiz_id = quiztoquestion.quiz_id and gamesession.id = 20) as total on m.gamesession_id = total.id
-			left join (select  user_id, max(timestamp)-g.has_started as totalTimeInSec from questionperformance q, gamesession g
-			where q.gamesession_id = g.id and q.gamesession_id = 20
-			group by  q.user_id) as time on time.user_id = m.user_id
-			where m.gamesession_id = 20
-			group by m.user_id
-
-			alte abfrage
-			select count(gamesession_id) as answered, count(CASE WHEN questionCorrect = 100 THEN 1 END) as answerCorrect, total.totalQuestion, time.totalTimeInSec, time.totalTimeInSec/count(gamesession_id) as timePerQuestion, q.user_id, u.username from questionperformance q
-			join user u on u.id = q.user_id
-			join (select gamesession.id, count(question_id)as totalQuestion from gamesession, quiztoquestion where gamesession.quiz_id = quiztoquestion.quiz_id and gamesession.id = 37) as total on q.gamesession_id = total.id
-			join (select  user_id, max(timestamp)-g.has_started as totalTimeInSec from questionperformance q, gamesession g
-			where q.gamesession_id = g.id and q.gamesession_id = 37
-			group by  q.user_id) as time on time.user_id = q.user_id
-			where q.gamesession_id = 37
-			group by q.user_id
-
-			 */
 		}
 
 	} // class GameModel

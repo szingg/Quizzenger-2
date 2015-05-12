@@ -146,9 +146,9 @@
 	<?php if(isset($_SESSION['user_id']) && $user['id'] == $_SESSION['user_id'] && $GLOBALS['loggedin']): ?>
 		<div class="panel panel-default">
 			<div class="panel-heading clickable">
-				<a data-toggle="collapse" data-target="#collapseChangePasswort">
+				 <!-- <a data-toggle="collapse" data-target="#collapseChangePassword" href="#collapseChangePassword">  -->
 					<strong>Passwort ändern</strong>
-				</a>
+				<!--  </a>  -->
 			</div>
 			<div id="collapseChangePassword" class="panel-collapse collapse">
 				<div class="panel-body">
@@ -171,9 +171,9 @@
 		</div>
 		<div class="panel panel-default">
 			<div class="panel-heading clickable">
-				<a data-toggle="collapse" data-target="#collapseMyContent">
+				<!--  <a data-toggle="collapse" data-target="#collapseMyContent" href="#collapseMyContent">  -->
 					<strong>Meine Inhalte</strong>
-				</a>
+				<!-- </a>  -->
 			</div>
 			<div id="collapseMyContent" class="panel-collapse collapse">
 				<div class="panel-body">

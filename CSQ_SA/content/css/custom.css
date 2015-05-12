@@ -155,7 +155,7 @@ This supersedes the above due to its ordering. */
 	margin: 0;
 }
 
-.clickable:hover {
+.clickable:hover, .clickable-toggle:hover {
 	color: #2a2a2a;
 	cursor:pointer;
 	text-decoration: underline;

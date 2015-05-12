@@ -205,7 +205,7 @@
 			           <div class="">
 			            	<div class="panel panel-default no-margin">
 				            <!-- <a data-toggle="collapse" data-target="#collapseEmbed" href="#collapseOne"> -->
-									<div class="panel-heading clickable">
+									<div class="panel-heading clickable-toggle">
 										<h4 class="panel-title">Video einbetten</h4>
 									</div>
 								 <!-- </a> -->
@@ -222,7 +222,7 @@
 				            	</div>
 				            </div>
 				            <div class="panel panel-default no-margin">
-			               		<div class="panel-heading clickable">
+			               		<div class="panel-heading clickable-toggle">
 			            			<h4 class="panel-title">Bild hochladen</h4>
 			            		</div>
 				            	<div class="panel-collapse collapse">
