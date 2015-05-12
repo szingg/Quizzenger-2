@@ -39,10 +39,13 @@ class UserScoreModel {
 			. '     u.consumer_score AS consumer_score,'
 			. '     (SELECT COUNT(*) FROM userscore AS us'
 			. '         WHERE us.category_id=c.id) AS user_count,'
-			. '     (SELECT COUNT(*) FROM userscore AS us'
+			. '     (SELECT COUNT(*) as user_rank FROM userscore AS us'
+			. '			JOIN user u ON us.user_id = u.id'
 			. '         WHERE us.category_id=u.category_id'
 			. '             AND us.producer_score*?+us.consumer_score'
-			. '                 >=u.producer_score*?+u.consumer_score) AS user_rank'
+			. '                 >=u.producer_score*?+u.consumer_score'
+			. ' 		ORDER BY user_rank ASC, u.username ASC'
+			. '	) AS user_rank'
 			. '     FROM userscore AS u'
 			. '     LEFT JOIN category AS c ON (c.id=u.category_id)'
 			. '     WHERE u.user_id=? AND (u.producer_score>0 OR u.consumer_score>0)'
@@ -84,6 +87,7 @@ class UserScoreModel {
   				.' GROUP BY category_id'
 			.' ) b ON b.category_id = a.category_id'
  			.' WHERE rank >= user_rank-5 AND rank <= user_rank+5'
+			.' ORDER BY rank ASC, username ASC'
 		,['i','i','i'],[$userId, $userId, $userId]);
 		$resultArray = [];
 		while ( $row = $result->fetch_assoc () ) {
@@ -124,11 +128,11 @@ class UserScoreModel {
 			. '     FROM (SELECT * FROM userscoreview ORDER BY total_score DESC) u,'
 			. '		(SELECT @rank2:=0) r'
 			. ' ) AS a'
-			. ' ORDER BY rank ASC) AS b'
+			. ' ORDER BY rank ASC, username ASC) AS b'
 			. ' WHERE rank >= user_rank-5 AND rank <= user_rank+5'
 			, ['i'], [$userId]);
 
-		return $this->mysqli->getQueryResultArray($result); 
+		return $this->mysqli->getQueryResultArray($result);
 	}
 }
 ?>
