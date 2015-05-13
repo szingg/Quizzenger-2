@@ -339,6 +339,7 @@ CREATE TABLE IF NOT EXISTS `eventtrigger` (
   `name` varchar(64) NOT NULL,
   `producer_score` int(11) DEFAULT 0 NOT NULL,
   `consumer_score` int(11) DEFAULT 0 NOT NULL,
+  `description` varchar(64),
   PRIMARY KEY(`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci  ;
 

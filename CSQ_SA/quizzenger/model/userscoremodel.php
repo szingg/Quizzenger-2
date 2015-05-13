@@ -99,21 +99,22 @@ class UserScoreModel {
 		return $resultArray;
 	}
 
-	public function getLeadingTrailingUsers($userId) {/*
-		$result = $this->mysqli->s_query('SELECT id, CAST(rank AS UNSIGNED) AS rank, username, total_score'
-			. ' FROM (SELECT @rank:=@rank+1 AS rank, @user_rank=IF(id=?,@rank,0) AS user_rank, id,'
-			. '     username, IFNULL(total_score, 0) AS total_score'
-			. '     FROM (SELECT @rank:=0, @user_rank:=0, id, username, total_score '
-			. '         FROM userscoreview'
-			. '         ORDER BY total_score DESC'
-			. '     ) AS general_inner'
-			. ' ) AS general_outer'
-			. ' WHERE rank >= user_rank-5 AND rank <= user_rank+5'
-			. ' ORDER BY rank ASC'
-			, ['i'], [$userId]);
-
+	/**
+	 * Gets all Events whether consumer_score or producer_score not equals 0
+	 */
+	public function getAllEventsWithScores(){
+		$result = $this->mysqli->query('SELECT * FROM eventtrigger WHERE producer_score <> 0 OR consumer_score <> 0');
 		return $this->mysqli->getQueryResultArray($result);
-		*/
+	}
+
+	/**
+	 * Gets the producer multiplier
+	 */
+	public function getProducerMultiplier(){
+		return (new Settings($this->mysqli->database()))->getSingle('q.scoring.producer-multiplier');
+	}
+
+	public function getGlobalRankinglist($userId) {
 
 		$result = $this->mysqli->s_query('SELECT id, rank, username, total_score, user_rank FROM'
 			. ' (SELECT id, CAST(rank AS UNSIGNED) AS rank, username, total_score, '

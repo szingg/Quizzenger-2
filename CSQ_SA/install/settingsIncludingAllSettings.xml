@@ -4,38 +4,42 @@
 		<eventtrigger name="always">
 			<producer_score>0</producer_score>
 			<consumer_score>0</consumer_score>
+			<description></description>
 		</eventtrigger>
 		<eventtrigger name="game-question-answered-correct">
 			<producer_score>0</producer_score>
 			<consumer_score>20</consumer_score>
+			<description>Game-Frage korrekt beantwortet.</description>
 		</eventtrigger>
 		<eventtrigger name="question-answered-correct">
 			<producer_score>0</producer_score>
 			<consumer_score>10</consumer_score>
+			<description>Frage korrekt beantwortet.</description>
 		</eventtrigger>
 		<eventtrigger name="question-created">
 			<producer_score>50</producer_score>
 			<consumer_score>0</consumer_score>
-		</eventtrigger>
-		<eventtrigger name="quiz-end">
-			<producer_score>0</producer_score>
-			<consumer_score>0</consumer_score>
+			<description>Neue Frage erstellt!</description>
 		</eventtrigger>
 		<eventtrigger name="game-end">
 			<producer_score>0</producer_score>
 			<consumer_score>0</consumer_score>
+			<description></description>
 		</eventtrigger>
 		<eventtrigger name="game-start">
 			<producer_score>0</producer_score>
 			<consumer_score>0</consumer_score>
+			<description></description>
 		</eventtrigger>
 		<eventtrigger name="question-removed">
-			<producer_score>-100</producer_score>
+			<producer_score>-50</producer_score>
 			<consumer_score>0</consumer_score>
+			<description>Frage gelöscht! </description>
 		</eventtrigger>
 		<eventtrigger name="question-rated">
 			<producer_score>5</producer_score>
 			<consumer_score>0</consumer_score>
+			<description>Frage bewertet.</description>
 		</eventtrigger>
 	</eventtriggers>
 	<achievements>

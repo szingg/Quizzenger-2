@@ -52,15 +52,16 @@ if(isset($_POST['install'])){
 	}
 
 	foreach($xml->eventtriggers[0] as $trigger){
-		if(! isset($trigger['name'], $trigger->producer_score, $trigger->consumer_score)){
+		if(! isset($trigger['name'], $trigger->producer_score, $trigger->consumer_score, $trigger->description)){
 			throwMalformedXMLException();
 		}
 		$name = '"'.$link->real_escape_string($trigger['name']).'"';
 		$producer_score = '"'.$link->real_escape_string($trigger->producer_score).'"';
 		$consumer_score = '"'.$link->real_escape_string($trigger->consumer_score).'"';
+		$description = '"'.$link->real_escape_string($trigger->description).'"';
 
-		$stmt = "INSERT INTO eventtrigger (name, producer_score, consumer_score) VALUES ($name, $producer_score, $consumer_score)"
-			." ON DUPLICATE KEY UPDATE producer_score=$producer_score, consumer_score=$consumer_score";
+		$stmt = "INSERT INTO eventtrigger (name, producer_score, consumer_score, description) VALUES ($name, $producer_score, $consumer_score, $description)"
+			." ON DUPLICATE KEY UPDATE producer_score=$producer_score, consumer_score=$consumer_score, description=$description";
 		$result = $link->query($stmt);
 		if($result){}
 		else{

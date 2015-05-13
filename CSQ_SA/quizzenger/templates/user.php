@@ -4,12 +4,13 @@
 	$quizCount = $this->_ ['quizcount'];
 	$userScore = $this->_ ['userscore'];
 	$categoryscores = $this->_ ['categoryscores'];
-	$leadingTrailingUsers = $this->_['leadingtrailingusers'];
+	$globalRanklist = $this->_['globalRanklist'];
 	$moderatedCategories = $this->_ ['moderatedcategories'];
-	$absolvedCount = $this->_ ['absolvedcount'];
 	$achievementList = $this->_['achievementlist'];
 	$rankList = $this->_['ranklist'];
 	$rankListByCategory = $this->_['rankListByCategory'];
+	$producerMultiplier = $this->_['producerMultiplier'];
+	$events= $this->_['events'];
 
 	if (isset($this->_['message'])){
 		echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($this->_['message']).'</div>';
@@ -71,7 +72,7 @@
 							echo '<td>Total';
 							echo '<span id="ranklistTooltip" class="hide" style="position: absolute; background-color: white; box-shadow: 0 0 2px #888; padding: 10px; z-index: 1000; right: 100px; margin-top: -50px;">';
 									echo '<span class="" style="padding: 0px 10px; margin-bottom: 6px; display: inline-block"><strong>Rangliste:</strong></span><br>';
-									foreach($leadingTrailingUsers as $current):
+									foreach($globalRanklist as $current):
 										if(($current['id'] == $user['id'])) $userrank = $current['rank'];
 										echo '<a href="?view=user&id='.$current['id'].'">';
 										echo '<span class="badge alert-'.(($current['id'] == $user['id']) ? 'success' : 'info').'" style="padding: 6px 10px; margin-bottom: 5px">';
@@ -88,23 +89,24 @@
 					<br><br>
 				</div>
 				<div class="col-md-6">
-					<?php
-					if($user['superuser']){
-						echo('<h4 style="color:red"><img alt="superuser" src="'.htmlspecialchars(APP_PATH).'/content/img/superuser.png"> Ist Superuser</h4><br>');
-					}
-					if($moderatedCategories!=null){
-						echo('<h4><img alt="moderator" src="'.htmlspecialchars(APP_PATH).'/content/img/moderator.png"> Moderator in folgenden Kategorien</h4>');
-						foreach($moderatedCategories as $modCat){
-							echo(htmlspecialchars($modCat['name'])."<br>");
-						}
-						echo("<hr>");
-					} ?>
-					<a href="?view=questionlist&amp;user=<?php echo $user['id']?>">
-						<h4>
-							Alle Fragen des Users <span class="badge"><?php echo $questionCount; ?></span>
-						</h4>
-					</a>
-					Anzahl beantworteter Fragen: <span class="badge"><?= $absolvedCount ?></span>
+					<h4>Ereignisse</h4>
+					<br>
+					<table id="ranklist" style="width:100%; ">
+						<tr>
+							<th class="wrap">Ereignis</th>
+							<th class="wrap">Ersteller-Punkte</th>
+							<th class="wrap">Benutzer-Punkte</th>
+						</tr>
+						<?php foreach($events as $current){ ?>
+						<tr>
+							<td class="wrap"><?php echo htmlspecialchars($current['description']); ?></td>
+							<td><span class="badge alert-info"><?php echo htmlspecialchars($current['producer_score']); ?></span></td>
+							<td><span class="badge alert-info"><?php echo htmlspecialchars($current['consumer_score']); ?></span></td>
+						</tr>
+						<?php }?>
+					</table>
+					<br>
+					<div>Ersteller-Punkte werden mal <span class="badge alert-info"><?php echo htmlspecialchars($producerMultiplier); ?></span> höher gewertet als Benutzer-Punkte</div>
 				</div>
 			</div>
 			<div class="btn-group hidden-lg hidden-md">
@@ -141,8 +143,32 @@
 					</div>
 				<?php endwhile; ?>
 			</div>
-		</div>
-	</div>
+			<div class="row">
+				<div class="col-md-6">
+					<br>
+					<a href="?view=questionlist&amp;user=<?php echo $user['id']?>">
+						<h4>
+							Alle Fragen des Users <span class="badge"><?php echo $questionCount; ?></span>
+						</h4>
+					</a>
+				</div>
+				<div class="col-md-6">
+					<?php
+					if($user['superuser'] || $moderatedCategories!=null) echo '<br><h4>Rechte</h4>';
+					if($user['superuser']){
+						echo('<h4 style="color:red"><img alt="superuser" src="'.htmlspecialchars(APP_PATH).'/content/img/superuser.png"> Ist Superuser</h4><br>');
+					}
+					if($moderatedCategories!=null){
+						echo('<h4><img alt="moderator" src="'.htmlspecialchars(APP_PATH).'/content/img/moderator.png"> Moderator in folgenden Kategorien</h4>');
+						foreach($moderatedCategories as $modCat){
+							echo(htmlspecialchars($modCat['name'])."<br>");
+						}
+						echo("<hr>");
+					} ?>
+				</div>
+			</div> <!-- row -->
+		</div> <!-- panel-body -->
+	</div> <!-- panel -->
 	<?php if(isset($_SESSION['user_id']) && $user['id'] == $_SESSION['user_id'] && $GLOBALS['loggedin']): ?>
 		<div class="panel panel-default">
 			<div class="panel-heading clickable">

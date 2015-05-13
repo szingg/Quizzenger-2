@@ -29,9 +29,8 @@ namespace quizzenger\controller\controllers {
 			$questionCount = ModelCollection::questionListModel()->getQuestionsByUserIDCount ( $userID );
 			$userscore = ModelCollection::userscoreModel()->getUserScore($userID);
 			$categoryscores = ModelCollection::userscoreModel()->getUserScoreAllCategories($userID);
-			$leadingTrailingUsers = ModelCollection::userscoreModel()->getLeadingTrailingUsers($userID);
+			$globalRanklist = ModelCollection::userscoreModel()->getGlobalRankinglist($userID);
 			$moderatedCategories = ModelCollection::moderationModel()->getModeratedCategoryNames($userID);
-			$absolvedCount= ModelCollection::userModel()->getQuestionAbsolvedCount($userID);
 
 			if(isset($this->request['userReport']) && $GLOBALS ['loggedin']){
 				$this->view->assign ('message', mes_sent_report);
@@ -47,15 +46,16 @@ namespace quizzenger\controller\controllers {
 			$rankList = ModelCollection::userModel()->getRankList($userID);
 			$rankListByCategory = ModelCollection::userscoreModel()->getRankinglistAllCategories($userID);
 
+			$this->view->assign('producerMultiplier', ModelCollection::userscoreModel()->getProducerMultiplier());
+			$this->view->assign('events', ModelCollection::userscoreModel()->getAllEventsWithScores());
 			$this->view->assign('alreadyreported',$alreadyReported);
 			$this->view->assign('user', $user);
 			$this->view->assign('quizcount', $quizCount);
 			$this->view->assign('questioncount', $questionCount);
 			$this->view->assign('userscore', $userscore);
 			$this->view->assign('categoryscores', $categoryscores);
-			$this->view->assign('leadingtrailingusers', $leadingTrailingUsers);
+			$this->view->assign('globalRanklist', $globalRanklist);
 			$this->view->assign('moderatedcategories', $moderatedCategories);
-			$this->view->assign('absolvedcount', $absolvedCount);
 			$this->view->assign('achievementlist', $achievementList);
 			$this->view->assign('ranklist', $rankList);
 			$this->view->assign('rankListByCategory', $rankListByCategory);
