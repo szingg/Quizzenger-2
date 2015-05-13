@@ -588,6 +588,7 @@
 			<bonus_score>30</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
@@ -603,6 +604,7 @@
 			<bonus_score>60</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
@@ -618,6 +620,7 @@
 			<bonus_score>150</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
@@ -633,6 +636,7 @@
 			<bonus_score>300</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
@@ -648,6 +652,7 @@
 			<bonus_score>600</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
@@ -663,6 +668,7 @@
 			<bonus_score>1500</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 				<achievement type="QuestionDifficulty">
@@ -678,6 +684,7 @@
 			<bonus_score>40</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
@@ -693,6 +700,7 @@
 			<bonus_score>80</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
@@ -708,6 +716,7 @@
 			<bonus_score>200</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
@@ -723,6 +732,7 @@
 			<bonus_score>400</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
@@ -738,6 +748,7 @@
 			<bonus_score>800</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
@@ -753,6 +764,7 @@
 			<bonus_score>2000</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 				<achievement type="QuestionDifficulty">
@@ -768,6 +780,7 @@
 			<bonus_score>50</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
@@ -783,6 +796,7 @@
 			<bonus_score>100</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
@@ -798,6 +812,7 @@
 			<bonus_score>250</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
@@ -813,6 +828,7 @@
 			<bonus_score>500</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
@@ -828,6 +844,7 @@
 			<bonus_score>1000</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
@@ -843,6 +860,7 @@
 			<bonus_score>2500</bonus_score>
 			<eventtriggers>
 				<eventtrigger name="question-answered-correct" />
+				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
 	</achievements>

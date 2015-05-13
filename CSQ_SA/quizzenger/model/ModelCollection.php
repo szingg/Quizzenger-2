@@ -3,7 +3,7 @@
 namespace quizzenger\model {
 	use \SqlHelper as SqlHelper;
 	use \quizzenger\logging\Log as Log;
-	use \quizzenger\gamification\model\GameModel as GameModel;
+	use \quizzenger\model\GameModel as GameModel;
 	/**
 	 *
 	 **/
