@@ -169,18 +169,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="panel panel-default">
-			<div class="panel-heading clickable">
-				<!--  <a data-toggle="collapse" data-target="#collapseMyContent" href="#collapseMyContent">  -->
-					<strong>Meine Inhalte</strong>
-				<!-- </a>  -->
-			</div>
-			<div id="collapseMyContent" class="panel-collapse collapse">
-				<div class="panel-body">
-					<a href="<?php echo APP_PATH . '/?view=questionexport&id=' . $_SESSION['user_id'] ?>">Klicke hier, um deine Fragen herunterzuladen</a>
-				</div>
-			</div>
-		</div>
 	<?php endif; ?>
 
 <form role="form" method="post">

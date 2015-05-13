@@ -111,6 +111,10 @@
 						</ul>
 					</div>
 				</span>
+				<div style="clear:both;margin-bottom:1em"></div>
+				<div class="pull-right">
+					<a href="<?php echo APP_PATH . '/?view=questionexport&id=' . $_SESSION['user_id'] ?>">Klicke hier, um deine Fragen herunterzuladen</a>
+				</div>
 				<?php endif; ?>
 
 		<?php if(isset($this->_ ['pointsearned'])):?>
