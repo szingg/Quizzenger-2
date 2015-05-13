@@ -29,16 +29,6 @@ namespace quizzenger\controller {
 		public function render() {
 			$viewInner = new View ();
 			$viewInner->setTemplate('defaultajax');
- /*
-			$ratingModel = new RatingModel($this->mysqli,$this->logger);
-			$categoryModel = new CategoryModel($this->mysqli,$this->logger);
-			$quizModel = new QuizModel($this->mysqli,$this->logger);
-			$questionModel = new QuestionModel($this->mysqli, $this->logger);
-			$sessionModel = new SessionModel ( $this->mysqli, $this->logger );
-			$reportModel = new ReportModel( $this->mysqli, $this->logger );
-			$questionModel = new QuestionModel($this->mysqli, $this->logger);
-			$userModel = new UserModel( $this->mysqli, $this->logger );
-			$gameModel = $this->gameModel; */
 
 			ModelCollection::sessionModel()->sec_session_start();
 
@@ -126,10 +116,8 @@ namespace quizzenger\controller {
 					}
 					break;
 				case 'fileupload':
-					//require_once("../quizzenger/fileupload/fileupload.php");
-					$fileupload = new \quizzenger\fileupload\FileUpload($_FILES);
-					//$fileupload = new FileUpload($_FILES);
-					return $fileupload->processFileUpload();
+					$fileupload = new \quizzenger\controller\controllers\FileUploadController($_FILES);
+					return $fileupload->render();
 				case 'joinGame' :
 					if(! $this->isLoggedin()) return;
 					$result = ModelCollection::gameModel()->userJoinGame($_SESSION['user_id'], $this->request['gameid']);

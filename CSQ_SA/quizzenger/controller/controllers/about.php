@@ -1,3 +1,0 @@
-<?php
-	$viewInner->setTemplate ( 'about' );
-?>

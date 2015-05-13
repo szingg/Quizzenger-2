@@ -2,17 +2,16 @@
 /*	@author Simon Zingg
  *	This script uploads attachment to the defined path and checks for extensions, size and if already exists.
 */
-namespace quizzenger\fileupload {
+namespace quizzenger\controller\controllers {
 
-class FileUpload {
+class FileUploadController {
 	private $files;
 
 	public function __construct($filesParam) {
 		$this->files = $filesParam;
 	}
 
-	public function processFileUpload() {
-		//require_once("../../includes/config.php");
+	public function render() {
 
 		//check file uploaded
 		if(! isset($this->files["file"]["type"])){
@@ -92,5 +91,5 @@ class FileUpload {
 		return preg_replace('#/+#','/',join('/', $paths));
 	}
 } //class Fileupload
-} //namespace quizzenger\fileupload
+} //namespace quizzenger\controller\controllers
 ?>
