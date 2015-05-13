@@ -111,10 +111,6 @@
 						</ul>
 					</div>
 				</span>
-				<div style="clear:both;margin-bottom:1em"></div>
-				<div class="pull-right">
-					<a href="<?php echo APP_PATH . '/?view=questionexport&id=' . $_SESSION['user_id'] ?>">Klicke hier, um deine Fragen herunterzuladen</a>
-				</div>
 				<?php endif; ?>
 
 		<?php if(isset($this->_ ['pointsearned'])):?>
@@ -148,6 +144,31 @@
 			</div>
 		</div>
 	</form>
+	<div style="clear:both;margin-bottom:1em"></div>
+	<div class="pull-right">
+		<div>
+			<a href="<?php echo APP_PATH . '/?view=questionexport&id=' . $_SESSION['user_id']; ?>">Fragen <u>exportieren</u> und herunterladen</a>
+		</div>
+		<div>
+			<form action="<?php echo APP_PATH . '/?view=questionimport'; ?>" method="POST" enctype="multipart/form-data">
+				<input id="question-import-upload" type="file" accept=".quizzenger" style="display:none">
+				<input id="question-import-submit" type="submit" style="display:none">
+				<a id="question-import-link" href="#">Fragen hochladen und <u>importieren</u></a>
+			</form>
+            <script>
+				$(function() {
+					$("#question-import-link").on('click', function(e) {
+						e.preventDefault();
+						$("#question-import-upload").trigger('click');
+					});
+
+					$("#question-import-upload").on('change', function() {
+						$("#question-import-submit").trigger('click');
+					});
+				});
+			</script>
+		 </div>
+	</div>
 </div>
 <?php if(isset($this->_['template']) && $this->_['template'] === 'questionlist'): ?>
 </div>
