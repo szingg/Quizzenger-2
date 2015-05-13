@@ -151,7 +151,8 @@ if(isset($_POST['install'])){
 		$type = '"'.$link->real_escape_string($message->type).'"';
 		$text = '"'.$link->real_escape_string($message->text).'"';
 
-		$stmt = "INSERT INTO translation (type, text) VALUES ($type, $text)";
+		$stmt = "INSERT INTO translation (type, text) VALUES ($type, $text)"
+			." ON DUPLICATE KEY UPDATE text=$text";
 		$result = $link->query($stmt);
 		if($result){}
 		else{
@@ -171,7 +172,8 @@ if(isset($_POST['install'])){
 		$name = '"'.$link->real_escape_string($setting['name']).'"';
 		$value = '"'.$link->real_escape_string($setting['value']).'"';
 
-		$stmt = "INSERT INTO settings (name, value) VALUES ($name, $value)";
+		$stmt = "INSERT INTO settings (name, value) VALUES ($name, $value)"
+			." ON DUPLICATE KEY UPDATE value=$value";
 		$result = $link->query($stmt);
 		if($result){}
 		else{

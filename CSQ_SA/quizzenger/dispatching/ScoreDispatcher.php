@@ -5,6 +5,7 @@ namespace quizzenger\dispatching {
 	use \quizzenger\logging\Log as Log;
 	use \quizzenger\Settings as Settings;
 	use \quizzenger\dispatching\UserEvent as UserEvent;
+	use \quizzenger\messages\MessageQueue as MessageQueue;
 
 	/**
 	 * This class accumulates the scores for individual users based on events
@@ -57,10 +58,13 @@ namespace quizzenger\dispatching {
 			$bonusScore = $producerScore + $consumerScore;
 			$statement->bind_param('ii', $bonusScore, $userId);
 
-			if($statement->execute())
+			if($statement->execute()){
 				Log::info("Added bonus score ($producerScore, $consumerScore) to user $userId.");
-			else
+				MessageQueue::pushPersistent($userId, 'q.message.score-received', ['score'=>$bonusScore]);
+			}
+			else{
 				Log::error("Could not grant bonus score for user $userId.");
+			}
 		}
 
 		/**
@@ -79,12 +83,39 @@ namespace quizzenger\dispatching {
 			$statement->bind_param('iiii', $userId, $categoryId,
 				$producerScore, $consumerScore);
 
-			if($statement->execute())
+			if($statement->execute()){
 				Log::info("Added score ($producerScore, $consumerScore) to user $userId for category $categoryId.");
-			else
+				MessageQueue::pushPersistent($userId, 'q.message.score-received', ['score'=>($producerScore + $consumerScore)]);
+			}
+			else{
 				Log::error("Could not grant score to user $userId for category $categoryId.");
+			}
 
 			$this->promoteUserIfEligible($userId, $categoryId);
+		}
+
+		/**
+		 * Tells if a user already got score today for a specific correct answered question.
+		 * @param UserEvent $event Event to be handled. Has to contain a 'questionid'
+		 * @return boolean Returns true if already got score today. Else false.
+		 */
+		private function alreadyGotScoreToday(UserEvent $event){
+			$statement = $this->mysqli->database()->prepare('SELECT COUNT(id) as count FROM questionperformance'
+			 	.' WHERE question_id=? AND user_id=? AND questionCorrect <> 0 AND DATE(timestamp) = CURDATE()');
+
+			$questionid = $event->get('questionid');
+			$userId = $event->user();
+			$statement->bind_param('ii', $questionid, $userId);
+
+			if($statement->execute() === false){
+				return true;
+			}
+			if($result = $statement->get_result()) {
+				if($result->fetch_object()->count == 0) {
+					return false;
+				}
+			}
+			return true;
 		}
 
 		/**
@@ -109,9 +140,14 @@ namespace quizzenger\dispatching {
 
 				case 'question-created':
 				case 'question-removed':
+				case 'question-rated':
+					$this->dispatchWithCategory($event, $producerScore, $consumerScore);
+					break;
 				case 'question-answered-correct':
 				case 'game-question-answered-correct':
-					$this->dispatchWithCategory($event, $producerScore, $consumerScore);
+					if($this->alreadyGotScoreToday($event) === false){
+						$this->dispatchWithCategory($event, $producerScore, $consumerScore);
+					}
 					break;
 
 				default:

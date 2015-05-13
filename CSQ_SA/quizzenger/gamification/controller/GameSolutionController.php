@@ -89,12 +89,13 @@ namespace quizzenger\gamification\controller {
 
 			//Score
 			if($GLOBALS['loggedin'] && $correctAnswer == $selectedAnswer){
-				if(!$this->userscoreModel->hasUserScoredQuestion( $questionID, $_SESSION['user_id'])){ // no multiple scoring for question
+				//if(!$this->userscoreModel->hasUserScoredQuestion( $questionID, $_SESSION['user_id'])){ // no multiple scoring for question
 					EventController::fire('game-question-answered-correct', $_SESSION['user_id'], [
+						'questionid' => $questionID,
 						'gameid' => $this->gameid,
 						'category' => $question['category_id']
 					]);
-				}
+				//}
 			}
 			//$session_id = $this->request ['session_id'];
 			//$inc_counter=0;

@@ -49,12 +49,13 @@ namespace quizzenger\controller\controllers {
 			$this->view->assign ('alreadyreported',$alreadyReported);
 
 			if($GLOBALS['loggedin'] && $correctAnswer == $selectedAnswer){
-				if(! ModelCollection::userscoreModel()->hasUserScoredQuestion($this->request ['id'],$_SESSION['user_id'])){ // no multiple scoring for question.
+				//if(! ModelCollection::userscoreModel()->hasUserScoredQuestion($this->request ['id'],$_SESSION['user_id'])){ // no multiple scoring for question.
 					EventController::fire('question-answered-correct', $_SESSION['user_id'], [
-					'category' => $question['category_id']
+						'questionid' => $question['id'],
+						'category' => $question['category_id']
 					]);
-					$this->view->assign ('pointsearned', QUESTION_ANSWERED_SCORE);
-				}
+					//$this->view->assign ('pointsearned', QUESTION_ANSWERED_SCORE);
+				//}
 			}
 
 			$helper = new SolutionReportHelper($this->view);
@@ -73,8 +74,6 @@ namespace quizzenger\controller\controllers {
 			// Implement other Strategies if other question types are desired
 			$this->correct = ($correctAnswer == $selectedAnswer ? 100 : 0);
 
-			$pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
-
 		}
 
 		private function loadRatingView(){
@@ -83,6 +82,7 @@ namespace quizzenger\controller\controllers {
 		}
 
 		private function loadQuizsessionView(){
+			$pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
 			// Only relevant if question was answered in quiz context
 			if (isset ( $this->request ['session_id'] )  ) {
 				$session_id = $this->request ['session_id'];

@@ -50,9 +50,16 @@ namespace quizzenger\controller {
 					$parent = $this->request['parent'];
 					$alreadyRated= ModelCollection::ratingModel()->userHasAlreadyRated($this->request['question_id'] , $_SESSION ['user_id']);
 					if((!isset($parent) || !is_numeric($parent)) && $alreadyRated) return;
+					if($alreadyRated) return;
 
 					//make new rating
 					$ret = ModelCollection::ratingModel()->newRating($this->request['question_id'], $this->request['stars'],$this->request['comment'],$parent);
+					if($ret > 0){
+						$question = ModelCollection::questionModel()->getQuestion($this->request['question_id']);
+						EventController::fire('question-rated', $_SESSION['user_id'], [
+							'category' => $question['category_id']
+						]);
+					}
 					break;
 				// -------------------------------------------------------
 				case 'categorylist_ajax':

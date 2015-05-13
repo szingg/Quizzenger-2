@@ -23,6 +23,9 @@ class RatingModel {
 		return $result;
 	}
 
+	/**
+	 * @return Returns id of inserted rating.
+	 */
 	public function newRating($question_id,$stars,$comment,$parent){
 
 		$stars = ($stars=="null")? null : $stars ;
