@@ -283,6 +283,11 @@ div>a {
 	margin-top: -32px;
 }
 
+.message-image {
+	width: 64px;
+	height: 64px;
+}
+
 .achievement-tooltip:before{
 	border-left: 10px solid transparent;
 	border-right: 10px solid transparent;

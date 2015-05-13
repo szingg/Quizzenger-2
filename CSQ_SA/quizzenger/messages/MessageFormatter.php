@@ -80,7 +80,7 @@ namespace quizzenger\messages {
 					return number_format($value, $this->options['precision'],
 						$this->options['decimal'], $this->options['thousands']);
 				case 'img':
-					return '<img src="' . ACHIEVEMENT_PATH . DIRECTORY_SEPARATOR . $value . ACHIEVEMENT_IMAGE_EXTENSION . '" />';
+					return '<img class="message-image" src="' . ACHIEVEMENT_PATH . '/' . $value .'.'. ACHIEVEMENT_IMAGE_EXTENSION . '" />';
 				default:
 					return $this->formatUnknownError('type');
 			}

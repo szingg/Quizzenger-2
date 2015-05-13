@@ -89,7 +89,7 @@ namespace quizzenger\dispatching {
 			if($achievement->grant($this->mysqli, $event)) {
 				$result = $this->grantAchievement($id, $event) && $this->grantBonusScore($event->user(), $bonusScore);
 				if($result){
-					MessageQueue::pushPersistent($userId, 'q.message.achievement-received', [
+					MessageQueue::pushPersistent($event->user(), 'q.message.achievement-received', [
 					'image' => $messageInfo['image'],
 					'achievement' => $messageInfo['description'],
 					'score' => $bonusScore
