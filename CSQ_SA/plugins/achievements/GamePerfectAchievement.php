@@ -4,7 +4,7 @@
 		use \quizzenger\logging\Log as Log;
 		use \quizzenger\dispatching\UserEvent as UserEvent;
 		use \quizzenger\achievements\IAchievement as IAchievement;
-		use \quizzenger\gamification\model\GameModel as GameModel;
+		use \quizzenger\model\ModelCollection as ModelCollection;
 
 		class GamePerfectAchievement implements IAchievement {
 

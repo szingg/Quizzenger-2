@@ -4,7 +4,7 @@
 		use \quizzenger\logging\Log as Log;
 		use \quizzenger\dispatching\UserEvent as UserEvent;
 		use \quizzenger\achievements\IAchievement as IAchievement;
-		use \quizzenger\gamification\model\GameModel as GameModel;
+		use \quizzenger\model\ModelCollection as ModelCollection;
 
 		class GameHostingAchievement implements IAchievement {
 
@@ -12,9 +12,8 @@
 				//Setup
 				$memberCountCond = $event->get('member-count');
 				$user = $event->user();
-				$gameModel = new GameModel($database);
 
-				$memberCount = count($gameModel->getGameMembersByGameId($event->get('gameid')) );
+				$memberCount = count(ModelCollection::gameModel()->getGameMembersByGameId($event->get('gameid')) );
 
 				return $memberCount >= $memberCountCond;
 			}
