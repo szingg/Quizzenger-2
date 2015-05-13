@@ -79,7 +79,8 @@ namespace quizzenger\messages {
 				case 'double':
 					return number_format($value, $this->options['precision'],
 						$this->options['decimal'], $this->options['thousands']);
-
+				case 'img':
+					return '<img src="' . ACHIEVEMENT_PATH . DIRECTORY_SEPARATOR . $value . ACHIEVEMENT_IMAGE_EXTENSION . '" />';
 				default:
 					return $this->formatUnknownError('type');
 			}

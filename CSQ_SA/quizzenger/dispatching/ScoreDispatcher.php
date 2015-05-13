@@ -6,6 +6,7 @@ namespace quizzenger\dispatching {
 	use \quizzenger\Settings as Settings;
 	use \quizzenger\dispatching\UserEvent as UserEvent;
 	use \quizzenger\messages\MessageQueue as MessageQueue;
+use quizzenger\model\ModelCollection;
 
 	/**
 	 * This class accumulates the scores for individual users based on events
@@ -60,7 +61,7 @@ namespace quizzenger\dispatching {
 
 			if($statement->execute()){
 				Log::info("Added bonus score ($producerScore, $consumerScore) to user $userId.");
-				MessageQueue::pushPersistent($userId, 'q.message.score-received', ['score'=>$bonusScore]);
+				$this->setMessage($event, $producerScore, $consumerScore);
 			}
 			else{
 				Log::error("Could not grant bonus score for user $userId.");
@@ -85,13 +86,41 @@ namespace quizzenger\dispatching {
 
 			if($statement->execute()){
 				Log::info("Added score ($producerScore, $consumerScore) to user $userId for category $categoryId.");
-				MessageQueue::pushPersistent($userId, 'q.message.score-received', ['score'=>($producerScore + $consumerScore)]);
+				$this->setMessage($event, $producerScore, $consumerScore);
 			}
 			else{
 				Log::error("Could not grant score to user $userId for category $categoryId.");
 			}
 
 			$this->promoteUserIfEligible($userId, $categoryId);
+		}
+
+		/**
+		 * Sets a Message which will be displayed the next time the user visits a page.
+		 * @param UserEvent $event Event to be handled.
+		 * @param int $producerScore Producer score to be granted to the user.
+		 * @param int $consumerScore Consumer score to be granted to the user.
+		 */
+		private function setMessage(UserEvent $event, $producerScore, $consumerScore){
+			$optionalText = '';
+			if($event->argumentExists('optionalText')){
+				$optionalText = $event->get('optionalText');
+			}
+
+			$statement = $this->mysqli->database()->prepare('SELECT description FROM eventtrigger WHERE name = ?');
+			$userId = $event->user();
+			$eventname = $event->name();
+			$statement->bind_param('s', $eventname);
+			$eventDescription = '';
+			if($statement->execute() !== false && $result = $statement->get_result()){
+				$eventDescription = $result->fetch_object()->description;
+			}
+
+			MessageQueue::pushPersistent($userId, 'q.message.score-received', [
+				'event' => $eventDescription,
+				'score' => ($producerScore + $consumerScore),
+				'optionalText' => $optionalText
+			]);
 		}
 
 		/**
@@ -146,6 +175,7 @@ namespace quizzenger\dispatching {
 				case 'question-answered-correct':
 				case 'game-question-answered-correct':
 					if($this->alreadyGotScoreToday($event) === false){
+						$event->set('optionalText', ' Morgen können wieder neue Punkte für diese Frage geholt werden.');
 						$this->dispatchWithCategory($event, $producerScore, $consumerScore);
 					}
 					break;

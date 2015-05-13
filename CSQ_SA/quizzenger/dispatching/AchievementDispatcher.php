@@ -5,6 +5,7 @@ namespace quizzenger\dispatching {
 	use \quizzenger\logging\Log as Log;
 	use \quizzenger\dispatching\UserEvent as UserEvent;
 	use \quizzenger\achievements\IAchievement as IAchievement;
+	use \quizzenger\messages\MessageQueue as MessageQueue;
 
 	/**
 	 * Handles the event dispatching for all defined achievements.
@@ -80,13 +81,20 @@ namespace quizzenger\dispatching {
 		 * @param string Type of the achievement.
 		 * @param $bonusScore Score to be accounted.
 		 * @param UserEvent $event Event that has been fired.
+		 * @param array $messageInfo with description and image of the achievement
 		 * @return boolean Returns 'true' on success, 'false' otherwise.
 		**/
-		public function dispatchSingle($id, $type, $bonusScore, UserEvent $event) {
+		public function dispatchSingle($id, $type, $bonusScore, UserEvent $event, $messageInfo) {
 			$achievement = self::createAchievementInstance($type);
 			if($achievement->grant($this->mysqli, $event)) {
-				return $this->grantAchievement($id, $event)
-					&& $this->grantBonusScore($event->user(), $bonusScore);
+				$result = $this->grantAchievement($id, $event) && $this->grantBonusScore($event->user(), $bonusScore);
+				if($result){
+					MessageQueue::pushPersistent($userId, 'q.message.achievement-received', [
+					'image' => $messageInfo['image'],
+					'achievement' => $messageInfo['description'],
+					'score' => $bonusScore
+					]);
+				}
 			}
 			return false;
 		}
@@ -97,7 +105,7 @@ namespace quizzenger\dispatching {
 		**/
 		public function dispatch(UserEvent $event) {
 			// Select all non-granted achievements triggered by the current event.
-			$statement = $this->mysqli->database()->prepare('SELECT id, type, arguments, bonus_score FROM `achievement`'
+			$statement = $this->mysqli->database()->prepare('SELECT id, type, arguments, bonus_score, description, image FROM `achievement`'
 				. ' WHERE achievement.id NOT IN (SELECT userachievement.achievement_id FROM `userachievement` WHERE userachievement.user_id = ?)'
 				. ' AND achievement.id IN (SELECT achievementtrigger.achievement_id FROM `achievementtrigger` WHERE achievementtrigger.eventtrigger_name = ?);');
 
@@ -122,7 +130,8 @@ namespace quizzenger\dispatching {
 						$currentEvent->set($name, $value);
 					}
 
-					$this->dispatchSingle($id, $type, $bonusScore, $currentEvent);
+					$messageInfo = [ 'description' => $current->description, 'image' => $current->image ];
+					$this->dispatchSingle($id, $type, $bonusScore, $currentEvent, $messageInfo);
 				}
 				$result->close();
 			}

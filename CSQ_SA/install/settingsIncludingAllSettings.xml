@@ -883,6 +883,14 @@
 	</ranks>
 	<messages>
 		<message>
+			<type>q.message.score-received</type>
+			<text>{{event#string}} Du hast {{score#integer}} Punkte erhalten! {{optionalText#string}}</text>
+		</message>
+		<message>
+			<type>q.message.achievement-received</type>
+			<text>{{image#img}} Du hast dir das Achievement "{{achievement#string}}" erarbeitet und dafür {{score#integer}} Punkte erhalten!</text>
+		</message>
+		<message>
 			<type>err_register_invalid_mail</type>
 			<text>Die eingegebene Email Adresse ist ungültig</text>
 		</message>

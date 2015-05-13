@@ -118,9 +118,11 @@ class QuestionModel {
           $captcha=$_POST['g-recaptcha-response'];
           $secret='6LezfQYTAAAAAGSBUII8DVnP3eEickOuer47vuMO';
           $response=file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$captcha.'&remoteip='.$_SERVER['REMOTE_ADDR']);
+          $response=json_decode($response, true);
         }
 
-        if($captcha == false || $response.success == false){
+
+        if($captcha == false || $response['success'] == false){
         	$this->logger->log ( "Try to opQuestion without valid recaptcha", Logger::WARNING );
         	MessageQueue::pushPersistent($_SESSION['user_id'], 'err_missing_input');
 			NavigationUtility::redirectToErrorPage();

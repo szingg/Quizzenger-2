@@ -62,6 +62,15 @@ namespace quizzenger\dispatching {
 		}
 
 		/**
+		 * Tells if an argument with the specified name exists.
+		 * @param string $name Name of the argument.
+		 * @return boolean true if exists, else false
+		 */
+		public function argumentExists($name){
+			return array_key_exists($name, $this->arguments);
+		}
+
+		/**
 		 * Sets the value for the specified argument.
 		 * @param string $name Name of the argument.
 		 * @param string $value Value of the argument.
