@@ -62,7 +62,7 @@ namespace quizzenger\controller {
 				case 'logout' : case 'error' : case 'register' : case 'processLogin' : case 'processChangepassword' : case 'processRegistration' :
 				case 'newquestion' : case 'editquestion' : case 'processNewQuestion' : case 'processGenerateQuiz':
 				case 'log': case 'questionpool': case 'processEditQuestion': case 'reporting':
-				case 'default' :
+				case 'default':
 					/*include("controllers/".$this->template.".php");
 					$viewInner = $viewInner->loadTemplate();
 					break; */
@@ -101,7 +101,11 @@ namespace quizzenger\controller {
 					else {
 						NavigationUtility::redirect();
 					}
+					break;
 
+				case 'questionimport':
+					$controller = new \quizzenger\controller\controllers\QuestionImportController($viewInner);
+					$viewInner = $controller->render();
 					break;
 
 				default:
