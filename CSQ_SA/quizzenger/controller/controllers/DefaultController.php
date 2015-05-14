@@ -12,12 +12,15 @@ namespace quizzenger\controller\controllers {
 		}
 
 		public function render(){
-			PermissionUtility::checkLogin();
 
 			$this->view->setTemplate ( 'default' );
 
 			$newestQuestion= ModelCollection::questionModel()->getNewestQuestion();
 			$this->view->assign('newestquestion', $newestQuestion);
+
+			if($GLOBALS['loggedin'] == false ){
+				return $this->view->loadTemplate();
+			}
 
 			$moderatedCategories = ModelCollection::moderationModel()->getModeratedCategories($_SESSION['user_id']);
 
