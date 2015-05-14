@@ -4,11 +4,18 @@ $(function(){
 		locale: "de",
 	});
 
-	window.setTimeout(function() {
+	var handle = window.setTimeout(function() {
 		$(".alertautoremove").fadeTo(1500, 0).slideUp(500, function(){
 			$(this).remove();
 		});
+		
 	}, 3000);
+	
+	window.setTimeout(function() {
+		$(".alertmessageautoremove").fadeTo(1500, 0).slideUp(500, function(){
+			$(this).remove();
+		});
+	}, 20000);
 
 	$(".panel-heading.clickable").click(function(){
 			$(this).parent().find('.panel-collapse.collapse').collapse("toggle");

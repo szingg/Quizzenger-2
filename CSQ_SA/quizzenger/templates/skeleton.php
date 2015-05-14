@@ -121,7 +121,7 @@
 				$messages = TextTranslator::translate($messages);
 				foreach($messages as $current) {
 					$alertType = (strpos($current->type,'err_') !== false?'danger':'info');
-					echo '<div class="alert alert-'.$alertType.'" role="alert">';
+					echo '<div class="alert alertmessageautoremove alert-dismissible alert-'.$alertType.'" role="alert">';
 					echo '<a href="#" class="close" data-dismiss="alert">&times;</a>';
 					/*echo 'temporary: ' . htmlspecialchars($current->type) . '(' . (int)$current->static . ') ' . htmlspecialchars(json_encode($current->arguments)); */
 					//echo TextTranslator::translate(htmlspecialchars($current->type), json_decode(htmlspecialchars(json_encode($current->arguments))));
