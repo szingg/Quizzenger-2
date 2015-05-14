@@ -7,7 +7,10 @@ namespace quizzenger\model {
 	/**
 	 *
 	 **/
-	class ModelCollection{
+	class ModelCollection {
+		private static $database;
+		public static function database() { return self::$database; }
+
 		private static $questionListModel;
 		public static function questionListModel(){ return self::$questionListModel; }
 		private static $questionModel;
@@ -52,6 +55,7 @@ namespace quizzenger\model {
 		 * Creates instances of all accessable models
 		 **/
 		public static function setup(SqlHelper $mysqli) {
+			self::$database = $mysqli->database();
 			self::loadIncludes();
 
 			self::$questionListModel = new \QuestionListModel ( $mysqli, log::get() );

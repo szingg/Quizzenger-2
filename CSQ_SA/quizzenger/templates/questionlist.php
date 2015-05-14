@@ -151,7 +151,7 @@
 		</div>
 		<div>
 			<form action="<?php echo APP_PATH . '/?view=questionimport'; ?>" method="POST" enctype="multipart/form-data">
-				<input id="question-import-upload" type="file" accept=".quizzenger" style="display:none">
+				<input id="question-import-upload" type="file" name="import" accept=".quizzenger" style="display:none">
 				<input id="question-import-submit" type="submit" style="display:none">
 				<a id="question-import-link" href="#">Fragen hochladen und <u>importieren</u></a>
 			</form>
