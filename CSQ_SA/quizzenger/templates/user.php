@@ -100,13 +100,17 @@
 						<?php foreach($events as $current){ ?>
 						<tr>
 							<td class="wrap"><?php echo htmlspecialchars($current['description']); ?></td>
-							<td><span class="badge alert-info"><?php echo htmlspecialchars($current['producer_score']); ?></span></td>
-							<td><span class="badge alert-info"><?php echo htmlspecialchars($current['consumer_score']); ?></span></td>
+							<td><?php if($current['producer_score']!=0){?>
+								<span class="badge alert-info"><?php echo htmlspecialchars($current['producer_score']); ?></span><?php } ?>
+							</td>
+							<td><?php if($current['consumer_score']!=0){?>
+								<span class="badge alert-info"><?php echo htmlspecialchars($current['consumer_score']); ?></span><?php } ?>
+							</td>
 						</tr>
 						<?php }?>
 					</table>
 					<br>
-					<div>Ersteller-Punkte werden mal <span class="badge alert-info"><?php echo htmlspecialchars($producerMultiplier); ?></span> höher gewertet als Benutzer-Punkte</div>
+					<div>Ersteller-Punkte werden <span class="badge alert-info"><?php echo htmlspecialchars($producerMultiplier); ?></span> mal höher gewertet als Benutzer-Punkte</div>
 				</div>
 			</div>
 			<div class="btn-group hidden-lg hidden-md">
