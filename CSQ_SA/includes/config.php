@@ -66,6 +66,7 @@ define ( "BRUTE_FORCE_COOLDOWN", "600"); // in seconds (600 = 10 minutes)
 define ( "BRUTE_FORCE_MAX_ATTEMPTS","5");
 define ( "BRUTE_FORCE_CHECK",TRUE);
 define ( "FORCE_HTTPS_CONNECTION",TRUE); // FALSE only for debugging, never in production!
+define ( "FORCE_RECAPTCHA_FOR_NEW_QUESTIONS", FALSE);
 
 
 

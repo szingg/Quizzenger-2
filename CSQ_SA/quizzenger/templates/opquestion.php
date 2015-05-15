@@ -158,6 +158,7 @@
 							if($i==$rows){
 							?>
 							<!-- <div class="row"><div class="col-lg-12"> -->
+							<?php if(FORCE_RECAPTCHA_FOR_NEW_QUESTIONS): ?>
 							<div class="clearfix">
 								<script type="text/javascript">
 									 var onloadCallback = function() {
@@ -186,6 +187,7 @@
 								<div class="g-recaptcha" name="opquestion_form_recaptcha" id="opquestion_form_recaptcha"
 								data-sitekey="6LezfQYTAAAAAA69AND-TRt3J7ZOTAhV-_C957XM"></div>   -->
 							</div>
+							<?php endif; ?>
 							<br><div class="row"><div class="col-lg-12">
 								<button class="btn btn-lg btn-primary btn-block" type="submit" id="opquestion_form_<?=$submitButtonName?>"><?= ($operation=="new")?"Frage erfassen":"Änderungen speichern";?></button>
 							</div><!-- /.col-lg-6 --></div><!-- /.row --><?php

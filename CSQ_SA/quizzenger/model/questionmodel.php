@@ -137,7 +137,9 @@ class QuestionModel {
 		PermissionUtility::checkLogin();
 
 		$this->checkForMissingParametersOpQwA($chosenCategory,$operation,$categoryModel);
-		$this->checkRecaptcha();
+		if(FORCE_RECAPTCHA_FOR_NEW_QUESTIONS){
+			$this->checkRecaptcha();
+		}
 
 		if ($_POST['opquestion_form_questionType'] == SINGLECHOICE_TYPE){
 			$type = $_POST ['opquestion_form_questionType'];
