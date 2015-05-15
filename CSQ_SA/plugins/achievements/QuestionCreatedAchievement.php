@@ -11,7 +11,7 @@
 				$userId = $event->user();
 				$questionCount = $event->get('question-count');
 
-				$statement = $database->prepare('SELECT COUNT(*)  as count FROM question WHERE user_id = ?');
+				$statement = $database->prepare('SELECT COUNT(*) as count FROM question WHERE user_id = ?');
 
 				$statement->bind_param('i', $userId);
 
