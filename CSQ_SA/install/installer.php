@@ -4,7 +4,7 @@ if(isset($_POST['install'])){
 
 	echo("Connecting to DB<br>");
 	$link = mysqli_connect(dbhost.":".dbport, dbuser, dbpassword) ;
-	if (!$link) {
+	if (!$link || !$link->set_charset("utf8")) {
 		die ("MySQL Connection error");
 	}
 	echo("<p style=\"color:green;\">Connected to DB</p><br>");
