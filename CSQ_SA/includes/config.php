@@ -43,10 +43,10 @@ define ("QUESTIONHISTORY_NEWEST_SHOWNCOUNT",10);
 define ("SHOW_PROCESSING_TIME",true);
 define ("QUESTIONTEXT_CUTOFF_LENGTH",75);
 //SCORE
-define ("QUESTION_ANSWERED_SCORE", "2");
-define ("QUESTION_CREATED_SCORE", "5");
-define ("ADD_RATING_SCORE", "1");
-define ("QUIZ_TAKEN_SCORE", "1");
+//define ("QUESTION_ANSWERED_SCORE", "2");
+//define ("QUESTION_CREATED_SCORE", "5");
+//define ("ADD_RATING_SCORE", "1");
+//define ("QUIZ_TAKEN_SCORE", "1");
 define ("MODERATION_SCORE", "100");
 define ("RATING_MAX_STARS", "5");
 //Logical Settings
@@ -66,7 +66,7 @@ define ( "BRUTE_FORCE_COOLDOWN", "600"); // in seconds (600 = 10 minutes)
 define ( "BRUTE_FORCE_MAX_ATTEMPTS","5");
 define ( "BRUTE_FORCE_CHECK",TRUE);
 define ( "FORCE_HTTPS_CONNECTION",TRUE); // FALSE only for debugging, never in production!
-define ( "FORCE_RECAPTCHA_FOR_NEW_QUESTIONS", FALSE);
+define ( "FORCE_RECAPTCHA_FOR_NEW_QUESTIONS", TRUE);
 
 
 
