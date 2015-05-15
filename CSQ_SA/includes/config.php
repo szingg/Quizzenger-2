@@ -47,7 +47,7 @@ define ("QUESTIONTEXT_CUTOFF_LENGTH",75);
 //define ("QUESTION_CREATED_SCORE", "5");
 //define ("ADD_RATING_SCORE", "1");
 //define ("QUIZ_TAKEN_SCORE", "1");
-define ("MODERATION_SCORE", "100");
+//define ("MODERATION_SCORE", "100");
 define ("RATING_MAX_STARS", "5");
 //Logical Settings
 define ("MIN_DIFFICULTY_COUNT_NEEDED_TO_SHOW",5);

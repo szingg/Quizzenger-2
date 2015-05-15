@@ -68,7 +68,7 @@ if(isset($_POST['install'])){
 	Note: There are three "levels" of categories, such without parents (general field), such with parents and having chidlren (category) and such with parents and no children (subcategory)<br><br>
 	<br>
 	<br>
-	<form action="installer.php" method="post">
+	<form action="" method="post">
 		<input type="hidden" name="install" value="go">
 		<input type="submit" value="Install">
 	</form>
