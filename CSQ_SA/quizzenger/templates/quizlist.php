@@ -1,5 +1,6 @@
 <div class="panel-body">
 	<form id="addToQuizForm" role="form" method="post">
+		<div class="table-responsive">
 		<table class="table" data-link="row" id="tableQuizList">
 			<thead>
 				<tr>
@@ -45,6 +46,7 @@
 				?>
 			</tbody>
 		</table>
+		</div>
 		<button type="button" class="btn btn-success hidden-xs" data-toggle="modal" data-target="#newQuizDialog2">
 			Quiz erstellen
 		</button>

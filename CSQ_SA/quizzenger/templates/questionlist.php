@@ -19,6 +19,7 @@
 <div class="panel-body">
 	<form id="addToQuizForm" role="form" method="post">
 		<input id="inputquizid" type="hidden" name="quiz_id" value="-1">
+			<div class="table-responsive">
 				<table class="table" id="tableQuestionList">
 					<thead>
 						<tr>
@@ -87,6 +88,7 @@
 						<?php } ?>
 					</tbody>
 				</table>
+			</div>
 
 				<hr class="hidden-xs">
 				<?php if ($GLOBALS ['loggedin']): ?>

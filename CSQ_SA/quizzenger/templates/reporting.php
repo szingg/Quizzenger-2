@@ -36,6 +36,7 @@
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active" id="tab-user-report">
 				<div class="panel-body">
+					<div class="table-responsive">
 					<table id="tableReportUserList" class="table">
 						<thead>
 							<form id="tableReportUserList-category" method="GET">
@@ -88,10 +89,12 @@
 							<?php endif; ?>
 						</tbody>
 					</table>
+					</div>
 				</div>
 			</div>
 			<div role="tabpanel" class="tab-pane" id="tab-question-report">
 				<div class="panel-body">
+					<div class="table-responsive">
 					<table id="tableReportQuestionList" class="table">
 						<thead>
 							<tr>
@@ -132,10 +135,12 @@
 							?>
 						</tbody>
 					</table>
+					</div>
 				</div>
 			</div>
 			<div role="tabpanel" class="tab-pane" id="tab-author-report">
 				<div class="panel-body">
+					<div class="table-responsive">
 					<table id="tableReportAuthorList" class="table">
 						<thead>
 							<tr>
@@ -163,6 +168,7 @@
 							?>
 						</tbody>
 					</table>
+					</div>
 				</div>
 			</div>
 			<?php if($user['superuser']): ?>

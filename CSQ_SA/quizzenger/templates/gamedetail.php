@@ -11,6 +11,7 @@
 		</a>
 		<div id="collapseOne" class="panel-collapse collapse in">
 			<div class="panel-body">
+				<div class="table-responsive">
 				<table class="table" id="tableGameDetailReport" data-link="row" >
 					<thead>
 						<tr>
@@ -68,6 +69,7 @@
 					<?php } ?>
 					</tbody>
 				</table>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -139,9 +141,9 @@
 						<?php } ?>
 						</tbody>
 					</table>
-					<br>
-					<a class="text-primary" href="?view=quizdetail&quizid=<?php echo $this->_['gameinfo']['quiz_id']; ?>" >zum Quiz...</a>
 				</div>
+				<br>
+				<a class="text-primary" href="?view=quizdetail&quizid=<?php echo $this->_['gameinfo']['quiz_id']; ?>" >zum Quiz...</a>
 			</div>
 		</div>
 	</div>
