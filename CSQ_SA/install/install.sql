@@ -85,6 +85,7 @@ CREATE TABLE IF NOT EXISTS `question` (
   `ratingcount` int(11) DEFAULT NULL,
   `attachment` varchar(300) DEFAULT NULL,
   `attachment_local` tinyint(1) DEFAULT NULL,
+  `imported` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE(`uuid`),
   KEY `fk_userquestion` (`user_id`),
