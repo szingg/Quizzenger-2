@@ -2,6 +2,7 @@
 namespace quizzenger\controller {
 	use \quizzenger\controlling\EventController as EventController;
 	use \quizzenger\utilities\FormatUtility as FormatUtility;
+	use \quizzenger\messages\MessageQueue as MessageQueue;
 	use \quizzenger\logging\Log as Log;
 	use \quizzenger\model\ModelCollection as ModelCollection;
 	use \quizzenger\view\View as View;
@@ -23,6 +24,7 @@ namespace quizzenger\controller {
 			//$this->gameModel = new GameModel($this->mysqli);
 
 			ModelCollection::setup($this->mysqli);
+			MessageQueue::setup($this->mysqli->database());
 			EventController::setup($this->mysqli);
 		}
 

@@ -81,7 +81,9 @@
 							echo '</span>';
 							echo '</td>';
 							echo '<td> <span class="badge alert-success" style="font-size: 14pt">' . htmlspecialchars($userScore['total_score']) . '</span></td>';
-							echo '<td> <span class="badge alert-info" style="font-size: 14pt">&#9733;&nbsp;' . htmlspecialchars("{$userrank} / {$userScore['total_users']}") .'</span></td>';
+							if(isset($userrank)){
+								echo '<td> <span class="badge alert-info" style="font-size: 14pt">&#9733;&nbsp;' . htmlspecialchars("{$userrank} / {$userScore['total_users']}") .'</span></td>';
+							}
 							echo '</tr>';
 						?>
 					</table> </div>
@@ -91,7 +93,7 @@
 					<h4>Ereignisse</h4>
 					Hier siehst du, für welche Ereignisse du wie viele Punkte erhältst.
 					<br><br>
-					<table id="ranklist" style="width:100%; ">
+					<table id="eventtable" style="width:100%; ">
 						<tr>
 							<th class="wrap">Ereignis</th>
 							<th class="wrap">Punkte</th>

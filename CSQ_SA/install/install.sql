@@ -580,7 +580,8 @@ CREATE OR REPLACE VIEW userscoreview AS
 		LEFT JOIN rank
 			ON (rank.threshold=(SELECT threshold FROM rank
 				WHERE threshold<=(producer_score+consumer_score+bonus_score)
-					OR threshold=0 ORDER BY threshold DESC LIMIT 1));
+					OR threshold=0 ORDER BY threshold DESC LIMIT 1))
+	ORDER BY total_score DESC, username ASC;
 
 CREATE OR REPLACE VIEW rankinglistallcategoriesview AS
   SELECT user.id, user.username, userscore.category_id,
@@ -591,7 +592,7 @@ CREATE OR REPLACE VIEW rankinglistallcategoriesview AS
   RIGHT JOIN userscore ON user.id=userscore.user_id
   WHERE user.id NOT IN (0, 1, 2)
   GROUP BY userscore.category_id, user.id
-  ORDER BY userscore.category_id, total_score DESC;
+  ORDER BY userscore.category_id, total_score DESC, username ASC;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

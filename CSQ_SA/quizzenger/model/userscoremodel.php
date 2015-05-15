@@ -84,7 +84,7 @@ class UserScoreModel {
   				.' (SELECT @currentcat:= -1) c) AS subquery '
   				.' GROUP BY category_id'
 			.' ) b ON b.category_id = a.category_id'
- 			.' WHERE rank >= user_rank-5 AND rank <= user_rank+5'
+ 			.' WHERE rank >= (user_rank-5) AND rank <= (user_rank+5)'
 			.' ORDER BY rank ASC, username ASC'
 		,['i','i','i'],[$userId, $userId, $userId]);
 		$resultArray = [];
@@ -112,16 +112,16 @@ class UserScoreModel {
 			. ' (SELECT MAX(user_rank) as user_rank FROM '
 			. ' 	(SELECT @rank:=@rank+1 AS rank, @user_rank:=IF(id=?,@rank,0) AS user_rank, id,'
 			. '     username, IFNULL(total_score, 0) AS total_score'
-			. '     FROM (SELECT * FROM userscoreview ORDER BY total_score DESC) u,'
+			. '     FROM (SELECT * FROM userscoreview ORDER BY total_score DESC, username ASC) u,'
 			. '		(SELECT @rank:=0) r'
 			. '	) as subquery) as user_rank'
 			. ' FROM (SELECT @rank2:=@rank2+1 AS rank, id,'
 			. '     username, IFNULL(total_score, 0) AS total_score'
-			. '     FROM (SELECT * FROM userscoreview ORDER BY total_score DESC) u,'
+			. '     FROM (SELECT * FROM userscoreview ORDER BY total_score DESC, username ASC) u,'
 			. '		(SELECT @rank2:=0) r'
 			. ' ) AS a'
 			. ' ORDER BY rank ASC, username ASC) AS b'
-			. ' WHERE rank >= user_rank-5 AND rank <= user_rank+5'
+			. ' WHERE rank >= (user_rank-5) AND rank <= (user_rank+5)'
 			, ['i'], [$userId]);
 
 		return $this->mysqli->getQueryResultArray($result);
