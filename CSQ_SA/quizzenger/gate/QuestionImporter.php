@@ -85,7 +85,6 @@ namespace quizzenger\gate {
 		 * Starts a new transaction.
 		**/
 		private function transaction() {
-			Log::info('Starting transaction for question import.');
 			$this->mysqli->autocommit(false);
 		}
 
@@ -102,7 +101,6 @@ namespace quizzenger\gate {
 		 * Commits the current transaction.
 		**/
 		private function commit() {
-			Log::info('Committing transaction for question import.');
 			$this->mysqli->commit();
 		}
 
@@ -145,6 +143,29 @@ namespace quizzenger\gate {
 			return true;
 		}
 
+		private function transferAttachment($questionId, SimpleXMLElement $question) {
+			$uuid = (string)$question->attributes()->uuid;
+			$content = (string)$question->attachment;
+			$extension = (string)$question->attachment->attributes()->extension;
+
+			$size = strlen($content);
+			$size = $size - ($size / 3); // Subtract 33% to account for wasted space due to encoding.
+
+			if($size > MAX_ATTACHMENT_SIZE_KByte * 1024) {
+				Log::error("Attachment of question $uuid is too large ($size).");
+				return false;
+			}
+
+			if(file_put_contents(ATTACHMENT_PATH . DIRECTORY_SEPARATOR . $questionId . '.' . $extension,
+				base64_decode($content)) === false)
+			{
+				Log::error("Could not write contents of attachment for question $uuid.");
+				return false;
+			}
+
+			return true;
+		}
+
 		/**
 		 * Inserts a question into the database.
 		 * @param integer $userId The user ID that the question belongs to.
@@ -164,13 +185,22 @@ namespace quizzenger\gate {
 			$thirdCategory = (string)$question->category->attributes()->third;
 			$text = (string)$question->text;
 			$attachment = (string)$question->attachment;
-			$attachmentLocal = '';
 
-			if($attachment)
-				$attachmentLocal = (string)$question->attachment->attributes()->type;
+			if($attachment) {
+				$attachmentType = (string)$question->attachment->attributes()->type;
 
-			if($attachmentLocal !== "url")
-				$attachment = base64_decode($attachment);
+				if($attachmentType == 'local') {
+					$attachmentLocal = true;
+					$attachment = (string)$question->attachment->attributes()->extension;
+				}
+				else {
+					$attachmentLocal = false;
+				}
+			}
+			else {
+				$attachmentType = '';
+				$attachmentLocal = false;
+			}
 
 			$this->questionInsertStatement->bind_param('ssssssdisssss', $uuid, $type, $text, $userId, $created, $modified,
 				$difficulty, $difficultyCount, $attachment, $attachmentLocal, $firstCategory, $secondCategory, $thirdCategory);
@@ -186,8 +216,21 @@ namespace quizzenger\gate {
 				return true;
 			}
 
-			return $this->insertAnswers($this->questionInsertStatement->insert_id,
-				$question->xpath('./answers/answer'));
+			if($attachmentType == "local") {
+				if(!$this->transferAttachment($this->questionInsertStatement->insert_id, $question)) {
+					Log::error("Transfer of attachment from question $uuid failed.");
+					return false;
+				}
+			}
+
+			if(!$this->insertAnswers($this->questionInsertStatement->insert_id,
+				$question->xpath('./answers/answer')))
+			{
+				Log::error("Could not insert answers for question $uuid.");
+				return false;
+			}
+
+			return true;
 		}
 
 		/**
@@ -203,13 +246,11 @@ namespace quizzenger\gate {
 			$thirdCategory = $question->category->attributes()->third;
 
 			if(!$this->insertCategories($firstCategory, $secondCategory, $thirdCategory)) {
-				$this->rollback();
 				Log::error("Categories for question $uuid could not be inserted.");
 				return false;
 			}
 
 			if(!$this->insertQuestion($userId, $question)) {
-				$this->rollback();
 				Log::error("Question $uuid could not be inserted.");
 				return false;
 			}
