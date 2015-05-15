@@ -48,7 +48,7 @@ if(isset($_POST['install'])){
 		echo("</p>");
 	}
 	echo("<hr>");
-	echo"<b>Remove following files: installer.php, install.sql!</b>";
+	echo '<a href="installerSettings.php" >Pleasee go to the next step!</a>';
 
 }else{?>
 	<h3>Welcome to the Quizzenger Installer</h3>
