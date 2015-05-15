@@ -17,7 +17,7 @@
 					Frage
 				</td>
 				<td>
-					<a href="?view=user&amp;id=<?=  $moderatedQuestion['by_user_id']; ?>"><?= htmlspecialchars($moderatedQuestion['username']); ?></a>
+					<a href="?view=user&amp;id=<?=  $moderatedQuestion['user_id']; ?>"><?= htmlspecialchars($moderatedQuestion['username']); ?></a>
 				</td>
 				<td>
 					<a href="?view=question&amp;id=<?=  $moderatedQuestion['question_id']; ?>"><?= htmlspecialchars($moderatedQuestion['questiontext']); ?></a>
@@ -45,7 +45,7 @@
 					Kommentar
 				</td>
 				<td>
-					<a href="?view=user&amp;id=<?= $moderatedRating['by_user_id']; ?>"><?= htmlspecialchars($moderatedRating['username']); ?></a>
+					<a href="?view=user&amp;id=<?= $moderatedRating['user_id']; ?>"><?= htmlspecialchars($moderatedRating['username']); ?></a>
 				</td>
 				<td>
 					<?= htmlspecialchars($moderatedRating['comment'])?>
