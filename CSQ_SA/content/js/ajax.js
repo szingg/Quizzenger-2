@@ -171,7 +171,7 @@ function getReports(object_id, type){
 			var oTable = $('#tableListOfReports').dataTable();
 			oTable.fnDestroy();
 
-			document.getElementById('tablebodyreports').innerHTML = $.responseText;
+			document.getElementById('tablebodyreports').innerHTML = xmlhttp.responseText;
 
 			$('#tableListOfReports').dataTable({
 				responsive: true,
