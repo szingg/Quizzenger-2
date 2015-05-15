@@ -73,7 +73,7 @@ namespace quizzenger\controller\controllers {
 			$isMember = ModelCollection::gameModel()->isGameMember($_SESSION['user_id'], $this->gameid);
 
 			//checkConditions
-			if($isMember==false || $this->hasStarted($this->gameinfo['starttime'])==false){
+			if(($isMember==false && $this->isGameOwner($this->gameinfo['owner_id'])==false) || $this->hasStarted($this->gameinfo['starttime'])==false){
 				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_not_authorized');
 				NavigationUtility::redirectToErrorPage();
 			}

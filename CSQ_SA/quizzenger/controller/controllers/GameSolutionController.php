@@ -158,6 +158,9 @@ namespace quizzenger\controller\controllers {
 			if($isMember && ( $finished || $this->gamecounter >= count($this->gamequestions)) ){
 				NavigationUtility::redirect('./index.php?view=GameEnd&gameid='.$this->gameid);
 			}
+			if(!$isMember && $this->isGameOwner($this->gameinfo['owner_id'])){
+				NavigationUtility::redirect('./index.php?view=GameEnd&gameid='.$this->gameid);
+			}
 
 			//checkConditions
 			if(isset($this->request ['answer'])==false

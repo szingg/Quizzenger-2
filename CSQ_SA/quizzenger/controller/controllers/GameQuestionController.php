@@ -114,6 +114,9 @@ namespace quizzenger\controller\controllers {
 			if($isMember && ( $finished || $this->gamecounter >= count($this->gamequestions)) ){
 				NavigationUtility::redirect('./index.php?view=GameEnd&gameid='.$this->gameid);
 			}
+			if(!$isMember && $this->isGameOwner($this->gameinfo['owner_id'])){
+				NavigationUtility::redirect('./index.php?view=GameEnd&gameid='.$this->gameid);
+			}
 
 			if($isMember==false && $this->hasStarted($this->gameinfo['starttime'])){
 				MessageQueue::pushPersistent($_SESSION['user_id'], 'err_game_has_started');
