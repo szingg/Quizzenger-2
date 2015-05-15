@@ -93,5 +93,5 @@ $roots = $this->_ ['roots'];
 			</div>
 		</div>
 	</div>
-	<button type="submit" class="btn btn-success">Quiz Generieren</button>
+	<button type="submit" class="btn btn-primary">Quiz Generieren</button>
 </form>

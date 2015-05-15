@@ -72,7 +72,7 @@
 					 <textarea id="opquestion_form_questionText" name="opquestion_form_questionText" rows="<?=QUESTION_INPUTFIELD_MAX_ROWCOUNT?>" placeholder="Frage Text" maxlength="<?=QUESTION_INPUTFIELD_MAX_LENGTH?>"  class="form-control" ><?= htmlspecialchars($questiontext)?></textarea>
 				</div>
 				<div class="form-group">
-					<div class="btn-group"><input id="btn-attach-file" type="button" class="btn btn-primary" value="Datei anh&auml;ngen"> </div>
+					<div class="btn-group"><input id="btn-attach-file" type="button" class="btn btn-primary" value="Anhang hinzufügen"> </div>
 					<div class="btn-group text-success" id="msg-attach">
 						<?php
 							$link = "";
@@ -199,20 +199,20 @@
 			        <div class="modal-content">
 			            <div class="modal-header bg-primary">
 			                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                <h4 class="modal-title">Datei anhängen</h4>
+			                <h4 class="modal-title">Anhang hinzufügen</h4>
 			            </div>
 			           <!-- <div class="modal-body">  -->
 			           <div class="">
 			            	<div class="panel panel-default no-margin">
 				            <!-- <a data-toggle="collapse" data-target="#collapseEmbed" href="#collapseOne"> -->
 									<div class="panel-heading clickable-toggle">
-										<h4 class="panel-title">Video einbetten</h4>
+										<h4 class="panel-title">Multimediadatei einbetten</h4>
 									</div>
 								 <!-- </a> -->
 				            	<div class="panel-collapse collapse in">
 									<div class="panel-body">
 										<div class="btn-group">
-											<input id="inputLink" class="pull-left" type="text" size="60" placeholder="Bitte geben Sei ihren Link ein" value="<?php if($operation=="edit" && $question['attachment_local']=='0'){ echo htmlspecialchars($question['attachment']); }?>"/>
+											<input id="inputLink" class="pull-left" type="text" size="60" placeholder="Bitte Link zum Video/Bild eingeben" value="<?php if($operation=="edit" && $question['attachment_local']=='0'){ echo htmlspecialchars($question['attachment']); }?>"/>
 										</div>
 										<div class="btn-group">
 											<input id="btn-checkLink" class="btn btn-primary pull left" type="button" value="Pr&uuml;fen" />
@@ -232,7 +232,7 @@
 							            		<input id="selectedFile" class="btn btn-default pull-left" type="file" name="file" id="file" required accept="<?= ATTACHMENT_ALLOWED_EXTENSIONS ;?>" />
 							            	</div>
 							            	<div class="btn-group">
-												<input id="btn-uploadfile" class="btn btn-primary pull-left" type="button" value="Upload" />
+												<input id="btn-uploadfile" class="btn btn-primary pull-left" type="button" value="Hochladen" />
 											</div>
 											<div class="text-danger" id="msg-upload"></div>
 										</form>

@@ -5,7 +5,7 @@
 			<h4 class="panel-title">Infos</h4>
 		</div>
   	  	<div style="padding-left:10px;">
-  	  		<b>Autor:</b> <a target="_blank" href="<?php echo htmlspecialchars(APP_PATH . '/index.php?view=user&id=' . $this->_ ['user_id']); ?>"><?= htmlspecialchars($this->_ ['author'])?></a><br>
+  	  		<b>Autor:</b> <a class="text-info" target="_blank" href="<?php echo htmlspecialchars(APP_PATH . '/index.php?view=user&id=' . $this->_ ['user_id']); ?>"><?= htmlspecialchars($this->_ ['author'])?></a><br>
 			<?php
 			echo ("<b>Tags:</b> ");
 			foreach ( $this->_ ['tags'] as $tag ) {

@@ -48,7 +48,7 @@
 		<button type="button" class="btn btn-success hidden-xs" data-toggle="modal" data-target="#newQuizDialog2">
 			Quiz erstellen
 		</button>
-		<a href="?view=generatequiz" class="btn btn-success hidden-xs">
+		<a href="?view=learn#generatequiz" class="btn btn-success hidden-xs">
 			Quiz generieren
 		</a>
 	</form>

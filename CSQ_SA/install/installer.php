@@ -28,7 +28,7 @@ if(isset($_POST['install'])){
 	foreach ($sqlArray as $stmt) {
 		if (strlen($stmt)>3 && substr(ltrim($stmt),0,2)!='/*') {
 			$result = mysqli_query($link,$stmt);
-			echo '<p>' . mysqli_error($link) . $stmt . '</p>';
+			//echo '<p>' . mysqli_error($link) . $stmt . '</p>';
 			if (!$result) {
 				$sqlErrorCode = mysql_errno();
 				$sqlErrorText = mysql_error();

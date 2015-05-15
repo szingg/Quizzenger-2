@@ -600,3 +600,13 @@ CREATE OR REPLACE VIEW rankinglistallcategoriesview AS
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+/* */
+--
+-- Dummy-Records.
+--
+INSERT INTO category (id, name) VALUES (1, `Strukturwissenschaften`);
+INSERT INTO category (id, name,parent_id) VALUES (2, `Informatik`, 1);
+INSERT INTO category (id, name,parent_id) VALUES (3 `Wirtschaftsinformatik`, 2);
+
+INSERT INTO question (type, questiontext, user_id, category_id,created) VALUES (`SingleChoice`, `Bitte lösche mich nachdem eine ernsthafte Frage erstellt wurde.`, 1, 3, null);

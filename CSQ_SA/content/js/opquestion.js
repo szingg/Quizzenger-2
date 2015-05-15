@@ -23,7 +23,7 @@ function OpQuestion(){
 	var checkLinkEvent = function(){
 		$("#btn-checkLink").click(function(){
 			if(validateUrl($("#inputLink").val())){
-				$("#msg-attach").text("Video erfolgreich eingebettet!");
+				$("#msg-attach").text("Multimediadatei erfolgreich eingebettet!");
 				$("#msg-link").text("");
 				$("#modalAttachFile").modal('hide');
 				//write values to opquestion form
