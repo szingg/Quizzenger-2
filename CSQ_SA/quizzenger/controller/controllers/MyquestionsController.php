@@ -35,7 +35,6 @@ namespace quizzenger\controller\controllers {
 			}
 			if(isset ($this->request['id'])){
 				$this->view->assign ('addedQuestion', $this->request['id']); // shows row green in table
-				$this->view->assign('pointsearned',QUESTION_CREATED_SCORE);
 			}
 			return $this->view->loadTemplate();
 		}
