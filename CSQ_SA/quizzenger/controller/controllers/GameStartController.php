@@ -38,13 +38,13 @@ namespace quizzenger\controller\controllers {
 			$this->checkGameStarted($this->gameinfo['starttime']);
 			$this->view->assign ( 'gameinfo', $this->gameinfo );
 
-			$isMember = $this->gameModel->isGameMember($_SESSION['user_id'], $this->gameid);
+			$isMember = ModelCollection::gameModel()->isGameMember($_SESSION['user_id'], $this->gameid);
 			$this->view->assign ( 'isMember', $isMember );
 
 			$isOwner = $this->isGameOwner($this->gameinfo['owner_id']);
 			$this->view->assign ( 'isOwner', $isOwner );
 
-			$members = $this->gameModel->getGameMembersByGameId($this->gameid);
+			$members = ModelCollection::gameModel()->getGameMembersByGameId($this->gameid);
 			$this->view->assign ( 'members', $members );
 
 		}

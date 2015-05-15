@@ -65,7 +65,7 @@ namespace quizzenger\controller\controllers {
 			$alreadyReported= ModelCollection::reportModel()->checkIfUserAlreadyDoneReport("question", $questionID , $_SESSION ['user_id']);
 			$solutionView->assign ('alreadyreported',$alreadyReported);
 
-			$correctAnswer = $this->answerModel->getCorrectAnswer ( $questionID );
+			$correctAnswer = ModelCollection::answerModel()->getCorrectAnswer ( $questionID );
 
 			//Score
 			if($GLOBALS['loggedin'] && $correctAnswer == $selectedAnswer){

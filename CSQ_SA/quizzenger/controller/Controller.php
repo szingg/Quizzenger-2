@@ -62,6 +62,7 @@ namespace quizzenger\controller {
 				case 'logout' : case 'error' : case 'register' : case 'processLogin' : case 'processChangepassword' : case 'processRegistration' :
 				case 'newquestion' : case 'editquestion' : case 'processNewQuestion' : case 'processGenerateQuiz':
 				case 'log': case 'questionpool': case 'processEditQuestion': case 'reporting':
+				case 'GameNew' : case 'GameStart' : case 'GameEnd' : case 'GameQuestion' : case 'GameSolution' : case 'GameDetail' :
 				case 'default':
 					/*include("controllers/".$this->template.".php");
 					$viewInner = $viewInner->loadTemplate();
@@ -71,12 +72,12 @@ namespace quizzenger\controller {
 					$controller = new $className($viewInner);
 					$viewInner = $controller->render();
 					break;
-				case 'GameNew' : case 'GameStart' : case 'GameEnd' :
-				case 'GameQuestion' : case 'GameSolution' : case 'GameDetail' :
+
+					/*
 					$className = '\\quizzenger\\gamification\\controller\\'.$this->template.'Controller';
 					$controller = new $className($viewInner);
 					$viewInner = $controller->render();
-					break;
+					break; */
 
 				case 'syslog':
 					if(!$_SESSION['superuser'] || !isset($_GET['logfile'])) {

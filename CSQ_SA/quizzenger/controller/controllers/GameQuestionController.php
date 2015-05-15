@@ -64,7 +64,7 @@ namespace quizzenger\controller\controllers {
 			$linkToSolution = '?view=GameSolution&gameid='.$this->gameid;
 			$questionView->assign ( 'linkToSolution', $linkToSolution );
 
-			$alreadyReported= $this->reportModel->checkIfUserAlreadyDoneReport("question", $questionID , $_SESSION ['user_id']);
+			$alreadyReported= ModelCollection::reportModel()->checkIfUserAlreadyDoneReport("question", $questionID , $_SESSION ['user_id']);
 			$questionView->assign ('alreadyreported',$alreadyReported);
 
 			//assign GameSession
@@ -74,7 +74,7 @@ namespace quizzenger\controller\controllers {
 			$questionView->assign ( 'currentcounter', $currentCounter );
 			$progress = round ( 100 * ($currentCounter / $questionCount) );
 			$questionView->assign ( 'progress', $progress );
-			$weight= $this->quizModel->getWeightOfQuestionInQuiz($questionID, $this->gameinfo['quiz_id']);
+			$weight= ModelCollection::quizModel()->getWeightOfQuestionInQuiz($questionID, $this->gameinfo['quiz_id']);
 			$questionView->assign ( 'weight', $weight);
 
 			$this->view->assign ( 'questionView', $questionView->loadTemplate() );
