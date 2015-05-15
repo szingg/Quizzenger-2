@@ -432,8 +432,6 @@ CREATE TABLE IF NOT EXISTS `settings` (
 	PRIMARY KEY(`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `settings` (`name`, `value`) VALUES	('q.scoring.producer-multiplier', '1.75');
-
 -- --------------------------------------------------------
 
 
@@ -563,8 +561,7 @@ CREATE OR REPLACE VIEW userscoreaggregateview AS
 	SELECT user.id, user.username, user.created_on,
 		SUM(userscore.producer_score) AS producer_score,
 		SUM(userscore.consumer_score) AS consumer_score,
-		user.bonus_score,
-		(SELECT value FROM settings WHERE name="q.scoring.producer-multiplier") AS producer_multiplier
+		user.bonus_score
 		FROM user
 		LEFT JOIN userscore ON user.id=userscore.user_id
 		WHERE user.id NOT IN (0, 1, 2)
@@ -575,22 +572,21 @@ CREATE OR REPLACE VIEW userscoreaggregateview AS
 CREATE OR REPLACE VIEW userscoreview AS
 	SELECT userscoreaggregateview.id AS id, username, created_on,
 		producer_score, consumer_score, bonus_score,
-		(FLOOR(producer_score*producer_multiplier+consumer_score+bonus_score)) AS total_score,
+		(producer_score+consumer_score+bonus_score) AS total_score,
 		rank.threshold AS rank_threshold,
 		rank.name AS rank_name,
 		rank.image AS rank_image
 		FROM userscoreaggregateview
 		LEFT JOIN rank
 			ON (rank.threshold=(SELECT threshold FROM rank
-				WHERE threshold<=(FLOOR(producer_score*producer_multiplier+consumer_score+bonus_score))
+				WHERE threshold<=(producer_score+consumer_score+bonus_score)
 					OR threshold=0 ORDER BY threshold DESC LIMIT 1));
 
 CREATE OR REPLACE VIEW rankinglistallcategoriesview AS
   SELECT user.id, user.username, userscore.category_id,
   SUM(userscore.producer_score) AS producer_score,
   SUM(userscore.consumer_score) AS consumer_score, user.bonus_score,
-  (SELECT value FROM settings WHERE name="q.scoring.producer-multiplier") AS producer_multiplier,
-  (FLOOR(SUM(userscore.producer_score)*(SELECT value FROM settings WHERE name="q.scoring.producer-multiplier")+SUM(userscore.consumer_score))) AS total_score
+  (SUM(userscore.producer_score)+SUM(userscore.consumer_score)) AS total_score
   FROM user
   RIGHT JOIN userscore ON user.id=userscore.user_id
   WHERE user.id NOT IN (0, 1, 2)

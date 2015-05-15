@@ -9,7 +9,6 @@
 	$achievementList = $this->_['achievementlist'];
 	$rankList = $this->_['ranklist'];
 	$rankListByCategory = $this->_['rankListByCategory'];
-	$producerMultiplier = $this->_['producerMultiplier'];
 	$events= $this->_['events'];
 
 	if (isset($this->_['message'])){
@@ -37,7 +36,7 @@
 			<div class="row">
 				<div class="col-md-6">
 					<h4><img alt="ribbon" src="<?=APP_PATH?>/content/img/ribbon.png"> Punkte pro Kategorie</h4>
-					<div style="overflow-x: auto; -webkit-overflow-scrolling: touch; -ms-overflow-style: -ms-autohiding-scrollbar;">
+					<div class="table-responsive">
 					<table id="ranklist" style="width:100%; ">
 						<tr>
 							<th class="wrap">Kategorie</th>
@@ -81,8 +80,8 @@
 									endforeach;
 							echo '</span>';
 							echo '</td>';
-							echo '<td> <span class="badge alert-success" style="font-size: 18pt">' . htmlspecialchars($userScore['total_score']) . '</span></td>';
-							echo '<td> <span class="badge alert-info" style="font-size: 18pt">&#9733;&nbsp;' . htmlspecialchars("{$userrank} / {$userScore['total_users']}") .'</span></td>';
+							echo '<td> <span class="badge alert-success" style="font-size: 14pt">' . htmlspecialchars($userScore['total_score']) . '</span></td>';
+							echo '<td> <span class="badge alert-info" style="font-size: 14pt">&#9733;&nbsp;' . htmlspecialchars("{$userrank} / {$userScore['total_users']}") .'</span></td>';
 							echo '</tr>';
 						?>
 					</table> </div>
@@ -90,27 +89,22 @@
 				</div>
 				<div class="col-md-6">
 					<h4>Ereignisse</h4>
-					<br>
+					Hier siehst du, für welche Ereignisse du wie viele Punkte erhältst.
+					<br><br>
 					<table id="ranklist" style="width:100%; ">
 						<tr>
 							<th class="wrap">Ereignis</th>
-							<th class="wrap">Ersteller-Punkte</th>
-							<th class="wrap">Benutzer-Punkte</th>
+							<th class="wrap">Punkte</th>
 						</tr>
 						<?php foreach($events as $current){ ?>
 						<tr>
 							<td class="wrap"><?php echo htmlspecialchars($current['description']); ?></td>
-							<td><?php if($current['producer_score']!=0){?>
-								<span class="badge alert-info"><?php echo htmlspecialchars($current['producer_score']); ?></span><?php } ?>
-							</td>
-							<td><?php if($current['consumer_score']!=0){?>
-								<span class="badge alert-info"><?php echo htmlspecialchars($current['consumer_score']); ?></span><?php } ?>
+							<td>
+								<span class="badge alert-info"><?php echo htmlspecialchars($current['producer_score']+$current['consumer_score']); ?></span>
 							</td>
 						</tr>
 						<?php }?>
 					</table>
-					<br>
-					<div>Ersteller-Punkte werden <span class="badge alert-info"><?php echo htmlspecialchars($producerMultiplier); ?></span> mal höher gewertet als Benutzer-Punkte</div>
 				</div>
 			</div>
 			<div class="btn-group hidden-lg hidden-md">

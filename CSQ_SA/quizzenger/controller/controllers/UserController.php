@@ -46,7 +46,6 @@ namespace quizzenger\controller\controllers {
 			$rankList = ModelCollection::userModel()->getRankList($userID);
 			$rankListByCategory = ModelCollection::userscoreModel()->getRankinglistAllCategories($userID);
 
-			$this->view->assign('producerMultiplier', ModelCollection::userscoreModel()->getProducerMultiplier());
 			$this->view->assign('events', ModelCollection::userscoreModel()->getAllEventsWithScores());
 			$this->view->assign('alreadyreported',$alreadyReported);
 			$this->view->assign('user', $user);

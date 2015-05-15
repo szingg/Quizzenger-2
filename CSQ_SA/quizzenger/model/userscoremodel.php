@@ -29,9 +29,8 @@ class UserScoreModel {
 	}
 
 	public function getUserScoreAllCategories($userId) {
-		$pmp = (new Settings($this->mysqli->database()))->getSingle('q.scoring.producer-multiplier');
 		$result = $this->mysqli->s_query('SELECT category_id, category_name,'
-			. ' (FLOOR(producer_score*?+consumer_score)) AS category_score,'
+			. ' (producer_score+consumer_score) AS category_score,'
 			. ' user_count, user_rank'
 			. ' FROM (SELECT c.id AS category_id,'
 			. '     c.name AS category_name,'
@@ -42,8 +41,8 @@ class UserScoreModel {
 			. '     (SELECT COUNT(*) as user_rank FROM userscore AS us'
 			. '			JOIN user u ON us.user_id = u.id'
 			. '         WHERE us.category_id=u.category_id'
-			. '             AND us.producer_score*?+us.consumer_score'
-			. '                 >=u.producer_score*?+u.consumer_score'
+			. '             AND us.producer_score+us.consumer_score'
+			. '                 >=u.producer_score+u.consumer_score'
 			. ' 		ORDER BY user_rank ASC, u.username ASC'
 			. '	) AS user_rank'
 			. '     FROM userscore AS u'
@@ -51,8 +50,7 @@ class UserScoreModel {
 			. '     WHERE u.user_id=? AND (u.producer_score>0 OR u.consumer_score>0)'
 			. '     ORDER BY c.name'
 			. ' ) AS general',
-			['d', 'd', 'd', 'i'],
-			[$pmp, $pmp, $pmp, $userId], false);
+			['i'], [$userId], false);
 
 		return $this->mysqli->getQueryResultArray($result);
 	}
@@ -105,13 +103,6 @@ class UserScoreModel {
 	public function getAllEventsWithScores(){
 		$result = $this->mysqli->query('SELECT * FROM eventtrigger WHERE producer_score <> 0 OR consumer_score <> 0');
 		return $this->mysqli->getQueryResultArray($result);
-	}
-
-	/**
-	 * Gets the producer multiplier
-	 */
-	public function getProducerMultiplier(){
-		return (new Settings($this->mysqli->database()))->getSingle('q.scoring.producer-multiplier');
 	}
 
 	public function getGlobalRankinglist($userId) {
