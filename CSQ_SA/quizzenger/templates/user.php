@@ -141,6 +141,7 @@
 					</div>
 				<?php endwhile; ?>
 			</div>
+			<div class="clearfix" ></div>
 			<div class="row">
 				<div class="col-md-6">
 					<br>
@@ -161,7 +162,6 @@
 						foreach($moderatedCategories as $modCat){
 							echo(htmlspecialchars($modCat['name'])."<br>");
 						}
-						echo("<hr>");
 					} ?>
 				</div>
 			</div> <!-- row -->
