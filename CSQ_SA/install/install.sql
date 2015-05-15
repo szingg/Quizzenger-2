@@ -606,11 +606,11 @@ CREATE OR REPLACE VIEW rankinglistallcategoriesview AS
 --
 -- Dummy-Records.
 --
-INSERT INTO category (id, name) VALUES (1, 'Strukturwissenschaften');
+INSERT INTO category (id, name,parent_id) VALUES (1, 'Strukturwissenschaften', 0);
 INSERT INTO category (id, name,parent_id) VALUES (2, 'Informatik', 1);
 INSERT INTO category (id, name,parent_id) VALUES (3, 'Wirtschaftsinformatik', 2);
 
-INSERT INTO question (id, type, questiontext, user_id, category_id,created) VALUES (1, 'SingleChoice', 'Bitte lösche mich nachdem eine ernsthafte Frage erstellt wurde.', 2, 3, null);
+INSERT INTO question (id, uuid, type, questiontext, user_id, category_id,created) VALUES (1, UUID(), 'SingleChoice', 'Bitte lösche mich nachdem eine ernsthafte Frage erstellt wurde.', 2, 3, null);
 INSERT INTO answer (correctness, text, explanation, question_id) VALUES (100, 'Antwort 1', '', 1);
 INSERT INTO answer (correctness, text, explanation, question_id) VALUES (0, 'Antwort 2', '', 1);
 INSERT INTO answer (correctness, text, explanation, question_id) VALUES (0, 'Antwort 3', '', 1);
