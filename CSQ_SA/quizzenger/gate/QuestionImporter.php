@@ -143,6 +143,12 @@ namespace quizzenger\gate {
 			return true;
 		}
 
+		/**
+		 * Decodes the XML-Base64-encoded attachment and copies it into the correct directory.
+		 * @param integer $questionId The question ID that defines the filename.
+		 * @param SimpleXMLElement $question The question to which the achievement belongs.
+		 * @return boolean Returns true on success, false otherwise.
+		**/
 		private function transferAttachment($questionId, SimpleXMLElement $question) {
 			$uuid = (string)$question->attributes()->uuid;
 			$content = (string)$question->attachment;
