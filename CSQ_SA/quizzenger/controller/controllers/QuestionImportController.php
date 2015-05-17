@@ -7,9 +7,11 @@ namespace quizzenger\controller\controllers {
 
 	class QuestionImportController {
 		private $view;
+		private $importer;
 
 		public function __construct($view) {
 			$this->view = $view;
+			$this->importer = new QuestionImporter(ModelCollection::database());
 		}
 
 		public function importUploadedFile() {
@@ -32,13 +34,15 @@ namespace quizzenger\controller\controllers {
 			if($xml === false)
 				return false;
 
-			$importer = new QuestionImporter(ModelCollection::database());
-			return $importer->import($_SESSION['user_id'], $xml);
+			return $this->importer->import($_SESSION['user_id'], $xml);
 		}
 
 		public function render() {
 			$this->view->setTemplate('questionimport');
-			$this->importUploadedFile();
+			$result = $this->importUploadedFile();
+
+			$this->view->assign('messages', $this->importer->messages());
+			$this->view->assign('successful', $result);
 			return $this->view->loadTemplate();
 		}
 	} // class QuestionImportController

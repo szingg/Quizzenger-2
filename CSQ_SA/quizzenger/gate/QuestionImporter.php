@@ -12,9 +12,34 @@ namespace quizzenger\gate {
 	**/
 	class QuestionImporter {
 		/**
+		 * Indicates that the question already exists.
+		**/
+		const MESSAGE_ALREADY_EXISTS = 0;
+
+		/**
+		 * Indicates that the question could not be imported due to an error.
+		**/
+		const MESSAGE_IMPORT_FAILED = 1;
+
+		/**
+		 * Indicates that the provided XML was invalid.
+		**/
+		const MESSAGE_INVALID_XML = 2;
+
+		/**
+		 * Indicates that the version of the import file is not supported.
+		**/
+		const MESSAGE_UNSUPPORTED_VERSION = 3;
+
+		/**
 		 * Holds the connection to the database.
 		**/
 		private $mysqli;
+
+		/**
+		 * Represents an array indexed by message type that holds question IDs.
+		**/
+		private $messageQueue;
 
 		/**
 		 * Represents the query for first level category inserts.
@@ -47,6 +72,7 @@ namespace quizzenger\gate {
 		**/
 		public function __construct(mysqli $mysqli) {
 			$this->mysqli = $mysqli;
+			$this->messageQueue = [];
 
 			$this->firstCategoryInsertStatement = $this->mysqli->prepare('INSERT INTO category (name, parent_id)'
 				. ' SELECT DISTINCT ?, 0 FROM category AS ct0'
@@ -102,6 +128,18 @@ namespace quizzenger\gate {
 		**/
 		private function commit() {
 			$this->mysqli->commit();
+		}
+
+		/**
+		 * Pushes a message into the message queue.
+		 * @param int $type Message type.
+		 * @param string $uuid The UUID of the message.
+		**/
+		private function pushMessage($type, $uuid = 0) {
+			if(!isset($this->messageQueue[$type]))
+				$this->messageQueue[$type] = [];
+
+			$this->messageQueue[$type][] = $uuid;
 		}
 
 		/**
@@ -219,6 +257,7 @@ namespace quizzenger\gate {
 			// Question UUID already existed, so no insert has been performed.
 			if($this->questionInsertStatement->insert_id === 0) {
 				Log::info("Question $uuid already exists.");
+				$this->pushMessage(self::MESSAGE_ALREADY_EXISTS, $uuid);
 				return true;
 			}
 
@@ -276,6 +315,7 @@ namespace quizzenger\gate {
 				$this->transaction();
 				if(!$this->importSingleQuestionForUser($userId, $current)) {
 					Log::error("Import of question $uuid failed.");
+					$this->pushMessage(self::MESSAGE_IMPORT_FAILED, $uuid);
 					$this->rollback();
 					continue;
 				}
@@ -286,20 +326,32 @@ namespace quizzenger\gate {
 		}
 
 		/**
+		 * Gets an array of question IDs indexed by message type.
+		 * @return Returns an array with elements of type [message] => [id].
+		**/
+		public function messages() {
+			return $this->messageQueue;
+		}
+
+		/**
 		 * Imports the questions defined in the specified XML data and assigns them to the user.
 		 * @param integer $userId The user ID that the questions belong to.
 		 * @param string $data XML data to be imported.
 		**/
 		public function import($userId, $data) {
+			$this->messageQueue = [];
+
 			$xml = simplexml_load_string($data);
 			if(!$xml) {
 				Log::error('Could not import questions from XML data.');
+				$this->pushMessage(self::MESSAGE_INVALID_XML);
 				return false;
 			}
 
 			$version = $xml->xpath('/quizzenger-question-export/@version');
 			if(empty($version) || ((string)$version[0]) !== '1.0') {
 				Log::error('The specified version for the import is not supported.');
+				$this->pushMessage(self::MESSAGE_UNSUPPORTED_VERSION, $uuid);
 				return false;
 			}
 
