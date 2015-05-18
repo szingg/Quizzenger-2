@@ -40,13 +40,11 @@ class ReportingModel {
 			. ' question.difficulty, question.rating, question.ratingcount,'
 			. ' user.id AS author_id, user.username AS author,'
 			. ' category.id AS category_id, category.name AS category,'
-			. ' COUNT(questionperformance.question_id) AS solved_count'
+			. ' (SELECT COUNT(*) FROM questionperformance WHERE questionperformance.question_id=question.id) AS solved_count'
 			. ' FROM question'
 			. ' JOIN user ON (user.id=question.user_id)'
 			. ' JOIN category ON (category.id=question.category_id)'
-			. ' JOIN questionperformance ON (questionperformance.question_id=question.id)'
-			. ' GROUP BY questionperformance.question_id'
-			. ' ORDER BY created ASC',
+			. ' ORDER BY created ASC, question.id ASC',
 			[], [], false);
 	}
 
