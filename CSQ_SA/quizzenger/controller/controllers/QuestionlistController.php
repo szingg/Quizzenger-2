@@ -2,6 +2,7 @@
 namespace quizzenger\controller\controllers {
 	use \quizzenger\model\ModelCollection as ModelCollection;
 	use \quizzenger\controller\controllers\helper\QuestionTagHelper as QuestionTagHelper;
+	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
 
 	class QuestionlistController{
 		private $view;
@@ -13,7 +14,8 @@ namespace quizzenger\controller\controllers {
 		}
 
 		public function render(){
-		$this->view->setTemplate ( 'questionlist' );
+			$this->processPostRequest();
+			$this->view->setTemplate ( 'questionlist' );
 			if (isset ( $this->request ['category'] )) {
 				$questions = ModelCollection::questionListModel()->getQuestionsByCategoryID ( $this->request ['category'] );
 			} else if (isset ( $this->request ['user'] )) {
@@ -24,7 +26,6 @@ namespace quizzenger\controller\controllers {
 
 			$questionTagHelper = new QuestionTagHelper($this->view);
 			$questionTagHelper->process($questions);
-//			include("helper/question_tag.php");
 
 			$this->view->assign('questions', $questions);
 			$this->view->assign('template', 'questionlist');
@@ -32,15 +33,22 @@ namespace quizzenger\controller\controllers {
 			if ($GLOBALS ['loggedin']) {
 				$quizzes = ModelCollection::quizListModel()->getUserQuizzesByUserID ( $_SESSION ['user_id'] );
 				$this->view->assign ( 'quizzes', $quizzes );
+			}
 
+			return $this->view->loadTemplate();
+		}
+
+		private function processPostRequest(){
+			if ($GLOBALS ['loggedin']) {
 				if (isset ( $this->request ['addtoquiz'] ) && is_array ( $this->request ['addtoquiz'] ) && isset ( $this->request ['quiz_id'] ) && $this->request ['quiz_id'] > 0) {
 					$this->view->assign ( 'message', count ( $this->request ['addtoquiz'] ) . " Fragen wurden hinzugef&uuml;gt." );
 					foreach ( $this->request ['addtoquiz'] as $question ) {
 						ModelCollection::quizModel()->addQuestionToQuiz ( $this->request ['quiz_id'], $question );
+						NavigationUtility::redirect('?view=mycontent&quizid='.$this->request ['quiz_id'].'#myquizzes');
+
 					}
 				}
 			}
-			return $this->view->loadTemplate();
 		}
 
 	} // class QuestionlistController

@@ -20,7 +20,7 @@
 						} ?>
 					>
 						<td>
-							<a href="?view=quizdetail&amp;quizid=<?= $quiz['id']; ?>">
+							<a href="?view=quizdetail&amp;quizid=<?= $quiz['id']; ?>" title="Quizdetails anschauen">
 								<?= htmlspecialchars($quiz['name']); ?>
 							</a>
 						</td>
@@ -31,9 +31,9 @@
 							<?= htmlspecialchars($quiz['performances']); ?>
 						</td>
 						<td class="hidden-xs">
-							<a class="remove-row" href="javascript:void()" data-qid="<?php echo $quiz['id']; ?>" data-type="quiz">
+							<a class="remove-row" href="javascript:void()" data-qid="<?php echo $quiz['id']; ?>" data-type="quiz" title="Quiz löschen">
 							<span class="glyphicon glyphicon-remove"></span> </a>
-							<button type="button" class="btn btn-link btn-xs"
+							<button type="button" class="btn btn-link btn-xs" title="Quizname bearbeiten"
 								data-toggle="modal"
 								onclick='setEditQuizName(<?=$quiz['id'] ?>,"<?= htmlspecialchars($quiz['name'])?>");'
 								data-target="#editQuizName">

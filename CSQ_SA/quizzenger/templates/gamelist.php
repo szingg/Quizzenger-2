@@ -30,7 +30,7 @@
 							<?php foreach ( $this->_ ['hostedGames'] as $game ) { ?>
 							<tr>
 								<td>
-									<a href="<?php echo '?view=GameDetail&gameid=' . $game['id']; ?>">
+									<a href="<?php echo '?view=GameDetail&gameid=' . $game['id']; ?>" title="Gamedetails anschauen">
 										<?php echo htmlspecialchars($game['name']); ?>
 									</a>
 								</td>
@@ -38,7 +38,7 @@
 								<td class="hidden-xs"><?php echo (isset($game['starttime'])?htmlspecialchars($game['starttime']):'Game nicht gestartet'); ?></td>
 								<td class="hidden-xs"><?php echo htmlspecialchars(FormatUtility::formatTime($game['duration'])); ?></td>
 								<td class="hidden-xs">
-									<a class="remove-row" href="javascript:void()" data-qid="<?php echo $game['id']; ?>" data-type="game">
+									<a class="remove-row" href="javascript:void()" data-qid="<?php echo $game['id']; ?>" data-type="game" title="Game löschen">
 										<span class="glyphicon glyphicon-remove"></span> </a>
 									</a>
 								</td>

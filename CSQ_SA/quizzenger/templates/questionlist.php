@@ -17,7 +17,7 @@
 	</div>
 <?php endif; ?>
 <div class="panel-body">
-	<form id="addToQuizForm" role="form" method="post">
+	<form id="addToQuizForm" role="form" method="post" action="?view=questionlist">
 		<input id="inputquizid" type="hidden" name="quiz_id" value="-1">
 			<div class="table-responsive">
 				<table class="table" id="tableQuestionList">
@@ -40,7 +40,7 @@
 									}?>>
 								<td>
 									<div id="questionTextSpan">
-										<a href="?view=question&amp;id=<?php echo $question['id']; ?>">
+										<a href="?view=question&amp;id=<?php echo $question['id']; ?>" title="Frage anzeigen">
 											<b><?= $out = strlen($question['questiontext']) > QUESTIONTEXT_CUTOFF_LENGTH ? htmlspecialchars(substr($question['questiontext'],0,QUESTIONTEXT_CUTOFF_LENGTH))." . . ." : htmlspecialchars($question['questiontext']); ?></b>
 										</a>
 										<?php if(strlen($question['questiontext']) > QUESTIONTEXT_CUTOFF_LENGTH){?>
@@ -73,11 +73,11 @@
 											<label> <input type="checkbox" name="addtoquiz[]" class="hidden-xs" value="<?php echo $question['id']; ?>"></label>&nbsp;
 
 										<?php if(isset($this->_ ['myquestions']) && $this->_ ['myquestions']=="myquestions" ){?>
-											<a class="remove-row" href="#" data-qid="<?php echo $question['id']; ?>" data-type="question">
+											<a class="remove-row" href="#" data-qid="<?php echo $question['id']; ?>" data-type="question" title="Löschen">
 												<span class="glyphicon glyphicon-remove"></span>
 											</a>
 											&nbsp;
-											<a href="?view=editquestion&amp;id=<?php echo $question['id']; ?>" >
+											<a href="?view=editquestion&amp;id=<?php echo $question['id']; ?>" title="Bearbeiten" >
 												<span class="glyphicon glyphicon-edit"></span>
 											</a>
 										<?php } ?>

@@ -12,7 +12,7 @@
 			<td class="hidden-xs">{{=htmlspecialchars(it.username)}}</td>
 			<td class="hidden-xs">{{=htmlspecialchars(it.duration)}}</td>
 			<td class="hidden-xs">
-				<a href="?view=GameStart&gameid={{=it.id}}">
+				<a href="?view=GameStart&gameid={{=it.id}}" title="Beitreten">
 					<span class="glyphicon glyphicon-ok-sign"></span>
 				</a>
 			</td>
@@ -32,7 +32,7 @@
 			<td class="hidden-xs">{{=htmlspecialchars(it.starttime)}}</td>
 			<td class="hidden-xs">{{=htmlspecialchars(it.duration)}}</td>
 			<td class="hidden-xs">
-				<a href="?view=GameQuestion&gameid={{=it.id}}">
+				<a href="?view=GameQuestion&gameid={{=it.id}}" title="Weiterspielen">
 					<span class="glyphicon glyphicon-play"></span>
 				</a>
 			</td>
@@ -64,23 +64,6 @@
 							</tr>
 						</thead>
 						<tbody id="tableBodyOpenGames">
-						<?php /* foreach ( $this->_ ['openGames'] as $game ) { ?>
-							<tr>
-								<td>
-									<a href="<?php echo '?view=GameStart&gameid=' . $game['id']; ?>">
-										<?php echo htmlspecialchars($game['name']); ?>
-									</a>
-								</td>
-								<td class="hidden-xs"><?php echo (isset($game['members'])?$game['members']:'0').' Teilnehmer'; ?> </td>
-								<td class="hidden-xs"><?php echo htmlspecialchars($game['username']); ?></td>
-								<td class="hidden-xs"><?php echo htmlspecialchars(formatTime($game['duration'])); ?></td>
-								<td class="hidden-xs">
-									<a href="<?php echo '?view=GameStart&gameid=' . $game['id']; ?>" >
-										<span class="glyphicon glyphicon-ok-sign"></span>
-									</a>
-								</td>
-							</tr>
-						<?php } */ ?>
 						</tbody>
 					</table>
 				</div> <!-- panel-body -->
@@ -113,24 +96,6 @@
 							</tr>
 						</thead>
 						<tbody id="tableBodyOpenGames">
-						<?php /* foreach ( $this->_ ['activeGames'] as $game ) { ?>
-							<tr>
-								<td>
-									<a href="<?php echo '?view=GameQuestion&gameid=' . $game['id']; ?>">
-										<?php echo htmlspecialchars($game['name']); ?>
-									</a>
-								</td>
-								<td class="hidden-xs"><?php echo (isset($game['members'])?$game['members']:'0').' Teilnehmer'; ?> </td>
-								<td class="hidden-xs"><?php echo htmlspecialchars($game['username']); ?></td>
-								<td class="hidden-xs"><?php echo htmlspecialchars($game['starttime']); ?></td>
-								<td class="hidden-xs"><?php echo htmlspecialchars(formatTime($game['duration'])); ?></td>
-								<td class="hidden-xs">
-									<a href="<?php echo '?view=GameQuestion&gameid=' . $game['id']; ?>" >
-										<span class="glyphicon glyphicon-play"></span>
-									</a>
-								</td>
-							</tr>
-						<?php } */  ?>
 						</tbody>
 					</table>
 				</div> <!-- panel-body -->
