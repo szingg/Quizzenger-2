@@ -10,13 +10,13 @@
 				$database = $database->database();
 				$userId = $event->user();
 				$questionCount = $event->get('question-count');
-				$minDifficulty = $event->get('min-difficulty');
+				$maxDifficulty = $event->get('max-difficulty');
 				$minQuestionperformanceCount = $event->get('min-questionperformance-count');
 
 				$statement = $database->prepare('SELECT COUNT(*) as count FROM question '
-						.' WHERE user_id=? AND difficulty >= ? AND difficultyCount >= ?');
+						.' WHERE user_id=? AND difficulty <= ? AND difficultyCount >= ?');
 
-				$statement->bind_param('iii', $userId, $minDifficulty, $minQuestionperformanceCount);
+				$statement->bind_param('iii', $userId, $maxDifficulty, $minQuestionperformanceCount);
 
 				if($statement->execute() === false) {
 					Log::error('Database Query failed in QuestionAnsweredCorrectAchievement.');

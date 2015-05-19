@@ -586,7 +586,7 @@
 			<image>achievement-question-difficulty-normal-1</image>
 			<arguments>
 				<argument name="question-count" value="1" />
-				<argument name="min-difficulty" value="26" />
+				<argument name="max-difficulty" value="75" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>30</bonus_score>
@@ -602,7 +602,7 @@
 			<image>achievement-question-difficulty-normal-2</image>
 			<arguments>
 				<argument name="question-count" value="2" />
-				<argument name="min-difficulty" value="26" />
+				<argument name="max-difficulty" value="75" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>60</bonus_score>
@@ -618,7 +618,7 @@
 			<image>achievement-question-difficulty-normal-5</image>
 			<arguments>
 				<argument name="question-count" value="5" />
-				<argument name="min-difficulty" value="26" />
+				<argument name="max-difficulty" value="75" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>150</bonus_score>
@@ -634,7 +634,7 @@
 			<image>achievement-question-difficulty-normal-10</image>
 			<arguments>
 				<argument name="question-count" value="10" />
-				<argument name="min-difficulty" value="26" />
+				<argument name="max-difficulty" value="75" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>300</bonus_score>
@@ -650,7 +650,7 @@
 			<image>achievement-question-difficulty-normal-20</image>
 			<arguments>
 				<argument name="question-count" value="20" />
-				<argument name="min-difficulty" value="26" />
+				<argument name="max-difficulty" value="75" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>600</bonus_score>
@@ -666,7 +666,7 @@
 			<image>achievement-question-difficulty-normal-50</image>
 			<arguments>
 				<argument name="question-count" value="50" />
-				<argument name="min-difficulty" value="26" />
+				<argument name="max-difficulty" value="75" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>1500</bonus_score>
@@ -682,7 +682,7 @@
 			<image>achievement-question-difficulty-moderate-1</image>
 			<arguments>
 				<argument name="question-count" value="1" />
-				<argument name="min-difficulty" value="51" />
+				<argument name="max-difficulty" value="50" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>40</bonus_score>
@@ -698,7 +698,7 @@
 			<image>achievement-question-difficulty-moderate-2</image>
 			<arguments>
 				<argument name="question-count" value="2" />
-				<argument name="min-difficulty" value="51" />
+				<argument name="max-difficulty" value="50" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>80</bonus_score>
@@ -714,7 +714,7 @@
 			<image>achievement-question-difficulty-moderate-5</image>
 			<arguments>
 				<argument name="question-count" value="5" />
-				<argument name="min-difficulty" value="51" />
+				<argument name="max-difficulty" value="50" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>200</bonus_score>
@@ -730,7 +730,7 @@
 			<image>achievement-question-difficulty-moderate-10</image>
 			<arguments>
 				<argument name="question-count" value="10" />
-				<argument name="min-difficulty" value="51" />
+				<argument name="max-difficulty" value="50" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>400</bonus_score>
@@ -746,7 +746,7 @@
 			<image>achievement-question-difficulty-moderate-20</image>
 			<arguments>
 				<argument name="question-count" value="20" />
-				<argument name="min-difficulty" value="51" />
+				<argument name="max-difficulty" value="50" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>800</bonus_score>
@@ -762,7 +762,7 @@
 			<image>achievement-question-difficulty-moderate-50</image>
 			<arguments>
 				<argument name="question-count" value="50" />
-				<argument name="min-difficulty" value="51" />
+				<argument name="max-difficulty" value="50" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>2000</bonus_score>
@@ -778,7 +778,7 @@
 			<image>achievement-question-difficulty-difficult-1</image>
 			<arguments>
 				<argument name="question-count" value="1" />
-				<argument name="min-difficulty" value="76" />
+				<argument name="max-difficulty" value="25" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>50</bonus_score>
@@ -794,7 +794,7 @@
 			<image>achievement-question-difficulty-difficult-2</image>
 			<arguments>
 				<argument name="question-count" value="2" />
-				<argument name="min-difficulty" value="76" />
+				<argument name="max-difficulty" value="25" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>100</bonus_score>
@@ -810,7 +810,7 @@
 			<image>achievement-question-difficulty-difficult-5</image>
 			<arguments>
 				<argument name="question-count" value="5" />
-				<argument name="min-difficulty" value="76" />
+				<argument name="max-difficulty" value="25" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>250</bonus_score>
@@ -826,7 +826,7 @@
 			<image>achievement-question-difficulty-difficult-10</image>
 			<arguments>
 				<argument name="question-count" value="10" />
-				<argument name="min-difficulty" value="76" />
+				<argument name="max-difficulty" value="25" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>500</bonus_score>
@@ -842,7 +842,7 @@
 			<image>achievement-question-difficulty-difficult-20</image>
 			<arguments>
 				<argument name="question-count" value="20" />
-				<argument name="min-difficulty" value="76" />
+				<argument name="max-difficulty" value="25" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>1000</bonus_score>
@@ -858,7 +858,7 @@
 			<image>achievement-question-difficulty-difficult-50</image>
 			<arguments>
 				<argument name="question-count" value="50" />
-				<argument name="min-difficulty" value="76" />
+				<argument name="max-difficulty" value="25" />
 				<argument name="min-questionperformance-count" value="5" />
 			</arguments>
 			<bonus_score>2500</bonus_score>
