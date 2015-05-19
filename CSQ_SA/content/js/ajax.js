@@ -77,16 +77,19 @@ function showCategories(element, parentId, containerId, mode) {
 function newRating(question_id){
 	var comment;
 	comment = document.getElementById('rating').value;
-	stars = document.querySelector('input[name = "rating"]:checked').value;
+	var stars = document.querySelector('input[name = "rating"]:checked').value;
 
-	parent = null;
+	var parent = null;
 
-	ajaxGET("index.php?view=addrating_ajax&type=ajax&question_id="+question_id+"&stars="+stars+"&comment="+comment+"&parent="+parent);
+	//ajaxGET("index.php?view=addrating_ajax&type=ajax&question_id="+question_id+"&stars="+stars+"&comment="+comment+"&parent="+parent);
+	ajaxGetJson("index.php?view=addrating_ajax&type=ajax&question_id="+question_id+"&stars="+stars+"&comment="+comment+"&parent="+parent, 
+		function(){ location.reload(true);}, 
+		function(){ location.reload(true);}
+	);
 
 	var child = document.getElementById('ratingdiv');
 	document.getElementById('ratingFormButton').disabled = true;
 	document.getElementById('ratingFormButton').innerHTML= 'Bewertung abgeschickt';
-
 }
 
 function newComment(question_id,parent){

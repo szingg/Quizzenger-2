@@ -4,7 +4,6 @@ function Gamification(){
 
 	this.initialize = function(){
 		//GameLobby
-		//self.showModalNewGameEvent();
 		self.initTableNewGames();
 		self.gameLobbyTimer();
 		//GameStart
@@ -15,33 +14,6 @@ function Gamification(){
 		//GameReport
 		self.gameReportTimer();
 	};
-/*
-	this.showModalNewGameEvent = function(){
-		$("#newGameDialog").on("show.bs.modal", function(e) {
-			//quizName
-		    var quizName = $(e.relatedTarget).data("quiz-name");
-		    $("#newGameModalLabel").text("Neues Game aus Quiz '" + quizName + "' erstellen");
-
-		    //quizId
-		    var quizId = $(e.relatedTarget).data("quiz-id");
-		    $("#quizIdModal").val(quizId);
-		});
-	} */
-
-	this.saveNewGameEvent = function(){
-		/*$('submitNewGame').submit(function() {
-  			return false;
-		}); */
-		/*$("#saveNewGame").submit(function(e){
-			var quizId = $("#quizIdModal").text();
-			var gameName = $("#gameNameModal").val();
-			if(gameName == false){
-				alert("Bitte Feld einfüllen.");
-				return;
-			}
-			window.location.href = "index.php?view=gamenew&quizid="+quizId+"&gamename="+gameName;
-		}); */
-	}
 
 	this.joinGameEvent = function(){
 		$("#joinGame").click(function(){
