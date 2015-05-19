@@ -7,11 +7,11 @@ body {
 	background-image: url(../img/bg.png);
 }
 
-@media ( min-width :768px) {
-	body { padding-top: 170px; }
-}
 @media ( max-width :768px) {
 	body { padding-top: 70px; }
+}
+@media ( min-width :768px) {
+	body { padding-top: 170px; }
 }
 
 @media ( min-width :992px) {
@@ -171,12 +171,18 @@ div>a {
 }
 
 .video-container {
-	width: 100%;
 	position: relative;
-	padding-bottom: 56.25%;
+	padding-bottom: 28%;
+	max-width: 50%;
 	height: 0;
 	overflow: hidden;
-	max-width: 100%;
+}
+
+@media ( max-width :992px) {
+	.video-container { 	padding-bottom: 56.25%; max-width: 100%; }
+}
+@media ( min-width :992px) {
+	.video-container { 	padding-bottom: 388px; max-width: 690px; }
 }
 
 .video-container iframe,

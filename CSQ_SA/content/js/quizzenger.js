@@ -202,12 +202,12 @@ var quizzenger = {
 					switch(quizzenger.question.getAttachmentType(attachment)) {
 						case 'image':
 							json[0] = 'img';
-							json[1] = { 'href' : attachment, 'alt' : 'attachment' };
+							json[1] = { 'href' : attachment, 'alt' : 'attachment', 'style' : ' max-height: 690px;' };
 							break;
 
 						case 'youtube':
 							json[0] = 'div';
-							json[1] = { 'class' : 'video-container' };
+							json[1] = { 'class' : 'video-container'};
 							json[2] = [	'iframe', {
 								'src' : quizzenger.markdown.getEmbedUrlFromYouTubeUrl(attachment),
 								'frameborder' : '0',
@@ -217,7 +217,7 @@ var quizzenger = {
 
 						case 'vimeo':
 							json[0] = 'div';
-							json[1] = { 'class' : 'video-container' };
+							json[1] = { 'class' : 'video-container'};
 							json[2] = [ 'iframe', {
 								'src' : quizzenger.markdown.getEmbedUrlFromVimeoUrl(attachment),
 								'frameborder' : '0',
