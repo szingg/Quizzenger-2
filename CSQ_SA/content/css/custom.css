@@ -172,17 +172,24 @@ div>a {
 
 .video-container {
 	position: relative;
-	padding-bottom: 28%;
-	max-width: 50%;
 	height: 0;
 	overflow: hidden;
 }
 
+.image-container {
+	position: relative;
+	overflow: hidden;
+	height: auto;
+}
+
+
 @media ( max-width :992px) {
 	.video-container { 	padding-bottom: 56.25%; max-width: 100%; }
+	.image-container { max-width: 100%;}
 }
 @media ( min-width :992px) {
 	.video-container { 	padding-bottom: 388px; max-width: 690px; }
+	.image-container { max-width: 690px;}
 }
 
 .video-container iframe,
