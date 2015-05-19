@@ -17,17 +17,17 @@
 					Frage
 				</td>
 				<td>
-					<a href="?view=question&amp;id=<?=  $reportedQuestion['question_id']; ?>">
+					<a href="?view=question&amp;id=<?=  $reportedQuestion['question_id']; ?>" title="Frage anzeigen">
 						<?= htmlspecialchars($reportedQuestion['questiontext']); ?>
 					</a>
 				</td>
 				<td class="hidden-xs">
-					<a href="javascript:void()" onclick="getReports(<?=  $reportedQuestion['question_id']; ?>, 'question')"
+					<a href="javascript:void()" onclick="getReports(<?=  $reportedQuestion['question_id']; ?>, 'question')" title="Meldungen lesen"
 					   data-toggle="modal" data-target="#reportList"><?=  $reportedQuestion['COUNT(*)'];?>
 					 </a>
 				</td>
 				<td class="hidden-xs">
-					<a href="?view=editquestion&amp;id=<?=  $reportedQuestion['question_id']; ?>">
+					<a href="?view=editquestion&amp;id=<?=  $reportedQuestion['question_id']; ?>" title="Frage bearbeiten">
 						<span class="glyphicon glyphicon-edit"></span>
 					</a>
 					<a class="remove-row" href="javascript:void()"
