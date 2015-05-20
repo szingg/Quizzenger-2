@@ -581,9 +581,9 @@
 		</achievement>
 		<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 1 Frage mit Schwierigkeit "normal" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 1 Frage mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>1</sort_order>
-			<image>achievement-question-difficulty-normal-1</image>
+			<image>achievement-question-difficulty-moderate-1</image>
 			<arguments>
 				<argument name="question-count" value="1" />
 				<argument name="max-difficulty" value="75" />
@@ -597,9 +597,9 @@
 		</achievement>
 		<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 2 Fragen mit Schwierigkeit "normal" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 2 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>2</sort_order>
-			<image>achievement-question-difficulty-normal-2</image>
+			<image>achievement-question-difficulty-moderate-2</image>
 			<arguments>
 				<argument name="question-count" value="2" />
 				<argument name="max-difficulty" value="75" />
@@ -613,9 +613,9 @@
 		</achievement>
 		<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 5 Fragen mit Schwierigkeit "normal" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 5 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>5</sort_order>
-			<image>achievement-question-difficulty-normal-5</image>
+			<image>achievement-question-difficulty-moderate-5</image>
 			<arguments>
 				<argument name="question-count" value="5" />
 				<argument name="max-difficulty" value="75" />
@@ -629,9 +629,9 @@
 		</achievement>
 		<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 10 Fragen mit Schwierigkeit "normal" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 10 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>10</sort_order>
-			<image>achievement-question-difficulty-normal-10</image>
+			<image>achievement-question-difficulty-moderate-10</image>
 			<arguments>
 				<argument name="question-count" value="10" />
 				<argument name="max-difficulty" value="75" />
@@ -645,9 +645,9 @@
 		</achievement>
 		<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 20 Fragen mit Schwierigkeit "normal" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 20 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>20</sort_order>
-			<image>achievement-question-difficulty-normal-20</image>
+			<image>achievement-question-difficulty-moderate-20</image>
 			<arguments>
 				<argument name="question-count" value="20" />
 				<argument name="max-difficulty" value="75" />
@@ -661,9 +661,9 @@
 		</achievement>
 		<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 50 Fragen mit Schwierigkeit "normal" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 50 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>50</sort_order>
-			<image>achievement-question-difficulty-normal-50</image>
+			<image>achievement-question-difficulty-moderate-50</image>
 			<arguments>
 				<argument name="question-count" value="50" />
 				<argument name="max-difficulty" value="75" />
@@ -677,9 +677,9 @@
 		</achievement>
 				<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 1 Frage mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 1 Frage mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>1</sort_order>
-			<image>achievement-question-difficulty-moderate-1</image>
+			<image>achievement-question-difficulty-difficult-1</image>
 			<arguments>
 				<argument name="question-count" value="1" />
 				<argument name="max-difficulty" value="50" />
@@ -693,9 +693,9 @@
 		</achievement>
 		<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 2 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 2 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>2</sort_order>
-			<image>achievement-question-difficulty-moderate-2</image>
+			<image>achievement-question-difficulty-difficult-2</image>
 			<arguments>
 				<argument name="question-count" value="2" />
 				<argument name="max-difficulty" value="50" />
@@ -709,9 +709,9 @@
 		</achievement>
 		<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 5 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 5 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>5</sort_order>
-			<image>achievement-question-difficulty-moderate-5</image>
+			<image>achievement-question-difficulty-difficult-5</image>
 			<arguments>
 				<argument name="question-count" value="5" />
 				<argument name="max-difficulty" value="50" />
@@ -725,9 +725,9 @@
 		</achievement>
 		<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 10 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 10 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>10</sort_order>
-			<image>achievement-question-difficulty-moderate-10</image>
+			<image>achievement-question-difficulty-difficult-10</image>
 			<arguments>
 				<argument name="question-count" value="10" />
 				<argument name="max-difficulty" value="50" />
@@ -741,9 +741,9 @@
 		</achievement>
 		<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 20 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 20 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>20</sort_order>
-			<image>achievement-question-difficulty-moderate-20</image>
+			<image>achievement-question-difficulty-difficult-20</image>
 			<arguments>
 				<argument name="question-count" value="20" />
 				<argument name="max-difficulty" value="50" />
@@ -757,9 +757,9 @@
 		</achievement>
 		<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 50 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 50 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>50</sort_order>
-			<image>achievement-question-difficulty-moderate-50</image>
+			<image>achievement-question-difficulty-difficult-50</image>
 			<arguments>
 				<argument name="question-count" value="50" />
 				<argument name="max-difficulty" value="50" />
@@ -773,9 +773,9 @@
 		</achievement>
 				<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 1 Frage mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 1 Frage mit Schwierigkeit "sehr schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>1</sort_order>
-			<image>achievement-question-difficulty-difficult-1</image>
+			<image>achievement-question-difficulty-very-difficult-1</image>
 			<arguments>
 				<argument name="question-count" value="1" />
 				<argument name="max-difficulty" value="25" />
@@ -789,9 +789,9 @@
 		</achievement>
 		<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 2 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 2 Fragen mit Schwierigkeit "sehr schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>2</sort_order>
-			<image>achievement-question-difficulty-difficult-2</image>
+			<image>achievement-question-difficulty-very-difficult-2</image>
 			<arguments>
 				<argument name="question-count" value="2" />
 				<argument name="max-difficulty" value="25" />
@@ -805,9 +805,9 @@
 		</achievement>
 		<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 5 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 5 Fragen mit Schwierigkeit "sehr schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>5</sort_order>
-			<image>achievement-question-difficulty-difficult-5</image>
+			<image>achievement-question-difficulty-very-difficult-5</image>
 			<arguments>
 				<argument name="question-count" value="5" />
 				<argument name="max-difficulty" value="25" />
@@ -821,9 +821,9 @@
 		</achievement>
 		<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 10 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 10 Fragen mit Schwierigkeit "sehr schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>10</sort_order>
-			<image>achievement-question-difficulty-difficult-10</image>
+			<image>achievement-question-difficulty-very-difficult-10</image>
 			<arguments>
 				<argument name="question-count" value="10" />
 				<argument name="max-difficulty" value="25" />
@@ -837,9 +837,9 @@
 		</achievement>
 		<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 20 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 20 Fragen mit Schwierigkeit "sehr schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>20</sort_order>
-			<image>achievement-question-difficulty-difficult-20</image>
+			<image>achievement-question-difficulty-very-difficult-20</image>
 			<arguments>
 				<argument name="question-count" value="20" />
 				<argument name="max-difficulty" value="25" />
@@ -853,9 +853,9 @@
 		</achievement>
 		<achievement type="QuestionDifficulty">
 			<name>Normale Fragen</name>
-			<description>Du hast 50 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
+			<description>Du hast 50 Fragen mit Schwierigkeit "sehr schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>50</sort_order>
-			<image>achievement-question-difficulty-difficult-50</image>
+			<image>achievement-question-difficulty-very-difficult-50</image>
 			<arguments>
 				<argument name="question-count" value="50" />
 				<argument name="max-difficulty" value="25" />

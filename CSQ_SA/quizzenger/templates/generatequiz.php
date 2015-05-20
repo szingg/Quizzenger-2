@@ -46,19 +46,19 @@ $roots = $this->_ ['roots'];
 								<div>
 									<label> <input type="checkbox"
 										id="quiz_generator_form_difficulty_2"
-										name="quiz_generator_form_difficulty[]" value="1"> Normal
+										name="quiz_generator_form_difficulty[]" value="1"> Moderat
 									</label>
 								</div>
 								<div>
 									<label> <input type="checkbox"
 										id="quiz_generator_form_difficulty_3"
-										name="quiz_generator_form_difficulty[]" value="2"> Moderat
+										name="quiz_generator_form_difficulty[]" value="2"> Schwer
 									</label>
 								</div>
 								<div>
 									<label> <input type="checkbox"
 										id="quiz_generator_form_difficulty_4"
-										name="quiz_generator_form_difficulty[]" value="3"> Schwer
+										name="quiz_generator_form_difficulty[]" value="3"> Sehr Schwer
 									</label>
 								</div>
 						</div>

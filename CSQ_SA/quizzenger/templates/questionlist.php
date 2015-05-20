@@ -183,11 +183,11 @@ function createDifficultyString($difficulty,$difficultycount){
 		return "Noch unbekannt";
 	}
 	if($difficulty>=0 && $difficulty<=25){
-		return "Schwer";
+		return "Sehr Schwer";
 	}elseif($difficulty>25 && $difficulty<=50){
-		return "Moderat";
+		return "Schwer";
 	}elseif($difficulty>50 && $difficulty<=75){
-		return "Normal";
+		return "Moderat";
 	}elseif($difficulty>75 && $difficulty<=100){
 		return "Einfach";
 	}
