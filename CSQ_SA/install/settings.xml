@@ -74,7 +74,7 @@
 		<achievement type="QuestionAnsweredCorrect">
 			<name>50 Fragen!</name>
 			<description>Du hast 50 Fragen korrekt beantwortet.</description>
-			<sort_order>100</sort_order>
+			<sort_order>50</sort_order>
 			<image>achievement-question-answered-50</image>
 			<arguments>
 				<argument name="question-count" value="50" />
