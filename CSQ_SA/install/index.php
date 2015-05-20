@@ -3,7 +3,7 @@ include("../includes/config.php");
 if(isset($_POST['install'])){
 
 	echo("Connecting to DB<br>");
-	$link = mysqli_connect(dbhost.":".dbport, dbuser, dbpassword) ;
+	$link = mysqli_connect(dbhost, dbuser, dbpassword, '', dbport) ;
 	if (!$link || !$link->set_charset("utf8")) {
 		die ("MySQL Connection error");
 	}
