@@ -202,7 +202,7 @@ var quizzenger = {
 					switch(quizzenger.question.getAttachmentType(attachment)) {
 						case 'image':
 							json[0] = 'img';
-							json[1] = { 'href' : attachment, 'alt' : 'attachment', 'style' : ' max-height: 690px;' };
+							json[1] = {'href' : attachment, 'alt' : 'attachment', 'class' : 'image-container'};
 							break;
 
 						case 'youtube':

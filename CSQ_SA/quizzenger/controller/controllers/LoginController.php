@@ -1,6 +1,5 @@
 <?php
 namespace quizzenger\controller\controllers {
-	//use \quizzenger\utilities\PermissionUtility as PermissionUtility;
 	use \quizzenger\utilities\NavigationUtility as NavigationUtility;
 	use \quizzenger\messages\MessageQueue as MessageQueue;
 	use \quizzenger\model\ModelCollection as ModelCollection;

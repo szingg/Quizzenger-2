@@ -23,9 +23,9 @@
 				foreach ( $this->_ ['reportedUsers'] as $reportedUser ) {
 					?>
 					<tr>
-						<td><a href="index.php?view=user&amp;id=<?=$reportedUser['user_id']?>"><?= htmlspecialchars($reportedUser['username']) ?></a></td>
+						<td><a href="index.php?view=user&amp;id=<?=$reportedUser['user_id']?>" title="Benutzerprofil anzeigen"><?= htmlspecialchars($reportedUser['username']) ?></a></td>
 						<td>
-							<a href="javascript:void()" onclick="getReports(<?php echo $reportedUser['user_id']; ?>, 'user')"
+							<a href="javascript:void()" onclick="getReports(<?php echo $reportedUser['user_id']; ?>, 'user')" title="Meldungen lesen"
 						   		data-toggle="modal" data-target="#reportList"><?=$reportedUser['COUNT(*)']?>
 						 	</a>
 					 	</td>
@@ -35,7 +35,7 @@
 								data-qid="<?= $reportedUser['user_id']; ?>" data-type="user">
 								<span class="glyphicon glyphicon-remove"></span>
 							</a>
-							<a href="javascript:void()" class="remove-row" data-type="userreports" data-qid="<?= $reportedUser['user_id'] ?>">
+							<a href="javascript:void()" class="remove-row" data-type="userreports" data-qid="<?= $reportedUser['user_id'] ?>" title="Meldungen verwerfen">
 								<span class="glyphicon glyphicon-ok"></span>
 							</a>
 						</td>
@@ -60,7 +60,7 @@
 			foreach ( $this->_['subCats']  as $subCat) {
 				?>
 				<tr>
-					<td><a href="index.php?view=questionlist&amp;category=<?=$subCat['id']?>"><?=htmlspecialchars($subCat['name'])?></a></td>
+					<td><a href="index.php?view=questionlist&amp;category=<?=$subCat['id']?>" title="Frageliste anzeigen"><?=htmlspecialchars($subCat['name'])?></a></td>
 					<td>
 						<a
 							class="remove-row" href="javascript:void()"

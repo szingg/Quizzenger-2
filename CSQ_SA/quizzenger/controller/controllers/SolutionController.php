@@ -40,8 +40,11 @@ namespace quizzenger\controller\controllers {
 			$categoryName = ModelCollection::categoryModel()->getNameByID ( $question ['category_id'] );
 
 			$answers = ModelCollection::answerModel()->getAnswersByQuestionID ( $this->request ['id'] );
-			$order = $_SESSION['questionorder'][$this->request ['id']];
-			array_multisort($order, $answers);
+
+			if(isset($_SESSION['questionorder'], $_SESSION['questionorder'][$this->request ['id']])){
+				$order = $_SESSION['questionorder'][$this->request ['id']];
+				array_multisort($order, $answers);
+			}
 			$selectedAnswer = $this->request ['answer'];
 			$correctAnswer = ModelCollection::answerModel()->getCorrectAnswer ( $this->request ['id'] );
 

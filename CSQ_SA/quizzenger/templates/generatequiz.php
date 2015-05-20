@@ -1,7 +1,7 @@
 <?php
 $roots = $this->_ ['roots'];
 ?>
-<h3>Lernen</h3>
+<h3>Quiz generieren</h3>
 <h4>Wähle Themen und stelle dir so ein individuelles Quiz zur Lernkontrolle zusammen</h4>
 <br>
 <form role="form" id="quiz_generator_form" method="post" action="?view=processGenerateQuiz">
@@ -84,8 +84,8 @@ $roots = $this->_ ['roots'];
 							<select class="form-control" id="quiz_generator_form_mode"
 									name="quiz_generator_form_mode">
 								<option value="random">Zuf&auml;llig</option>
-								<option value="best">Am besten bewertet</option>
-								<option value="most">Am meisten beantwortet</option>
+								<option value="best">Am besten bewertete Fragen bevorzugen</option>
+								<option value="most">Am meisten beantwortete Fragen bevorzugen</option>
 							</select>
 						</div>
 					</div>

@@ -29,11 +29,24 @@ function OpQuestion(){
 				//write values to opquestion form
 				$("#opquestion_form_attachment").val($("#inputLink").val());
 				$("#opquestion_form_attachmentLocal").val("0"); //false
+
+				var oldQuestionText = $('#opquestion_form_questionText').val();
+				if(contains(oldQuestionText, '[attachment]') == false){
+					$('#opquestion_form_questionText').val($('#opquestion_form_questionText').val() + '\n\n[attachment]\n' );
+				}
 			}
 			else{
 				$("#msg-link").text("Link ist ungültig.");
 			}
 		});
+	}
+
+	/*
+	* Checks if obj1 contains obj2
+	* @return Returns true if contains, else false
+	*/
+	var contains = function(obj1, obj2){
+		return obj1.indexOf(obj2) > -1;
 	}
 
 	var validateUrl = function(value){
@@ -69,6 +82,11 @@ function OpQuestion(){
 							$("#opquestion_form_attachmentTempFileName").val($("#selectedFile").val()); //full filename
 							$("#opquestion_form_attachment").val($("#selectedFile").val().split('.').pop()); //file-extension
 							$("#opquestion_form_attachmentLocal").val("1"); //true
+							
+							var oldQuestionText = $('#opquestion_form_questionText').val();
+							if(contains(oldQuestionText, '[attachment]') == false){
+								$('#opquestion_form_questionText').val($('#opquestion_form_questionText').val() + '\n\n[attachment]\n' );
+							}
 							return;
 						}
 						else{
