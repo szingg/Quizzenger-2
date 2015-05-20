@@ -201,7 +201,7 @@ namespace quizzenger\gate {
 			}
 
 			$attachmentPath = QUIZZENGER_ROOT . DIRECTORY_SEPARATOR . ATTACHMENT_PATH
-				. DIRECTORY_SEPARATOR . $questionID . '.' . $extension;
+				. DIRECTORY_SEPARATOR . $questionId . '.' . $extension;
 
 			if(file_put_contents($attachmentPath, base64_decode($content)) === false) {
 				Log::error("Could not write contents of attachment for question $uuid.");
