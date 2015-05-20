@@ -215,14 +215,18 @@ class QuestionModel {
 	 * @param $newFilename filename used in the attachment dir
 	 * @return bool Returns true on success or false on failure.
 	 */
-	private function moveTempFile($oldFilename, $newFilename){
-		$path = getcwd();
+	private function moveTempFile($oldFilename, $newFilename) {
+		$path = QUIZZENGER_ROOT;
 		$targetDir = $this->join_paths($path, ATTACHMENT_PATH);
 		$sourceDir = $this->join_paths($targetDir, 'temp');
 		$targetFile = $this->join_paths($targetDir, $newFilename);
-		$sourceFile = realpath($this->join_paths($sourceDir, $oldFilename));
+		$sourceFile = $this->join_paths($sourceDir, $oldFilename);
+
 		//check if sourceFile is in tempDir. This check prevents xss
-		if($sourceDir==false || dirname($sourceFile) !== realpath($sourceDir)) return false;
+		if($sourceDir==false || dirname($sourceFile) !== $sourceDir) {
+			return false;
+		}
+
 		return rename($sourceFile, $targetFile);
 	}
 

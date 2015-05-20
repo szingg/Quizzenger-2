@@ -79,10 +79,12 @@ function OpQuestion(){
 							$("#msg-upload").text("");
 							$("#modalAttachFile").modal('hide');
 							//write values to opquestion form
-							$("#opquestion_form_attachmentTempFileName").val($("#selectedFile").val()); //full filename
+							var filename = $("#selectedFile").val().split(/[\/\\]/);
+							filename = filename[filename.length - 1];
+							$("#opquestion_form_attachmentTempFileName").val(filename); //full filename
 							$("#opquestion_form_attachment").val($("#selectedFile").val().split('.').pop()); //file-extension
 							$("#opquestion_form_attachmentLocal").val("1"); //true
-							
+
 							var oldQuestionText = $('#opquestion_form_questionText').val();
 							if(contains(oldQuestionText, '[attachment]') == false){
 								$('#opquestion_form_questionText').val($('#opquestion_form_questionText').val() + '\n\n[attachment]\n' );
