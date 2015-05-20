@@ -201,13 +201,20 @@ var quizzenger = {
 				{
 					switch(quizzenger.question.getAttachmentType(attachment)) {
 						case 'image':
-							json[0] = 'img';
-							json[1] = {'href' : attachment, 'alt' : 'attachment', 'class' : 'image-container'};
+							//json[0] = 'img';
+							//json[1] = {'href' : attachment, 'alt' : 'attachment', 'class' : 'image-container'};
+							json[0] = 'div';
+							json[1] = {'class' : 'multimedia-container'};
+							json[2] = [	'img', {
+								'href' : attachment, 
+								'alt' : 'attachment', 
+								'class' : 'image-container'
+							}];
 							break;
 
 						case 'youtube':
 							json[0] = 'div';
-							json[1] = { 'class' : 'video-container'};
+							json[1] = { 'class' : 'multimedia-container video-container'};
 							json[2] = [	'iframe', {
 								'src' : quizzenger.markdown.getEmbedUrlFromYouTubeUrl(attachment),
 								'frameborder' : '0',

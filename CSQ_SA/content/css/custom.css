@@ -170,18 +170,12 @@ div>a {
 	color: inherit;
 }
 
-.video-container {
-	position: relative;
-	height: 0;
+.multimedia-container{
 	overflow: hidden;
-}
-
-.image-container {
 	position: relative;
-	overflow: hidden;
+	display: block;
 	height: auto;
 }
-
 
 @media ( max-width :992px) {
 	.video-container { 	padding-bottom: 56.25%; max-width: 100%; }
