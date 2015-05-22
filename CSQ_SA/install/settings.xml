@@ -141,19 +141,6 @@
 				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
-		<achievement type="DateTime">
-			<name>Weihnachtsmann</name>
-			<description>Du hast eine Frage an Weihnachten korrekt gelöst.</description>
-			<sort_order>0</sort_order>
-			<image>date-christmas</image>
-			<arguments>
-				<argument name="date-time" value="*-12-24-*-*-*" />
-			</arguments>
-			<bonus_score>50</bonus_score>
-			<eventtriggers>
-				<eventtrigger name="always" />
-			</eventtriggers>
-		</achievement>
 		<achievement type="GameWin">
 			<name>Game gewinnen</name>
 			<description>Gewinne ein Game mit 2 Teilnehmern</description>
