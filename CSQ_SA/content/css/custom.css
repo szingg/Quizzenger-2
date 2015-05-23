@@ -176,9 +176,9 @@ div>a {
 	width:200px;
 	padding: 5px;
 	background:#FFF;
-	position:absolute;
+	position:relative;
 	margin-top: -5px;
-	right: 0;
+	left: -150px;
 	color: black;
 	font-size: 12px;
 }
