@@ -30,7 +30,7 @@ namespace quizzenger\controller\controllers {
 			}
 
 			$categoryId = (isset($_GET['category']) ? ((int)$_GET['category']) : 0);
-			$questionList = ModelCollection::reportingModel()->getQuestionList();
+			$questionList = ModelCollection::reportingModel()->getQuestionList($_SESSION['user_id']);
 			$authorList = ModelCollection::reportingModel()->getAuthorList();
 			$categoryList = ModelCollection::reportingModel()->getCategoryList($userId, $user['superuser']);
 

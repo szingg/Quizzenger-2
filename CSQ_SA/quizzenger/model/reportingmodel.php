@@ -34,18 +34,25 @@ class ReportingModel {
 		}
 	}
 
-	public function getQuestionList() {
+	/**
+	 * @param $user_id The user id is used to check the authorization
+	 * @return autorized_on_question is > 0 when user is authorized to delete and edit a question.
+	 */
+	public function getQuestionList($user_id) {
 		return $this->mysqli->s_query('SELECT question.id, question.questiontext,'
 			. ' DATE(question.created) AS created, DATE(question.lastModified) AS last_modified,'
 			. ' question.difficulty, question.rating, question.ratingcount,'
 			. ' user.id AS author_id, user.username AS author,'
 			. ' category.id AS category_id, category.name AS category,'
-			. ' (SELECT COUNT(*) FROM questionperformance WHERE questionperformance.question_id=question.id) AS solved_count'
+			. ' (SELECT COUNT(*) FROM questionperformance WHERE questionperformance.question_id=question.id) AS solved_count,'
+			. ' (SELECT (SELECT COUNT(m.id) FROM moderation m JOIN question q on q.category_id = m.category_id WHERE m.user_id=? AND q.id = question.id) + '
+			. ' (SELECT COUNT(q.id) FROM question q WHERE q.id=question.id AND q.user_id=?) +'
+			. ' (SELECT u.superuser FROM user u WHERE u.id=?)) as autorized_on_question'
 			. ' FROM question'
 			. ' JOIN user ON (user.id=question.user_id)'
 			. ' JOIN category ON (category.id=question.category_id)'
 			. ' ORDER BY created ASC, question.id ASC',
-			[], [], false);
+			['i','i','i'], [$user_id, $user_id, $user_id], false);
 	}
 
 	public function getAuthorList() {

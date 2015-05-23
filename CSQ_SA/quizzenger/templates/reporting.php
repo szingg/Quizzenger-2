@@ -106,6 +106,7 @@
 								<th>Bewertung</th>
 								<th>Schwierigkeit</th>
 								<th>Gelöst</th>
+								<th>Aktionen</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -130,6 +131,16 @@
 
 									$outputRow(FormatUtility::formatNumber($current->difficulty, 2));
 									$outputRow($current->solved_count);
+									if($current->autorized_on_question > 0){
+										$outputRow('<a class="remove-row" href="#" data-qid="'.$current->id.'" data-type="question" title="Löschen">'
+														. '<span class="glyphicon glyphicon-remove"></span> '
+													. '</a>&nbsp;'
+													.' <a href="?view=editquestion&amp;id='.$current->id.'" title="Bearbeiten" >'
+														.'<span class="glyphicon glyphicon-edit"></span>'
+													.'</a>',true);
+									}else{
+										$outputRow('');
+									}
 									echo '</tr>';
 								}
 							?>
