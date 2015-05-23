@@ -50,7 +50,14 @@
 				include('categorylist.php');
 			} ?>
 
-			<h3>Frage:</h3>
+			<div>
+				<h3 class="pull-left">Frage:</h3>
+				<span class="pull-right textarea-help">
+					?
+					<span class="textarea-help-addition">Frage-Text formatieren? Hier gehts zum <strong><a class="text-primary" href="?view=MarkdownGuide">Markdown-Guide</a></strong></span>
+				</span>
+			</div>
+			<div class="clearfix"></div>
 				<div style="display: none;">
 				<?php if($operation=="edit"){ ?>
 					<div class="form-group">

@@ -31,24 +31,7 @@ namespace quizzenger\controller {
 			EventController::setup($this->mysqli);
 		}
 
-		public function render() { /*
-			$questionListModel = new QuestionListModel ( $this->mysqli, $this->logger );
-			$questionModel = new QuestionModel ( $this->mysqli, $this->logger );
-			$answerModel = new AnswerModel ( $this->mysqli, $this->logger );
-			$categoryModel = new CategoryModel ( $this->mysqli, $this->logger );
-			$userModel = new UserModel ( $this->mysqli, $this->logger );
-			$quizModel = new QuizModel ( $this->mysqli, $this->logger );
-			$ratingModel = new RatingModel ( $this->mysqli, $this->logger );
-			$sessionModel = new SessionModel ( $this->mysqli, $this->logger );
-			$quizListModel = new QuizListModel ( $this->mysqli, $this->logger );
-			$tagModel = new TagModel ( $this->mysqli, $this->logger );
-			$registrationModel = new RegistrationModel ( $this->mysqli, $this->logger );
-			$userscoreModel = new UserScoreModel ( $this->mysqli, $this->logger );
-			$moderationModel = new ModerationModel( $this->mysqli, $this->logger );
-			$reportModel = new ReportModel( $this->mysqli, $this->logger );
-			$reportingModel = new ReportingModel($this->mysqli, $this->logger);
-	*/
-
+		public function render() {
 			ModelCollection::sessionModel()->sec_session_start();
 
 			$_SESSION ['current_view'] = $this->template;
@@ -61,7 +44,7 @@ namespace quizzenger\controller {
 				case 'mycontent' : case 'myquizzes' : case 'quizdetail' : case 'quizstart' : case 'quizend' : case 'categorylist' :
 				case 'logout' : case 'error' : case 'register' : case 'processLogin' : case 'processChangepassword' : case 'processRegistration' :
 				case 'newquestion' : case 'editquestion' : case 'processNewQuestion' : case 'processGenerateQuiz':
-				case 'log': case 'questionpool': case 'processEditQuestion': case 'reporting':
+				case 'log': case 'questionpool': case 'processEditQuestion': case 'reporting' : case 'MarkdownGuide' :
 				case 'GameNew' : case 'GameStart' : case 'GameEnd' : case 'GameQuestion' : case 'GameSolution' : case 'GameDetail' :
 				case 'default':
 					/*include("controllers/".$this->template.".php");

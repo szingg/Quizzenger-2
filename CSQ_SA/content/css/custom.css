@@ -170,6 +170,42 @@ div>a {
 	color: inherit;
 }
 
+.textarea-help-addition {
+	border:2px solid #ccc;
+	display: none;
+	width:200px;
+	padding: 5px;
+	background:#FFF;
+	position:absolute;
+	margin-top: -5px;
+	right: 0;
+	color: black;
+	font-size: 12px;
+}
+
+.textarea-help:hover .textarea-help-addition {
+	display: block;
+}
+
+.textarea-help{
+	box-shadow: 0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+	background-image: linear-gradient(to bottom, #6baee6 0px, #165ee2 100%);
+	color: white;
+
+	text-align: center;
+	vertical-align: middle;
+	border-radius: 50%;
+
+	margin-top: 20px;
+	width: 32px;
+	height: 32px;
+	/*font-family: 'Glyphicons Halflings'; */
+	font-family: 'Arial';
+	font-weight: bold;
+	font-size: 24px;
+    display: inline-block;
+}
+
 .multimedia-container{
 	overflow: hidden;
 	position: relative;

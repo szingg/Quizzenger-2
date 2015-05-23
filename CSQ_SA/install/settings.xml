@@ -567,7 +567,7 @@
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+			<name>Moderate Fragen</name>
 			<description>Du hast 1 Frage mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>1</sort_order>
 			<image>achievement-question-difficulty-moderate-1</image>
@@ -583,7 +583,7 @@
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+			<name>Moderate Fragen</name>
 			<description>Du hast 2 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>2</sort_order>
 			<image>achievement-question-difficulty-moderate-2</image>
@@ -599,7 +599,7 @@
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+			<name>Moderate Fragen</name>
 			<description>Du hast 5 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>5</sort_order>
 			<image>achievement-question-difficulty-moderate-5</image>
@@ -615,7 +615,7 @@
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+			<name>Moderate Fragen</name>
 			<description>Du hast 10 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>10</sort_order>
 			<image>achievement-question-difficulty-moderate-10</image>
@@ -631,7 +631,7 @@
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+			<name>Moderate Fragen</name>
 			<description>Du hast 20 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>20</sort_order>
 			<image>achievement-question-difficulty-moderate-20</image>
@@ -647,7 +647,7 @@
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+			<name>Moderate Fragen</name>
 			<description>Du hast 50 Fragen mit Schwierigkeit "moderat" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>50</sort_order>
 			<image>achievement-question-difficulty-moderate-50</image>
@@ -662,8 +662,8 @@
 				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
-				<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+		<achievement type="QuestionDifficulty">
+			<name>Schwierige Fragen</name>
 			<description>Du hast 1 Frage mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>1</sort_order>
 			<image>achievement-question-difficulty-difficult-1</image>
@@ -679,7 +679,7 @@
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+			<name>Schwierige Fragen</name>
 			<description>Du hast 2 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>2</sort_order>
 			<image>achievement-question-difficulty-difficult-2</image>
@@ -695,7 +695,7 @@
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+			<name>Schwierige Fragen</name>
 			<description>Du hast 5 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>5</sort_order>
 			<image>achievement-question-difficulty-difficult-5</image>
@@ -711,7 +711,7 @@
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+			<name>Schwierige Fragen</name>
 			<description>Du hast 10 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>10</sort_order>
 			<image>achievement-question-difficulty-difficult-10</image>
@@ -727,7 +727,7 @@
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+			<name>Schwierige Fragen</name>
 			<description>Du hast 20 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>20</sort_order>
 			<image>achievement-question-difficulty-difficult-20</image>
@@ -743,7 +743,7 @@
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+			<name>Schwierige Fragen</name>
 			<description>Du hast 50 Fragen mit Schwierigkeit "schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>50</sort_order>
 			<image>achievement-question-difficulty-difficult-50</image>
@@ -758,8 +758,8 @@
 				<eventtrigger name="game-question-answered-correct" />
 			</eventtriggers>
 		</achievement>
-				<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+		<achievement type="QuestionDifficulty">
+			<name>Sehr schwierige Fragen</name>
 			<description>Du hast 1 Frage mit Schwierigkeit "sehr schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>1</sort_order>
 			<image>achievement-question-difficulty-very-difficult-1</image>
@@ -775,7 +775,7 @@
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+			<name>Sehr schwierige Fragen</name>
 			<description>Du hast 2 Fragen mit Schwierigkeit "sehr schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>2</sort_order>
 			<image>achievement-question-difficulty-very-difficult-2</image>
@@ -791,7 +791,7 @@
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+			<name>Sehr schwierige Fragen</name>
 			<description>Du hast 5 Fragen mit Schwierigkeit "sehr schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>5</sort_order>
 			<image>achievement-question-difficulty-very-difficult-5</image>
@@ -807,7 +807,7 @@
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+			<name>Sehr schwierige Fragen</name>
 			<description>Du hast 10 Fragen mit Schwierigkeit "sehr schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>10</sort_order>
 			<image>achievement-question-difficulty-very-difficult-10</image>
@@ -823,7 +823,7 @@
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+			<name>Sehr schwierige Fragen</name>
 			<description>Du hast 20 Fragen mit Schwierigkeit "sehr schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>20</sort_order>
 			<image>achievement-question-difficulty-very-difficult-20</image>
@@ -839,7 +839,7 @@
 			</eventtriggers>
 		</achievement>
 		<achievement type="QuestionDifficulty">
-			<name>Normale Fragen</name>
+			<name>Sehr schwierige Fragen</name>
 			<description>Du hast 50 Fragen mit Schwierigkeit "sehr schwierig" (Anzahl Beantwortungen mind. 5)</description>
 			<sort_order>50</sort_order>
 			<image>achievement-question-difficulty-very-difficult-50</image>
