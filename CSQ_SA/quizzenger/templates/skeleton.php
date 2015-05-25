@@ -92,7 +92,7 @@
 						</li>
 
 						<?php if($this->_['superuser'] || $this->_['anymoderator']): ?>
-						<li class="<?= checkActiveTab('reporting'); ?>">
+						<li class="<?= checkActiveTab('reporting'); ?> hidden-xs hidden-sm">
 							<a href="?view=reporting"><span class="glyphicon glyphicon-stats"></span> Reporting</a>
 						</li>
 						<?php endif; ?>

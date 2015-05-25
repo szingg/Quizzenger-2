@@ -13,11 +13,11 @@
 		echo '<div class="alert alert-info" role="alert"><a href="#" class="close" data-dismiss="alert">&times;</a>'.htmlspecialchars($this->_['message']).'</div>';
 	}
 
-	$outputRow = function($text, $raw = false) {
+	$outputRow = function($text, $raw = false, $attr='') {
 		if($raw)
-			echo "<td>$text</td>";
+			echo "<td $attr>$text</td>";
 		else
-			echo '<td>' . htmlspecialchars($text) . '</td>';
+			echo "<td $attr>" . htmlspecialchars($text) . '</td>';
 	};
 ?>
 <div class="panel panel-default">
@@ -102,7 +102,7 @@
 								<th>Frage</th>
 								<th>Kategorie</th>
 								<th>Autor</th>
-								<th>Datum</th>
+								<th class="hidden-xs hidden-sm hidden-md">Datum</th>
 								<th>Bewertung</th>
 								<th>Schwierigkeit</th>
 								<th>Gelöst</th>
@@ -122,7 +122,7 @@
 
 									$outputRow("<a href=\"" . APP_PATH . "/?view=user&amp;id={$current->author_id}\">"
 										. htmlspecialchars($current->author) . "</a>", true);
-									$outputRow("{$current->created} ({$current->last_modified})");
+									$outputRow("{$current->created} ({$current->last_modified})", false, 'class="hidden-xs hidden-sm hidden-md"');
 
 									if($current->ratingcount != 0)
 										$outputRow(FormatUtility::formatNumber((float)$current->rating / (float)$current->ratingcount, 1));
