@@ -76,38 +76,4 @@ define ( "FORCE_RECAPTCHA_FOR_NEW_QUESTIONS", TRUE);
 ini_set ( "display_errors", 1 );
 ini_set ( "display_startup_errors", 1 );
 error_reporting ( E_ALL );
-
-
-
-// Error Messages
-// --------------
-define ( "err_register_invalid_mail", "Die eingegebene Email Adresse ist ungültig" );
-define ( "err_register_pw", "Ungültige Passwort konfiguration (=/ 128). Haben Sie Javascript aktiviert?" );
-define ( "err_register_existing_information", "Die Email Adresse oder der Benutzername wird bereits verwendet" );
-define ( "err_register_check", "Verbindung mit der Datenbank fehlgeschlagen" );
-define ( "err_register_insert", "Erstellen Ihres Benutzers ist fehlgeschlagen - Insert failed" );
-define ( "err_login_bad_credentials", "Email Adresse oder Passwort inkorrekt" );
-define ( "err_login_inactive", "Ihr Benutzer ist inaktiv" );
-define ( "err_login_tries_exceeded", "<br>Die Anzahl fehlgeschlagene Logins für Ihren Benutzer wurden erreicht<br>Bitte probieren Sie es in ".(BRUTE_FORCE_COOLDOWN/60)." Minuten erneut" );
-define ( "err_db_query_failed", "Oops, es wurde eine ungültige Datenbank abfrage getätigt" );
-define ( "err_missing_input", "Bitte füllen Sie alle benötigten Felder aus" );
-define ( "err_not_authorized_questionedit", "Sie sind nicht berechtigt diese Frage zu bearbeiten" );
-define ( "err_not_authorized_quizdetail", "Sie sind nicht berechtigt dieses Quiz anzuschauen" );
-define ( 'err_not_authorized', 'Sie sind nicht berechtigt, diese Aktion durchzuführen');
-define ( 'err_game_has_started', 'Das Game wurde bereits gestartet. Sie können nicht mehr teilnehmen');
-define ( 'err_game_if_finished', 'Das Game wurde bereits beendet. Sie können keine Fragen mehr beantworten');
-define ( "err_unkown", "Oops, es ist ein unbekannter Fehler aufgetreten!" );
-
-
-// Info Messages
-// -------------
-define ( "mes_login_success", "Login erfolgreich" );
-define ( "mes_register_success", '<b>Registrierung erfolgreich</b> <br> Sie können sich nun <a href="./index.php?view=login">anmelden</a>' );
-define ( "mes_logout_success", "Logout erfolgreich" );
-define ( "mes_login_already", "Sie sind bereits angemeldet" );
-define ( "mes_passwordchange_success", "Ihr Passwort wurde erfolgreich geändert<br>Bitte melden Sie sich erneut an" );
-define ( "mes_sent_report", "Die Meldung wurde erfasst und wird von den Moderatoren angeschaut.");
-define ( "mes_no_results", "<b>Ihr gesetzter Filter ergab leider keine Ergebnisse</b>" );
-define ( 'mes_add_questions_to_quiz', 'Fragen können über den Fragepool zum Quiz hinzugefügt werden.');
-
 ?>

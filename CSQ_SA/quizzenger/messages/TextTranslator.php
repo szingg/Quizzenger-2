@@ -83,6 +83,8 @@ namespace quizzenger\messages {
 					$text[$current->type] = $current->text;
 				}
 				foreach($messages as $key => $value){
+					var_dump($value);
+					var_dump($messages);
 					$messages[$key]->text = self::$formatter->format($text[$value->type], $value->arguments);
 				}
 				return $messages;

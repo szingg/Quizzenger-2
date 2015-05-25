@@ -886,7 +886,7 @@
 			<text>Ungültige Passwort konfiguration (=/ 128). Haben Sie Javascript aktiviert?</text>
 		</message>
 		<message>
-			<type>err_register_existing_information</type>
+			<type>err_register_existing_info</type>
 			<text>Die Email Adresse oder der Benutzername wird bereits verwendet</text>
 		</message>
 		<message>

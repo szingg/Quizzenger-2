@@ -35,7 +35,7 @@ class RegistrationModel {
 				$stmt->execute ();
 				$stmt->store_result ();
 				if ($stmt->num_rows == 1) {
-					$error_msg = "err_register_existing_information";
+					$error_msg = "err_register_existing_info";
 				}
 			} else {
 				$error_msg = "err_register_check";
@@ -51,7 +51,7 @@ class RegistrationModel {
 				$stmt->execute ();
 				$stmt->store_result ();
 				if ($stmt->num_rows == 1) {
-					$error_msg = "err_register_existing_information";
+					$error_msg = "err_register_existing_info";
 				}
 			} else {
 				$error_msg = "err_register_check";
