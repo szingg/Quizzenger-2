@@ -48,7 +48,7 @@ if(isset($_POST['install'])){
 		echo("</p>");
 	}
 	echo("<hr>");
-	echo '<a href="installerSettings.php" >Pleasee go to the next step!</a>';
+	echo '<a href="installerSettings.php" >Please go to the next step!</a>';
 
 }else{?>
 	<h3>Welcome to the Quizzenger Installer</h3>

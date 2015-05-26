@@ -188,15 +188,14 @@ if(isset($_POST['install'])){
 
 }else{?>
 	<h3>Welcome to the Quizzenger Settings Installer</h3>
-	<b>1.</b> Specify your required Achievements, Ranks and Triggers in the settings.xml file.
+	<b>1.</b> Configure the sections 'Achievement Settings' and 'Rank Settings' in the includes/config.php file<br><br>
+	<b>2.</b> Specify your required Settings in the settings.xml file.
 	 Please just use the presetted Achievement Types and Triggers.
-	 Otherwise you have to write your own Achievement or Rank plugin.
+	 Otherwise you have to write your own Achievement plugin.
 	 Consider that the attributes of each Achievement depend on its type.<br><br>
-	<b>2.</b>Save the images which correspond to the Achievements in the content/achievements folger or a public folder of your choice.<br><br>
-	<b>3.</b>Open the config.php file and set the 'ACHIEVEMENT_PATH', 'ACHIEVEMENT_IMAGE_EXTENSION',
-	'RANK_PATH' and the 'RANK_IMAGE_EXTENSION' constants.<br><br>
+	<b>3.</b> Save the images which corresponds to the Achievements and Ranks in the folders, that you previously specified in the config.php-file<br><br>
 	<br><br>
-	<b>4.</b>Press the Install Button<br><br>
+	<b>4.</b> Press the Install Button<br><br>
 
 
 	<form action="installerSettings.php" method="post">

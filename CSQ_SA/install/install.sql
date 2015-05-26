@@ -171,7 +171,8 @@ CREATE TABLE IF NOT EXISTS `quiztoquestion` (
   `weight` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_questionquiztoquestion` (`question_id`),
-  KEY `fk_quizquiztoquestion` (`quiz_id`)
+  KEY `fk_quizquiztoquestion` (`quiz_id`),
+  UNIQUE KEY (`quiz_id`, `question_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 -- --------------------------------------------------------

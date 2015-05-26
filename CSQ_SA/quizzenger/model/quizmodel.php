@@ -296,7 +296,7 @@ class QuizModel {
 	public function addQuestionToQuiz($quiz_id, $question_id) {
 		$weigth =1;
 		$this->logger->log ( "Adding Question to Quiz, Quiz ID: ".$quiz_id." and Question ID: ".$question_id, Logger::INFO );
-		return $this->mysqli->s_insert("INSERT INTO quiztoquestion (question_id, quiz_id, weight) VALUES ( ?, ?, ?)",array('i','i','i'),array($question_id,$quiz_id,$weigth));
+		return $this->mysqli->s_insert("INSERT IGNORE INTO quiztoquestion (question_id, quiz_id, weight) VALUES ( ?, ?, ?)",array('i','i','i'),array($question_id,$quiz_id,$weigth));
 	}
 
 	public function userIDhasPermissionOnQuizID($quiz_id,$user_id) {
