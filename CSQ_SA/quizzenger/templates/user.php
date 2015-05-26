@@ -19,7 +19,7 @@
 	$activeRanks = [];
 	while($current = $rankList->fetch_object()):
 		$ranks[] = $current;
-		if($userScore >= $current->threshold){
+		if($userScore['total_score'] >= $current->threshold){
 			$activeRanks[$current->threshold] = $current;
 		}
 	endwhile;
@@ -72,7 +72,7 @@
 							echo '<span id="ranklistTooltip" class="hide" style="position: absolute; background-color: white; box-shadow: 0 0 2px #888; padding: 10px; z-index: 1000; right: 100px; margin-top: -50px;">';
 									echo '<span class="" style="padding: 0px 10px; margin-bottom: 6px; display: inline-block"><strong>Rangliste:</strong></span><br>';
 									foreach($globalRanklist as $current):
-										if(($current['id'] == $user['id'])) $userrank = $current['rank'];
+										if(($current['id'] == $user['id'])) $_userrank = $current['rank'];
 										echo '<a href="?view=user&id='.$current['id'].'">';
 										echo '<span class="badge alert-'.(($current['id'] == $user['id']) ? 'success' : 'info').'" style="padding: 6px 10px; margin-bottom: 5px">';
 										echo '#'.$current['rank'].' '.htmlspecialchars($current['username']).' '.$current['total_score'];
@@ -81,8 +81,8 @@
 							echo '</span>';
 							echo '</td>';
 							echo '<td> <span class="badge alert-success" style="font-size: 14pt">' . htmlspecialchars($userScore['total_score']) . '</span></td>';
-							if(isset($userrank)){
-								echo '<td> <span class="badge alert-info" style="font-size: 14pt">&#9733;&nbsp;' . htmlspecialchars("{$userrank} / {$userScore['total_users']}") .'</span></td>';
+							if(isset($_userrank)){
+								echo '<td> <span class="badge alert-info" style="font-size: 14pt">&#9733;&nbsp;' . htmlspecialchars("{$_userrank} / {$userScore['total_users']}") .'</span></td>';
 							}
 							echo '</tr>';
 						?>
